@@ -36,7 +36,7 @@ The package includes:
 
  - a modular runtime framework (based on OSGi) for the Pipeline 2 modules
  - a command line interface to execute pipeline scripts, in the "cli" directory
- - dedicated launchers for the Pipeline 2 Web Service, in the "fwk" directory
+ - dedicated launchers for the Pipeline 2 Web Service, in the "bin" directory
  - a set of processing modules providing the following conversions:
    * daisy202-to-epub3 - Convert a DAISY 2.02 fileset to EPUB3
    * dtbook-to-zedai - Convert a DTBook XML document to ZedAI XML
