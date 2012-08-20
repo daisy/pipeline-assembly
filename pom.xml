@@ -276,12 +276,53 @@
                   <artifactId>org.restlet.ext.xml</artifactId>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.jetty</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.ssl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-server</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-ajp</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-util</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-http</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-io</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-continuation</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>jsslutils</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.codehaus.woodstox</groupId>
                   <artifactId>woodstox-core-lgpl</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.codehaus.woodstox</groupId>
                   <artifactId>stax2-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.mysql.jdbc</groupId>
+                  <artifactId>com.springsource.com.mysql.jdbc</artifactId>
+                  <version>5.1.6</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -577,6 +618,7 @@
       <name>Maven Central</name>
       <url>http://repo.maven.apache.org/maven2/</url>
     </repository>
+    <!-- Restlet maven repository - They don't publish their stuff on maven central -->
     <repository>
       <id>restlet-repo</id>
       <name>Public online Restlet repository</name>
@@ -586,10 +628,17 @@
       <id>EclipseLink</id>
       <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
     </repository>
+    <!-- gemini related bundles and derby -->
     <repository>
       <id>eclipse-gemini-repo</id>
       <name>Eclipse Gemini Maven repository</name>
       <url>http://download.eclipse.org/gemini/mvn/</url>
+    </repository>
+    <!-- springsource used for osgi version of mysql -->
+    <repository>
+      <id>com.springsource.repository.bundles.external</id>
+      <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+      <url>http://repository.springsource.com/maven/bundles/external</url>
     </repository>
   </repositories>
 </project>
