@@ -60,14 +60,14 @@
     <fileSet>
       <directory>target/bundles/pipeline</directory>
       <excludes>
-        <exclude>webservice-*.jar</exclude>
+        <exclude>webservice-?.*jar</exclude>
       </excludes>
       <outputDirectory>/system/framework</outputDirectory>
     </fileSet>
     <fileSet>
       <directory>target/bundles/pipeline</directory>
       <includes>
-        <include>webservice-*.jar</include>
+        <include>webservice-?.*jar</include>
       </includes>
       <outputDirectory>/system/frontend</outputDirectory>
     </fileSet>
