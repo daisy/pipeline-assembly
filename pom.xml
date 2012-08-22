@@ -21,7 +21,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.main</artifactId>
-      <version>4.0.2</version>
+      <version>4.0.3</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -131,7 +131,7 @@
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.fileinstall</artifactId>
-                  <version>3.2.2</version>
+                  <version>3.2.4</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -469,6 +469,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>metadata-utils</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>validation-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
