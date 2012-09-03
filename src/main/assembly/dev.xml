@@ -10,6 +10,7 @@
       <directory>src/main/resources/etc</directory>
       <excludes>
         <exclude>config.properties</exclude>
+        <exclude>system.properties</exclude>
         <exclude>org.apache.felix.fileinstall-*.cfg</exclude>
       </excludes>
       <outputDirectory>/etc</outputDirectory>
@@ -18,6 +19,7 @@
     <fileSet>
       <directory>src/main/resources/etc</directory>
       <includes>
+        <include>system.properties</include>
         <include>config.properties</include>
         <include>org.apache.felix.fileinstall-*.cfg</include>
       </includes>
