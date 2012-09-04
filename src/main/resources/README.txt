@@ -1,5 +1,5 @@
 
-              DAISY Pipeline 2 - 1.3-beta - July 3, 2012
+              DAISY Pipeline 2 - 1.3 - September 3, 2012
 ===============================================================================
 
 
@@ -50,54 +50,47 @@ The package includes:
 3. Release Notes
 -------------------------------------------------------------------------------
 
-The package includes the 1.3-beta version of the project.
+The package includes the 1.3 version of the project.
 
 Changes since the last release:
 
  * Command-line tool
-   * Updated the CLI to the new Web Service XML formats
-   * Added global switches to override the configuration properties
-   * Closed Issue 147: simplified the syntax of Job management subcommands
-   * Fixed Issue 179: the CLI uses the script ID as the command name
+   * Fixed Issue 200: the CLI is now able to call the remote service over SSL
+   * Fixed Issue 205: errors are now correctly reported to the CLI
+   * Fixed Issue 211: unwanted logging when the CLI is in local mode
  * Web Service API
-   * Script are now identified with their @id attribute
-   * Updated the XML payload grammars
-   * XML payloads are now validated with RelaxNG
-   * HTTP 500 errors are now sent along with a complete XML description in
-     the answer body.
-   * Added a callback mechanism to allow clients to be notifed of new messages
-     and status changes. See:
-     http://code.google.com/p/daisy-pipeline/wiki/WebServicePush#Status
+   * Closed Issue 187: output type is now exposed via the @outputType atttribute
+     in the script XML format.
+   * Closed Issue 189: @mediaType is no longer present when not specified
  * Framework
-   * Closed Issue 68: Added XML Catalog resolver to the classpath
-   * Closed Issue 159: Updated Calabash to the latest version 1.0.3-94
-   * Cleaned the metadata used to describe Pipeline scripts in XProc
-   * Added a persistence layer to back-up requests and jobs in a database
-   * Messages and status changes are now dispatched to listeners with an
-     Event Bus
-   * Introduced a new Maven-based build system. OSGi manifests are now
-     generated with the maven-bundle-plugin.
-   * various internal code refactoring
+   * Closed Issue 185: DOM packages are now available from the system bundle.
+   * Fixed Issue 193: Internal Server Error rather than error result
+   * Fixed Issue 194: Derby error "truncation error (...) to shrink VARCHAR to
+     length 255". The new default length is set to 1024.
+   * Fixed Issue 198: XLST messages now appear in the execution log
+   * Closed Issue 199: HTTPS support is now available via the Jetty connector
+   * Fixed Issue 201:  Successful EPUB3 conversion ends with 500 Internal Server
+     Error
+   * Fixed Issue 202: spaces in file names caused conversion errors
+   * Close Issue 203: set the logging level of Jetty to INFO
  * Modules
-   * [dtbook-to-zedai] Fixed Issue 54: More testing - Language attribute now
-     supported
-   * [dtbook-to-zedai] Fixed Issue 59: Various internal improvements
-   * [dtbook-to-zedai] Fixed Issue 61: removed tmp namespace from final output
-   * [dtbook-to-zedai] Fixed Issue 157: better support images inlined in a
-      paragraph
-   * [dtbook-to-zedai] Fixed Issue 158: support DBTook with no front matter
-   * [dtbook-to-zedai] Fixed Issue 162: support the `@cite` attribute on
-     `blockquote` and `q` elements.
-   * [dtbook-to-zedai] Fixed Issue 163: better convert `@alt` and `@longdesc`
-     image attributes
-   * [dtbook-to-zedai] Fixed Issue 176: "More than one document in context for
-     parameter 'base'"
-   * [dtbook-to-zedai] Fixed Issue 178: support mulitple `dc:publisher`
-     metadata values
-   * [html-utils] Fixed Issue 165: h1-h6 are no longer removed by the HTML5
-     upgrader
-   * [epub3-utils] Fixed Issue 169: better annotations of Media Overlays in the
-     package manifest
+   * [dtbook-to-zedai] Closed Issue 37.
+   * [dtbook-to-zedai] Closed Issue 190: the validation of the DTBook input is
+     now optional.
+   * [dtbook-to-zedai] Fixed Issue 206: DC metadata that do not have a direct MODS
+     translation are now translated with the generic 'extension' element.
+   * [dtbok-to-zedai] Fixed Issue 208: Non-numeric 'list/@start' attribute are now
+     converted to a numeric value
+   * [dtbook-to-zedai] Fixed Issue 209: added support for 'blockquote/author' and
+     standalone 'author'
+   * [dtbook-to-zedai] Fixed Issue 210: improved support for page breaks in the 
+     section/block normalization
+   * [dtbook-to-zedai] Improved 'moveout' implementation, should be faster on big
+     books.
+   * [zedai-to-epub3] Fixed Issue 196: Link with missing destination causes error
+      with f:get-chunk-name()
+   * [zedai-to-html] Fixed Issue 197: added support for converting tables
+
 
 The full list of changes can be found at:
  http://code.google.com/p/daisy-pipeline/w/ReleaseNotes
