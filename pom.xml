@@ -431,6 +431,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy3-to-epub3</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-to-epub3</artifactId>
                 </artifactItem>
                 <artifactItem>
