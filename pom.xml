@@ -718,6 +718,10 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>pef-utils</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>texhyph-saxon</artifactId>
                     </artifactItem>
                     <artifactItem>
