@@ -787,7 +787,7 @@
                       <artifactId>dotify-translator</artifactId>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>se.tpb</groupId>
+                      <groupId>com.googlecode.texhyphj</groupId>
                       <artifactId>texhyphj</artifactId>
                     </artifactItem>
                     <artifactItem>
