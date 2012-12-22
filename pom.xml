@@ -14,7 +14,7 @@
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
   <properties>
-    <pipeline.version>1.4-beta</pipeline.version>
+    <pipeline.version>1.4</pipeline.version>
     <dollar>$</dollar>
   </properties>
   <dependencies>
@@ -436,6 +436,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-to-epub3</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>dtbook-to-html</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
