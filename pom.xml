@@ -388,10 +388,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>webservice</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
                   <artifactId>webservice-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -409,6 +405,21 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>xproc-api</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-frontend</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/frontend</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>webservice</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -550,6 +561,68 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-help-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-effective-pom</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>effective-pom</goal>
+            </goals>
+            <configuration>
+              <output>target/tmp/effective-pom.xml</output>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-fileinstall-cfg-files</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <java classname="net.sf.saxon.Transform">
+                  <arg value="target/tmp/effective-pom.xml"/>
+                  <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                  <arg value="id=copy-pipeline-bundles"/>
+                  <arg value="startLevel=30"/>
+                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                  <arg value="prefix=pipeline"/>
+                </java>
+                <java classname="net.sf.saxon.Transform">
+                  <arg value="target/tmp/effective-pom.xml"/>
+                  <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                  <arg value="id=copy-pipeline-modules"/>
+                  <arg value="startLevel=50"/>
+                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                  <arg value="prefix=modules"/>
+                </java>
+                <java classname="net.sf.saxon.Transform">
+                  <arg value="target/tmp/effective-pom.xml"/>
+                  <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                  <arg value="id=copy-frontend"/>
+                  <arg value="startLevel=100"/>
+                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                  <arg value="prefix=frontend"/>
+                </java>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.4</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -799,6 +872,38 @@
                       <artifactId>icu4j</artifactId>
                     </artifactItem>
                   </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-fileinstall-cfg-files-braille</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                      <arg value="id=copy-braille-modules"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=braille"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                      <arg value="id=copy-braille-libs-bundles"/>
+                      <arg value="startLevel=30"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=braille-libs"/>
+                    </java>
+                  </tasks>
                 </configuration>
               </execution>
             </executions>
