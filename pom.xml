@@ -564,6 +564,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-help-plugin</artifactId>
+        <version>2.1.1</version>
         <executions>
           <execution>
             <id>generate-effective-pom</id>
@@ -587,10 +588,10 @@
               <goal>run</goal>
             </goals>
             <configuration>
-              <tasks>
+              <target>
                 <java classname="net.sf.saxon.Transform">
                   <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
                   <arg value="id=copy-pipeline-bundles"/>
                   <arg value="startLevel=30"/>
                   <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
@@ -598,7 +599,7 @@
                 </java>
                 <java classname="net.sf.saxon.Transform">
                   <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
                   <arg value="id=copy-pipeline-modules"/>
                   <arg value="startLevel=50"/>
                   <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
@@ -606,13 +607,13 @@
                 </java>
                 <java classname="net.sf.saxon.Transform">
                   <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
                   <arg value="id=copy-frontend"/>
                   <arg value="startLevel=100"/>
                   <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
                   <arg value="prefix=frontend"/>
                 </java>
-              </tasks>
+              </target>
             </configuration>
           </execution>
         </executions>
@@ -620,7 +621,7 @@
           <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
-            <version>9.4</version>
+            <version>9.4.0.6</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -889,7 +890,7 @@
                   <tasks>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
                       <arg value="id=copy-braille-modules"/>
                       <arg value="startLevel=50"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
@@ -897,7 +898,7 @@
                     </java>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/resources/etc/org.apache.felix.fileinstall.xsl"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
                       <arg value="id=copy-braille-libs-bundles"/>
                       <arg value="startLevel=30"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
