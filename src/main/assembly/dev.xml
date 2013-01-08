@@ -11,7 +11,9 @@
       <excludes>
         <exclude>config.properties</exclude>
         <exclude>system.properties</exclude>
-        <exclude>org.apache.felix.fileinstall-*.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-framework.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-frontend.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-modules.cfg</exclude>
       </excludes>
       <outputDirectory>/etc</outputDirectory>
       <filtered>false</filtered>
@@ -21,6 +23,13 @@
       <includes>
         <include>system.properties</include>
         <include>config.properties</include>
+      </includes>
+      <outputDirectory>/etc</outputDirectory>
+      <filtered>true</filtered>
+    </fileSet>
+    <fileSet>
+      <directory>target/generated-resources/etc</directory>
+      <includes>
         <include>org.apache.felix.fileinstall-*.cfg</include>
       </includes>
       <outputDirectory>/etc</outputDirectory>
