@@ -44,6 +44,7 @@ The package includes:
    * dtbook-to-html - Convert a DTBook XML document to XHTML5
    * dtbook-to-zedai - Convert a DTBook XML document to ZedAI XML
    * dtbook-validator - Validate a DTBook 2005-3 XML document
+   * nimas-fileset-validator - Validate a NIMAS Fileset
    * zedai-to-epub3 - Convert a ZedAI document to EPUB 3
    * zedai-to-html - Convert a ZedAI document to XHTML5
  - a set of sample documents to test the provided conversions, in the "samples"
