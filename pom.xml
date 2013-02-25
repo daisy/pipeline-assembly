@@ -764,6 +764,14 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-core</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-saxon</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>liblouis-calabash</artifactId>
                     </artifactItem>
                     <artifactItem>
@@ -773,6 +781,10 @@
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>liblouis-formatter</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>liblouis-mathml</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -803,11 +815,19 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>pef-saxon</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>pef-to-html</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>pef-utils</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>texhyph-core</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -882,6 +902,18 @@
                     <artifactItem>
                       <groupId>com.ibm.icu</groupId>
                       <artifactId>icu4j</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.liblouis</groupId>
+                      <artifactId>liblouis-java</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>net.java.dev.jna</groupId>
+                      <artifactId>jna</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>ch.sbs</groupId>
+                      <artifactId>jhyphen</artifactId>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
