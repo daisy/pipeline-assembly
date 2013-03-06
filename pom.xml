@@ -61,7 +61,6 @@
           <type>pom</type>
           <scope>import</scope>
       </dependency>
-      
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-parent</artifactId>
@@ -263,8 +262,13 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
+                  <artifactId>com.xmlcalabash</artifactId>
+                  <version>1.0.8</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
                   <artifactId>saxon-he</artifactId>
-                  <version>9.4.0</version>
+                  <version>9.4.0.7</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -280,10 +284,6 @@
                 <artifactItem>
                   <groupId>com.googlecode.guava-osgi</groupId>
                   <artifactId>guava-osgi</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>com.xmlcalabash</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>commons-codec</groupId>
@@ -632,7 +632,7 @@
           <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
-            <version>9.4.0.6</version>
+            <version>9.4.0.7</version>
           </dependency>
         </dependencies>
       </plugin>
