@@ -768,6 +768,25 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-native</artifactId>
+                      <classifier>linux</classifier>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-native</artifactId>
+                      <classifier>mac</classifier>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-native</artifactId>
+                      <classifier>windows</classifier>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-ooo-tables</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>libhyphen-saxon</artifactId>
                     </artifactItem>
                     <artifactItem>
