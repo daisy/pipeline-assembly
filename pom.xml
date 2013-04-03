@@ -551,6 +551,10 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zip-utils</artifactId>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy202-utils</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
