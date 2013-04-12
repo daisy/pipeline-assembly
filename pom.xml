@@ -14,7 +14,7 @@
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
   <properties>
-    <pipeline.version>1.4</pipeline.version>
+    <pipeline.version>1.5</pipeline.version>
     <dollar>$</dollar>
   </properties>
   <dependencies>
@@ -22,6 +22,7 @@
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.main</artifactId>
       <version>4.0.3</version>
+      <!-- <version>4.2.1</version> -->
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -124,12 +125,12 @@
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-classic</artifactId>
-                  <version>1.0.2</version>
+                  <version>1.0.11</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-core</artifactId>
-                  <version>1.0.2</version>
+                  <version>1.0.11</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -154,7 +155,7 @@
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.dependencymanager</artifactId>
-                  <version>3.0.0</version>
+                  <version>3.1.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -218,12 +219,14 @@
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>jing</artifactId>
-                  <version>20091111.0.0</version>
+                  <version>20120724.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse</groupId>
                   <artifactId>org.eclipse.gemini.jpa</artifactId>
                   <version>1.0.0.RELEASE</version>
+                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142 
+                                    which doesn't seem to be accepted by Felix (JarInputStream) -->
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.gemini</groupId>
@@ -233,17 +236,24 @@
                 <artifactItem>
                   <groupId>org.eclipse.gemini</groupId>
                   <artifactId>org.eclipse.gemini.dbaccess.derby</artifactId>
-                  <version>1.1.0.RC1</version>
+                  <version>1.1.0.RELEASE</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.gemini</groupId>
+                  <artifactId>org.eclipse.gemini.dbaccess.util</artifactId>
+                  <version>1.1.0.RELEASE</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>org.eclipse.persistence.asm</artifactId>
                   <version>2.3.2</version>
+                  <!-- <version>3.3.1.v201206041142</version> -->
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>org.eclipse.persistence.antlr</artifactId>
                   <version>2.3.2</version>
+                  <!-- <version>3.2.0.v201206041011</version> -->
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
@@ -263,7 +273,7 @@
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>com.xmlcalabash</artifactId>
-                  <version>1.0.8</version>
+                  <version>1.0.9</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -465,15 +475,19 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>daisy3-utils</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>daisy202-to-epub3</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy202-utils</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>daisy3-to-epub3</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy3-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
@@ -489,11 +503,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>dtbook-validator</artifactId>
+                  <artifactId>dtbook-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>dtbook-utils</artifactId>
+                  <artifactId>dtbook-validator</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
@@ -554,10 +568,6 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zip-utils</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>daisy202-utils</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
