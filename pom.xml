@@ -796,11 +796,6 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-native</artifactId>
-                      <classifier>windows</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>libhyphen-ooo-tables</artifactId>
                     </artifactItem>
                     <artifactItem>
