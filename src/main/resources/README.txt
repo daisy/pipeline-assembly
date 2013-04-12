@@ -1,5 +1,5 @@
 
-              DAISY Pipeline 2 - 1.4 - December 22, 2012
+              DAISY Pipeline 2 - 1.5 - April ??, 2012
 ===============================================================================
 
 
@@ -55,64 +55,24 @@ The package includes:
 3. Release Notes
 -------------------------------------------------------------------------------
 
-The package includes the 1.4 version of the project.
+The package includes the 1.5 version of the project.
 
 Changes since the last release:
 
 
 * Command-line tool
-  * Fixed Issue 253: better support for Ruby 1.9
+  * TBD
 * Web API
-  * Closed Issue 180: the log file for jobs in ERROR status now returns the
-    proper log file content.
-  * Closed Issue 245: new SystemConfiguration resource
-  * Fixed issue 226: Fixed a memory leak in the Push Notifier
+  * TBD
 * Framework
-  * Fixed Issue 214: the WS bundle now supports dynamic update of bundle
-    dependencies
+  * TBD
 * Modules
-  * [ALL] Closed Issue 224: cleanup URI and base URI handling
-  * [NEW] DTBook 2005-3 validator (with support for MathML)
-  * [NEW] DTBook to XHTML5 conversion
-  * [NEW] DAISY 3 to EPUB 3 conversion
-  * [NEW] DTBook to PEF conversion
-  * [NEW] PEF-production scripts can now produce a BRF output
-  * [dtbook-to-epub3] Fixed Issue 225: "Untitled Document" and "Untitled
-    Section" entries are no longer added to the EPUB3 navigation file
-  * [dtbook-to-epub3] Fixed Issue 220: Support for footnotes
-  * [dtbook-to-epub3] Fixed Issue 233: TOC entries in EPUB3 can no-longer
-    contain embedded anchors
-  * [dtbook-to-epub3] Fixed Issue 221: No more duplicate value in noteref
-  * [dtbook-to-zedai] Fixed Issue 217: support for DTbook sequences
-  * [dtbook-to-zedai] Fixed Issue 223: section-block normalization now produces
-    valid ZedAI
-  * [braille] updated versions of dependency libraries and tables
-  * [braille] updated build for 64bits environments
-  * [braille] Allow hard spaces (U+00A0) in the braille output
-  * [braille] More robust extraction of title and creator from metadata file
-  * [braille] Add value 'page-break' for 'display' property
-  * [braille] Support CSS property 'page'
-  * [braille] More configuration options for page layout and dimensions
+  * [braille] ...
   * [braille] various bug fixes and improvements. See also
     http://code.google.com/p/daisy-pipeline/wiki/BraillePrototypeFeatureSet
 * Web UI
   * Various UI tweaks. See also:
     http://code.google.com/p/daisy-pipeline/wiki/WebUIDev
-  * [BETA] standalone desktop distribution
-  * Fixed Issue 222: The ZIPs returned from the Web UI when running in local
-    mode is no-longer corrupted
-  * Fixed Issue 231: daisy-pipeline/bin directory gets proper permissions in the
-    pipeline2-webui distributable zip
-  * The project is now compiled for Java 1.6.
-  * Fixed output ports: They are no longer displayed as widgets.
-  * catching PersistenceExceptions that flooded the terminal on shutdown.
-  * Improved the way the DP2 engine is executed.
-  * Dynamic updates of job information (AJAX)
-  * Fixed a bug with file uploading.
-  * Fixed uploads potentially being deleted before the job is started
-  * Fixed job message sequence numbering issue.
-  * Fixed Automatic configuration.
-  * fixed communication using the Java-based client library
 
 
 The full list of changes can be found at:
