@@ -67,7 +67,21 @@ Changes since the last release:
 * Framework
   * TBD
 * Modules
-  * [braille] ...
+  * [braille] dropped '.xml' from PEF file extension
+  * [braille] space-normalization of CSS blocks
+  * [braille] splitting document into sections based on CSS property 'page'
+  * [braille] indicating emphasis based on CSS property 'typeform-indication'
+  * [braille] deprecated CSS property `display:toc` (only toc-item is required)
+  * [braille] more metadata in PEF
+  * [braille] improved PEF preview: 1. more metadata, 2. ASCII view in the same charset as BRF output
+  * [braille] support for embedded MathmL (through liblouis -- math codes are Nemeth, UKMaths, Marburg & Woluwe)
+  * [braille] support for hyphenation
+  * [braille] hyphenation tables from OpenOffice.org are included
+  * [braille] improved 'translator' option now accepts: 1. simple file name, 2. absolute file path (in local mode), 3. comma separated list
+  * [braille] deprecated 'preprocessor' concept (out of usability considerations -- everything is a 'translator')
+  * [braille] default.css for a very basic default formatting (+ corresponding reset.css)
+  * [braille] updated versions of dependency libraries and tables
+  * [braille] speed optimization
   * [braille] various bug fixes and improvements. See also
     http://code.google.com/p/daisy-pipeline/wiki/BraillePrototypeFeatureSet
 * Web UI
