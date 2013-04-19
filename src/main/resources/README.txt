@@ -85,6 +85,7 @@ Changes since the last release:
   * Several design improvements.
 
 * Modules
+  * [NEW] NIMAS Fileset Validator
   * [braille] dropped '.xml' from PEF file extension
   * [braille] space-normalization of CSS blocks
   * [braille] splitting document into sections based on CSS property 'page'
@@ -102,6 +103,11 @@ Changes since the last release:
   * [braille] speed optimization
   * [braille] various bug fixes and improvements. See also
     http://code.google.com/p/daisy-pipeline/wiki/BraillePrototypeFeatureSet
+  * [dtbook-validator] support for more DTBook versions (2005-2, 2005-1, 1.1.0)
+  * [dtbook-validator] support for MathML3 in DTBook files
+  * [dtbook-validator] pption to check if referenced images exist on disk
+  * [dtbook-validator] report format improved
+
 * Web UI
   * Various UI tweaks. See also:
     http://code.google.com/p/daisy-pipeline/wiki/WebUIDev
