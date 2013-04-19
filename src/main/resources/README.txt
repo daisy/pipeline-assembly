@@ -70,15 +70,17 @@ Changes since the last release:
 
 
 * Web API
-	* New configuration entry for retrieving the job's xml sent when created.
-	* Support for job's nice name in various job related api entries ( job creation and status) 
-	* New way of accessing job's results allowing total granularity. 
+  * New configuration entry for retrieving the job's xml sent when created.
+  * Support for job's nice name in various job related api entries ( job creation and status) 
+  * New way of accessing job's results allowing total granularity. 
+  * Input fileset and output fileset definition for scripts. 
 
 * Framework
   * Massive refactoring for job related classes.
   * Complete job persistence support, allowing retrieval of status,logs and results 
     (the later just in remote mode) after the framework is relunched. 
   * Output port support.
+  * Input fileset and output fileset definition for scripts. 
   * Several bug fixes.
   * Several design improvements.
 
