@@ -1,5 +1,5 @@
 
-              DAISY Pipeline 2 - 1.5 - April ??, 2012
+              DAISY Pipeline 2 - 1.5 - April 20, 2012
 ===============================================================================
 
 
@@ -61,54 +61,82 @@ Changes since the last release:
 
 
 * Command-line tool
-  * Support for job's nice names
-  * Support for retrieving job's log file
+  * Closed issue 243: Support for jobs' nice names
+  * Support for retrieving jobs' log files
   * Support for indexed results ( remote mode only)
-  * Output port support
-  * New script option layout
-  * See cli\CHANGELOG.txt for more info
-
+  * Closed issue 141: Add support for output ports.
+  * Closed issue 235: New script option layout
 
 * Web API
-  * New configuration entry for retrieving the job's xml sent when created.
-  * Support for job's nice name in various job related api entries ( job creation and status) 
-  * New way of accessing job's results allowing total granularity. 
-  * Input fileset and output fileset definition for scripts. 
+  * Closed issue 244: New configuration entry for retrieving the job creation
+    XML request.
+  * Closed issue 243:  Support for jobs' nice name in various job related API
+    entries ( job creation and status) 
+  * New way of accessing jobs' results allowing total granularity. 
+  * Close issue 274: Input fileset and output fileset definition for scripts. 
 
 * Framework
   * Massive refactoring for job related classes.
-  * Complete job persistence support, allowing retrieval of status,logs and results 
-    (the later just in remote mode) after the framework is relunched. 
-  * Output port support.
-  * Input fileset and output fileset definition for scripts. 
-  * Several bug fixes.
-  * Several design improvements.
+  * Close issue 97: Complete job persistence support, allowing retrieval of
+    status,logs and results (the later just in remote mode) after the framework
+    is relunched. 
+  * Closed issue 141: Add support for output ports.
+  * Close issue 274: Input fileset and output fileset definition for scripts. 
+  * Various bug fixes.
+  * Various design improvements.
 
 * Modules
   * [NEW] NIMAS Fileset Validator
+  * [NEW] HTML to EPUB 3
   * [braille] dropped '.xml' from PEF file extension
   * [braille] space-normalization of CSS blocks
   * [braille] splitting document into sections based on CSS property 'page'
   * [braille] indicating emphasis based on CSS property 'typeform-indication'
   * [braille] deprecated CSS property `display:toc` (only toc-item is required)
   * [braille] more metadata in PEF
-  * [braille] improved PEF preview: 1. more metadata, 2. ASCII view in the same charset as BRF output
-  * [braille] support for embedded MathmL (through liblouis -- math codes are Nemeth, UKMaths, Marburg & Woluwe)
+  * [braille] improved PEF preview: 1. more metadata, 2. ASCII view in the same
+    charset as BRF output
+  * [braille] support for embedded MathmL (through liblouis -- math codes are
+    Nemeth, UKMaths, Marburg & Woluwe)
   * [braille] support for hyphenation
   * [braille] hyphenation tables from OpenOffice.org are included
-  * [braille] improved 'translator' option now accepts: 1. simple file name, 2. absolute file path (in local mode), 3. comma separated list
-  * [braille] deprecated 'preprocessor' concept (out of usability considerations -- everything is a 'translator')
-  * [braille] default.css for a very basic default formatting (+ corresponding reset.css)
+  * [braille] improved 'translator' option now accepts: 1. simple file name, 2.
+    absolute file path (in local mode), 3. comma separated list
+  * [braille] deprecated 'preprocessor' concept (out of usability considerations
+    -- everything is a 'translator')
+  * [braille] default.css for a very basic default formatting (+ corresponding
+    reset.css)
   * [braille] updated versions of dependency libraries and tables
   * [braille] speed optimization
   * [braille] various bug fixes and improvements. See also
     http://code.google.com/p/daisy-pipeline/wiki/BraillePrototypeFeatureSet
+  * [daisy202-to-epub3] Fixed issue 171: Text content doc output from Daisy 2.02
+    to EPUB 3 missing headings, classes
+  * [daisy202-to-epub3] Fixed issue 181: the EPUB temporary directory is now
+    discarded
+  * [daisy202-to-epub3] Closed issue 257: Split daisy202-to-epub3 into the
+    three-step load-convert-store pattern
+  * [daisy202-to-epub3] Closed issue 279: Audio+NCC books are now supported
+  * [daisy3-utils] Closed issue 268: extracted load/store steps to new module
+  * [daisy3-utils] Fixed issue 276: use the correct OPF media type
+  * [daisy3-to-epub3] Close issue 271: no longer generates invalid
+    @clipBegin/@clipEnd attributes
+  * [daisy3-to-epub3] Close issue 272: links in the Navigation Documents now
+    resolve
   * [dtbook-validator] support for more DTBook versions (2005-2, 2005-1, 1.1.0)
   * [dtbook-validator] support for MathML3 in DTBook files
   * [dtbook-validator] pption to check if referenced images exist on disk
   * [dtbook-validator] report format improved
+  * [fileset-utils] Closed issue 275: added a `method` option to `px:fileset-load`
+  * [fileset-utils] Closed issue 277, issue 278: various fileset utils fixes and
+    improvements
+  * [zedai-to-epub3] Fixed issue 216: metada.xml and signature.xml no longer
+    contain paths to the local file system.
 
 * Web UI
+  * Fixed issue 264: Issue with filenames with spaces
+  * Close issue 281: Support for downloading individual files
+  * New accordion widget for the Job creation form
   * Various UI tweaks. See also:
     http://code.google.com/p/daisy-pipeline/wiki/WebUIDev
 
