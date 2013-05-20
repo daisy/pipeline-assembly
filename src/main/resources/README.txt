@@ -1,5 +1,5 @@
 
-              DAISY Pipeline 2 - 1.4 - December 22, 2012
+              DAISY Pipeline 2 - 1.5 - April 20, 2012
 ===============================================================================
 
 
@@ -55,64 +55,90 @@ The package includes:
 3. Release Notes
 -------------------------------------------------------------------------------
 
-The package includes the 1.4 version of the project.
+The package includes the 1.5 version of the project.
 
 Changes since the last release:
 
 
 * Command-line tool
-  * Fixed Issue 253: better support for Ruby 1.9
+  * Closed issue 243: Support for jobs' nice names
+  * Support for retrieving jobs' log files
+  * Support for indexed results ( remote mode only)
+  * Closed issue 141: Add support for output ports.
+  * Closed issue 235: New script option layout
+
 * Web API
-  * Closed Issue 180: the log file for jobs in ERROR status now returns the
-    proper log file content.
-  * Closed Issue 245: new SystemConfiguration resource
-  * Fixed issue 226: Fixed a memory leak in the Push Notifier
+  * Closed issue 244: New configuration entry for retrieving the job creation
+    XML request.
+  * Closed issue 243:  Support for jobs' nice name in various job related API
+    entries ( job creation and status) 
+  * New way of accessing jobs' results allowing total granularity. 
+  * Close issue 274: Input fileset and output fileset definition for scripts. 
+
 * Framework
-  * Fixed Issue 214: the WS bundle now supports dynamic update of bundle
-    dependencies
+  * Massive refactoring for job related classes.
+  * Close issue 97: Complete job persistence support, allowing retrieval of
+    status,logs and results (the later just in remote mode) after the framework
+    is relunched. 
+  * Closed issue 141: Add support for output ports.
+  * Close issue 274: Input fileset and output fileset definition for scripts. 
+  * Various bug fixes.
+  * Various design improvements.
+
 * Modules
-  * [ALL] Closed Issue 224: cleanup URI and base URI handling
-  * [NEW] DTBook 2005-3 validator (with support for MathML)
-  * [NEW] DTBook to XHTML5 conversion
-  * [NEW] DAISY 3 to EPUB 3 conversion
-  * [NEW] DTBook to PEF conversion
-  * [NEW] PEF-production scripts can now produce a BRF output
-  * [dtbook-to-epub3] Fixed Issue 225: "Untitled Document" and "Untitled
-    Section" entries are no longer added to the EPUB3 navigation file
-  * [dtbook-to-epub3] Fixed Issue 220: Support for footnotes
-  * [dtbook-to-epub3] Fixed Issue 233: TOC entries in EPUB3 can no-longer
-    contain embedded anchors
-  * [dtbook-to-epub3] Fixed Issue 221: No more duplicate value in noteref
-  * [dtbook-to-zedai] Fixed Issue 217: support for DTbook sequences
-  * [dtbook-to-zedai] Fixed Issue 223: section-block normalization now produces
-    valid ZedAI
+  * [NEW] NIMAS Fileset Validator
+  * [NEW] HTML to EPUB 3
+  * [braille] dropped '.xml' from PEF file extension
+  * [braille] space-normalization of CSS blocks
+  * [braille] splitting document into sections based on CSS property 'page'
+  * [braille] indicating emphasis based on CSS property 'typeform-indication'
+  * [braille] deprecated CSS property `display:toc` (only toc-item is required)
+  * [braille] more metadata in PEF
+  * [braille] improved PEF preview: 1. more metadata, 2. ASCII view in the same
+    charset as BRF output
+  * [braille] support for embedded MathmL (through liblouis -- math codes are
+    Nemeth, UKMaths, Marburg & Woluwe)
+  * [braille] support for hyphenation
+  * [braille] hyphenation tables from OpenOffice.org are included
+  * [braille] improved 'translator' option now accepts: 1. simple file name, 2.
+    absolute file path (in local mode), 3. comma separated list
+  * [braille] deprecated 'preprocessor' concept (out of usability considerations
+    -- everything is a 'translator')
+  * [braille] default.css for a very basic default formatting (+ corresponding
+    reset.css)
   * [braille] updated versions of dependency libraries and tables
-  * [braille] updated build for 64bits environments
-  * [braille] Allow hard spaces (U+00A0) in the braille output
-  * [braille] More robust extraction of title and creator from metadata file
-  * [braille] Add value 'page-break' for 'display' property
-  * [braille] Support CSS property 'page'
-  * [braille] More configuration options for page layout and dimensions
+  * [braille] speed optimization
   * [braille] various bug fixes and improvements. See also
     http://code.google.com/p/daisy-pipeline/wiki/BraillePrototypeFeatureSet
+  * [daisy202-to-epub3] Fixed issue 171: Text content doc output from Daisy 2.02
+    to EPUB 3 missing headings, classes
+  * [daisy202-to-epub3] Fixed issue 181: the EPUB temporary directory is now
+    discarded
+  * [daisy202-to-epub3] Closed issue 257: Split daisy202-to-epub3 into the
+    three-step load-convert-store pattern
+  * [daisy202-to-epub3] Closed issue 279: Audio+NCC books are now supported
+  * [daisy3-utils] Closed issue 268: extracted load/store steps to new module
+  * [daisy3-utils] Fixed issue 276: use the correct OPF media type
+  * [daisy3-to-epub3] Close issue 271: no longer generates invalid
+    @clipBegin/@clipEnd attributes
+  * [daisy3-to-epub3] Close issue 272: links in the Navigation Documents now
+    resolve
+  * [dtbook-validator] support for more DTBook versions (2005-2, 2005-1, 1.1.0)
+  * [dtbook-validator] support for MathML3 in DTBook files
+  * [dtbook-validator] pption to check if referenced images exist on disk
+  * [dtbook-validator] report format improved
+  * [fileset-utils] Closed issue 275: added a `method` option to `px:fileset-load`
+  * [fileset-utils] Closed issue 277, issue 278: various fileset utils fixes and
+    improvements
+  * [zedai-to-epub3] Fixed issue 216: metada.xml and signature.xml no longer
+    contain paths to the local file system.
+
 * Web UI
+  * Fixed issue 264: Issue with filenames with spaces
+  * Close issue 281: Support for downloading individual files
+  * New accordion widget for the Job creation form
   * Various UI tweaks. See also:
     http://code.google.com/p/daisy-pipeline/wiki/WebUIDev
-  * [BETA] standalone desktop distribution
-  * Fixed Issue 222: The ZIPs returned from the Web UI when running in local
-    mode is no-longer corrupted
-  * Fixed Issue 231: daisy-pipeline/bin directory gets proper permissions in the
-    pipeline2-webui distributable zip
-  * The project is now compiled for Java 1.6.
-  * Fixed output ports: They are no longer displayed as widgets.
-  * catching PersistenceExceptions that flooded the terminal on shutdown.
-  * Improved the way the DP2 engine is executed.
-  * Dynamic updates of job information (AJAX)
-  * Fixed a bug with file uploading.
-  * Fixed uploads potentially being deleted before the job is started
-  * Fixed job message sequence numbering issue.
-  * Fixed Automatic configuration.
-  * fixed communication using the Java-based client library
 
 
 The full list of changes can be found at:

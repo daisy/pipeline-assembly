@@ -43,7 +43,7 @@ if [ "x$JAVA_PERM_MEM" = "x" ]; then
 fi
 
 if [ "x$JAVA_MAX_PERM_MEM" = "x" ]; then
-    JAVA_MAX_PERM_MEM=64M
+    JAVA_MAX_PERM_MEM=256M
     export JAVA_MAX_PERM_MEM
 fi
 
