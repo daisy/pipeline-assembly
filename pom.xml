@@ -14,7 +14,7 @@
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
   <properties>
-    <pipeline.version>1.5</pipeline.version>
+    <pipeline.version>1.5.1-BETA</pipeline.version>
     <dollar>$</dollar>
   </properties>
   <dependencies>
@@ -472,6 +472,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>common-entities</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>common-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
