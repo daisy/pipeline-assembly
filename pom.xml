@@ -271,8 +271,8 @@
                   <version>1.4</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>com.xmlcalabash</artifactId>
+                  <groupId>com.xmlcalabash</groupId>
+                  <artifactId>xmlcalabash</artifactId>
                   <version>1.0.9</version>
                 </artifactItem>
                 <artifactItem>
