@@ -1,5 +1,5 @@
 
-              DAISY Pipeline 2 - 1.5 - April 20, 2012
+              DAISY Pipeline 2 - 1.6 - July XX, 2013
 ===============================================================================
 
 
@@ -55,90 +55,91 @@ The package includes:
 3. Release Notes
 -------------------------------------------------------------------------------
 
-The package includes the 1.5 version of the project.
+The package includes the 1.6 version of the project.
 
 Changes since the last release:
 
 
 * Command-line tool
-  * Closed issue 243: Support for jobs' nice names
-  * Support for retrieving jobs' log files
-  * Support for indexed results ( remote mode only)
-  * Closed issue 141: Add support for output ports.
-  * Closed issue 235: New script option layout
+  * TODO
 
 * Web API
-  * Closed issue 244: New configuration entry for retrieving the job creation
-    XML request.
-  * Closed issue 243:  Support for jobs' nice name in various job related API
-    entries ( job creation and status) 
-  * New way of accessing jobs' results allowing total granularity. 
-  * Close issue 274: Input fileset and output fileset definition for scripts. 
+  * TODO
 
 * Framework
-  * Massive refactoring for job related classes.
-  * Close issue 97: Complete job persistence support, allowing retrieval of
-    status,logs and results (the later just in remote mode) after the framework
-    is relunched. 
-  * Closed issue 141: Add support for output ports.
-  * Close issue 274: Input fileset and output fileset definition for scripts. 
-  * Various bug fixes.
-  * Various design improvements.
+  * TODO
 
 * Modules
-  * [NEW] NIMAS Fileset Validator
-  * [NEW] HTML to EPUB 3
-  * [braille] dropped '.xml' from PEF file extension
-  * [braille] space-normalization of CSS blocks
-  * [braille] splitting document into sections based on CSS property 'page'
-  * [braille] indicating emphasis based on CSS property 'typeform-indication'
-  * [braille] deprecated CSS property `display:toc` (only toc-item is required)
-  * [braille] more metadata in PEF
-  * [braille] improved PEF preview: 1. more metadata, 2. ASCII view in the same
-    charset as BRF output
-  * [braille] support for embedded MathmL (through liblouis -- math codes are
-    Nemeth, UKMaths, Marburg & Woluwe)
-  * [braille] support for hyphenation
-  * [braille] hyphenation tables from OpenOffice.org are included
-  * [braille] improved 'translator' option now accepts: 1. simple file name, 2.
-    absolute file path (in local mode), 3. comma separated list
-  * [braille] deprecated 'preprocessor' concept (out of usability considerations
-    -- everything is a 'translator')
-  * [braille] default.css for a very basic default formatting (+ corresponding
-    reset.css)
-  * [braille] updated versions of dependency libraries and tables
-  * [braille] speed optimization
-  * [braille] various bug fixes and improvements. See also
-    http://code.google.com/p/daisy-pipeline/wiki/BraillePrototypeFeatureSet
-  * [daisy202-to-epub3] Fixed issue 171: Text content doc output from Daisy 2.02
-    to EPUB 3 missing headings, classes
-  * [daisy202-to-epub3] Fixed issue 181: the EPUB temporary directory is now
-    discarded
-  * [daisy202-to-epub3] Closed issue 257: Split daisy202-to-epub3 into the
-    three-step load-convert-store pattern
-  * [daisy202-to-epub3] Closed issue 279: Audio+NCC books are now supported
-  * [daisy3-utils] Closed issue 268: extracted load/store steps to new module
-  * [daisy3-utils] Fixed issue 276: use the correct OPF media type
-  * [daisy3-to-epub3] Close issue 271: no longer generates invalid
-    @clipBegin/@clipEnd attributes
-  * [daisy3-to-epub3] Close issue 272: links in the Navigation Documents now
-    resolve
-  * [dtbook-validator] support for more DTBook versions (2005-2, 2005-1, 1.1.0)
-  * [dtbook-validator] support for MathML3 in DTBook files
-  * [dtbook-validator] pption to check if referenced images exist on disk
-  * [dtbook-validator] report format improved
-  * [fileset-utils] Closed issue 275: added a `method` option to `px:fileset-load`
-  * [fileset-utils] Closed issue 277, issue 278: various fileset utils fixes and
-    improvements
-  * [zedai-to-epub3] Fixed issue 216: metada.xml and signature.xml no longer
-    contain paths to the local file system.
+  * [dtbook-to-zedai] [new] fix for issue 329: added option "copy-external-resources", true by default
+  * [dtbook-to-zedai] fixed issue 328: adding dc:type to dtbook makes it fail
+  * [dtbook-to-zedai] fixed issue 343: clean up console output of dtbook to zedai
+  * [daisy202-to-epub3] fixed issue 297: compatibility-mode and mediaoverlay options
+  * [daisy202-to-epub3] resources referenced from CSS-files are now included
+  * [daisy202-to-epub3] HTML metadata are preserved
+  * [daisy202-to-epub3] landmarks now has an epub:type and is hidden
+  * [daisy202-to-epub3] page listing is now hidden in navigation document
+  * [nimas-fileset-validator] 'check-images' option set as boolean type
+  * [nimas-fileset-validator] validator checks that input documents are well-formed
+  * [nimas-fileset-validator] fix for issue 341: NIMAS validator schema update
+  * [dtbook-validator] validator checks that input documents are well-formed
+  * [html-utils] fix for issue 310: make html5 upgrader copy through non-html elements
+  * [html-utils] html-id-fixer: add IDs to headings and sections
+  * [html-utils] html-to-fileset: compute the resource fileset of an XHTML document
+  * [html-utils] better support for SVG and MathML
+  * [html-utils] fix for issue 301: original URIs of CSS resources are resolved properly
+  * [daisy202-utils] normalize input href
+  * [epub3-nav-utils] fixed playOrder for NCX (navPoints, pageTargets and navTarget)
+  * [epub3-nav-utils] always use full clock values in package doc
+  * [epub3-nav-utils] added default navLabel in NCX based on language attribute
+  * [epub3-nav-utils] relativized landmarks to package document base URI
+  * [mediaoverlay-utils] preserve metadata when upgrading from older SMIL versions
+  * [dtbook-utils] Add MathML resources to DTBook fileset
+  * [html-utils] properly port Ruby content
+  * [common-utils] [new] added logging steps: px:message/px:error/px:assert
+  * [file-utils] new functions: pf:is-absolute, pf:is-relative, pf:get-path, pf:replace-path, pf:unescape-uri
+  * [file-utils] new function: pf:file-exists (implemented in Java)
+  * [file-utils] fix for issue 318: make pf:normalize-uri normalize inivalid characters
+  * [file-utils] added URL normalization
+  * [file-utils] added java-base copy-resource step and service
+  * [file-utils] fixed issue 314: removed pf:percent-decode
+  * [file-utils] added px:tempdir step for creating temporary directories inside a given directory
+  * [fileset-utils] fix for issue 319: px:fileset-store should return the stored fileset
+  * [fileset-utils] px:fileset-store: store binary files, don't omit xml declaration, don't store files with @media-type='text/xml' as text
+  * [fileset-utils] make p:fileset-store indent XML docs
+  * [fileset-utils] px:fileset-store: added a 'fail-on-error' option that can be set to false to keep processing the fileset if an error occurs
+  * [fileset-utils] px:fileset-store: the returned fileset contains only the resources that have been stored successfully
+  * [fileset-utils] px:fileset-add-entry: normalized input href. if the file already exists in the fileset; delete the existing entry
+  * [fileset-utils] px:fileset-filter: support for the glob characters * and ? in the href option
+  * [fileset-utils] px:fileset-load: normalized base URIs of in-memory documents
+  * [mediatype-utils] improved px:mediatype-detect performance
+  * [mediatype-utils] Added XSLT functions for mediatype detection
+  * [validation-utils] added validation-status utility. Given one or more validation reports, it outputs validation status XML.
+  * [validation-utils] Added utility to check for well-formed XML files
+  * [metadata-utils] fix for issue 328: MODS metadata generation bug fix
+  * [zip-utils] fix for issue 304: file entry names in zip files are now percent decoded
 
 * Web UI
-  * Fixed issue 264: Issue with filenames with spaces
-  * Close issue 281: Support for downloading individual files
-  * New accordion widget for the Job creation form
-  * Various UI tweaks. See also:
-    http://code.google.com/p/daisy-pipeline/wiki/WebUIDev
+  * [new] ability to delete jobs using a button in the jobs list
+  * [new] customizable landing page and title like through appearance settings
+  * [new] support for custom about pages (just create about.html in the root dir)
+  * [new] "download log" button when web ui fails to start
+  * fix for issue 300: web ui file upload under windows appears to hang
+  * fix for issue 302: cancelled file uploads count negatively towards file upload count
+  * fix for issue 303: web ui running daisy 202 to epub 3: temp files persist
+  * fix for issue 307: namespaced script ids not working
+  * fixed bug: first job execution message is not displayed
+  * fixed bug: sequence input ports didn't work with multiple documents
+  * filenames are no longer encoded using windows 8.3 encoding
+  * fixed maintenance form (dynamic validation and disabled button)
+  * fixed file uploads and file sizes in IE7
+  * fixed boolean widget
+  * fixes problems with createUser form
+  * multiple file selection widget looks better on small screens
+
+* Java Client Library
+  * [new] support for deleting jobs
+  * [new] support for output ports in job requests
+  * [new] scripts list are now sorted
 
 
 The full list of changes can be found at:
@@ -200,27 +201,40 @@ the "out" directory on the desktop of the user named "John Doe".
 
 	Usage: dp2 command [options]
 	
+	
 	Script commands:
 	
-	dtbook-to-zedai			Transforms DTBook XML into ZedAI XML.
-	zedai-to-epub3			Transforms a ZedAI (DAISY 4 XML) document into an
-							EPUB 3 publication.
-	daisy202-to-epub3		Transforms a DAISY 2.02 publication into an EPUB3
-							publication.
-	dtbook-to-epub3			Converts multiple dtbooks to epub3 format
+	daisy202-to-epub3       Transforms a DAISY 2.02 publication into an EPUB3
+                            publication.
+	daisy3-to-epub3         Transforms a DAISY 3 publication into an EPUB 3
+                            publication.
+	dtbook-to-epub3         Converts multiple dtbooks to epub3 format
+	dtbook-to-html          Transforms DTBook XML into HTML.
+	dtbook-to-zedai         Transforms DTBook XML into ZedAI XML.
+	dtbook-validator        Validates DTBook documents. Supports inclusion of
+                            MathML.
+	html-to-epub3           Transforms an (X)HTML document into an EPUB 3
+                            publication.
+	nimas-fileset-validator Validate a NIMAS Fileset. Supports inclusion of
+                            MathML.
+	zedai-to-epub3          Transforms a ZedAI (DAISY 4 XML) document into an
+                            EPUB 3 publication.
+	zedai-to-html           Transforms ZedAI XML (ANSI/NISO Z39.98-2012
+                            Authoring and Interchange) into HTML.
 	
 	General commands:
 	
-	halt				Stops the WS
-	delete				Deletes a job
-	result				Gets the zip file containing the job results
-	jobs				Shows the status for every job
-	status				Shows the detailed status for a single job
-	help				Shows this message or the command help 
-	version				Shows version and exits
+	delete              Deletes a job
+	halt                Stops the WS
+	jobs                Shows the status for every job
+	log                 Gets the job's log file
+    result              Gets the zip file containing the job results
+	status              Shows the detailed status for a single job
+	help                Shows this message or the command help 
+	version             Shows version and exits
 	
-	To list the global options type:  	dp2 help -g
-	To get help for a command type:  	dp2 help COMMAND
+	To list the global options type:    dp2 help -g
+	To get help for a command type:     dp2 help COMMAND
 
 
 The Web service API is documented on the Pipeline 2 development wiki:
