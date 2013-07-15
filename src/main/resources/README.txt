@@ -1,4 +1,3 @@
-
               DAISY Pipeline 2 - 1.6 - July XX, 2013
 ===============================================================================
 
@@ -117,6 +116,7 @@ Changes since the last release:
   * [validation-utils] Added utility to check for well-formed XML files
   * [metadata-utils] fix for issue 328: MODS metadata generation bug fix
   * [zip-utils] fix for issue 304: file entry names in zip files are now percent decoded
+  * [zedai-to-pef] Added support for running headers and footers
 
 * Web UI
   * [new] ability to delete jobs using a button in the jobs list
