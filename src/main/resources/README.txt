@@ -60,13 +60,19 @@ Changes since the last release:
 
 
 * Command-line tool
-  * TODO
+  * None 
 
 * Web API
-  * TODO
+  * Fix issue 336: Mime-types are included in the job results
 
 * Framework
-  * TODO
+  * Fix issue 312: Handle folders in zip files properly
+  * Fix issue with empty select for output options
+  * Fix:Treat calabalash pipeline loading errors as job errors
+  * Fix: Issues with push-notifer
+  * [new] Accept sequenced input options  
+  * [new] Dbless mode
+
 
 * Modules
   * [dtbook-to-zedai] [new] fix for issue 329: added option "copy-external-resources", true by default
