@@ -67,7 +67,8 @@ if not "%PIPELINE2_DATA%" == "" (
     )
 )
 if "%PIPELINE2_DATA%" == "" (
-    set PIPELINE2_DATA=%PIPELINE2_BASE%\data
+    set PIPELINE2_DATA=%appdata%\daisy-pipeline
+    mkdir %PIPELINE2_DATA%
 )        
 
 set LOCAL_CLASSPATH=%CLASSPATH%
