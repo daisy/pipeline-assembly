@@ -24,7 +24,7 @@ rem
 
 if not "%ECHO%" == "" echo %ECHO%
 
-setlocal
+setlocal enabledelayedexpansion
 set DIRNAME=%~dp0%
 set PROGNAME=%~nx0%
 set ARGS=%*
@@ -46,30 +46,34 @@ if not "%PIPELINE2_HOME%" == "" (
 )
 set PIPELINE2_HOME=%DIRNAME%..
 if not exist "%PIPELINE2_HOME%" (
-    call :warn PIPELINE2_HOME is not valid: %PIPELINE2_HOME%
+    call :warn PIPELINE2_HOME is not valid: !PIPELINE2_HOME!
     goto END
 )
 
 if not "%PIPELINE2_BASE%" == "" (
     if not exist "%PIPELINE2_BASE%" (
-       call :warn PIPELINE2_BASE is not valid: %PIPELINE2_BASE%
+       call :warn PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
        goto END
     )
 )
+
 if "%PIPELINE2_BASE%" == "" (
-  set PIPELINE2_BASE=%PIPELINE2_HOME%
+  set PIPELINE2_BASE=!PIPELINE2_HOME!
 )
 
 if not "%PIPELINE2_DATA%" == "" (
     if not exist "%PIPELINE2_DATA%" (
-        call :warn PIPELINE2_DATA is not valid: %PIPELINE2_DATA%
+        call :warn PIPELINE2_DATA is not valid: !PIPELINE2_DATA!
         goto END
     )
 )
+
 if "%PIPELINE2_DATA%" == "" (
-    set PIPELINE2_DATA=%appdata%\daisy-pipeline
-    mkdir %PIPELINE2_DATA%
-)        
+    set PIPELINE2_DATA=%appdata%/daisy-pipeline
+    if not exist "!PIPELINE2_DATA!" (
+      mkdir "!PIPELINE2_DATA!"
+    )
+)
 
 set LOCAL_CLASSPATH=%CLASSPATH%
 set DEFAULT_JAVA_OPTS=-Xmx1G -XX:MaxPermSize=256M -Dcom.sun.management.jmxremote
@@ -239,7 +243,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
 :EXECUTE
     SET ARGS=%1 %2 %3 %4 %5 %6 %7 %8
     rem Execute the Java Virtual Machine
-    cd %PIPELINE2_BASE%
+    cd "%PIPELINE2_BASE%"
     "%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%PIPELINE2_HOME%\lib\endorsed" -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%PIPELINE2_HOME%\lib\ext" -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" -Dorg.daisy.pipeline.base="%PIPELINE2_BASE%" -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" %PIPELINE2_OPTS% %MAIN% %ARGS%
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
