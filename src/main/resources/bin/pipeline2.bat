@@ -69,7 +69,7 @@ if not "%PIPELINE2_DATA%" == "" (
 )
 
 if "%PIPELINE2_DATA%" == "" (
-    set PIPELINE2_DATA=%appdata%/daisy-pipeline
+    set PIPELINE2_DATA=%appdata%/DAISY Pipeline 2
     if not exist "!PIPELINE2_DATA!" (
       mkdir "!PIPELINE2_DATA!"
     )
@@ -230,7 +230,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     goto :RUN_LOOP
 
 :EXECUTE_CLEAN
-    rmdir /S /Q %PIPELINE2_DATA%
+    rmdir /S /Q "%PIPELINE2_DATA%"
     shift
     goto :RUN_LOOP
 
