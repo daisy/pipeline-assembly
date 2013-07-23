@@ -200,7 +200,7 @@ Changes since the last release:
 
 
 The full list of changes can be found at:
- http://code.google.com/p/daisy-pipeline/w/ReleaseNotes
+ http://code.google.com/p/daisy-pipeline/wiki/ReleaseNotes
 
 
 
@@ -245,7 +245,7 @@ in the "out" directory on the desktop of the user named "John Doe".
 ### RESTful Web Service ###
 
  1. start the web service by running 'bin/pipeline' on Mac/Linux or
- 'bin/pipeline.bat' on Windows
+ 'bin\pipeline.bat' on Windows
  2. the web service is available on http://localhost:8181/ws/
  3. For example, get the list of scripts by issuing a GET request on
  http://localhost:8181/ws/scripts
