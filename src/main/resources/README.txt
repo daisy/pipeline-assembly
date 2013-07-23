@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.6 - July 19, 2013
+              DAISY Pipeline 2 - 1.6 - July 23, 2013
 ==============================================================================
 
 
@@ -73,6 +73,7 @@ Changes since the last release:
   * Fixed issue with empty 'select' attributes for output options
   * Fix: report Calabash pipeline-loading errors as job errors
   * Fix: Issues with push-notifer
+  * Fixed issue 357: problems loading Calabash config file
   * [NEW] Closed issue 311: Accept sequenced input options  
   * [NEW] DB-less mode
 
@@ -176,6 +177,7 @@ Changes since the last release:
   * [NEW] support for custom about pages (just create about.html in the root 
     dir)
   * [NEW] "download log" button when web ui fails to start
+  * User data (DB, logs) is now set to a separate user directory 
   * Fixed issue 300: web ui file upload under windows appears to hang
   * Fixed issue 302: cancelled file uploads count negatively towards file 
     upload count
