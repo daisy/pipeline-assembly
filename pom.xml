@@ -1016,27 +1016,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>braille-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src/main/assembly/braille.xml</descriptor>
-                  </descriptors>
-                  <filters>
-                    <filter>src/main/assembly/dist.properties</filter>
-                  </filters>
-                  <finalName>pipeline2-${pipeline.version}</finalName>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>
