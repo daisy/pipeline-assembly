@@ -15,7 +15,6 @@
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
   <properties>
     <pipeline.version>1.6</pipeline.version>
-    <dollar>$</dollar>
   </properties>
   <dependencies>
     <dependency>
@@ -686,24 +685,6 @@
               <finalName>pipeline2-${pipeline.version}</finalName>
             </configuration>
           </execution>
-          <execution>
-            <id>dev-launcher-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <descriptors>
-                <descriptor>src/main/assembly/dev.xml</descriptor>
-              </descriptors>
-              <filters>
-                <filter>src/main/assembly/dev.properties</filter>
-              </filters>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>dev-launcher</finalName>
-              <attach>false</attach>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -752,13 +733,41 @@
   </build>
   <profiles>
     <profile>
+      <id>dev-launcher</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-assembly</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dev-launcher-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dev.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dev.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>dev-launcher</finalName>
+                  <attach>false</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>incl-braille</id>
-      <activation>
-        <property>
-          <name>includeBrailleModules</name>
-          <value>true</value>
-        </property>
-      </activation>
       <build>
         <plugins>
           <plugin>
