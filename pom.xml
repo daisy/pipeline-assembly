@@ -409,6 +409,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>logging-appender</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
                   <artifactId>modules-api</artifactId>
                 </artifactItem>
                 <artifactItem>
