@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component>
+  <fileSets>
+    <fileSet>
+      <directory>target/webui</directory>
+      <outputDirectory>/webui</outputDirectory>
+    </fileSet>
+  </fileSets>
+</component>
