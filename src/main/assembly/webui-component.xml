@@ -2,7 +2,7 @@
 <component>
   <fileSets>
     
-    <!-- non-executable filefs -->
+    <!-- non-executable files -->
     <fileSet>
       <directory>target/webui</directory>
       <excludes>
