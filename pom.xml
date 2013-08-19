@@ -1332,7 +1332,7 @@
       <id>webui</id>
       <activation>
         <property>
-          <name>includeBrailleModules</name>
+          <name>includeWebUI</name>
           <value>true</value>
         </property>
       </activation>
