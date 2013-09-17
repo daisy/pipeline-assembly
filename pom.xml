@@ -50,7 +50,7 @@
       </dependency>
       <dependency>
           <groupId>org.daisy.pipeline.modules</groupId>
-          <artifactId>common-utils-aggregator</artifactId> 
+          <artifactId>common-utils-aggregator</artifactId>
           <version>1.0-SNAPSHOT</version>
           <type>pom</type>
           <scope>import</scope>
@@ -94,7 +94,7 @@
   </dependencyManagement>
   <build>
     <extensions>
-      <!-- 
+      <!--
            Version 2.2 has issues with Maven 3.0.3:
            java.lang.NoSuchMethodError: org.apache.maven.wagon.shared.http4.AbstractHttpClientWagon.getReadTimeout()I
            Tweak taken from:  http://code.google.com/p/phloc-parent-pom/source/browse/trunk/pom.xml?r=47
@@ -246,7 +246,7 @@
                   <groupId>org.eclipse</groupId>
                   <artifactId>org.eclipse.gemini.jpa</artifactId>
                   <version>1.0.0.RELEASE</version>
-                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142 
+                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142
                                     which doesn't seem to be accepted by Felix (JarInputStream) -->
                 </artifactItem>
                 <artifactItem>
@@ -399,7 +399,7 @@
 		<artifactItem>
 		  <groupId>org.daisy.libs</groupId>
 		  <artifactId>jstyleparser</artifactId>
-		  <version>1.7.0-2-SNAPSHOT</version>
+		  <version>1.13.0-p1-SNAPSHOT</version>
 		</artifactItem>
               </artifactItems>
             </configuration>
@@ -1112,7 +1112,7 @@
     </profile>
   </profiles>
   <repositories>
-    <!-- 
+    <!--
       Restlet is not on Maven Central
       https://github.com/restlet/restlet-framework-java/issues/481
      -->
