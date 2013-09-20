@@ -5,7 +5,7 @@
 ;   General Defines
 ;----------------------------------------------------------
 !define APPNAME "DAISY Pipeline 2"
-!define VERSION "${pipeline.webui.version}"
+!define VERSION "${pipeline.version}"
 !define COMPANYNAME "DAISY Consortium"
 !define DESCRIPTION "DAISY Pipeline 2 windows distribution"
 !define PRODUCT_WEB_SITE "http://www.daisy.org/pipeline2"
@@ -221,7 +221,7 @@ section -Main SEC01
 	#setOutPath "$INSTDIR\${PROJECT_ARTIFACT_ID}"
  
 	#Copy the whole daisy-pipeline dir
-	file /r "${PROJECT_BUILD_DIR}\${PROJECT_ARTIFACT_ID}-${VERSION}-desktop\daisy-pipeline"
+	file /r "${PROJECT_BUILD_DIR}\pipeline2-${VERSION}-webui-desktop\daisy-pipeline"
 
 	############### 
 	# Registry information for add/remove programs
