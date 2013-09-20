@@ -1629,12 +1629,12 @@
         </plugins>
       </build>
     </profile>
-    <!-- NSIS Profile for installer generation invoke with -DwithInstaller -->
+    <!-- NSIS Profile for installer generation invoke with -DincludeInstaller -->
     <profile>
       <id>installer</id>
       <activation>
         <property>
-          <name>withInstaller</name>
+          <name>includeInstaller</name>
           <value>true</value>
         </property>
       </activation>

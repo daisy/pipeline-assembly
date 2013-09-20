@@ -26,6 +26,10 @@ The `webui` assembly is optional. To activate:
 
     mvn clean package -DincludeWebUI
 
+To generate the windows nsis installer for the webui build with:
+
+    mvn clean package -DincludeWebUI -DincludeInstaller
+
 
 Develop
 -------
