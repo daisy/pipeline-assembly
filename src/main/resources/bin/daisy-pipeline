@@ -18,6 +18,7 @@ set -e
 
 . /lib/lsb/init-functions
 
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
 NAME=daisy-pipeline
 DESC=daisy-pipeline
 SCRIPTNAME=/etc/init.d/$NAME
