@@ -774,11 +774,15 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>braillecss</artifactId>
+                      <artifactId>css-calabash</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>braillecss-calabash</artifactId>
+                      <artifactId>css-core</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>css-utils</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -786,7 +790,15 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>common-utils</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>dotify-saxon</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>dotify-utils</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -813,6 +825,10 @@
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>libhyphen-saxon</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-utils</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -855,6 +871,10 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>liblouis-utils</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>pef-calabash</artifactId>
                     </artifactItem>
                     <artifactItem>
@@ -879,7 +899,7 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>utilities</artifactId>
+                      <artifactId>texhyph-utils</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
