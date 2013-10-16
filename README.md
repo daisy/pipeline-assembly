@@ -7,7 +7,7 @@ The library dependencies and list of Pipeline 2 modules are configured in the ma
 
  - `dist`: the default distribution, packaged as a ZIP
  - `dev-launcher`: configuration files and launcher script for a development environment
- - `debian`: packaged as a DEB (will disable the default distribution)
+ - `deb`: packaged as a DEB (will disable the default distribution)
 
 Each of these assemblies can be build either with or without the braille modules. To include them, active the `incl-braille` profile.
 
@@ -29,8 +29,8 @@ Debian
 ------
 Build a Debian package with:
 
-    mvn clean package -P debian
-    mvn clean package -P debian,incl-braille
+    mvn clean package -P deb
+    mvn clean package -P deb,incl-braille
     
 Inspect package contents and metadata:
 

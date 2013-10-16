@@ -1,9 +1,9 @@
 #!/bin/sh
-# /etc/init.d/daisy-pipeline
+# /etc/init.d/pipeline2d
 # Bert Frees <bertfrees@gmail.com>
 #
 ### BEGIN INIT INFO
-# Provides:          daisy-pipeline
+# Provides:          pipeline2
 # Required-Start:    
 # Required-Stop:     
 # Should-Start:      
@@ -19,8 +19,8 @@ set -e
 . /lib/lsb/init-functions
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-NAME=daisy-pipeline
-DESC=daisy-pipeline
+NAME=pipeline2d
+DESC="DAISY Pipeline 2 server"
 SCRIPTNAME=/etc/init.d/$NAME
 DAEMON=${pipeline.home}/bin/pipeline2
 DAEMON_ARGS=""
@@ -36,7 +36,7 @@ test -x $DAEMON || (echo "$DAEMON is not installed" && exit 0)
 case "$1" in
 	start)
 		if [ -e $PIDFILE ]; then
-			status_of_proc -p $PIDFILE $DAEMON $NAME && status="0" || status="$?"
+			status_of_proc -p $PIDFILE $DAEMON $NAME >/dev/null && status="0" || status="$?"
 			if [ $status = "0" ]; then
 				exit
 			fi
@@ -44,6 +44,7 @@ case "$1" in
 		log_daemon_msg "starting $DESC"
 		if start-stop-daemon --make-pidfile --pidfile $PIDFILE --start --background --quiet --oknodo \
 			--exec $DAEMON -- $DAEMON_ARGS; then
+			sleep 5
 			log_end_msg 0
 		else
 			log_end_msg 1
@@ -51,18 +52,18 @@ case "$1" in
 		;;
 	stop)
 		if [ -e $PIDFILE ]; then
-			status_of_proc -p $PIDFILE $DAEMON $NAME && status="0" || status="$?"
+			status_of_proc -p $PIDFILE $DAEMON $NAME >/dev/null && status="0" || status="$?"
 			if [ $status = "0" ]; then
 				log_daemon_msg "stopping $DESC"
 				if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE; then
 					/bin/rm -rf $PIDFILE
+					sleep 5
 					log_end_msg 0
 				else
 					log_end_msg 1
 				fi
 			fi
 		else
-			log_daemon_msg "$DESC is not running"
 			log_end_msg 0
 		fi
 		;;

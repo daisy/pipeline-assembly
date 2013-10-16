@@ -767,12 +767,12 @@
       </build>
     </profile>
     <profile>
-      <id>debian</id>
+      <id>deb</id>
       <properties>
-        <pipeline.home>/opt/daisy-pipeline</pipeline.home>
-        <pipeline.data>/var/opt/daisy-pipeline</pipeline.data>
-        <pipeline.log>/var/log/daisy-pipeline</pipeline.log>
-        <pipeline.config>/etc/daisy-pipeline</pipeline.config>
+        <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
+        <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
+        <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
+        <pipeline.config>/etc/daisy-pipeline2</pipeline.config>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
         <bundles.modules>${pipeline.data}/modules</bundles.modules>
@@ -791,7 +791,32 @@
       <build>
         <plugins>
           <plugin>
-            <!-- FIXME: using latest version from git built locally with a fix for setting file modes -->
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>filter-debian-scripts</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>src/main/unix/scripts</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/deb/DEBIAN</directory>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <!--
+                FIXME: using latest version from git built locally with some fixes:
+                * setting file modes
+                * including more control files in DEBIAN/
+            -->
             <groupId>org.codehaus.mojo.unix</groupId>
             <artifactId>unix-maven-plugin</artifactId>
             <version>1.0-alpha-7-SNAPSHOT</version>
@@ -813,128 +838,138 @@
                   </description>
                   <deb>
                     <section>text</section>
+                    <depends>debconf</depends>
                   </deb>
+                  <packages>
+                    <package>
+                      <id>daisy-pipeline2</id>
+                      <assembly>
+                        <filterFiles>
+                          <includes>
+                            <include>${pipeline.home}/bin/pipeline2</include>
+                            <include>${pipeline.home}/cli/config.yml</include>
+                            <include>${pipeline.home}/etc/config.properties</include>
+                            <include>${pipeline.home}/etc/org.apache.felix.fileinstall-modules.cfg</include>
+                            <include>${pipeline.home}/etc/system.properties</include>
+                            <include>/etc/init.d/pipeline2d</include>
+                          </includes>
+                        </filterFiles>
+                        
+                        <!-- ======== -->
+                        <!-- binaries -->
+                        <!-- ======== -->
+                        <copyFile>
+                          <path>src/main/deb/opt/daisy-pipeline2/bin/pipeline2</path>
+                          <toFile>${pipeline.home}/bin/pipeline2</toFile>
+                        </copyFile>
+                        <copyDirectory>
+                          <from>target/cli</from>
+                          <to>${pipeline.home}/cli</to>
+                          <excludes>
+                            <exclude>*.exe</exclude>
+                          </excludes>
+                        </copyDirectory>
+                        <setAttributes>
+                          <basedir>${pipeline.home}</basedir>
+                          <includes>
+                            <include>cli/dp2*</include>
+                            <include>bin/pipeline2</include>
+                          </includes>
+                          <fileAttributes>
+                            <mode>0755</mode>
+                          </fileAttributes>
+                        </setAttributes>
+                        
+                        <!-- ====== -->
+                        <!-- daemon -->
+                        <!-- ====== -->
+                        <copyFile>
+                          <path>src/main/deb/etc/init.d/pipeline2d</path>
+                          <toFile>/etc/init.d/pipeline2d</toFile>
+                          <attributes>
+                            <mode>0755</mode>
+                          </attributes>
+                        </copyFile>
+                        
+                        <!-- =================== -->
+                        <!-- configuration files -->
+                        <!-- =================== -->
+                        <copyDirectory>
+                          <from>src/main/resources/etc</from>
+                          <to>${pipeline.home}/etc</to>
+                          <excludes>
+                            <exclude>config-logback.xml</exclude>
+                            <exclude>org.apache.felix.fileinstall-libs.cfg</exclude>
+                          </excludes>
+                        </copyDirectory>
+                        <copyDirectory>
+                          <from>src/main/resources/etc</from>
+                          <to>${pipeline.config}</to>
+                          <includes>
+                            <include>config-logback.xml</include>
+                          </includes>
+                        </copyDirectory>
+                        <symlink>
+                          <path>${pipeline.config}/system.properties</path>
+                          <value>${pipeline.home}/etc/system.properties</value>
+                        </symlink>
+                        <symlink>
+                          <path>${pipeline.config}/config.yml</path>
+                          <value>${pipeline.home}/cli/config.yml</value>
+                        </symlink>
+                        
+                        <!-- ============== -->
+                        <!-- system bundles -->
+                        <!-- ============== -->
+                        <copyDirectory>
+                          <from>target/bundles/bootstrap</from>
+                          <to>${pipeline.home}/system/bootstrap</to>
+                        </copyDirectory>
+                        <copyDirectory>
+                          <from>target/bundles/felix</from>
+                          <to>${pipeline.home}/system/felix</to>
+                          <excludes>
+                            <exclude>org.apache.felix.gogo*</exclude>
+                          </excludes>
+                        </copyDirectory>
+                        <copyDirectory>
+                          <from>target/bundles/libs</from>
+                          <to>${pipeline.home}/system/framework</to>
+                        </copyDirectory>
+                        <copyDirectory>
+                          <from>target/bundles/pipeline</from>
+                          <to>${pipeline.home}/system/framework</to>
+                        </copyDirectory>
+                        <copyDirectory>
+                          <from>target/bundles/frontend</from>
+                          <to>${pipeline.home}/system/frontend</to>
+                        </copyDirectory>
+                        
+                        <!-- ======= -->
+                        <!-- modules -->
+                        <!-- ======= -->
+                        <copyDirectory>
+                          <from>target/bundles/modules</from>
+                          <to>${pipeline.data}/modules</to>
+                        </copyDirectory>
+                        
+                        <!-- ========= -->
+                        <!-- log files -->
+                        <!-- ========= -->
+                        <mkdirs>
+                          <paths>
+                            <path>${pipeline.log}</path>
+                          </paths>
+                        </mkdirs>
+                        
+                      </assembly>
+                    </package>
+                  </packages>
                   <packages>
                     <package>
                       <id>daisy-pipeline</id>
                     </package>
                   </packages>
-                  <assembly>
-                    <filterFiles>
-                      <includes>
-                        <include>${pipeline.home}/bin/pipeline2</include>
-                        <include>${pipeline.home}/cli/config.yml</include>
-                        <include>${pipeline.home}/etc/config.properties</include>
-                        <include>${pipeline.home}/etc/org.apache.felix.fileinstall-modules.cfg</include>
-                        <include>${pipeline.config}/system.properties</include>
-                        <include>/etc/init.d/daisy-pipeline</include>
-                      </includes>
-                    </filterFiles>
-                    
-                    <!-- ======== -->
-                    <!-- binaries -->
-                    <!-- ======== -->
-                    <copyFile>
-                      <path>src/main/resources/bin/pipeline2[debian]</path>
-                      <toFile>${pipeline.home}/bin/pipeline2</toFile>
-                    </copyFile>
-                    <copyDirectory>
-                      <from>target/cli</from>
-                      <to>${pipeline.home}/cli</to>
-                      <excludes>
-                        <exclude>*.exe</exclude>
-                      </excludes>
-                    </copyDirectory>
-                    <setAttributes>
-                      <basedir>${pipeline.home}</basedir>
-                      <includes>
-                        <include>cli/dp2*</include>
-                        <include>bin/pipeline2</include>
-                      </includes>
-                      <fileAttributes>
-                        <mode>0755</mode>
-                      </fileAttributes>
-                    </setAttributes>
-                    
-                    <!-- ====== -->
-                    <!-- daemon -->
-                    <!-- ====== -->
-                    <copyFile>
-                      <path>src/main/resources/bin/daisy-pipeline</path>
-                      <toFile>/etc/init.d/daisy-pipeline</toFile>
-                      <attributes>
-                        <mode>0755</mode>
-                      </attributes>
-                    </copyFile>
-                    
-                    <!-- =================== -->
-                    <!-- configuration files -->
-                    <!-- =================== -->
-                    <copyDirectory>
-                      <from>src/main/resources/etc</from>
-                      <to>${pipeline.home}/etc</to>
-                      <excludes>
-                        <exclude>system.properties</exclude>
-                        <exclude>config-logback.xml</exclude>
-                        <exclude>org.apache.felix.fileinstall-libs.cfg</exclude>
-                      </excludes>
-                    </copyDirectory>
-                    
-                    <!-- TODO: cli/config.yml should be under here as well -->
-                    <copyDirectory>
-                      <from>src/main/resources/etc</from>
-                      <to>${pipeline.config}</to>
-                      <includes>
-                        <include>system.properties</include>
-                        <include>config-logback.xml</include>
-                      </includes>
-                    </copyDirectory>
-                    
-                    <!-- ============== -->
-                    <!-- system bundles -->
-                    <!-- ============== -->
-                    <copyDirectory>
-                      <from>target/bundles/bootstrap</from>
-                      <to>${pipeline.home}/system/bootstrap</to>
-                    </copyDirectory>
-                    <copyDirectory>
-                      <from>target/bundles/felix</from>
-                      <to>${pipeline.home}/system/felix</to>
-                      <excludes>
-                        <exclude>org.apache.felix.gogo*</exclude>
-                      </excludes>
-                    </copyDirectory>
-                    <copyDirectory>
-                      <from>target/bundles/libs</from>
-                      <to>${pipeline.home}/system/framework</to>
-                    </copyDirectory>
-                    <copyDirectory>
-                      <from>target/bundles/pipeline</from>
-                      <to>${pipeline.home}/system/framework</to>
-                    </copyDirectory>
-                    <copyDirectory>
-                      <from>target/bundles/frontend</from>
-                      <to>${pipeline.home}/system/frontend</to>
-                    </copyDirectory>
-                    
-                    <!-- ======= -->
-                    <!-- modules -->
-                    <!-- ======= -->
-                    <copyDirectory>
-                      <from>target/bundles/modules</from>
-                      <to>${pipeline.data}/modules</to>
-                    </copyDirectory>
-                    
-                    <!-- ========= -->
-                    <!-- log files -->
-                    <!-- ========= -->
-                    <mkdirs>
-                      <paths>
-                        <path>${pipeline.log}</path>
-                      </paths>
-                    </mkdirs>
-                    
-                  </assembly>
                 </configuration>
               </execution>
             </executions>
@@ -949,6 +984,25 @@
               <execution>
                 <id>dev-launcher-assembly</id>
                 <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>clean-unix</id>
+                <phase>clean</phase>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+                <configuration>
+                  <filesets>
+                    <fileset>
+                      <directory>src/main/unix</directory>
+                    </fileset>
+                  </filesets>
+                </configuration>
               </execution>
             </executions>
           </plugin>
