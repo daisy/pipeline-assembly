@@ -62,10 +62,6 @@
       <outputDirectory>/system/framework</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>target/bundles/braille/libs</directory>
-      <outputDirectory>/system/framework</outputDirectory>
-    </fileSet>
-    <fileSet>
       <directory>target/bundles/pipeline</directory>
       <outputDirectory>/system/framework</outputDirectory>
     </fileSet>
@@ -75,10 +71,6 @@
     </fileSet>
     <fileSet>
       <directory>target/bundles/modules</directory>
-      <outputDirectory>/modules</outputDirectory>
-    </fileSet>
-    <fileSet>
-      <directory>target/bundles/braille/modules</directory>
       <outputDirectory>/modules</outputDirectory>
     </fileSet>
     <fileSet>

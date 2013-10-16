@@ -1022,7 +1022,7 @@
                   <goal>copy</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/bundles/braille/modules</outputDirectory>
+                  <outputDirectory>${project.build.directory}/bundles/modules</outputDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1170,7 +1170,7 @@
                   <goal>copy</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/bundles/braille/libs</outputDirectory>
+                  <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
                   <artifactItems>
                     <artifactItem>
                       <!-- required by SPI-Fly -->
@@ -1264,28 +1264,6 @@
                       <arg value="prefix=braille-libs"/>
                     </java>
                   </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo.unix</groupId>
-            <artifactId>unix-maven-plugin</artifactId>
-            <version>1.0-alpha-7-SNAPSHOT</version>
-            <executions>
-              <execution>
-                <id>package-deb</id>
-                <configuration>
-                  <assembly combine.children="append">
-                    <copyDirectory>
-                      <from>target/bundles/braille/libs</from>
-                      <to>${pipeline.home}/system/framework</to>
-                    </copyDirectory>
-                    <copyDirectory>
-                      <from>target/bundles/braille/modules</from>
-                      <to>${pipeline.data}/modules</to>
-                    </copyDirectory>
-                  </assembly>
                 </configuration>
               </execution>
             </executions>
