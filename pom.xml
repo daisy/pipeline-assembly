@@ -965,11 +965,6 @@
                       </assembly>
                     </package>
                   </packages>
-                  <packages>
-                    <package>
-                      <id>daisy-pipeline</id>
-                    </package>
-                  </packages>
                 </configuration>
               </execution>
             </executions>
