@@ -48,7 +48,7 @@ case "$1" in
         
         # remove all data except for the database
         
-        find ${pipeline.data}/data -depth -maxdepth 2 -type d -exec sh -c \
+        find ${pipeline.data} -depth -maxdepth 2 -type d -exec sh -c \
             'case ${pipeline.data}/data/db in {}*) ;; *) rm -rf {} ;; esac' -- {} \;
         
     ;;
@@ -68,7 +68,7 @@ case "$1" in
         
         # remove database
         
-        rm -rf ${pipeline.data}/data/db
+        rm -rf ${pipeline.data}
         
         # clear debconf database
         
