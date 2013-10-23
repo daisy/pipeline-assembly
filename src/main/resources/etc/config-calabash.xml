@@ -9,5 +9,6 @@
 <implementation type="px:mkdir" class-name="com.xmlcalabash.extensions.fileutils.Mkdir"/>
 <implementation type="px:tempfile" class-name="com.xmlcalabash.extensions.fileutils.Tempfile"/>
 <implementation type="px:zip" class-name="com.xmlcalabash.extensions.Zip"/>
+<implementation type="px:unzip" class-name="com.xmlcalabash.extensions.Unzip"/>
 
 </xproc-config>
