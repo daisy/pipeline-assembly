@@ -33,6 +33,12 @@ fi
 
 test -x $DAEMON || (echo "$DAEMON is not installed" && exit 0)
 
+[ -r /etc/default/pipeline2d ] && . /etc/default/pipeline2d
+
+if [ "$REMOTE" = "true" ]; then
+    DAEMON_ARGS="remote"
+fi
+
 case "$1" in
 	start)
 		if [ -e $PIDFILE ]; then

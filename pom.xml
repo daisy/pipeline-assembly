@@ -948,6 +948,11 @@
                       <linkName>${pipeline.config}/config.yml</linkName>
                       <linkTarget>${pipeline.home}/cli/config.yml</linkTarget>
                     </data>
+                    <data>
+                      <type>file</type>
+                      <src>src/main/deb/etc/default/pipeline2d</src>
+                      <dst>/etc/default/pipeline2d</dst>
+                    </data>
                     
                     <!-- ============== -->
                     <!-- system bundles -->
