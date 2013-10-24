@@ -10,12 +10,11 @@
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
   <properties>
     <pipeline.version>1.6</pipeline.version>
-    <dollar>$</dollar>
   </properties>
   <dependencies>
     <dependency>
@@ -686,24 +685,6 @@
               <finalName>pipeline2-${pipeline.version}</finalName>
             </configuration>
           </execution>
-          <execution>
-            <id>dev-launcher-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <descriptors>
-                <descriptor>src/main/assembly/dev.xml</descriptor>
-              </descriptors>
-              <filters>
-                <filter>src/main/assembly/dev.properties</filter>
-              </filters>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>dev-launcher</finalName>
-              <attach>false</attach>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -752,13 +733,319 @@
   </build>
   <profiles>
     <profile>
+      <id>dev-launcher</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-assembly</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dev-launcher-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dev.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dev.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>dev-launcher</finalName>
+                  <attach>false</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>deb</id>
+      <properties>
+        <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
+        <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
+        <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
+        <pipeline.config>/etc/daisy-pipeline2</pipeline.config>
+        <bundles.auto.deploy>system/felix</bundles.auto.deploy>
+        <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
+        <bundles.modules>${pipeline.data}/modules</bundles.modules>
+        <pipeline.ws.host>http://localhost</pipeline.ws.host>
+        <pipeline.ws.port>8181</pipeline.ws.port>
+        <pipeline.ws.path>ws</pipeline.ws.path>
+        <pipeline.ws.timeout>60</pipeline.ws.timeout>
+        <pipeline.ws.cmd.unix>../bin/pipeline2</pipeline.ws.cmd.unix>
+        <pipeline.ws.local>true</pipeline.ws.local>
+        <pipeline.ws.authenticate>false</pipeline.ws.authenticate>
+        <pipeline.ws.clientkey>clientid</pipeline.ws.clientkey>
+        <pipeline.ws.clientsecret>supersecret</pipeline.ws.clientsecret>
+        <pipeline.cli.timeout>100</pipeline.cli.timeout>
+        <pipeline.cli.debug>false</pipeline.cli.debug>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>filter-debian-resources</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>target/filtered-resources</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/resources</directory>
+                      <targetPath>resources</targetPath>
+                      <filtering>true</filtering>
+                      <includes>
+                        <include>etc/config.properties</include>
+                        <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
+                        <include>etc/system.properties</include>
+                      </includes>
+                    </resource>
+                    <resource>
+                      <directory>src/main/deb</directory>
+                      <targetPath>deb</targetPath>
+                      <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                      <directory>target/cli</directory>
+                      <targetPath>cli</targetPath>
+                      <includes>
+                        <include>config.yml</include>
+                      </includes>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.vafer</groupId>
+            <artifactId>jdeb</artifactId>
+            <version>1.0</version>
+            <executions>
+              <execution>
+                <id>package-deb</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jdeb</goal>
+                </goals>
+                <configuration>
+                  <controlDir>target/filtered-resources/deb/DEBIAN</controlDir>
+                  <timestamped>true</timestamped>
+                  <deb>target/daisy-pipeline2-${project.version}.deb</deb>
+                  <dataSet>
+                    
+                    <!-- ======== -->
+                    <!-- binaries -->
+                    <!-- ======== -->
+                    <data>
+                      <type>file</type>
+                      <src>target/filtered-resources/deb/opt/daisy-pipeline2/bin/pipeline2</src>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.home}/bin</prefix>
+                        <filemode>755</filemode>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/cli</src>
+                      <excludes>
+                        *.exe,
+                        dp2,
+                        dp2admin,
+                        config.yml
+                      </excludes>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.home}/cli</prefix>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/cli</src>
+                      <includes>
+                        dp2,
+                        dp2admin
+                      </includes>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.home}/cli</prefix>
+                        <filemode>755</filemode>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>file</type>
+                      <src>target/filtered-resources/cli/config.yml</src>
+                      <dst>${pipeline.home}/cli/config.yml</dst>
+                    </data>
+                    
+                    <!-- ====== -->
+                    <!-- daemon -->
+                    <!-- ====== -->
+                    <data>
+                      <src>target/filtered-resources/deb/etc/init.d/pipeline2d</src>
+                      <type>file</type>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>/etc/init.d</prefix>
+                        <filemode>755</filemode>
+                      </mapper>
+                    </data>
+                    
+                    <!-- =================== -->
+                    <!-- configuration files -->
+                    <!-- =================== -->
+                    <data>
+                      <type>directory</type>
+                      <src>src/main/resources/etc</src>
+                      <excludes>
+                        config.properties,
+                        config-logback.xml,
+                        org.apache.felix.fileinstall-libs.cfg,
+                        org.apache.felix.fileinstall-modules.cfg
+                        system.properties
+                      </excludes>
+                      <mapper>
+                        <prefix>${pipeline.home}/etc</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/filtered-resources/resources/etc</src>
+                      <mapper>
+                        <prefix>${pipeline.home}/etc</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>file</type>
+                      <src>src/main/resources/etc/config-logback.xml</src>
+                      <dst>${pipeline.config}/config-logback.xml</dst>
+                    </data>
+                    <data>
+                      <type>link</type>
+                      <symlink>true</symlink>
+                      <linkName>${pipeline.config}/system.properties</linkName>
+                      <linkTarget>${pipeline.home}/etc/system.properties</linkTarget>
+                    </data>
+                    <data>
+                      <type>link</type>
+                      <symlink>true</symlink>
+                      <linkName>${pipeline.config}/config.yml</linkName>
+                      <linkTarget>${pipeline.home}/cli/config.yml</linkTarget>
+                    </data>
+                    <data>
+                      <type>file</type>
+                      <src>src/main/deb/etc/default/pipeline2d</src>
+                      <dst>/etc/default/pipeline2d</dst>
+                    </data>
+                    
+                    <!-- ============== -->
+                    <!-- system bundles -->
+                    <!-- ============== -->
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/bootstrap</src>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/bootstrap</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/felix</src>
+                      <excludes>
+                        org.apache.felix.gogo*
+                      </excludes>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/felix</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/libs</src>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/framework</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/pipeline</src>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/framework</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/frontend</src>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/frontend</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    
+                    <!-- ======= -->
+                    <!-- modules -->
+                    <!-- ======= -->
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/modules</src>
+                      <mapper>
+                        <prefix>${pipeline.data}/modules</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    
+                    <!-- ========= -->
+                    <!-- log files -->
+                    <!-- ========= -->
+                    <data>
+                      <type>template</type>
+                      <paths>
+                        <path>${pipeline.log}</path>
+                      </paths>
+                    </data>
+                    
+                  </dataSet>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-assembly</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dev-launcher-assembly</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>incl-braille</id>
-      <activation>
-        <property>
-          <name>includeBrailleModules</name>
-          <value>true</value>
-        </property>
-      </activation>
       <build>
         <plugins>
           <plugin>
@@ -770,7 +1057,7 @@
                   <goal>copy</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/bundles/braille/modules</outputDirectory>
+                  <outputDirectory>${project.build.directory}/bundles/modules</outputDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -918,7 +1205,7 @@
                   <goal>copy</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/bundles/braille/libs</outputDirectory>
+                  <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
                   <artifactItems>
                     <artifactItem>
                       <!-- required by SPI-Fly -->
@@ -1012,27 +1299,6 @@
                       <arg value="prefix=braille-libs"/>
                     </java>
                   </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>braille-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src/main/assembly/braille.xml</descriptor>
-                  </descriptors>
-                  <filters>
-                    <filter>src/main/assembly/dist.properties</filter>
-                  </filters>
-                  <finalName>pipeline2-${pipeline.version}</finalName>
                 </configuration>
               </execution>
             </executions>

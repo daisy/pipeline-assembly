@@ -40,6 +40,10 @@
       <includes>
         <include>bin/**</include>
       </includes>
+      <excludes>
+        <exclude>bin/pipeline2[debian]</exclude>
+        <exclude>bin/daisy-pipeline</exclude>
+      </excludes>
       <outputDirectory>/</outputDirectory>
       <filtered>true</filtered>
       <fileMode>0755</fileMode>
