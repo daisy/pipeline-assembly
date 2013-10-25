@@ -1107,7 +1107,7 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-ooo-tables</artifactId>
+                      <artifactId>libhyphen-libreoffice-tables</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
