@@ -19,3 +19,6 @@ Thumbs.db
 #vim files
 .*.sw?
 .*~
+
+# Emacs backup files
+*~
