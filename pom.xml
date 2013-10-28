@@ -41,25 +41,25 @@
         <scope>import</scope>
       </dependency> -->
       <dependency>
-          <groupId>org.daisy.pipeline.modules</groupId>
-          <artifactId>scripts-aggregator</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <type>pom</type>
-          <scope>import</scope>
+        <groupId>org.daisy.pipeline.modules</groupId>
+        <artifactId>scripts-aggregator</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
-          <groupId>org.daisy.pipeline.modules</groupId>
-          <artifactId>common-utils-aggregator</artifactId> 
-          <version>1.0-SNAPSHOT</version>
-          <type>pom</type>
-          <scope>import</scope>
+        <groupId>org.daisy.pipeline.modules</groupId>
+        <artifactId>common-utils-aggregator</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
-          <groupId>org.daisy.pipeline.modules</groupId>
-          <artifactId>script-utils-aggregator</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <type>pom</type>
-          <scope>import</scope>
+        <groupId>org.daisy.pipeline.modules</groupId>
+        <artifactId>script-utils-aggregator</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -619,53 +619,6 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-fileinstall-cfg-files</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <java classname="net.sf.saxon.Transform">
-                  <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                  <arg value="id=copy-pipeline-bundles"/>
-                  <arg value="startLevel=30"/>
-                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                  <arg value="prefix=pipeline"/>
-                </java>
-                <java classname="net.sf.saxon.Transform">
-                  <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                  <arg value="id=copy-pipeline-modules"/>
-                  <arg value="startLevel=50"/>
-                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                  <arg value="prefix=modules"/>
-                </java>
-                <java classname="net.sf.saxon.Transform">
-                  <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                  <arg value="id=copy-frontend"/>
-                  <arg value="startLevel=100"/>
-                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                  <arg value="prefix=frontend"/>
-                </java>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>Saxon-HE</artifactId>
-            <version>9.4.0.7</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
@@ -735,7 +688,70 @@
     <profile>
       <id>dev-launcher</id>
       <build>
-        <plugins>
+        <plugins>      
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-fileinstall-cfg-files</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-bundles"/>
+                      <arg value="startLevel=30"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=pipeline"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-modules"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=modules"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-frontend"/>
+                      <arg value="startLevel=100"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=frontend"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-braille-modules"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=braille"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-braille-libs-bundles"/>
+                      <arg value="startLevel=30"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=braille-libs"/>
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>9.4.0.7</version>
+              </dependency>
+            </dependencies>
+          </plugin>
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
@@ -1035,10 +1051,6 @@
                 <id>dist-assembly</id>
                 <phase>none</phase>
               </execution>
-              <execution>
-                <id>dev-launcher-assembly</id>
-                <phase>none</phase>
-              </execution>
             </executions>
           </plugin>
         </plugins>
@@ -1271,35 +1283,116 @@
               </execution>
             </executions>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>webui</id>
+      <build>
+        <plugins>
           <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
+            <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
-                <id>generate-fileinstall-cfg-files-braille</id>
-                <phase>generate-resources</phase>
+                <id>unpack</id>
+                <phase>package</phase>
                 <goals>
-                  <goal>run</goal>
+                  <goal>unpack</goal>
                 </goals>
                 <configuration>
-                  <tasks>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-modules"/>
-                      <arg value="startLevel=50"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille"/>
-                    </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-libs-bundles"/>
-                      <arg value="startLevel=30"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille-libs"/>
-                    </java>
-                  </tasks>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>webui-desktop</artifactId>
+                      <version>1.6.1-SNAPSHOT</version>
+                      <type>zip</type>
+                      <overWrite>true</overWrite>
+                      <outputDirectory>target/webui</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                  <overWriteReleases>false</overWriteReleases>
+                  <overWriteSnapshots>true</overWriteSnapshots>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>webui-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/webui.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dist.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>pipeline2-${pipeline.version}-webui-desktop</finalName>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- NSIS Profile for installer generation invoke with -DincludeInstaller -->
+    <profile>
+      <id>installer</id>
+      <properties>
+        <nsis.scriptfile>target/nsis/installer.nsi</nsis.scriptfile>
+        <nsis.output.file>pipeline2-webui-${pipeline.version}.exe</nsis.output.file>
+      </properties>
+      <build>
+        <plugins>
+          <!-- copy nsis file for windows installer generation -->
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${basedir}/target/nsis</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/nsis</directory>
+                      <includes>
+                        <include>installer.nsi</include>
+                      </includes>
+                      <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                      <directory>src/main/nsis</directory>
+                      <excludes>
+                        <exclude>installer.nsi</exclude>
+                      </excludes>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>nsis-maven-plugin</artifactId>
+            <version>1.0-alpha-1</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate-headerfile</goal>
+                  <goal>make</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
@@ -1349,8 +1442,12 @@
     <repository>
       <id>bertfrees-github-snapshots</id>
       <url>http://bertfrees.github.com/snapshots</url>
-      <releases><enabled>false</enabled></releases>
-      <snapshots><enabled>true</enabled></snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 </project>
