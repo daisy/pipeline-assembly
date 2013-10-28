@@ -619,53 +619,6 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-fileinstall-cfg-files</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <java classname="net.sf.saxon.Transform">
-                  <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                  <arg value="id=copy-pipeline-bundles"/>
-                  <arg value="startLevel=30"/>
-                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                  <arg value="prefix=pipeline"/>
-                </java>
-                <java classname="net.sf.saxon.Transform">
-                  <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                  <arg value="id=copy-pipeline-modules"/>
-                  <arg value="startLevel=50"/>
-                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                  <arg value="prefix=modules"/>
-                </java>
-                <java classname="net.sf.saxon.Transform">
-                  <arg value="target/tmp/effective-pom.xml"/>
-                  <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                  <arg value="id=copy-frontend"/>
-                  <arg value="startLevel=100"/>
-                  <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                  <arg value="prefix=frontend"/>
-                </java>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>Saxon-HE</artifactId>
-            <version>9.4.0.7</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
@@ -683,38 +636,6 @@
               </filters>
               <appendAssemblyId>false</appendAssemblyId>
               <finalName>pipeline2-${pipeline.version}</finalName>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- copy nsis file for windows installer generation -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/nsis</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/nsis</directory>
-                  <includes>
-                    <include>installer.nsi</include>
-                  </includes>
-                  <filtering>true</filtering>
-                </resource>
-                <resource>
-                  <directory>src/main/nsis</directory>
-                  <excludes>
-                    <exclude>installer.nsi</exclude>
-                  </excludes>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
             </configuration>
           </execution>
         </executions>
@@ -767,7 +688,70 @@
     <profile>
       <id>dev-launcher</id>
       <build>
-        <plugins>
+        <plugins>      
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-fileinstall-cfg-files</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-bundles"/>
+                      <arg value="startLevel=30"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=pipeline"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-modules"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=modules"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-frontend"/>
+                      <arg value="startLevel=100"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=frontend"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-braille-modules"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=braille"/>
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-braille-libs-bundles"/>
+                      <arg value="startLevel=30"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=braille-libs"/>
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>9.4.0.7</version>
+              </dependency>
+            </dependencies>
+          </plugin>
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
@@ -1067,10 +1051,6 @@
                 <id>dist-assembly</id>
                 <phase>none</phase>
               </execution>
-              <execution>
-                <id>dev-launcher-assembly</id>
-                <phase>none</phase>
-              </execution>
             </executions>
           </plugin>
         </plugins>
@@ -1301,6 +1281,18 @@
                   </artifactItems>
                 </configuration>
               </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>webui</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
               <execution>
                 <id>unpack</id>
                 <phase>package</phase>
@@ -1320,300 +1312,6 @@
                   </artifactItems>
                   <overWriteReleases>false</overWriteReleases>
                   <overWriteSnapshots>true</overWriteSnapshots>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>generate-fileinstall-cfg-files-braille</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <tasks>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-modules"/>
-                      <arg value="startLevel=50"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille"/>
-                    </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-libs-bundles"/>
-                      <arg value="startLevel=30"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille-libs"/>
-                    </java>
-                  </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>webui</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-braille-modules</id>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/bundles/modules</outputDirectory>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>css-calabash</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>css-core</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>css-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>common-java</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>common-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>dotify-saxon</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>dotify-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>dtbook-to-pef</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-core</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-native</artifactId>
-                      <classifier>linux</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-native</artifactId>
-                      <classifier>mac</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-libreoffice-tables</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-saxon</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-calabash</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-core</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-formatter</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-mathml</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-native</artifactId>
-                      <classifier>linux</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-native</artifactId>
-                      <classifier>mac</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-native</artifactId>
-                      <classifier>windows</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-saxon</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-tables</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>liblouis-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>pef-calabash</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>pef-saxon</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>pef-to-html</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>pef-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>texhyph-core</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>texhyph-saxon</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>texhyph-utils</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>xml-to-pef</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>zedai-to-pef</artifactId>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-              <execution>
-                <id>copy-braille-libs-bundles</id>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
-                  <artifactItems>
-                    <artifactItem>
-                      <!-- required by SPI-Fly -->
-                      <groupId>asm</groupId>
-                      <artifactId>asm-all</artifactId>
-                      <version>3.2</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <!-- required by jstyleparser -->
-                      <!-- TODO build our own bundle ? -->
-                      <groupId>org.apache.servicemix.bundles</groupId>
-                      <artifactId>org.apache.servicemix.bundles.antlr-runtime</artifactId>
-                      <version>3.2_2</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>jstyleparser</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>brailleutils-core</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>brailleutils-catalog</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.apache.aries.spifly</groupId>
-                      <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-                      <version>0.4-SNAPSHOT</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.apache.aries</groupId>
-                      <artifactId>org.apache.aries.util</artifactId>
-                      <version>0.5.0-SNAPSHOT</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>dotify-translator</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>com.googlecode.texhyphj</groupId>
-                      <artifactId>texhyphj</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>com.ibm.icu</groupId>
-                      <artifactId>icu4j</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.liblouis</groupId>
-                      <artifactId>liblouis-java</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>net.java.dev.jna</groupId>
-                      <artifactId>jna</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>ch.sbs</groupId>
-                      <artifactId>jhyphen</artifactId>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>generate-fileinstall-cfg-files-braille</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <tasks>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-modules"/>
-                      <arg value="startLevel=50"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille"/>
-                    </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-libs-bundles"/>
-                      <arg value="startLevel=30"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille-libs"/>
-                    </java>
-                  </tasks>
                 </configuration>
               </execution>
             </executions>
@@ -1646,18 +1344,44 @@
     <!-- NSIS Profile for installer generation invoke with -DincludeInstaller -->
     <profile>
       <id>installer</id>
-      <activation>
-        <property>
-          <name>includeInstaller</name>
-          <value>true</value>
-        </property>
-      </activation>
       <properties>
         <nsis.scriptfile>target/nsis/installer.nsi</nsis.scriptfile>
         <nsis.output.file>pipeline2-webui-${pipeline.version}.exe</nsis.output.file>
       </properties>
       <build>
         <plugins>
+          <!-- copy nsis file for windows installer generation -->
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${basedir}/target/nsis</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/nsis</directory>
+                      <includes>
+                        <include>installer.nsi</include>
+                      </includes>
+                      <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                      <directory>src/main/nsis</directory>
+                      <excludes>
+                        <exclude>installer.nsi</exclude>
+                      </excludes>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>nsis-maven-plugin</artifactId>

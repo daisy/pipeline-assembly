@@ -8,7 +8,6 @@
   <baseDirectory>daisy-pipeline</baseDirectory>
   <componentDescriptors>
     <componentDescriptor>src/main/assembly/framework-component.xml</componentDescriptor>
-    <componentDescriptor>src/main/assembly/braille-component.xml</componentDescriptor>
     <componentDescriptor>src/main/assembly/webui-component.xml</componentDescriptor>
   </componentDescriptors>
 </assembly>
