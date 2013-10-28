@@ -101,8 +101,8 @@ case "$1" in
             
             if [ -e $SYSTEM_PROPERTIES.old ] && [ -e $SYSTEM_PROPERTIES.bak.old ]; then
                 for KEY in $(cat $SYSTEM_PROPERTIES | sed -n 's/^[ #]*\([0-9a-zA-Z\.]*\)=.*/\1/p'); do
-                    local OLD_ENTRY="$(cat $SYSTEM_PROPERTIES.old | sed -n "s/^\([ #]*$KEY=.*\)/\1/p")"
-                    local DEFAULT_ENTRY="$(cat $SYSTEM_PROPERTIES.bak.old | sed -n "s/\(^[ #]*$KEY=.*\)/\1/p")"
+                    OLD_ENTRY="$(cat $SYSTEM_PROPERTIES.old | sed -n "s/^\([ #]*$KEY=.*\)/\1/p")"
+                    DEFAULT_ENTRY="$(cat $SYSTEM_PROPERTIES.bak.old | sed -n "s/\(^[ #]*$KEY=.*\)/\1/p")"
                     if [ "$OLD_ENTRY" != "$DEFAULT_ENTRY" ]; then
                         cp -f $SYSTEM_PROPERTIES $SYSTEM_PROPERTIES.tmp
                         sed -e "s|^[ #]*$KEY=.*$|$OLD_ENTRY|" < $SYSTEM_PROPERTIES > $SYSTEM_PROPERTIES.tmp
@@ -114,8 +114,8 @@ case "$1" in
             
             if [ -e $CLI_CONFIG_YML.old ] && [ -e $CLI_CONFIG_YML.bak.old ]; then
                 for KEY in $(cat $CLI_CONFIG_YML | sed -n 's/^[ #]*\([0-9a-zA-Z_]*\):.*/\1/p'); do
-                    local OLD_ENTRY="$(cat $CLI_CONFIG_YML.old | sed -n "s/^\([ #]*$KEY:.*\)/\1/p")"
-                    local DEFAULT_ENTRY="$(cat $CLI_CONFIG_YML.bak.old | sed -n "s/\(^[ #]*$KEY:.*\)/\1/p")"
+                    OLD_ENTRY="$(cat $CLI_CONFIG_YML.old | sed -n "s/^\([ #]*$KEY:.*\)/\1/p")"
+                    DEFAULT_ENTRY="$(cat $CLI_CONFIG_YML.bak.old | sed -n "s/\(^[ #]*$KEY:.*\)/\1/p")"
                     if [ "$OLD_ENTRY" != "$DEFAULT_ENTRY" ]; then
                         cp -f $CLI_CONFIG_YML $CLI_CONFIG_YML.tmp
                         sed -e "s|^[ #]*$KEY:.*$|$OLD_ENTRY|" < $CLI_CONFIG_YML > $CLI_CONFIG_YML.tmp
