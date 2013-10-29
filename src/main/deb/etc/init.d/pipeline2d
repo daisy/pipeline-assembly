@@ -13,10 +13,10 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="DAISY Pipeline 2 server"		# Introduce a short description here
-NAME=pipeline2d				# Introduce the short server's name here
-DAEMON=${pipeline.home}/bin/pipeline2 	# Introduce the server's location here
-DAEMON_ARGS=""             		# Arguments to run the daemon with
+DESC="DAISY Pipeline 2 server"         # Introduce a short description here
+NAME=pipeline2d                        # Introduce the short server's name here
+DAEMON=${pipeline.home}/bin/pipeline2  # Introduce the server's location here
+DAEMON_ARGS=""                         # Arguments to run the daemon with
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
@@ -25,6 +25,11 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Set daemon argument list
+if [ "$REMOTE" = "true" ]; then
+	DAEMON_ARGS="remote"
+fi
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
@@ -84,7 +89,8 @@ do_stop()
 #
 # Function that sends a SIGHUP to the daemon/service
 #
-do_reload() {
+do_reload()
+{
 	#
 	# If the daemon can reload its configuration without
 	# restarting (for example, when it is sent a SIGHUP),
@@ -95,14 +101,16 @@ do_reload() {
 }
 
 case "$1" in
+
   start)
-    [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC " "$NAME"
-    do_start
-    case "$?" in
+	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	do_start
+	case "$?" in
 		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
 		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
 	esac
   ;;
+
   stop)
 	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
 	do_stop
@@ -110,10 +118,12 @@ case "$1" in
 		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
 		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
 	esac
-	;;
+  ;;
+
   status)
-       status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
-       ;;
+	status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
+  ;;
+
   #reload|force-reload)
 	#
 	# If do_reload() is not implemented then leave this commented out
@@ -123,6 +133,7 @@ case "$1" in
 	#do_reload
 	#log_end_msg $?
 	#;;
+
   restart|force-reload)
 	#
 	# If the "reload" option is implemented then remove the
@@ -138,18 +149,19 @@ case "$1" in
 			1) log_end_msg 1 ;; # Old process is still running
 			*) log_end_msg 1 ;; # Failed to start
 		esac
-		;;
+	  ;;
 	  *)
-	  	# Failed to stop
+		# Failed to stop
 		log_end_msg 1
-		;;
+	  ;;
 	esac
-	;;
+  ;;
+
   *)
-	#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	#echo "Usage: $SCRIPTNAME {start|stop|status|restart|reload|force-reload}" >&2
 	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
 	exit 3
-	;;
+  ;;
 esac
 
 :

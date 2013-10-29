@@ -48,10 +48,10 @@ case "$1" in
         
         # remove all data except for the database
         
-	if [ -e ${pipeline.data} ]; then
+        if [ -e ${pipeline.data} ]; then
             find ${pipeline.data} -depth -maxdepth 2 -type d -exec sh -c \
-		'case ${pipeline.data}/data/db in {}*) ;; *) rm -rf {} ;; esac' -- {} \;
-	fi
+                'case ${pipeline.data}/data/db in {}*) ;; *) rm -rf {} ;; esac' -- {} \;
+        fi
         
     ;;
     
