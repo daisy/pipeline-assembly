@@ -15,6 +15,7 @@
 <implementation type="px:touch" class-name="com.xmlcalabash.extensions.fileutils.Touch"/>
 <implementation type="px:unzip" class-name="com.xmlcalabash.extensions.Unzip"/>
 <implementation type="px:zip" class-name="com.xmlcalabash.extensions.Zip"/>
+<implementation type="px:unzip" class-name="com.xmlcalabash.extensions.Unzip"/>
 
 
 </xproc-config>
