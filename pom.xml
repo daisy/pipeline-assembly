@@ -939,7 +939,7 @@
                         config.properties,
                         config-logback.xml,
                         org.apache.felix.fileinstall-libs.cfg,
-                        org.apache.felix.fileinstall-modules.cfg
+                        org.apache.felix.fileinstall-modules.cfg,
                         system.properties
                       </excludes>
                       <mapper>
