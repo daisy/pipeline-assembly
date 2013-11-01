@@ -6,7 +6,7 @@
 	<xsl:param name="prefix"/>
 	<xsl:output method="text" encoding="UTF-8" name="text"/>
 	<xsl:template match="/*">
-		<xsl:for-each select="//pom:execution[pom:id=$id]/pom:configuration//pom:artifactItem">
+		<xsl:for-each select="//pom:execution[pom:id=$id][not(ancestor::pom:profile)]/pom:configuration//pom:artifactItem">
 			<xsl:variable name="groupId" select="pom:groupId"/>
 			<xsl:variable name="artifactId" select="pom:artifactId"/>
 			<xsl:variable name="version" select="if (pom:version) then pom:version

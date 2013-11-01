@@ -611,22 +611,6 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-help-plugin</artifactId>
-        <version>2.1.1</version>
-        <executions>
-          <execution>
-            <id>generate-effective-pom</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>effective-pom</goal>
-            </goals>
-            <configuration>
-              <output>target/tmp/effective-pom.xml</output>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
@@ -698,6 +682,22 @@
       <build>
         <plugins>      
           <plugin>
+            <artifactId>maven-help-plugin</artifactId>
+            <version>2.1.1</version>
+            <executions>
+              <execution>
+                <id>generate-effective-pom</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>effective-pom</goal>
+                </goals>
+                <configuration>
+                  <output>target/tmp/effective-pom.xml</output>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
@@ -739,14 +739,6 @@
                       <arg value="startLevel=50"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
                       <arg value="prefix=braille"/>
-                    </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-braille-libs-bundles"/>
-                      <arg value="startLevel=30"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=braille-libs"/>
                     </java>
                   </target>
                 </configuration>
@@ -1349,7 +1341,7 @@
         </plugins>
       </build>
     </profile>
-    <!-- NSIS Profile for installer generation invoke with -DincludeInstaller -->
+    <!-- NSIS Profile for installer generation invoke with -P installer -->
     <profile>
       <id>installer</id>
       <properties>
