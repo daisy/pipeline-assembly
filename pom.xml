@@ -788,10 +788,10 @@
         <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
         <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
         <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
-        <pipeline.config>/etc/daisy-pipeline2</pipeline.config>
+        <pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
-        <bundles.modules>${pipeline.data}/modules</bundles.modules>
+        <bundles.modules>${pipeline.home}/modules</bundles.modules>
         <pipeline.ws.host>http://localhost</pipeline.ws.host>
         <pipeline.ws.port>8181</pipeline.ws.port>
         <pipeline.ws.path>ws</pipeline.ws.path>
@@ -931,7 +931,7 @@
                         config.properties,
                         config-logback.xml,
                         org.apache.felix.fileinstall-libs.cfg,
-                        org.apache.felix.fileinstall-modules.cfg
+                        org.apache.felix.fileinstall-modules.cfg,
                         system.properties
                       </excludes>
                       <mapper>
@@ -1024,7 +1024,7 @@
                       <type>directory</type>
                       <src>target/bundles/modules</src>
                       <mapper>
-                        <prefix>${pipeline.data}/modules</prefix>
+                        <prefix>${bundles.modules}</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
