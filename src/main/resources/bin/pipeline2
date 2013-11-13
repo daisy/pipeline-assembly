@@ -256,7 +256,7 @@ setupDefaults() {
 
     #Set the JVM_VENDOR specific JVM flags
     if [ "$JVM_VENDOR" = "SUN" ]; then
-        DEFAULT_JAVA_OPTS="-server $DEFAULT_JAVA_OPTS -XX:PermSize=$JAVA_PERM_MEM -XX:MaxPermSize=$JAVA_MAX_PERM_MEM -Dcom.sun.management.jmxremote"
+            DEFAULT_JAVA_OPTS="-server $DEFAULT_JAVA_OPTS -XX:PermSize=$JAVA_PERM_MEM -XX:MaxPermSize=$JAVA_MAX_PERM_MEM -Dcom.sun.management.jmxremote"
     elif [ "$JVM_VENDOR" = "IBM" ]; then
         if $os400; then
             DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS"
@@ -268,7 +268,7 @@ setupDefaults() {
     fi
 
     # Add the jars in the lib dir
-    for file in "$PIPELINE2_HOME"/${bundles.bootstrap}/*.jar
+    for file in "$PIPELINE2_HOME"/../bundles/bootstrap/*.jar
     do
         if [ -z "$CLASSPATH" ]; then
             CLASSPATH="$file"
@@ -362,7 +362,8 @@ run() {
         JAVA_EXT_DIRS=`cygpath --path --windows "$JAVA_EXT_DIRS"`
     fi
     cd "$PIPELINE2_BASE"
-    eval "$JAVA" $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}" -Djava.ext.dirs="${JAVA_EXT_DIRS}"  -Dorg.daisy.pipeline.home="$PIPELINE2_HOME" -Dorg.daisy.pipeline.base="$PIPELINE2_BASE" -Dorg.daisy.pipeline.data="$PIPELINE2_DATA" -Dfelix.config.properties="file:$PIPELINE2_HOME/etc/config.properties" -Dfelix.system.properties="file:$PIPELINE2_HOME/etc/system.properties" $PIPELINE2_OPTS $OPTS -classpath "$CLASSPATH" $MAIN "$@"
+
+    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_HOME/etc/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
 }
 
 main() {
