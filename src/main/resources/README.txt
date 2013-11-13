@@ -56,148 +56,36 @@ The package includes:
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.6 version of the project.
+The package includes the 1.7 version of the project.
 
 Changes since the last release:
 
 
 * Command-line tool
-  * None 
+        * Now the results are always get through a zipped file with the --output option
+        * Handle VALIDATION_FAIL status 
+        * Fix single result handling
+        * Move .lastid to the appropriate folder ( "%APP_DATA%/Daisy Pipeline 2/dp2/" in windows; "~/.daisy-pipeline/dp2" in linux and "~/Library/Application Support/DAISY Pipeline 2/dp2" in OS X
 
 * Web API
-  * Fixed issue 254: ErrorWriter validates against wrong schema
-  * Fixed issue 336: Mime-types are included in the job results
+        * /scripts/$ID : All the outputs are filtered out
+        * /scripts/$ID : Order of options preserved from the script when building the xml representation.
+        * alive: @mode disappears in favor of @localfs=(true|false)
+        * jobs/$ID : The file size is returned along with the result files (not for the zip files).
+        * jobs/$ID :  When the local fs is accessible the actual location is returned in the result xml response. This can be used to fetch the results from disk bypassing the web ui.
+        * MD5 and file size added to the http headers when a file is returned.
 
 * Framework
-  * Fixed issue 312: Handle folders in zip files properly
-  * Fixed issue with empty 'select' attributes for output options
-  * Fix: report Calabash pipeline-loading errors as job errors
-  * Fix: Issues with push-notifer
-  * Fixed issue 357: problems loading Calabash config file
-  * [NEW] Closed issue 311: Accept sequenced input options  
-  * [NEW] DB-less mode
-
+        * When a validation fails during the job execution the VALIDATION_FAIL status is returned. (Currently only working with validation scripts but all the scripts that validate outputs could implement this functionality in the future).
+        * Update to guava version 15.0
+        * Custom logger avoids creating default log file and duplicating framework logging lines.
+        * The framework controls all the outputs as it used to do in remote mode and they have to be fetched through the web api
 
 * Modules
-  * [NEW] Close issue 313: Added MathML support to `dtbook-to-epub3`,
-    `daisy3-to-epub3` and `zedai-to-epub3`.
-  * [common-utils] [NEW] Closed issue 242 / issue 265: added logging steps:
-    `px:message`/`px:error`/`px:assert`
-  * [daisy202-to-epub3] Fixed issue 297: compatibility-mode and mediaoverlay 
-    options
-  * [daisy202-to-epub3] resources referenced from CSS-files are now included
-  * [daisy202-to-epub3] HTML metadata are preserved
-  * [daisy202-to-epub3] landmarks now has an epub:type and is hidden
-  * [daisy202-to-epub3] page listing is now hidden in navigation document
-  * [daisy202-to-epub3] Fixed issue 304: URI encoding problem with spaces in
-    file names
-  * [daisy202-utils] normalize input href
-  * [daisy3-to-epub3] Closed issue 273: DTBook validation is disabled by
-    default and added a new `assert-valid` option is available.
-  * [dtbook-to-zedai] [NEW] Fixed issue 329: added option 
-    "copy-external-resources", true by default
-  * [dtbook-to-zedai] Fixed issue 328: adding dc:type to dtbook makes it fail
-  * [dtbook-to-zedai] Fixed issue 343: clean up console output of dtbook to 
-    zedai
-  * [dtbook-utils] Add MathML resources to DTBook fileset
-  * [dtbook-validator] validator checks that input documents are well-formed
-  * [epub3-nav-utils] fixed playOrder for NCX (navPoints, pageTargets and 
-    navTarget)
-  * [epub3-nav-utils] always use full clock values in package doc
-  * [epub3-nav-utils] added default navLabel in NCX based on language 
-    attribute
-  * [epub3-nav-utils] relativized landmarks to package document base URI
-  * [epub3-nav-utils] Fixed issue 352: Generated ToC was incomplete
-  * [file-utils] new functions: `pf:is-absolute`, `pf:is-relative`,
-    `pf:get-path`, 
-    `pf:replace-path`, `pf:unescape-uri`
-  * [file-utils] new function: `pf:file-exists` (implemented in Java)
-  * [file-utils] Fixed issue 318: make `pf:normalize-uri` normalize invalid 
-    characters
-  * [file-utils] added URL normalization
-  * [file-utils] added java-base copy-resource step and service
-  * [file-utils] Fixed issue 314: removed `pf:percent-decode`
-  * [file-utils] added `px:tempdir` step for creating temporary directories 
-    inside a given directory
-  * [file-utils] Fixed issue 354: `pf:file-exist` now returns `true` on an
-    empty path
-  * [fileset-utils] Fixed issue 319: `px:fileset-store` should return the 
-    stored fileset
-  * [fileset-utils] `px:fileset-store`: store binary files, don't omit xml 
-    declaration, don't store files with @media-type='text/xml' as text
-  * [fileset-utils] make p:fileset-store indent XML docs
-  * [fileset-utils] `px:fileset-store`: added a 'fail-on-error' option that
-    can be set to false to keep processing the fileset if an error occurs
-  * [fileset-utils] `px:fileset-store`: the returned fileset contains only the 
-    resources that have been stored successfully
-  * [fileset-utils] `px:fileset-add-entry`: normalized input href. if the file 
-    already exists in the fileset; delete the existing entry
-  * [fileset-utils] `px:fileset-filter`: support for the glob characters `*`
-    and `?` in the href option
-  * [fileset-utils] `px:fileset-load`: normalized base URIs of in-memory 
-    documents
-  * [html-to-epub3] Fixed issue 316: the conversion ignores missing resources
-  * [html-to-epub3] Fixed issue 347: properly port Ruby content
-  * [html-to-epub3] Fixed issue 348: support `data:` URIs
-  * [html-utils] html-id-fixer: add IDs to headings and sections
-  * [html-utils] html-to-fileset: compute the resource fileset of an XHTML 
-    document
-  * [html-utils] better support for SVG and MathML
-  * [html-utils] Fixed issue 301: original URIs of CSS resources are 
-    resolved properly
-  * [html-utils] Fixed issue 310: make html5 upgrader copy through non-html  
-    elements
-  * [html-utils] Fixed issue 349: `px:html-load` now performs namespace
-    fixup
-  * [html-utils] Fixed issue 355: `px:html-load` supports non-UTF-8 encodings
-  * [mediaoverlay-utils] preserve metadata when upgrading from older SMIL 
-    versions
-  * [mediatype-utils] improved `px:mediatype-detect` performance
-  * [mediatype-utils] Added XSLT functions for mediatype detection
-  * [metadata-utils] Fixed issue 328: MODS metadata generation bug fix
-  * [nimas-fileset-validator] 'check-images' option set as boolean type
-  * [nimas-fileset-validator] validator checks that input documents are  
-    well-formed
-  * [nimas-fileset-validator] Fixed issue 341: NIMAS validator schema update
-  * [validation-utils] added validation-status utility. Given one or more 
-    validation reports, it outputs validation status XML.
-  * [validation-utils] Added utility to check for well-formed XML files
-  * [zedai-to-html] Fixed issue 356: correctly convert page breaks within 
-    lists
-  * [zedai-to-epub3] Fixed issue 309: use the revamped HTML chunking from
-    `html-utils`. Also affects `dtbook-to-epub3` and `daisy3-to-epub3`.
-  * [zedai-to-pef] Added support for running headers and footers
-  * [zip-utils] Fixed issue 304: file entry names in zip files are now 
-    percent decoded
-  * Closed issue 238: ported XSLT unit tests to XSpec
 
 * Web UI
-  * [NEW] ability to delete jobs using a button in the jobs list
-  * [NEW] customizable landing page and title like through appearance settings
-  * [NEW] support for custom about pages (just create about.html in the root 
-    dir)
-  * [NEW] "download log" button when web ui fails to start
-  * User data (DB, logs) is now set to a separate user directory 
-  * Fixed issue 300: web ui file upload under windows appears to hang
-  * Fixed issue 302: cancelled file uploads count negatively towards file 
-    upload count
-  * Fixed issue 303: web ui running daisy 202 to epub 3: temp files persist
-  * Fixed issue 307: namespaced script ids not working
-  * Fixed bug: first job execution message is not displayed
-  * Fixed bug: sequence input ports didn't work with multiple documents
-  * Filenames are no longer encoded using windows 8.3 encoding
-  * Fixed maintenance form (dynamic validation and disabled button)
-  * Fixed file uploads and file sizes in IE7
-  * Fixed boolean widget
-  * Fixed problems with createUser form
-  * Closed issue 291: Multiple file selection widget looks better on small
-    screens
 
 * Java Client Library
-  * [NEW] support for deleting jobs
-  * [NEW] support for output ports in job requests
-  * [NEW] scripts list are now sorted
-
 
 The full list of changes can be found at:
  http://code.google.com/p/daisy-pipeline/wiki/ReleaseNotes
