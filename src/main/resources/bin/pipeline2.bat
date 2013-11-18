@@ -208,7 +208,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     call %PIPELINE2_PROFILER_SCRIPT%
 
 :RUN
-    SET OPTS=-Dorg.daisy.pipeline.ws.local=true -Dorg.daisy.pipeline.ws.authentication=false
+    SET OPTS=-Dorg.daisy.pipeline.ws.localfs=true -Dorg.daisy.pipeline.ws.authentication=false
     SET MAIN=org.apache.felix.main.Main
     SET SHIFT=false
 
@@ -220,12 +220,12 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     goto :EXECUTE
 
 :EXECUTE_REMOTE
-    SET OPTS=-Dorg.daisy.pipeline.ws.local=false -Dorg.daisy.pipeline.ws.authentication=true
+    SET OPTS=-Dorg.daisy.pipeline.ws.localfs=false -Dorg.daisy.pipeline.ws.authentication=true
     shift
     goto :RUN_LOOP
 
 :EXECUTE_LOCAL
-    SET OPTS=-Dorg.daisy.pipeline.ws.local=true -Dorg.daisy.pipeline.ws.authentication=false
+    SET OPTS=-Dorg.daisy.pipeline.ws.localfs=true -Dorg.daisy.pipeline.ws.authentication=false
     shift
     goto :RUN_LOOP
 
