@@ -190,6 +190,7 @@ Section -JRECheck SEC00-1
     ;Set JAVA_HOME env var
     ; HKLM (all users) vs HKCU (current user) defines
     WriteRegExpandStr ${env_hklm} JAVA_HOME "$JAVA_HOME" 
+    ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$JAVA_HOME\bin"  
     ; make sure windows knows about the change
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
