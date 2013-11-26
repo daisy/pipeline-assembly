@@ -84,6 +84,14 @@ Changes since the last release:
 * Modules
 
 * Web UI
+      * support for running behind proxies (no absolute URLs; the absolute URL to the webui must be set in e-mail settings if you want to enable e-mail support). * Added support for hiding scripts from guests and public users.
+      * Support for the new job result API where you can download individual files. when there's only one file in the results, the main download button downloads that file directly. Otherwise it downloads the zip.
+      * support for HTML reports that are displayed inline on the job status page when the job finishes.
+      * Temporary and result directories are not handled by the Web UI anymore; they are handled by the Pipeline 2 engine. No need to configure them in the UI anymore.
+      * Ability to compile the webui in a continous integration environment (i.e. Jenkins)
+      * Renamed project from "pipeline2-webui" to "daisy-pipeline-webui"
+      * Split desktop and server into separate maven projects (desktop depends on server)
+      * Packaging of the distributables are now performed by the "pipeline-assembly" project
 
 * Java Client Library
 
