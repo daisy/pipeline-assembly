@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.7 - November 15, 2013
+              DAISY Pipeline 2 - 1.7 - December 13, 2013
 ==============================================================================
 
 
@@ -42,12 +42,14 @@ The package includes:
    * daisy3-to-epub3 - Convert a DAISY 3 fileset to EPUB 3 
    * dtbook-to-epub3 - Convert a DTBook XML document to EPUB 3
    * dtbook-to-html - Convert a DTBook XML document to XHTML5
+   * dtbook-to-pef - Convert a DTBook XML document to PEF Braille
    * dtbook-to-zedai - Convert a DTBook XML document to ZedAI XML
    * dtbook-validator - Validate a DTBook 2005-3 XML document
-   * html-to-epub3 - Convert a single HTML document to EPUB 3
+   * html-to-epub3 - Convert (an) HTML document(s) to EPUB 3
    * nimas-fileset-validator - Validate a NIMAS Fileset
    * zedai-to-epub3 - Convert a ZedAI document to EPUB 3
    * zedai-to-html - Convert a ZedAI document to XHTML5
+   * zedai-to-pef - Convert a ZedAI document to PEF Braille
  - a set of sample documents to test the provided conversions, in the
    "samples" directory
 
@@ -62,28 +64,62 @@ Changes since the last release:
 
 
 * Command-line tool
-        * Now the results are always get through a zipped file with the --output option
-        * Handle VALIDATION_FAIL status 
-        * Fix single result handling
-        * Move .lastid to the appropriate folder ( "%APP_DATA%/Daisy Pipeline 2/dp2/" in windows; "~/.daisy-pipeline/dp2" in linux and "~/Library/Application Support/DAISY Pipeline 2/dp2" in OS X
+  * Now the results are always get through a zipped file with the --output option
+  * Handle VALIDATION_FAIL status 
+  * Fix single result handling
+  * Move .lastid to the appropriate folder ( "%APP_DATA%/Daisy Pipeline 2/dp2/" in windows; "~/.daisy-pipeline/dp2" in linux and "~/Library/Application Support/DAISY Pipeline 2/dp2" in OS X
+	* Added suport for multiple-valued options
 
 * Web API
-        * /scripts/$ID : All the outputs are filtered out
-        * /scripts/$ID : Order of options preserved from the script when building the xml representation.
-        * alive: @mode disappears in favor of @localfs=(true|false)
-        * jobs/$ID : The file size is returned along with the result files (not for the zip files).
-        * jobs/$ID :  When the local fs is accessible the actual location is returned in the result xml response. This can be used to fetch the results from disk bypassing the web ui.
-        * MD5 and file size added to the http headers when a file is returned.
+  * /scripts/$ID : All the outputs are filtered out
+  * /scripts/$ID : Order of options preserved from the script when building the xml representation.
+  * alive: @mode disappears in favor of @localfs=(true|false)
+  * jobs/$ID : The file size is returned along with the result files (not for the zip files).
+  * jobs/$ID :  When the local fs is accessible the actual location is returned in the result xml response. This can be used to fetch the results from disk bypassing the web ui.
+  * MD5 and file size added to the http headers when a file is returned.
+  * Added support for multiple-valued options.
+        
 
 * Framework
-        * When a validation fails during the job execution the VALIDATION_FAIL status is returned. (Currently only working with validation scripts but all the scripts that validate outputs could implement this functionality in the future).
-        * Update to guava version 15.0
-        * Custom logger avoids creating default log file and duplicating framework logging lines.
-        * The framework controls all the outputs as it used to do in remote mode and they have to be fetched through the web api
+  * When a validation fails during the job execution the VALIDATION_FAIL status is returned. (Currently only working with validation scripts but all the scripts that validate outputs could implement this functionality in the future).
+  * Update to guava version 15.0
+  * Custom logger avoids creating default log file and duplicating framework logging lines.
+  * The framework controls all the outputs as it used to do in remote mode and they have to be fetched through the web api
+	* Fixed size limits for inputs and options.
 
 * Modules
+  * [NEW] asciimath-utils module wrapping ASCIIMathML.js
+  * [common-utils] addeed missing DTDs to catalogs
+  * [common-utils] px:assert: added test-count-min and test-count-max options
+  * [common-utils] new px:tokenize step
+  * [fileset-utils] px:fileset-store: store c:data documents as text
+  * [fileset-utils] px:fileset-store: don't systemtically indent XML
+  * [fileset-utils] px:fileset-store: store c:data documents as text
+  * [fileset-utils] px:fileset-store: support serialization options
+  * [fileset-utils] new px:fileset-rebase step
+  * [html-to-epub3] support multiple HTML documents as input
+  * [html-to-epub3] allow to provide custom metadata
+  * [html-to-epub3] improved HTML chunking
+  * [html-to-epub3] support empty page breaks in page lists
+  * [epub3-pub-utils] better metadata merging
+  * [zip-utils] new px:unzip-fileset step
+  * [zedai-to-pef] page numbering improvements (e.g. support `counter-reset: braille-page' in CSS)
+  * [zedai-to-pef] better whitespace handing (e.g. support `xml:space=preserve')
+  * [zedai-to-pef] update dependencies (liblouis, libhyphen dictionaries, etc.)
+  * [all] harmonized all URIs of public components
+  * [all] use fileset-utils for all file set loading
+  * [all] various fixes and improvements
 
 * Web UI
+  * support for running behind proxies (no absolute URLs; the absolute URL to the webui must be set in e-mail settings if you want to enable e-mail support).
+  * Added support for hiding scripts from guests and public users.
+  * Support for the new job result API where you can download individual files. when there's only one file in the results, the main download button downloads that file directly. Otherwise it downloads the zip.
+  * support for HTML reports that are displayed inline on the job status page when the job finishes.
+  * Temporary and result directories are not handled by the Web UI anymore; they are handled by the Pipeline 2 engine. No need to configure them in the UI anymore.
+  * Ability to compile the webui in a continous integration environment (i.e. Jenkins)
+  * Renamed project from "pipeline2-webui" to "daisy-pipeline-webui"
+  * Split desktop and server into separate maven projects (desktop depends on server)
+  * Packaging of the distributables are now performed by the "pipeline-assembly" project
 
 * Java Client Library
 
