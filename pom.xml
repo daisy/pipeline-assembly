@@ -860,7 +860,8 @@
                 <configuration>
                   <controlDir>target/filtered-resources/deb/DEBIAN</controlDir>
                   <timestamped>true</timestamped>
-                  <deb>target/daisy-pipeline2-${project.version}.deb</deb>
+                  <classifier>all</classifier>
+                  <deb>target/daisy-pipeline2_${project.version}_all.deb</deb>
                   <dataSet>
                     
                     <!-- ======== -->
