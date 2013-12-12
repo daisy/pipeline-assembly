@@ -66,6 +66,7 @@ Changes since the last release:
         * Handle VALIDATION_FAIL status 
         * Fix single result handling
         * Move .lastid to the appropriate folder ( "%APP_DATA%/Daisy Pipeline 2/dp2/" in windows; "~/.daisy-pipeline/dp2" in linux and "~/Library/Application Support/DAISY Pipeline 2/dp2" in OS X
+	* Added suport for multiple-valued options
 
 * Web API
         * /scripts/$ID : All the outputs are filtered out
@@ -74,12 +75,15 @@ Changes since the last release:
         * jobs/$ID : The file size is returned along with the result files (not for the zip files).
         * jobs/$ID :  When the local fs is accessible the actual location is returned in the result xml response. This can be used to fetch the results from disk bypassing the web ui.
         * MD5 and file size added to the http headers when a file is returned.
+        * Added support for multiple-valued options.
+        
 
 * Framework
         * When a validation fails during the job execution the VALIDATION_FAIL status is returned. (Currently only working with validation scripts but all the scripts that validate outputs could implement this functionality in the future).
         * Update to guava version 15.0
         * Custom logger avoids creating default log file and duplicating framework logging lines.
         * The framework controls all the outputs as it used to do in remote mode and they have to be fetched through the web api
+	* Fixed size limits for inputs and options.
 
 * Modules
 
