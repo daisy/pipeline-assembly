@@ -594,7 +594,7 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>cli</artifactId>
-                  <version>1.7.0-SNAPSHOT</version>
+                  <version>1.7</version>
                   <type>zip</type>
                   <outputDirectory>${project.build.directory}/cli</outputDirectory>
                 </artifactItem>
@@ -1215,9 +1215,9 @@
                   <artifactItems>
                     <artifactItem>
                       <!-- required by SPI-Fly -->
-                      <groupId>asm</groupId>
+                      <groupId>org.ow2.asm</groupId>
                       <artifactId>asm-all</artifactId>
-                      <version>3.2</version>
+                      <version>4.0</version>
                     </artifactItem>
                     <artifactItem>
                       <!-- required by jstyleparser -->
@@ -1241,12 +1241,12 @@
                     <artifactItem>
                       <groupId>org.apache.aries.spifly</groupId>
                       <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-                      <version>0.4-SNAPSHOT</version>
+                      <version>1.0.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.apache.aries</groupId>
                       <artifactId>org.apache.aries.util</artifactId>
-                      <version>0.5.0-SNAPSHOT</version>
+                      <version>1.0.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.libs</groupId>
@@ -1269,7 +1269,7 @@
                       <artifactId>jna</artifactId>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>ch.sbs</groupId>
+                      <groupId>org.daisy.bindings</groupId>
                       <artifactId>jhyphen</artifactId>
                     </artifactItem>
                   </artifactItems>
@@ -1298,7 +1298,7 @@
                     <artifactItem>
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>webui-desktop</artifactId>
-                      <version>1.7-SNAPSHOT</version>
+                      <version>1.7</version>
                       <type>zip</type>
                       <overWrite>true</overWrite>
                       <outputDirectory>target/webui</outputDirectory>
@@ -1431,17 +1431,6 @@
       <id>com.springsource.repository.bundles.external</id>
       <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
       <url>http://repository.springsource.com/maven/bundles/external</url>
-    </repository>
-    <!-- texhyphj / aries / spifly -->
-    <repository>
-      <id>bertfrees-github-snapshots</id>
-      <url>http://bertfrees.github.com/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
     </repository>
   </repositories>
 </project>
