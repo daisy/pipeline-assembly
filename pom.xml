@@ -794,6 +794,7 @@
         <pipeline.ws.authenticate>false</pipeline.ws.authenticate>
         <pipeline.ws.clientkey>clientid</pipeline.ws.clientkey>
         <pipeline.ws.clientsecret>supersecret</pipeline.ws.clientsecret>
+        <pipeline.cli.starting>false</pipeline.cli.starting>
         <pipeline.cli.timeout>100</pipeline.cli.timeout>
         <pipeline.cli.debug>false</pipeline.cli.debug>
       </properties>
