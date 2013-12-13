@@ -46,12 +46,9 @@ case "$1" in
         
         rm -rf ${pipeline.log}
         
-        # remove all data except for the database
+        # remove data
         
-        if [ -e ${pipeline.data} ]; then
-            find ${pipeline.data} -depth -maxdepth 2 -type d -exec sh -c \
-                'case ${pipeline.data}/db in {}*) ;; *) rm -rf {} ;; esac' -- {} \;
-        fi
+        rm -rf ${pipeline.data}
         
     ;;
     
@@ -67,10 +64,6 @@ case "$1" in
         for ext in '"~' .bak .keep .tmp .old .bak.old;  do
             rm -f $SYSTEM_PROPERTIES$ext $CLI_CONFIG_YML$ext
         done
-        
-        # remove database
-        
-        rm -rf ${pipeline.data}
         
         # clear debconf database
         
