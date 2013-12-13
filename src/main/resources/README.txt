@@ -103,6 +103,9 @@ Changes since the last release:
   * [html-to-epub3] support empty page breaks in page lists
   * [epub3-pub-utils] better metadata merging
   * [zip-utils] new px:unzip-fileset step
+  * [zedai-to-pef] page numbering improvements (e.g. support `counter-reset: braille-page' in CSS)
+  * [zedai-to-pef] better whitespace handing (e.g. support `xml:space=preserve')
+  * [zedai-to-pef] update dependencies (liblouis, libhyphen dictionaries, etc.)
   * [all] harmonized all URIs of public components
   * [all] use fileset-utils for all file set loading
   * [all] various fixes and improvements
