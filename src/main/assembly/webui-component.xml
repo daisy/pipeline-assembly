@@ -4,7 +4,7 @@
     
     <!-- non-executable files -->
     <fileSet>
-      <directory>target/webui</directory>
+      <directory>target/webui/daisy-pipeline-webui</directory>
       <excludes>
         <exclude>uninstall</exclude>
         <exclude>uninstall.bat</exclude>
@@ -16,7 +16,7 @@
     
     <!-- executable files -->
     <fileSet>
-      <directory>target/webui</directory>
+      <directory>target/webui/daisy-pipeline-webui</directory>
       <includes>
         <include>uninstall</include>
         <include>uninstall.bat</include>
