@@ -86,7 +86,7 @@
   </dependencyManagement>
   <build>
     <extensions>
-      <!-- 
+      <!--
            Version 2.2 has issues with Maven 3.0.3:
            java.lang.NoSuchMethodError: org.apache.maven.wagon.shared.http4.AbstractHttpClientWagon.getReadTimeout()I
            Tweak taken from:  http://code.google.com/p/phloc-parent-pom/source/browse/trunk/pom.xml?r=47
@@ -238,7 +238,7 @@
                   <groupId>org.eclipse</groupId>
                   <artifactId>org.eclipse.gemini.jpa</artifactId>
                   <version>1.0.0.RELEASE</version>
-                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142 
+                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142
                                     which doesn't seem to be accepted by Felix (JarInputStream) -->
                 </artifactItem>
                 <artifactItem>
@@ -619,7 +619,7 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zip-utils</artifactId>
                 </artifactItem>
-				<artifactItem>
+		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>zedai-break-detection</artifactId>
 		</artifactItem>
@@ -636,12 +636,16 @@
 		  <artifactId>nlp-common</artifactId>
 		</artifactItem>
 		<artifactItem>
-			<groupId>org.daisy.pipeline.modules</groupId>
-            <artifactId>css-speech</artifactId>
-        </artifactItem>
+		  <groupId>org.daisy.pipeline.modules</groupId>
+		  <artifactId>css-speech</artifactId>
+		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>ruled-lexer</artifactId>
+		</artifactItem>
+		<artifactItem>
+		  <groupId>org.daisy.pipeline.modules</groupId>
+		  <artifactId>omnilang-lexer</artifactId>
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
@@ -681,6 +685,16 @@
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
+		  <artifactId>tts-adapter-attbin</artifactId>
+		</artifactItem>
+		<!-- Uncomment what follows if the ATT's sdk is installed: -->
+		<!-- <artifactItem> -->
+		<!--   <groupId>org.daisy.pipeline.modules</groupId> -->
+		<!--   <artifactId>tts-adapter-attnative</artifactId> -->
+		<!--   <classifier>Linux</classifier> -->
+		<!-- </artifactItem> -->
+		<artifactItem>
+		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>tts-common</artifactId>
 		</artifactItem>
 		<artifactItem>
@@ -691,7 +705,7 @@
 		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>audio-encoder-lame</artifactId>
 		</artifactItem>
-      </artifactItems>
+	      </artifactItems>
             </configuration>
           </execution>
           <execution>
@@ -783,7 +797,7 @@
     <profile>
       <id>dev-launcher</id>
       <build>
-        <plugins>      
+        <plugins>
           <plugin>
             <artifactId>maven-help-plugin</artifactId>
             <version>2.1.1</version>
@@ -967,7 +981,7 @@
                   <classifier>all</classifier>
                   <deb>target/daisy-pipeline2_${project.version}_all.deb</deb>
                   <dataSet>
-                    
+
                     <!-- ======== -->
                     <!-- binaries -->
                     <!-- ======== -->
@@ -1012,7 +1026,7 @@
                       <src>target/filtered-resources/cli/config.yml</src>
                       <dst>${pipeline.home}/cli/config.yml</dst>
                     </data>
-                    
+
                     <!-- ====== -->
                     <!-- daemon -->
                     <!-- ====== -->
@@ -1025,7 +1039,7 @@
                         <filemode>755</filemode>
                       </mapper>
                     </data>
-                    
+
                     <!-- =================== -->
                     <!-- configuration files -->
                     <!-- =================== -->
@@ -1074,7 +1088,7 @@
                       <src>src/main/deb/etc/default/pipeline2d</src>
                       <dst>/etc/default/pipeline2d</dst>
                     </data>
-                    
+
                     <!-- ============== -->
                     <!-- system bundles -->
                     <!-- ============== -->
@@ -1121,7 +1135,7 @@
                         <type>perm</type>
                       </mapper>
                     </data>
-                    
+
                     <!-- ======= -->
                     <!-- modules -->
                     <!-- ======= -->
@@ -1133,7 +1147,7 @@
                         <type>perm</type>
                       </mapper>
                     </data>
-                    
+
                     <!-- ========= -->
                     <!-- log files -->
                     <!-- ========= -->
@@ -1143,7 +1157,7 @@
                         <path>${pipeline.log}</path>
                       </paths>
                     </data>
-                    
+
                   </dataSet>
                 </configuration>
               </execution>
@@ -1495,7 +1509,7 @@
     </profile>
   </profiles>
   <repositories>
-    <!-- 
+    <!--
       Restlet is not on Maven Central
       https://github.com/restlet/restlet-framework-java/issues/481
      -->
