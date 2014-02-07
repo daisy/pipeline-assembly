@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.7 - December 16, 2013
+              DAISY Pipeline 2 - 1.7.1 - February 13, 2013
 ==============================================================================
 
 
@@ -60,7 +60,15 @@ The package includes:
 
 The package includes the 1.7 version of the project.
 
-Changes since the last release:
+### Changes in v1.7.1
+
+* Modules
+  * [epub3-nav-utils] Fix a regression in the page-list nav doc generation
+    The links to content documenbts are now properly resolved.
+* Web API
+  * Avoid raising an NPE when receiving an unknown option
+
+### Changes in v1.7
 
 
 * Command-line tool
