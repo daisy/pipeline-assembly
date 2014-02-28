@@ -9,10 +9,16 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.7.1-SNAPSHOT</version>
+  <version>1.7.1</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
+  <scm>
+    <connection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</connection>
+    <url>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</url>
+    <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
+    <tag>v1.7.1</tag>
+  </scm>
   <properties>
     <pipeline.version>1.7.1</pipeline.version>
   </properties>
