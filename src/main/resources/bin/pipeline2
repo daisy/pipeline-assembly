@@ -363,6 +363,15 @@ run() {
             JAVA_OPTS="$JAVA_DEBUG_OPTS $JAVA_OPTS"
             shift
             ;;
+        'shell')
+            GOGO_BUNDLES=$(cd "$PIPELINE2_BASE" && echo $(find system/felix/gogo -name '*.jar' 2>/dev/null | while read f; do echo "file:$f"; done))
+            if [ -z "$GOGO_BUNDLES" ]; then
+                warn "Shell could not be enabled"
+            else
+                FELIX_OPTS="${FELIX_OPTS} -Dfelix.auto.start.1=\"$GOGO_BUNDLES\""
+            fi
+            shift
+            ;;
     esac
 
     JAVA_ENDORSED_DIRS="${JAVA_HOME}/jre/lib/endorsed:${JAVA_HOME}/lib/endorsed:${PIPELINE2_HOME}/lib/endorsed"
@@ -379,7 +388,7 @@ run() {
     fi
     cd "$PIPELINE2_BASE"
 
-    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
+    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $FELIX_OPTS $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
 }
 
 main() {

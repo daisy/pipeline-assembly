@@ -44,8 +44,15 @@
       <directory>target/bundles/felix</directory>
       <outputDirectory>/system/felix</outputDirectory>
       <excludes>
-        <exclude>org.apache.felix.gogo*</exclude>
+        <exclude>org.apache.felix.org.apache.felix.gogo*</exclude>
       </excludes>
+    </fileSet>
+    <fileSet>
+      <directory>target/bundles/felix</directory>
+      <outputDirectory>/system/felix/gogo</outputDirectory>
+      <includes>
+        <include>org.apache.felix.org.apache.felix.gogo*</include>
+      </includes>
     </fileSet>
     <fileSet>
       <directory>target/bundles/libs</directory>
