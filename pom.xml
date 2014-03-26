@@ -817,6 +817,7 @@
                       <targetPath>resources</targetPath>
                       <filtering>true</filtering>
                       <includes>
+                        <include>bin/pipeline2</include>
                         <include>etc/config.properties</include>
                         <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
                         <include>etc/system.properties</include>
@@ -862,13 +863,18 @@
                     <!-- binaries -->
                     <!-- ======== -->
                     <data>
-                      <type>file</type>
-                      <src>target/filtered-resources/deb/opt/daisy-pipeline2/bin/pipeline2</src>
+                      <type>directory</type>
+                      <src>target/filtered-resources/resources/bin</src>
                       <mapper>
                         <type>perm</type>
                         <prefix>${pipeline.home}/bin</prefix>
                         <filemode>755</filemode>
                       </mapper>
+                    </data>
+                    <data>
+                      <type>file</type>
+                      <src>target/filtered-resources/deb${pipeline.home}/bin/debian.cfg</src>
+                      <dst>${pipeline.home}/bin/debian.cfg</dst>
                     </data>
                     <data>
                       <type>directory</type>
