@@ -1,0 +1,6 @@
+#!/bin/sh
+export PIPELINE_MAIN=org.daisy.pipeline.swt.launcher.Main
+if [[ "$OSTYPE" == "darwin"* ]]; then
+        JAVA_OPTS= $JAVA_OPTS" -XstartOnFirstThread "
+fi
+$(dirname $0)/pipeline2

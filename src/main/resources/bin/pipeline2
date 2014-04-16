@@ -47,6 +47,15 @@ if [ "x$JAVA_MAX_PERM_MEM" = "x" ]; then
     export JAVA_MAX_PERM_MEM
 fi
 
+#
+# Check and set the main class
+#
+
+if [ "x$PIPELINE_MAIN" = "x" ]; then
+    PIPELINE_MAIN=org.apache.felix.main.Main
+    export PIPELINE_MAIN 
+fi
+
 warn() {
     echo "${PROGNAME}: $*"
 }
@@ -320,7 +329,6 @@ init() {
 
 run() {
     OPTS="-Dorg.daisy.pipeline.ws.localfs=true -Dorg.daisy.pipeline.ws.authentication=false"
-    MAIN=org.apache.felix.main.Main
     case "$1" in
         # 'stop')
         #     MAIN=org.apache.karaf.main.Stop
@@ -363,7 +371,7 @@ run() {
     fi
     cd "$PIPELINE2_BASE"
 
-    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_HOME/etc/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
+    eval "\"$JAVA"\" $JAVA_OPTS  -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_HOME/etc/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $PIPELINE_MAIN "\"$@"\"
 }
 
 main() {
