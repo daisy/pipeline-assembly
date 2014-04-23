@@ -644,11 +644,6 @@
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-lexicon-sub</artifactId>
-		  <version>1.0.0-SNAPSHOT</version>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>ruled-lexer</artifactId>
 		</artifactItem>
 		<artifactItem>
@@ -690,7 +685,6 @@
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>tts-adapter-acapela</artifactId>
-		  <version>1.0.0-SNAPSHOT</version>
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
