@@ -688,10 +688,6 @@
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-adapter-sapicom</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>tts-adapter-attbin</artifactId>
 		</artifactItem>
 		<!-- Uncomment what follows if you have the ATT's sdk to build the artifact: -->
