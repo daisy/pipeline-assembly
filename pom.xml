@@ -391,8 +391,8 @@
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.libs</groupId>
-		  <artifactId>jnaerator-osgi</artifactId>
-		  <version>0.12-SNAPSHOT</version>
+		  <artifactId>jnaerator</artifactId>
+		  <version>0.11</version>
 		</artifactItem>
 		<artifactItem>
 		  <!-- required by jstyleparser -->
@@ -685,6 +685,10 @@
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
 		  <artifactId>tts-adapter-acapela</artifactId>
+		</artifactItem>
+		<artifactItem>
+ 		  <groupId>org.daisy.pipeline.modules</groupId>
+		  <artifactId>tts-adapter-sapinative</artifactId>
 		</artifactItem>
 		<artifactItem>
 		  <groupId>org.daisy.pipeline.modules</groupId>
