@@ -703,6 +703,7 @@
                       <arg value="startLevel=30"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
                       <arg value="prefix=pipeline"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
@@ -711,6 +712,7 @@
                       <arg value="startLevel=50"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
                       <arg value="prefix=modules"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
@@ -719,6 +721,7 @@
                       <arg value="startLevel=100"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
                       <arg value="prefix=frontend"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
@@ -727,6 +730,7 @@
                       <arg value="startLevel=50"/>
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
                       <arg value="prefix=braille"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                   </target>
                 </configuration>
