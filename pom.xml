@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.main</artifactId>
-      <version>4.0.3</version>
+      <version>4.2.1</version>
       <!-- <version>4.2.1</version> -->
     </dependency>
   </dependencies>
@@ -35,7 +35,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -108,6 +108,11 @@
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.main</artifactId>
                   <destFileName>felix.jar</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>launcher</artifactId>
+                  <destFileName>swt_main.jar</destFileName>
                 </artifactItem>
               </artifactItems>
             </configuration>
