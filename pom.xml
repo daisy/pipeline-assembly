@@ -20,7 +20,7 @@
     <tag>HEAD</tag>
   </scm>
   <properties>
-    <pipeline.version>1.7.2-SNAPSHOT</pipeline.version>
+    <pipeline.version>1.8-SNAPSHOT</pipeline.version>
   </properties>
   <dependencies>
     <dependency>
@@ -35,28 +35,28 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.8-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-aggregator</artifactId>
-        <version>1.7</version>
+        <version>1.8-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-aggregator</artifactId>
-        <version>1.7</version>
+        <version>1.8-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>script-utils-aggregator</artifactId>
-        <version>1.7.1</version>
+        <version>1.8-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -71,7 +71,7 @@
   </dependencyManagement>
   <build>
     <extensions>
-      <!-- 
+      <!--
            Version 2.2 has issues with Maven 3.0.3:
            java.lang.NoSuchMethodError: org.apache.maven.wagon.shared.http4.AbstractHttpClientWagon.getReadTimeout()I
            Tweak taken from:  http://code.google.com/p/phloc-parent-pom/source/browse/trunk/pom.xml?r=47
@@ -223,7 +223,7 @@
                   <groupId>org.eclipse</groupId>
                   <artifactId>org.eclipse.gemini.jpa</artifactId>
                   <version>1.0.0.RELEASE</version>
-                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142 
+                  <!-- Note: 1.1.0 requires EclipseLink org.eclipse.persistence.asm:3.3.1.v201206041142
                                     which doesn't seem to be accepted by Felix (JarInputStream) -->
                 </artifactItem>
                 <artifactItem>
@@ -387,10 +387,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>common-stax</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
                   <artifactId>common-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -408,10 +404,6 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>logging-appender</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>modules-api</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
@@ -679,7 +671,7 @@
     <profile>
       <id>dev-launcher</id>
       <build>
-        <plugins>      
+        <plugins>
           <plugin>
             <artifactId>maven-help-plugin</artifactId>
             <version>2.1.1</version>
@@ -863,7 +855,7 @@
                   <classifier>all</classifier>
                   <deb>target/daisy-pipeline2_${project.version}_all.deb</deb>
                   <dataSet>
-                    
+
                     <!-- ======== -->
                     <!-- binaries -->
                     <!-- ======== -->
@@ -908,7 +900,7 @@
                       <src>target/filtered-resources/cli/config.yml</src>
                       <dst>${pipeline.home}/cli/config.yml</dst>
                     </data>
-                    
+
                     <!-- ====== -->
                     <!-- daemon -->
                     <!-- ====== -->
@@ -921,7 +913,7 @@
                         <filemode>755</filemode>
                       </mapper>
                     </data>
-                    
+
                     <!-- =================== -->
                     <!-- configuration files -->
                     <!-- =================== -->
@@ -970,7 +962,7 @@
                       <src>src/main/deb/etc/default/pipeline2d</src>
                       <dst>/etc/default/pipeline2d</dst>
                     </data>
-                    
+
                     <!-- ============== -->
                     <!-- system bundles -->
                     <!-- ============== -->
@@ -1017,7 +1009,7 @@
                         <type>perm</type>
                       </mapper>
                     </data>
-                    
+
                     <!-- ======= -->
                     <!-- modules -->
                     <!-- ======= -->
@@ -1029,7 +1021,7 @@
                         <type>perm</type>
                       </mapper>
                     </data>
-                    
+
                     <!-- ========= -->
                     <!-- log files -->
                     <!-- ========= -->
@@ -1039,7 +1031,7 @@
                         <path>${pipeline.log}</path>
                       </paths>
                     </data>
-                    
+
                   </dataSet>
                 </configuration>
               </execution>
@@ -1402,7 +1394,7 @@
     </profile>
   </profiles>
   <repositories>
-    <!-- 
+    <!--
       Restlet is not on Maven Central
       https://github.com/restlet/restlet-framework-java/issues/481
      -->
