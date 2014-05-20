@@ -5,7 +5,7 @@
 ;   General Defines
 ;----------------------------------------------------------
 !define APPNAME "DAISY Pipeline 2"
-!define VERSION "${pipeline.version}"
+!define VERSION "${project.version}"
 !define COMPANYNAME "DAISY Consortium"
 !define DESCRIPTION "DAISY Pipeline 2 windows distribution"
 !define PRODUCT_WEB_SITE "http://www.daisy.org/pipeline2"
@@ -17,9 +17,9 @@
 !define PRODUCT_REG_KEY_UNINST "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 !define UNINSTALLER_NAME "Uninstall ${APPNAME}"
 !define REQUIRED_JAVA_VER "1.6"
- 
+
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
- 
+
 ;----------------------------------------------------------
 ;   Installer General Settings
 ;----------------------------------------------------------
@@ -64,7 +64,7 @@ var SMGROUP
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_REG_VALUENAME_STARTMENU}"
 
 ;----------------------------------------------------------
-;  Environ variables defines 
+;  Environ variables defines
 ;----------------------------------------------------------
 
 !define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
@@ -101,7 +101,7 @@ var SMGROUP
 ; ---- Uninstaller Pages ----
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
- 
+
 Function CheckInstDirReg
   ; Disable the directory chooser if it's an upgrade
   ReadRegStr $R0 ${PRODUCT_REG_ROOT} "${PRODUCT_REG_KEY}" "${PRODUCT_REG_VALUENAME_INSTDIR}"
@@ -134,7 +134,7 @@ FunctionEnd
 
 
 ;----------------------------------------------------------
-;  Admin check 
+;  Admin check
 ;----------------------------------------------------------
 !macro VerifyUserIsAdmin
 UserInfo::GetAccountType
@@ -156,15 +156,15 @@ InstType /COMPONENTSONLYONCUSTOM
 ;   Initialization Callback
 ;----------------------------------------------------------
 
- 
- 
+
+
 function .onInit
 	setShellVarContext all
 	!insertmacro VerifyUserIsAdmin
 	; check the user priviledges
 	!insertmacro MULTIUSER_INIT
 functionEnd
- 
+
 ;----------------------------------------------------------
 ;   JRE Check
 ;----------------------------------------------------------
@@ -177,7 +177,7 @@ Section -JRECheck SEC00-1
   DetailPrint "Checking JRE version..."
   ReadRegStr $JAVA_VER HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" CurrentVersion
   StrCmp "" "$JAVA_VER" JavaNotPresent CheckJavaVersion
-  
+
   CheckJavaVersion:
     ;First check version number
     ${VersionConvert} $JAVA_VER "" $R1
@@ -189,24 +189,24 @@ Section -JRECheck SEC00-1
     DetailPrint "Found a compatible JVM ($JAVA_VER)"
     ;Set JAVA_HOME env var
     ; HKLM (all users) vs HKCU (current user) defines
-    WriteRegExpandStr ${env_hklm} JAVA_HOME "$JAVA_HOME" 
-    ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$JAVA_HOME\bin"  
+    WriteRegExpandStr ${env_hklm} JAVA_HOME "$JAVA_HOME"
+    ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$JAVA_HOME\bin"
     ; make sure windows knows about the change
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
     DetailPrint "JAVA_HOME set to $JAVA_HOME\bin"
     Goto End
-  
+
   JavaTooOld:
         messageBox mb_iconstop "Java version too old. Please install Java JRE ${REQUIRED_JAVA_VER} or greater"
         setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
         quit
-  
+
   JavaNotPresent:
         messageBox mb_iconstop "Java JRE not Found. Please install Java JRE ${REQUIRED_JAVA_VER} or greater"
         setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
         quit
-  
+
   End:
 SectionEnd
 
@@ -214,19 +214,19 @@ SectionEnd
 ;   Main Section
 ;----------------------------------------------------------
 
-section -Main SEC01 
+section -Main SEC01
 	setOutPath $INSTDIR
 	SetOverwrite on
-	file ./logo.ico 
+	file ./logo.ico
 	writeUninstaller "$INSTDIR\uninstall.exe"
 	#setOutPath "$INSTDIR\${PROJECT_ARTIFACT_ID}"
- 
+
 	#Copy the whole daisy-pipeline dir
 	file /r "${PROJECT_BUILD_DIR}\pipeline2-${VERSION}-webui-desktop\daisy-pipeline"
 
-	############### 
+	###############
 	# Registry information for add/remove programs
-	############### 
+	###############
 
 	WriteRegStr ${PRODUCT_REG_ROOT} "${PRODUCT_REG_KEY_UNINST}${COMPANYNAME} ${APPNAME}" "DisplayName" "${APPNAME}"
 	WriteRegStr ${PRODUCT_REG_ROOT} "${PRODUCT_REG_KEY_UNINST}${COMPANYNAME} ${APPNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
@@ -244,8 +244,8 @@ section -Main SEC01
 	WriteRegStr ${PRODUCT_REG_ROOT} "${PRODUCT_REG_KEY}" "${PRODUCT_REG_VALUENAME_HOMEDIR}" "$INSTDIR\daisy-pipeline"
 	#Update path env variable
 
-	${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\daisy-pipeline\cli"  
-	${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\daisy-pipeline\bin"  
+	${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\daisy-pipeline\cli"
+	${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\daisy-pipeline\bin"
 	; make sure windows knows about the change
 	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 sectionEnd
@@ -266,42 +266,42 @@ SectionEnd
 ;----------------------------------------------------------
 ;   Uninstaller
 ;----------------------------------------------------------
- 
+
 function un.onInit
 	SetShellVarContext all
 	!insertmacro VerifyUserIsAdmin
 functionEnd
- 
+
 section "uninstall"
- 
+
 	# Remove Start Menu launcher
 	delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
 	rmDir "$SMPROGRAMS\${APPNAME}\uninstall.lnk"
-	 
+
 	# Remove files
 	rmDir /r "$INSTDIR\daisy-pipeline"
 	#Remove data dir
-	ReadEnvStr $0 APPDATA 
+	ReadEnvStr $0 APPDATA
 	rmDir /r "$0\DAISY Pipeline 2"
 
-	#delete conf file	
+	#delete conf file
 	delete $INSTDIR\application.conf
-	#delete logo 
+	#delete logo
 	delete $INSTDIR\logo.ico
- 
+
 	# Always delete uninstaller as the last action
 	delete $INSTDIR\uninstall.exe
- 
+
 	# Try to remove the install directory - this will only happen if it is empty
 	rmDir $INSTDIR
- 
+
 	# Remove uninstaller information from the registry
 	DeleteRegKey ${PRODUCT_REG_ROOT} "${PRODUCT_REG_KEY_UNINST}${COMPANYNAME} ${APPNAME}"
-	#Remove pipeline home 
+	#Remove pipeline home
 	DeleteRegKey ${PRODUCT_REG_ROOT} "Software\${APPNAME}"
 	#Remove cli for the path
-	
-	${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\daisy-pipeline\cli"  
-	${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\daisy-pipeline\bin"  
+
+	${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\daisy-pipeline\cli"
+	${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\daisy-pipeline\bin"
 sectionEnd

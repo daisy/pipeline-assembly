@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.7.2-SNAPSHOT</version>
+  <version>1.8-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -19,9 +19,6 @@
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-  <properties>
-    <pipeline.version>1.8-SNAPSHOT</pipeline.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -618,7 +615,7 @@
                 <filter>src/main/assembly/dist.properties</filter>
               </filters>
               <appendAssemblyId>false</appendAssemblyId>
-              <finalName>pipeline2-${pipeline.version}</finalName>
+              <finalName>pipeline2-${project.version}</finalName>
             </configuration>
           </execution>
         </executions>
@@ -1326,7 +1323,7 @@
                     <filter>src/main/assembly/dist.properties</filter>
                   </filters>
                   <appendAssemblyId>false</appendAssemblyId>
-                  <finalName>pipeline2-${pipeline.version}-webui-desktop</finalName>
+                  <finalName>pipeline2-${project.version}-webui-desktop</finalName>
                 </configuration>
               </execution>
             </executions>
@@ -1339,7 +1336,7 @@
       <id>installer</id>
       <properties>
         <nsis.scriptfile>target/nsis/installer.nsi</nsis.scriptfile>
-        <nsis.output.file>pipeline2-webui-${pipeline.version}.exe</nsis.output.file>
+        <nsis.output.file>pipeline2-webui-${project.version}.exe</nsis.output.file>
       </properties>
       <build>
         <plugins>
