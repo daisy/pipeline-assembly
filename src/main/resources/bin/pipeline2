@@ -153,6 +153,13 @@ locateData() {
     fi
 }
 
+locateConfig() {
+    if [ "x$PIPELINE2_CONFIG" != "x" ]; then
+        warn "Ignoring predefined value for PIPELINE2_CONFIG"
+    fi
+    PIPELINE2_CONFIG=$PIPELINE2_HOME/etc
+}
+
 setupNativePath() {
     # Support for loading native libraries
     LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$PIPELINE2_BASE/lib:$PIPELINE2_HOME/lib"
@@ -292,15 +299,23 @@ init() {
     # Unlimit the number of file descriptors if possible
     unlimitFD
 
-    # Locate the Karaf home directory
-    locateHome
-
-    # Locate the Karaf base directory
-    locateBase
+    # On Debian, read predefined settings from file  
+    if [ -e $DIRNAME/debian.cfg ]; then
+        . $DIRNAME/debian.cfg
+    else
+        # Locate the Karaf home directory
+        locateHome
+        
+        # Locate the Karaf base directory
+        locateBase
     
-    # Locate the Karaf data directory
-    locateData
+        # Locate the Karaf data directory
+        locateData
 
+        # Locate the directory where Pipeline2 configuration files are stored
+        locateConfig
+    fi
+    
     # Setup the native library path
     setupNativePath
 
@@ -356,6 +371,7 @@ run() {
         PIPELINE2_HOME=`cygpath --path --windows "$PIPELINE2_HOME"`
         PIPELINE2_BASE=`cygpath --path --windows "$PIPELINE2_BASE"`
         PIPELINE2_DATA=`cygpath --path --windows "$PIPELINE2_DATA"`
+        PIPELINE2_CONFIG=`cygpath --path --windows "$PIPELINE2_CONFIG"`
         CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
         JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
         JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
@@ -363,7 +379,7 @@ run() {
     fi
     cd "$PIPELINE2_BASE"
 
-    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_HOME/etc/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
+    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
 }
 
 main() {
