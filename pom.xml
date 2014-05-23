@@ -65,25 +65,25 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-	<groupId>org.daisy.pipeline.modules</groupId>
-	<artifactId>nlp-modules-parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<type>pom</type>
-	<scope>import</scope>
+        <groupId>org.daisy.pipeline.modules</groupId>
+        <artifactId>nlp-modules-bom</artifactId>
+        <version>1.8-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
-	<groupId>org.daisy.pipeline.modules</groupId>
-	<artifactId>tts-modules-parent</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<type>pom</type>
-	<scope>import</scope>
+        <groupId>org.daisy.pipeline.modules</groupId>
+        <artifactId>tts-modules-bom</artifactId>
+        <version>1.8-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
-	<groupId>org.daisy.pipeline.modules</groupId>
-	<artifactId>audio-modules-parent</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<type>pom</type>
-	<scope>import</scope>
+        <groupId>org.daisy.pipeline.modules</groupId>
+        <artifactId>audio-modules-bom</artifactId>
+        <version>1.8-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -384,27 +384,27 @@
                   <artifactId>com.springsource.com.mysql.jdbc</artifactId>
                   <version>5.1.6</version>
                 </artifactItem>
-		<artifactItem>
-		  <groupId>net.java.dev.jna</groupId>
-		  <artifactId>jna</artifactId>
-		  <version>4.0.0</version>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.libs</groupId>
-		  <artifactId>jnaerator</artifactId>
-		  <version>0.11</version>
-		</artifactItem>
-		<artifactItem>
-		  <!-- required by jstyleparser -->
-		  <!-- TODO build our own bundle ? -->
-		  <groupId>org.apache.servicemix.bundles</groupId>
-		  <artifactId>org.apache.servicemix.bundles.antlr-runtime</artifactId>
-		  <version>3.2_2</version>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.libs</groupId>
-		  <artifactId>jstyleparser</artifactId>
-		</artifactItem>
+                <artifactItem>
+                  <groupId>net.java.dev.jna</groupId>
+                  <artifactId>jna</artifactId>
+                  <version>4.0.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>jnaerator</artifactId>
+                  <version>0.11</version>
+                </artifactItem>
+                <artifactItem>
+                  <!-- required by jstyleparser -->
+                  <!-- TODO build our own bundle ? -->
+                  <groupId>org.apache.servicemix.bundles</groupId>
+                  <artifactId>org.apache.servicemix.bundles.antlr-runtime</artifactId>
+                  <version>3.2_2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>jstyleparser</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -534,7 +534,7 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-to-epub3</artifactId>
                 </artifactItem>
-		<artifactItem>
+                <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-to-daisy3</artifactId>
                 </artifactItem>
@@ -622,96 +622,100 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zip-utils</artifactId>
                 </artifactItem>
-			<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>zedai-break-detection</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>html-break-detection</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>dtbook-break-detection</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>nlp-common</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>css-speech</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>ruled-lexer</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>omnilang-lexer</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>lexing</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>break-detection</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>epub3-to-ssml</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>dtbook-to-ssml</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>text-to-ssml</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>ssml-to-audio</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>zedai-to-ssml</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-adapter-espeak</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-adapter-acapela</artifactId>
-		</artifactItem>
-		<artifactItem>
- 		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-adapter-sapinative</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-adapter-attbin</artifactId>
-		</artifactItem>
-		<!-- Uncomment what follows if you have the ATT's sdk to build the artifact: -->
-		<!-- <artifactItem> -->
-		<!--   <groupId>org.daisy.pipeline.modules</groupId> -->
-		<!--   <artifactId>tts-adapter-attnative</artifactId> -->
-		<!--   <classifier>linux</classifier> -->
-		<!-- </artifactItem> -->
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>tts-common</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>audio-common</artifactId>
-		</artifactItem>
-		<artifactItem>
-		  <groupId>org.daisy.pipeline.modules</groupId>
-		  <artifactId>audio-encoder-lame</artifactId>
-		</artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>zedai-break-detection</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>html-break-detection</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>dtbook-break-detection</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>nlp-common</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>css-speech</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>ruled-lexer</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>omnilang-lexer</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>lexing</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>break-detection</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>epub3-to-ssml</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>dtbook-to-ssml</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>text-to-ssml</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>ssml-to-audio</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>zedai-to-ssml</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-espeak</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-acapela</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-osx</artifactId>
+                </artifactItem>
+                <artifactItem>
+                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-sapinative</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-attbin</artifactId>
+                </artifactItem>
+                <!-- Uncomment what follows if you have the ATT's sdk to build the artifact: -->
+                <!-- <artifactItem> -->
+                <!--   <groupId>org.daisy.pipeline.modules</groupId> -->
+                <!--   <artifactId>tts-adapter-attnative</artifactId> -->
+                <!--   <classifier>linux</classifier> -->
+                <!-- </artifactItem> -->
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-common</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>audio-common</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>audio-encoder-lame</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
