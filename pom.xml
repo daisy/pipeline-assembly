@@ -622,6 +622,7 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zip-utils</artifactId>
                 </artifactItem>
+
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zedai-break-detection</artifactId>
@@ -644,19 +645,19 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>ruled-lexer</artifactId>
+                  <artifactId>nlp-ruled-lexer</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>omnilang-lexer</artifactId>
+                  <artifactId>nlp-omnilang-lexer</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>lexing</artifactId>
+                  <artifactId>nlp-lexing</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>break-detection</artifactId>
+                  <artifactId>nlp-break-detection</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
