@@ -228,9 +228,14 @@
               <artifactItems>
                 <!-- Runtime dependencies -->
                 <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>commons-httpclient</artifactId>
-                  <version>3.1.0</version>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpclient-osgi</artifactId>
+                  <version>4.2.5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpcore-osgi</artifactId>
+                  <version>4.2.4</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -289,12 +294,12 @@
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>com.xmlcalabash</artifactId>
-                  <version>1.0.9</version>
+                  <version>1.0.18</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>saxon-he</artifactId>
-                  <version>9.4.0.7</version>
+                  <version>9.5.1.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -888,7 +893,7 @@
               <dependency>
                 <groupId>net.sf.saxon</groupId>
                 <artifactId>Saxon-HE</artifactId>
-                <version>9.4.0.7</version>
+                <version>9.5.1-5</version>
               </dependency>
             </dependencies>
           </plugin>
