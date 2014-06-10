@@ -8,13 +8,16 @@
 	<xsl:output method="text" encoding="UTF-8" name="text"/>
 	<xsl:template match="/*">
 		<xsl:for-each select="//pom:execution[pom:id=$id][not(ancestor::pom:profile)]/pom:configuration//pom:artifactItem">
-			<xsl:variable name="groupId" select="pom:groupId"/>
-			<xsl:variable name="artifactId" select="pom:artifactId"/>
+			<xsl:variable name="groupId" select="string(pom:groupId)"/>
+			<xsl:variable name="artifactId" select="string(pom:artifactId)"/>
+			<xsl:variable name="classifier" select="string(pom:classifier)"/>
 			<xsl:variable name="version" select="if (pom:version) then pom:version
 			                                     else /pom:project/pom:dependencyManagement//pom:dependency
-			                                       [pom:groupId=$groupId and pom:artifactId=$artifactId]/pom:version"/>
-			<xsl:variable name="classifier" select="pom:classifier"/>
-			<xsl:variable name="classifierSuffix" select="if ($classifier) then concat('-', $classifier) else ''"/>
+			                                       [string(pom:groupId)=$groupId and
+			                                        string(pom:artifactId)=$artifactId and
+			                                        string(pom:classifier)=$classifier]
+			                                       /pom:version[1]"/>
+			<xsl:variable name="classifierSuffix" select="if ($classifier!='') then concat('-', $classifier) else ''"/>
 			<xsl:result-document href="{concat($dest, '/', 'org.apache.felix.fileinstall-', $prefix, '-', $artifactId, $classifierSuffix, '.cfg')}" format="text">
 				<xsl:text>felix.fileinstall.start.level=</xsl:text>
 				<xsl:value-of select="$startLevel"/>
