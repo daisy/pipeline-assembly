@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.7.1 - February 13, 2013
+              DAISY Pipeline 2 - 1.8 - June 12, 2014
 ==============================================================================
 
 
@@ -24,7 +24,7 @@ DAISY Pipeline 1 project.
 For more information see:
 
  - the project page: http://www.daisy.org/pipeline2
- - the development site: http://code.google.com/p/daisy-pipeline/
+ - the development site: https://github.com/daisy
 
 
 
@@ -33,13 +33,14 @@ For more information see:
 
 The package includes:
 
- - a modular runtime framework (based on OSGi) for the Pipeline 2 modules
+ - a modular runtime framework for the Pipeline 2 modules
  - a command line interface to execute pipeline scripts, in the "cli"
    directory
  - dedicated launchers for the Pipeline 2 Web Service, in the "bin" directory
  - a set of processing modules providing the following conversions:
    * daisy202-to-epub3 - Convert a DAISY 2.02 fileset to EPUB3
    * daisy3-to-epub3 - Convert a DAISY 3 fileset to EPUB 3 
+   * dtbook-to-daisy3 - Convert a DTBook XML document to DAISY 3 (with TTS audio)
    * dtbook-to-epub3 - Convert a DTBook XML document to EPUB 3
    * dtbook-to-html - Convert a DTBook XML document to XHTML5
    * dtbook-to-pef - Convert a DTBook XML document to PEF Braille
@@ -53,94 +54,105 @@ The package includes:
  - a set of sample documents to test the provided conversions, in the
    "samples" directory
 
-
-
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.7 version of the project.
+The package includes the 1.8 version of the project.
 
-### Changes in v1.7.1
-
-* Modules
-  * [epub3-nav-utils] Fix a regression in the page-list nav doc generation
-    The links to content documenbts are now properly resolved.
-* Web API
-  * Avoid raising an NPE when receiving an unknown option
-
-### Changes in v1.7
-
-
-* Command-line tool
-  * Now the results are always get through a zipped file with the --output option
-  * Handle VALIDATION_FAIL status 
-  * Fix single result handling
-  * Move .lastid to the appropriate folder ( "%APP_DATA%/Daisy Pipeline 2/dp2/" in windows; "~/.daisy-pipeline/dp2" in linux and "~/Library/Application Support/DAISY Pipeline 2/dp2" in OS X
-	* Added suport for multiple-valued options
-
-* Web API
-  * /scripts/$ID : All the outputs are filtered out
-  * /scripts/$ID : Order of options preserved from the script when building the xml representation.
-  * alive: @mode disappears in favor of @localfs=(true|false)
-  * jobs/$ID : The file size is returned along with the result files (not for the zip files).
-  * jobs/$ID :  When the local fs is accessible the actual location is returned in the result xml response. This can be used to fetch the results from disk bypassing the web ui.
-  * MD5 and file size added to the http headers when a file is returned.
-  * Added support for multiple-valued options.
+### Changes in v1.8
         
-
 * Framework
-  * When a validation fails during the job execution the VALIDATION_FAIL status is returned. (Currently only working with validation scripts but all the scripts that validate outputs could implement this functionality in the future).
-  * Update to guava version 15.0
-  * Custom logger avoids creating default log file and duplicating framework logging lines.
-  * The framework controls all the outputs as it used to do in remote mode and they have to be fetched through the web api
-	* Fixed size limits for inputs and options.
+  * Update Calabash (XProc engine) to version 1.0.18
+  * Update Saxon (XSLT/XPath engine) to version 9.5.1.5
+  * Reorganize the framework's packages and projects
+  * The IP address the web service binds to is now configurable
+  * Catch logging statements from EclipseLink libraries
+  * Add a priority-management system to the job queue
+  * New utility class `BinaryFinder` to find executables in `$PATH`
 
 * Modules
-  * [NEW] asciimath-utils module wrapping ASCIIMathML.js
-  * [common-utils] addeed missing DTDs to catalogs
-  * [common-utils] px:assert: added test-count-min and test-count-max options
-  * [common-utils] new px:tokenize step
-  * [fileset-utils] px:fileset-store: store c:data documents as text
-  * [fileset-utils] px:fileset-store: don't systemtically indent XML
-  * [fileset-utils] px:fileset-store: store c:data documents as text
-  * [fileset-utils] px:fileset-store: support serialization options
-  * [fileset-utils] new px:fileset-rebase step
-  * [html-to-epub3] support multiple HTML documents as input
-  * [html-to-epub3] allow to provide custom metadata
-  * [html-to-epub3] improved HTML chunking
-  * [html-to-epub3] support empty page breaks in page lists
-  * [epub3-pub-utils] better metadata merging
-  * [zip-utils] new px:unzip-fileset step
-  * [zedai-to-pef] page numbering improvements (e.g. support `counter-reset: braille-page' in CSS)
-  * [zedai-to-pef] better whitespace handing (e.g. support `xml:space=preserve')
-  * [zedai-to-pef] update dependencies (liblouis, libhyphen dictionaries, etc.)
-  * [all] harmonized all URIs of public components
-  * [all] use fileset-utils for all file set loading
-  * [all] various fixes and improvements
+  * [NEW] dtbook-to-daisy3 script with TTS-based audio production
+  * [NEW] modules for TTS-based audio production, including adapters for:
+    Acapela TTS (v7), eSpeak, Microsoft Windows SAPI5, Max OS X Speech.
+    Note: the SAPI5 adapter requires the pre-installation of Visual C++
+    Redistributable Packages runtime components.
+  * [NEW] modules for NLP-based structure detection
+  * [NEW] EpubCheck adapter module (script not included in this release)
+  * [braille] Property for using an externally installed liblouisutdml only
+  * [braille] Remove `-brl-` prefix from Braille CSS properties
+  * [braille] Add CSS properties `border`, `margin`, `padding`, `left`, `right`
+  * [braille] Deprecate CSS "display: toc-item"
+  * [braille] Improve `pef:compare`
+  * [braille] css-core: allow functions in 'content' declarations
+  * [braille] liblouis-formatter: render TOC items more accurately
+  * [braille] Update to liblouis 2.5.4 and liblouis-java 1.2.0
+  * [braille] Add many tests
+  * [common-utils] New `px:message` step that allows to set logging levels
+  * [common-utils] New `px:i18n-translate` XPath function and XProc step used 
+    for localization
+  * [css-utils] New XSLT utility to retrieve a list of CSS stylesheet URIs from
+    a document
+  * [daisy202-to-epub3] New option to set the output file name
+  * [daisy202-to-epub3] The default EPUB file nameuse is now only based on the
+    identifier
+  * [daisy202-to-epub3] Copy more of the metadata to the resulting EPUB3
+  * [daisy202-to-epub3] Improved performance
+  * [daisy3-to-epub3] temporary files are no longer included in the result
+    directory
+  * [dtbook-to-epub3] temporary files are no longer included in the result
+    directory
+  * [dtbook-to-zedai] Better conversion of image descriptions in prodnotes
+  * [epub3-utils] Compatibility with the latest EPUB 3.0.1 specifications
+  * [epub3-utils] Allow non-linear spine items in `px:epub3-opf-create`
+  * [epub3-utils] Allow non-numbered page breaks (use a hyphen in the Nav Doc)
+  * [file-utils] Expand 8.3 file names during URL normalization
+  * [file-utils] Add a 2-args pf:normalize-uri that discards URI fragments
+  * [fileset-utils] Add support for "file:/...zip!/..." URIs
+  * [fileset-utils] Added "encode-as-base64" option to `px:unzip-fileset`
+  * [fileset-utils] Various fixes and improvements to `px:fileset-store`
+  * [html-utils] Rewrite of the HTML to XHTML5 upgrader + tests
+  * [html-utils] Simplify and improve the `html-to-fileset` implementation
+  * [html-to-epub3] Better conversion of `longdesc` and `aria-describedat`
+    attributes
+  * [html-to-epub3] DIAGRAM descriptions are now converted to HTML embedded
+    in hidden `iframe` elements
+  * [mediaoverlays-utils] improved performance
+  * [validation-utils] Added support for message severity and report metadata
+  * [zedai-to-epub3] temporary files are no longer included in the result
+    directory
+  * [zip-utils] don't create d:file elements for directories when unzipping
+  * [all] Integration of XSpec testing
+  * [all] Update custom XPath functions to the new Saxon 9.5 API
+  * [all] reorganize Maven POMs and BoMs
+  * [all] and other small fixes and improvements
 
 * Web UI
-  * support for running behind proxies (no absolute URLs; the absolute URL to the webui must be set in e-mail settings if you want to enable e-mail support).
-  * Added support for hiding scripts from guests and public users.
-  * Support for the new job result API where you can download individual files. when there's only one file in the results, the main download button downloads that file directly. Otherwise it downloads the zip.
-  * support for HTML reports that are displayed inline on the job status page when the job finishes.
-  * Temporary and result directories are not handled by the Web UI anymore; they are handled by the Pipeline 2 engine. No need to configure them in the UI anymore.
-  * Ability to compile the webui in a continous integration environment (i.e. Jenkins)
-  * Renamed project from "pipeline2-webui" to "daisy-pipeline-webui"
-  * Split desktop and server into separate maven projects (desktop depends on server)
-  * Packaging of the distributables are now performed by the "pipeline-assembly" project
+  * The Web UI now must run on the same file system as the Pipeline engine
+  * better file names for downloads
+  * [FIXED] incorrect content type was returned when downloading single files
+  * [FIXED] Unable to set password for newly created account
+  * [FIXED] Missing submit button in "add user" section of admin settings
+  * [FIXED] Web UI does not allow downloading results bigger than 100 MB
 
-* Java Client Library
+* CLI (Ruby implementation)
+  * Add job priority option and print it in the job status
+  * Add client priority options
+  * Add queue command and resource
+  * Add options to move jobs up and down the execution queue
 
-The full list of changes can be found at:
- http://code.google.com/p/daisy-pipeline/wiki/ReleaseNotes
+* Installation
+  * Change java version check from nsis installer
+  * A Debian package can now be produced from the assembly project
 
-
+See also 
+  * https://github.com/daisy/pipeline-tasks/issues?milestone=1&state=closed
+  * https://github.com/daisy/pipeline-issues/issues?milestone=1&state=closed
 
 4. Prerequisites                   
 ------------------------------------------------------------------------------
 
 Modules already include their dependent libraries and only require a recent
-Java environment (Java SE 6 or later).
+Java environment (Java SE 7 or later).
 
 To get the latest version of Java, go to http://www.java.com/
 
@@ -238,7 +250,7 @@ A complete user guide is available on the Pipeline 2 development wiki:
 ------------------------------------------------------------------------------
 
 Please refer to the issue tracker:
- http://code.google.com/p/daisy-pipeline/issues/list
+ https://github.com/daisy/pipeline-issues/issues
 
 
 8. Contact 

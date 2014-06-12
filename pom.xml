@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -32,56 +32,56 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-parent</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-aggregator</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-aggregator</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>script-utils-aggregator</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-parent</artifactId>
-        <version>1.7</version>
+        <version>1.8</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>nlp-modules-bom</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>tts-modules-bom</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>audio-modules-bom</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -742,7 +742,7 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>cli</artifactId>
-                  <version>1.7</version>
+                  <version>1.8</version>
                   <type>zip</type>
                   <outputDirectory>${project.build.directory}/cli</outputDirectory>
                 </artifactItem>
@@ -776,6 +776,13 @@
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+            <prependGroupId>true</prependGroupId>
+          </configuration>
+        </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
@@ -1442,7 +1449,7 @@
                     <artifactItem>
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>webui-desktop</artifactId>
-                      <version>1.7</version>
+                      <version>1.8</version>
                       <type>zip</type>
                       <overWrite>true</overWrite>
                       <outputDirectory>target/webui</outputDirectory>
