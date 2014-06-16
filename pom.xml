@@ -1157,7 +1157,7 @@
                       <type>directory</type>
                       <src>target/bundles/felix</src>
                       <excludes>
-                        org.apache.felix.gogo*
+                        org.apache.felix.org.apache.felix.gogo*
                       </excludes>
                       <mapper>
                         <prefix>${pipeline.home}/system/felix</prefix>
