@@ -128,8 +128,12 @@
               <outputDirectory>${project.build.directory}/bundles/bootstrap</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.apache.felix</groupId>
+                  <!-- <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.main</artifactId>
+                  <destFileName>felix.jar</destFileName> -->
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>launcher</artifactId>
+                  <version>1.0.0-SNAPSHOT</version>
                   <destFileName>felix.jar</destFileName>
                 </artifactItem>
               </artifactItems>
@@ -516,6 +520,51 @@
               </artifactItems>
             </configuration>
           </execution>
+        
+          <execution>
+            <id>copy-gui-bundles</id>
+            <goals>
+                <goal>copy</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
+                <artifactItems>
+                    <!-- for the GUI -->
+                    <artifactItem>
+                        <groupId>org.eclipse.swt</groupId>
+                        <artifactId>org.eclipse.swt</artifactId>
+                        <version>3.1</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.swt</groupId>
+                        <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+                        <version>3.1</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.jface</groupId>
+                        <!--  TODO change this artifact ID -->
+                        <artifactId>org.eclipse.jface</artifactId>
+                        <version>3.9</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.daisy.pipeline</groupId>
+                        <artifactId>gui</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.equinox</groupId>
+                        <artifactId>org.eclipse.equinox.common</artifactId>
+                        <version>3.6</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.equinox</groupId>
+                        <artifactId>org.eclipse.equinox.supplement</artifactId>
+                        <version>1.5</version>
+                    </artifactItem>
+                </artifactItems>
+            </configuration>
+        </execution>
+
           <execution>
             <id>copy-pipeline-bundles</id>
             <goals>
