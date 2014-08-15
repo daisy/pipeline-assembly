@@ -837,6 +837,42 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>epub3-to-ssml</artifactId>
                 </artifactItem>
+                
+                <!-- epub3-validator + dependencies -->
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>epub3-validator</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>epubcheck-adapter</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.idpf</groupId>
+                  <artifactId>epubcheck</artifactId>
+                  <version>4.0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                  <version>14.0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.commons</groupId>
+                  <artifactId>commons-compress</artifactId>
+                  <version>1.5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.jackson</groupId>
+                  <artifactId>jackson-core-asl</artifactId>
+                  <version>1.9.12</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.jackson</groupId>
+                  <artifactId>jackson-mapper-asl</artifactId>
+                  <version>1.9.12</version>
+                </artifactItem>
+                
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>epub3-to-daisy202</artifactId>
