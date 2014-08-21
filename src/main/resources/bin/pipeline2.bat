@@ -201,6 +201,8 @@ goto :EOF
 
 :CLASSPATH_END
 
+
+
 rem Execute the JVM or the load the profiler
 if "%PIPELINE2_PROFILER%" == "" goto :RUN
     rem Execute the profiler if it has been configured
@@ -208,7 +210,14 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     call %PIPELINE2_PROFILER_SCRIPT%
 
 :RUN
-    SET OPTS=-Dorg.daisy.pipeline.ws.localfs=true -Dorg.daisy.pipeline.ws.authentication=false
+    if "%PIPELINE2_AUTH%" == "" (
+        SET PIPELINE2_AUTH="-Dorg.daisy.pipeline.ws.authentication=false"
+    )
+    if "%PIPELINE2_LOCAL%" == "" (
+        SET PIPELINE2_LOCAL="-Dorg.daisy.pipeline.ws.localfs=true"
+    )
+    
+    SET OPTS="%PIPELINE2_LOCAL% %PIPELINE2_AUTH%"
     SET MAIN=org.apache.felix.main.Main
     SET SHIFT=false
 
