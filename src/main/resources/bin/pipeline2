@@ -146,7 +146,7 @@ locateBase() {
 locateData() {
     if [ "x$PIPELINE2_DATA" != "x" ]; then
         if [ ! -d "$PIPELINE2_DATA" ]; then
-            die "PIPELINE2_DATA is not valid: $PIPELINE2_DATA"
+                mkdir -p $PIPELINE2_DATA
         fi
     else
         PIPELINE2_DATA=$PIPELINE2_BASE/data
