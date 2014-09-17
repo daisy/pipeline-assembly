@@ -591,6 +591,10 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-tts</artifactId>
                 </artifactItem>
+		<artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>epub3-tts</artifactId>
+                </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-utils</artifactId>
