@@ -215,6 +215,14 @@ SectionEnd
 ;----------------------------------------------------------
 
 section -Main SEC01
+
+        
+	#Remove from previous versions 
+        DetailPrint "Removing old data..."
+	ReadEnvStr $0 APPDATA
+        IfFileExists "$0\DAISY Pipeline 2" +1 +2 #Because relative jumping instructions is a way of writing really mantainable code
+	rmDir /r "$0\DAISY Pipeline 2"
+
 	setOutPath $INSTDIR
 	SetOverwrite on
 	file ./logo.ico
