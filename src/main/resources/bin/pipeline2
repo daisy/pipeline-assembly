@@ -146,7 +146,7 @@ locateBase() {
 locateData() {
     if [ "x$PIPELINE2_DATA" != "x" ]; then
         if [ ! -d "$PIPELINE2_DATA" ]; then
-            die "PIPELINE2_DATA is not valid: $PIPELINE2_DATA"
+                mkdir -p $PIPELINE2_DATA
         fi
     else
         PIPELINE2_DATA=$PIPELINE2_BASE/data
@@ -334,8 +334,25 @@ init() {
 }
 
 run() {
-    OPTS="-Dorg.daisy.pipeline.ws.localfs=true -Dorg.daisy.pipeline.ws.authentication=false"
+    if [ "x$PIPELINE2_AUTH" = "x" ]; then
+            PIPELINE2_AUTH="-Dorg.daisy.pipeline.ws.authentication=false"
+            export PIPELINE2_AUTH 
+    else
+            PIPELINE2_AUTH="-Dorg.daisy.pipeline.ws.authentication=$PIPELINE2_AUTH"
+            export PIPELINE2_AUTH 
+
+    fi
+    if [ "x$PIPELINE2_LOCAL" = "x" ]; then
+            PIPELINE2_LOCAL="-Dorg.daisy.pipeline.ws.localfs=true"
+            export PIPELINE2_LOCAL
+    else
+            PIPELINE2_LOCAL="-Dorg.daisy.pipeline.ws.localfs=$PIPELINE2_LOCAL"
+            export PIPELINE2_LOCAL
+
+    fi
     MAIN=org.apache.felix.main.Main
+    OPTS="$PIPELINE2_LOCAL $PIPELINE2_AUTH"
+
     case "$1" in
         # 'stop')
         #     MAIN=org.apache.karaf.main.Stop
