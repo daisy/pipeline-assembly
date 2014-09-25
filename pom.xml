@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.main</artifactId>
-      <version>4.0.3</version>
+      <version>4.4.1</version>
       <!-- <version>4.2.1</version> -->
     </dependency>
   </dependencies>
@@ -226,6 +226,18 @@
             <configuration>
               <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
               <artifactItems>
+                      <dependency>
+                              <groupId>javax.xml.crypto</groupId>
+                              <artifactId>jsr105-api</artifactId>
+                              <version>1.0.1</version>
+                      </dependency>
+                      <dependency>
+                              <groupId>javax.xml.parsers</groupId>
+                              <artifactId>jaxp-api</artifactId>
+                              <version>1.4.5</version>
+                      </dependency>
+
+
                 <!-- Runtime dependencies -->
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
