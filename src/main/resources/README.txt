@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.8 - June 12, 2014
+              DAISY Pipeline 2 - 1.8.1 - October 3, 2014
 ==============================================================================
 
 
@@ -57,7 +57,28 @@ The package includes:
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.8 version of the project.
+The package includes the 1.8.1 version of the project.
+
+### Changes in v1.8.1
+
+This is a maintenance release, functionally equivalent to v1.8. Bug fixes are
+mostly related to the Pipeline runtime framework.
+
+* Windows Installer
+  * Fix issue that prevented a 64-bit JRE to be detected
+* Framework and API
+  * Fix a memory leak in the XProc adapter.
+  * Fix a bug preventing the deletion of a job's log in Windows
+  * Fix URI mapping for the non-local mode
+  * Recalculate priorities when a new job is sent to the queue
+  * Add `nicename` to the `jobElement` schema (Web API)
+  * The CLI now returns 255 if the job failed
+* Web UI
+  * Fix issue with reports not being displayed
+* Modules
+  * [zedai-to-epub3] Fix a conversion issue when the source has multiple
+    `toc` elements
+
 
 ### Changes in v1.8
         
