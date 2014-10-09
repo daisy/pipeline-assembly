@@ -24,7 +24,7 @@ RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on
 ;   Installer General Settings
 ;----------------------------------------------------------
 Name "${APPNAME}"
-;OutFile "${PROJECT_BUILD_DIR}\pipeline2-installer.exe"
+;OutFile "../debug-installer.exe"
 ShowInstDetails show
 ShowUnInstDetails show
 SetCompressor zlib
@@ -176,6 +176,11 @@ Section -JRECheck SEC00-1
 
   DetailPrint "Checking JRE version..."
   ReadRegStr $JAVA_VER HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" CurrentVersion
+  ${if} $JAVA_VER == ""
+      SetRegView 64
+      ReadRegStr $JAVA_VER HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" CurrentVersion
+      SetRegView 32
+  ${endif}
   StrCmp "" "$JAVA_VER" JavaNotPresent CheckJavaVersion
 
   CheckJavaVersion:
@@ -185,6 +190,11 @@ Section -JRECheck SEC00-1
     IntCmp 2 $R2 JavaTooOld
     ;Then check binary file exist
     ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
+    ${if} $JAVA_HOME == ""
+      SetRegView 64
+      ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
+      SetRegView 32
+    ${endif}
     IfFileExists "$JAVA_HOME\bin\java.exe" 0 JavaNotPresent
     DetailPrint "Found a compatible JVM ($JAVA_VER)"
     ;Set JAVA_HOME env var
