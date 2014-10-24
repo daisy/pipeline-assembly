@@ -3,7 +3,7 @@ Version: [[version]]
 Section: text
 Priority: optional
 Architecture: all
-Depends: debconf, lsb-base (>= 3.0-6), java-runtime
+Depends: debconf, lsb-base (>= 3.0-6), java7-runtime
 Maintainer: Romain Deltour <romain.deltour@gmail.com>
 Description: DAISY Pipeline 2
  .
