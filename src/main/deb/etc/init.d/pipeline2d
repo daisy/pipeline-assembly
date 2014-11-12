@@ -77,7 +77,7 @@ do_start()
 	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
 		--background --test > /dev/null \
 		|| return 1
-    check_java_version || return 2
+	check_java_version || return 2
 	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
 		--background -- $DAEMON_ARGS \
 		|| return 2
