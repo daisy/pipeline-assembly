@@ -13,7 +13,7 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-SYSTEM_PROPERTIES=${pipeline.home}/etc/system.properties
+CLI_CONFIG_YML=${pipeline.home}/cli/config.yml
 
 case "$1" in
     
@@ -25,8 +25,8 @@ case "$1" in
         
         # backup and delete old configuration file
         
-        [ -e $SYSTEM_PROPERTIES ] && mv $SYSTEM_PROPERTIES $SYSTEM_PROPERTIES.old
-        [ -e $SYSTEM_PROPERTIES.bak ] && mv $SYSTEM_PROPERTIES.bak $SYSTEM_PROPERTIES.bak.old
+        [ -e $CLI_CONFIG_YML ] && mv $CLI_CONFIG_YML $CLI_CONFIG_YML.old
+        [ -e $CLI_CONFIG_YML.bak ] && mv $CLI_CONFIG_YML.bak $CLI_CONFIG_YML.bak.old
         
     ;;
    

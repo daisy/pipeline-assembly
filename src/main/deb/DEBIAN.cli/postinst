@@ -19,7 +19,7 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-SYSTEM_PROPERTIES=${pipeline.home}/etc/system.properties
+CLI_CONFIG_YML=${pipeline.home}/cli/config.yml
 
 backup_config_file() {
     local CONFIG_FILE=$1
@@ -36,45 +36,48 @@ case "$1" in
     
     configure)
         
-        if [ ! -e $SYSTEM_PROPERTIES ]; then
-            echo "$SYSTEM_PROPERTIES: no such file" >&2 && exit 1
+        if [ ! -e $CLI_CONFIG_YML ]; then
+            echo "$CLI_CONFIG_YML: no such file" >&2 && exit 1
         fi
         
         # make a copy of the freshly installed default configuration file
         # if a *.bak file is already present it probably means dpkg-reconfigure was called
-        [ -e $SYSTEM_PROPERTIES.bak ] || backup_config_file $SYSTEM_PROPERTIES
+        [ -e $CLI_CONFIG_YML.bak ] || backup_config_file $CLI_CONFIG_YML
         
-        if [ ! -e $SYSTEM_PROPERTIES.old ]; then
+        if [ ! -e $CLI_CONFIG_YML.old ]; then
             
             # ----------------------------
             # first install or reconfigure
             # ----------------------------
             
-            USERID_KEY=org.daisy.pipeline.ws.authentication.key
-            PASSWORD_KEY=org.daisy.pipeline.ws.authentication.secret
+            USERID_KEY=client_key
+            PASSWORD_KEY=client_secret
             
-            db_set daisy-pipeline2/admin_userid $(cat $SYSTEM_PROPERTIES | sed -n "s/^[ #]*$USERID_KEY=\(.*\)/\1/p")
-            db_set daisy-pipeline2/admin_password $(cat $SYSTEM_PROPERTIES | sed -n "s/^[ #]*$PASSWORD_KEY=\(.*\)/\1/p")
+            USERID=$(cat $CLI_CONFIG_YML | sed -n "s/^[ #]*$USERID_KEY:\s*\(.*\)/\1/p")
+            db_get daisy-pipeline2/admin_userid && USERID="$RET" || true
+            
+            db_set daisy-pipeline2-cli/admin_userid $USERID
+            db_set daisy-pipeline2-cli/admin_password $(cat $CLI_CONFIG_YML | sed -n "s/^[ #]*$PASSWORD_KEY:\s*\(.*\)/\1/p")
             
             # prompt for userid and password
             
-            db_input high daisy-pipeline2/admin_userid || true
-            db_input high daisy-pipeline2/admin_password || true
+            db_input high daisy-pipeline2-cli/admin_userid || true
+            db_input high daisy-pipeline2-cli/admin_password || true
             db_go || true
-            db_get daisy-pipeline2/admin_userid && USERID="$RET" || true
-            db_get daisy-pipeline2/admin_password && PASSWORD="$RET" || true
+            db_get daisy-pipeline2-cli/admin_userid && USERID="$RET" || true
+            db_get daisy-pipeline2-cli/admin_password && PASSWORD="$RET" || true
             
             # clear password from database
             
-            db_reset daisy-pipeline2/admin_password || true
+            db_reset daisy-pipeline2-cli/admin_password || true
             
             # set userid and password in configuration files
             
-            cp -f $SYSTEM_PROPERTIES $SYSTEM_PROPERTIES.tmp
-            sed -e "s/^[ #]*\($USERID_KEY\)=.*/\1=$USERID/" \
-                -e "s/^[ #]*\($PASSWORD_KEY\)=.*/\1=$PASSWORD/" \
-                < $SYSTEM_PROPERTIES > $SYSTEM_PROPERTIES.tmp
-            mv -f $SYSTEM_PROPERTIES.tmp $SYSTEM_PROPERTIES
+            cp -f $CLI_CONFIG_YML $CLI_CONFIG_YML.tmp
+            sed -e "s/^[ #]*\($USERID_KEY\):.*/\1: $USERID/" \
+                -e "s/^[ #]*\($PASSWORD_KEY\):.*/\1: $PASSWORD/" \
+                < $CLI_CONFIG_YML > $CLI_CONFIG_YML.tmp
+            mv -f $CLI_CONFIG_YML.tmp $CLI_CONFIG_YML
             
         else
             
@@ -82,31 +85,22 @@ case "$1" in
             # upgrade, or install from Config-Files state
             # -------------------------------------------
             
-            # merge old and new configuration file
+            # merge old and new configuration files
             # if merging is not possible due to a missing *.bak.old file, keep the *.old file
             
-            if [ -e $SYSTEM_PROPERTIES.old ] && [ -e $SYSTEM_PROPERTIES.bak.old ]; then
-                for KEY in $(cat $SYSTEM_PROPERTIES | sed -n 's/^[ #]*\([0-9a-zA-Z\.]*\)=.*/\1/p'); do
-                    OLD_ENTRY="$(cat $SYSTEM_PROPERTIES.old | sed -n "s/^\([ #]*$KEY=.*\)/\1/p")"
-                    DEFAULT_ENTRY="$(cat $SYSTEM_PROPERTIES.bak.old | sed -n "s/\(^[ #]*$KEY=.*\)/\1/p")"
+            if [ -e $CLI_CONFIG_YML.old ] && [ -e $CLI_CONFIG_YML.bak.old ]; then
+                for KEY in $(cat $CLI_CONFIG_YML | sed -n 's/^[ #]*\([0-9a-zA-Z_]*\):.*/\1/p'); do
+                    OLD_ENTRY="$(cat $CLI_CONFIG_YML.old | sed -n "s/^\([ #]*$KEY:.*\)/\1/p")"
+                    DEFAULT_ENTRY="$(cat $CLI_CONFIG_YML.bak.old | sed -n "s/\(^[ #]*$KEY:.*\)/\1/p")"
                     if [ "$OLD_ENTRY" != "$DEFAULT_ENTRY" ]; then
-                        cp -f $SYSTEM_PROPERTIES $SYSTEM_PROPERTIES.tmp
-                        sed -e "s|^[ #]*$KEY=.*$|$OLD_ENTRY|" < $SYSTEM_PROPERTIES > $SYSTEM_PROPERTIES.tmp
-                        mv -f $SYSTEM_PROPERTIES.tmp $SYSTEM_PROPERTIES
+                        cp -f $CLI_CONFIG_YML $CLI_CONFIG_YML.tmp
+                        sed -e "s|^[ #]*$KEY:.*$|$OLD_ENTRY|" < $CLI_CONFIG_YML > $CLI_CONFIG_YML.tmp
+                        mv -f $CLI_CONFIG_YML.tmp $CLI_CONFIG_YML
                     fi
                 done
-                rm -f $SYSTEM_PROPERTIES.old $SYSTEM_PROPERTIES.bak.old
+                rm -f $CLI_CONFIG_YML.old $CLI_CONFIG_YML.bak.old
             fi
         fi
-        
-        # install the System V style init script links
-        
-        update-rc.d pipeline2d defaults >/dev/null
-        
-        # start the daemon
-        
-        /etc/init.d/pipeline2d start
-        
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
