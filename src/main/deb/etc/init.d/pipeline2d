@@ -50,14 +50,26 @@ do_start()
 	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
 		--background --test > /dev/null \
 		|| return 1
-	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
-		--background -- $DAEMON_ARGS \
-		|| return 2
-
-	# Add code here, if necessary, that waits for the process to be ready
-	# to handle requests from services started subsequently which depend
-	# on this one.  As a last resort, sleep for some time.
-	sleep 5
+	LOG=$(mktemp /tmp/pipeline2.log.XXXXXXXX)
+	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background \
+		--startas /bin/bash -- -c "exec $DAEMON $DAEMON_ARGS > $LOG 2>&1"
+	if [ "$?" -ne 0 ]; then
+		rv=2
+	else
+		sleep 1
+		if ! ps -p $(cat "$PIDFILE") >/dev/null; then
+			rv=2
+			cat $LOG 1>&2
+		else
+			rv=0
+			# Add code here, if necessary, that waits for the process to be ready
+			# to handle requests from services started subsequently which depend
+			# on this one.	As a last resort, sleep for some time.
+			sleep 4
+		fi
+	fi
+	rm $LOG
+	return $rv
 }
 
 #

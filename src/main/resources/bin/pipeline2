@@ -225,6 +225,15 @@ locateJava() {
     fi
 }
 
+checkJavaVersion() {
+    local VERSION
+    VERSION=$( "$JAVA" -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q' )
+    if [ "$VERSION" -lt "17" ]; then
+        die "Java version must be at least 1.7"
+    fi
+    return 0
+}
+
 detectJVM() {
    #echo "`$JAVA -version`"
    # This service should call `java -version`,
@@ -321,6 +330,9 @@ init() {
 
     # Locate the Java VM to execute
     locateJava
+    
+    # Check Java version
+    checkJavaVersion
 
     # Determine the JVM vendor
     detectJVM
