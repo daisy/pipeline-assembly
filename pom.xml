@@ -941,6 +941,8 @@
         <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
         <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
         <pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
+        <pipeline.cli.home>/opt/daisy-pipeline2-cli</pipeline.cli.home>
+        <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
         <bundles.modules>${pipeline.home}/modules</bundles.modules>
@@ -1191,7 +1193,7 @@
                       </excludes>
                       <mapper>
                         <type>perm</type>
-                        <prefix>${pipeline.home}/cli</prefix>
+                        <prefix>${pipeline.cli.home}</prefix>
                       </mapper>
                     </data>
                     <data>
@@ -1203,7 +1205,7 @@
                       </includes>
                       <mapper>
                         <type>perm</type>
-                        <prefix>${pipeline.home}/cli</prefix>
+                        <prefix>${pipeline.cli.home}</prefix>
                         <filemode>755</filemode>
                       </mapper>
                     </data>
@@ -1214,13 +1216,13 @@
                     <data>
                       <type>file</type>
                       <src>target/filtered-resources/cli/config.yml</src>
-                      <dst>${pipeline.home}/cli/config.yml</dst>
+                      <dst>${pipeline.cli.home}/config.yml</dst>
                     </data>
                     <data>
                       <type>link</type>
                       <symlink>true</symlink>
-                      <linkName>${pipeline.config}/config.yml</linkName>
-                      <linkTarget>${pipeline.home}/cli/config.yml</linkTarget>
+                      <linkName>${pipeline.cli.config}/config.yml</linkName>
+                      <linkTarget>${pipeline.cli.home}/config.yml</linkTarget>
                     </data>
                   </dataSet>
                 </configuration>
