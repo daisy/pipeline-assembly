@@ -953,6 +953,7 @@
     <profile>
       <id>deb</id>
       <properties>
+        <pipeline.user>pipeline2</pipeline.user>
         <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
         <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
         <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
