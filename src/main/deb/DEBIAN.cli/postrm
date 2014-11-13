@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for daisy-pipeline2
+# postrm script for daisy-pipeline2-cli
 #
 # see: dh_installdeb(1)
 

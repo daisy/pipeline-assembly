@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for daisy-pipeline2
+# prerm script for daisy-pipeline2-cli
 #
 # see: dh_installdeb(1)
 
