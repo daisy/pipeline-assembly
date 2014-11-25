@@ -221,7 +221,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     )
     
     SET OPTS=%PIPELINE2_LOCAL% %PIPELINE2_AUTH%
-    SET MAIN=org.apache.felix.main.Main
+    SET MAIN=org.daisy.pipeline.felix.Main
     SET SHIFT=false
 
 :RUN_LOOP
