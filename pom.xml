@@ -519,39 +519,58 @@
                 <artifactItems>
                     <artifactItem>
                         <groupId>org.eclipse.swt</groupId>
-                        <artifactId>org.eclipse.swt</artifactId>
+                        <artifactId>swt</artifactId>
                         <version>3.1</version>
                     </artifactItem>
                     <artifactItem>
                         <groupId>org.eclipse.swt</groupId>
-                        <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+                        <artifactId>cocoa.macosx.x86_64</artifactId>
+                        <version>3.1</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.swt</groupId>
+                        <artifactId>gtk.linux.x86_64</artifactId>
+                        <version>3.1</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.swt</groupId>
+                        <artifactId>win32.win32.x86_64</artifactId>
                         <version>3.1</version>
                     </artifactItem>
                     <artifactItem>
                         <groupId>org.eclipse.jface</groupId>
-                        <!--  TODO change this artifact ID -->
-                        <artifactId>org.eclipse.jface</artifactId>
+                        <artifactId>jface</artifactId>
                         <version>3.9</version>
                     </artifactItem>
                     <artifactItem>
                         <groupId>org.daisy.pipeline</groupId>
-                        <artifactId>org.daisy.pipeline.gui</artifactId>
+                        <artifactId>gui</artifactId>
                         <version>1.0-SNAPSHOT</version>
                     </artifactItem>
                     <artifactItem>
                         <groupId>org.eclipse.equinox</groupId>
-                        <artifactId>org.eclipse.equinox.common</artifactId>
+                        <artifactId>common</artifactId>
                         <version>3.6</version>
                     </artifactItem>
                     <artifactItem>
                         <groupId>org.eclipse.equinox</groupId>
-                        <artifactId>org.eclipse.equinox.supplement</artifactId>
+                        <artifactId>supplement</artifactId>
                         <version>1.5</version>
                     </artifactItem>
                     <artifactItem>
                         <groupId>org.eclipse.core</groupId>
-                        <artifactId>org.eclipse.core.commands</artifactId>
+                        <artifactId>commands</artifactId>
                         <version>3.6</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.core</groupId>
+                        <artifactId>databinding</artifactId>
+                        <version>1.4.1</version>
+                    </artifactItem>
+                    <artifactItem>
+                        <groupId>org.eclipse.jface</groupId>
+                        <artifactId>databinding</artifactId>
+                        <version>1.6.2</version>
                     </artifactItem>
                 </artifactItems>
             </configuration>

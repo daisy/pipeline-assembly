@@ -370,7 +370,7 @@ run() {
             export PIPELINE2_LOCAL
 
     fi
-    MAIN=org.daisy.pipeline.swt.launcher.Main
+    MAIN=org.daisy.pipeline.felix.Main
     OPTS="$PIPELINE2_LOCAL $PIPELINE2_AUTH"
 
     case "$1" in
