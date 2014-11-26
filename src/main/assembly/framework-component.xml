@@ -48,6 +48,13 @@
       </excludes>
     </fileSet>
     <fileSet>
+      <directory>target/bundles/felix</directory>
+      <outputDirectory>/system/felix/gogo</outputDirectory>
+      <includes>
+        <include>org.apache.felix.org.apache.felix.gogo*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>target/bundles/libs</directory>
       <outputDirectory>/system/framework</outputDirectory>
     </fileSet>
