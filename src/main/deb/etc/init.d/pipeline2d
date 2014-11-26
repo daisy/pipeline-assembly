@@ -17,6 +17,7 @@ DESC="DAISY Pipeline 2 server"         # Introduce a short description here
 NAME=pipeline2d                        # Introduce the short server's name here
 DAEMON=${pipeline.home}/bin/pipeline2  # Introduce the server's location here
 DAEMON_ARGS=""                         # Arguments to run the daemon with
+DAEMON_USER=${pipeline.user}
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
@@ -38,33 +39,6 @@ fi
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
-check_java_version() {
-  local JAVA VERSION
-  if [ "x$JAVA" = "x" ]; then
-	if [ "x$JAVA_HOME" != "x" ]; then
-	  if [ -x "$JAVA_HOME/bin/java" ]; then
-		JAVA="$JAVA_HOME/bin/java"
-	  else
-		echo "no java executable in JAVA_HOME: $JAVA_HOME"
-		return 1
-	  fi
-	else
-	  JAVA=`type java`
-	  JAVA=`expr "$JAVA" : '.*is \(.*\)$'`
-	  if [ "x$JAVA" = "x" ]; then
-		echo "java command not found"
-		return 1
-	  fi
-	fi
-  fi
-  VERSION=$("$JAVA" -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
-  if [ "$VERSION" -lt "17" ]; then
-	echo "java version must be at least 1.7"
-	return 1
-  fi
-  return 0
-}
-
 #
 # Function that starts the daemon/service
 #
@@ -75,17 +49,29 @@ do_start()
 	#   1 if daemon was already running
 	#   2 if daemon could not be started
 	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
-		--background --test > /dev/null \
+		--chuid $DAEMON_USER --background --test > /dev/null \
 		|| return 1
-    check_java_version || return 2
-	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
-		--background -- $DAEMON_ARGS \
-		|| return 2
-
-	# Add code here, if necessary, that waits for the process to be ready
-	# to handle requests from services started subsequently which depend
-	# on this one.  As a last resort, sleep for some time.
-	sleep 5
+	LOG=$(mktemp /tmp/pipeline2.log.XXXXXXXX)
+	chown $DAEMON_USER $LOG
+	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --chuid $DAEMON_USER --background \
+		--startas /bin/bash -- -c "exec $DAEMON $DAEMON_ARGS > $LOG 2>&1"
+	if [ "$?" -ne 0 ]; then
+		rv=2
+	else
+		sleep 1
+		if ! ps -p $(cat "$PIDFILE") >/dev/null; then
+			rv=2
+			cat $LOG 1>&2
+		else
+			rv=0
+			# Add code here, if necessary, that waits for the process to be ready
+			# to handle requests from services started subsequently which depend
+			# on this one.	As a last resort, sleep for some time.
+			sleep 4
+		fi
+	fi
+	rm $LOG
+	return $rv
 }
 
 #

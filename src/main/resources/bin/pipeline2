@@ -225,6 +225,15 @@ locateJava() {
     fi
 }
 
+checkJavaVersion() {
+    local VERSION
+    VERSION=$( "$JAVA" -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q' )
+    if [ "$VERSION" -lt "17" ]; then
+        die "Java version must be at least 1.7"
+    fi
+    return 0
+}
+
 detectJVM() {
    #echo "`$JAVA -version`"
    # This service should call `java -version`,
@@ -321,6 +330,9 @@ init() {
 
     # Locate the Java VM to execute
     locateJava
+    
+    # Check Java version
+    checkJavaVersion
 
     # Determine the JVM vendor
     detectJVM
@@ -396,7 +408,7 @@ run() {
     fi
     cd "$PIPELINE2_BASE"
 
-    eval "\"$JAVA"\" $JAVA_OPTS -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
+    eval exec "\"$JAVA"\" "$JAVA_OPTS" -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.base="\"$PIPELINE2_BASE"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $PIPELINE2_OPTS $OPTS -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
 }
 
 main() {
