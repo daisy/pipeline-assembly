@@ -957,6 +957,9 @@
         <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
         <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
         <pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
+        <pipeline.webui.user>pipeline2-webui</pipeline.webui.user>
+        <pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
+        <pipeline.webui.data>/var/opt/daisy-pipeline2-webui</pipeline.webui.data>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
         <bundles.modules>${pipeline.home}/modules</bundles.modules>
@@ -975,6 +978,28 @@
       </properties>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-pipeline-webui</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>webui</artifactId>
+                      <version>1.8</version>
+                      <type>zip</type>
+                      <outputDirectory>${project.build.directory}/webui</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <artifactId>maven-resources-plugin</artifactId>
             <executions>
@@ -1212,6 +1237,75 @@
                       </paths>
                     </data>
 
+                  </dataSet>
+                </configuration>
+              </execution>
+              <execution>
+                <id>package-deb-webui</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jdeb</goal>
+                </goals>
+                <configuration>
+                  <controlDir>target/filtered-resources/deb/DEBIAN.webui</controlDir>
+                  <timestamped>true</timestamped>
+                  <classifier>dbg_all</classifier>
+                  <deb>target/daisy-pipeline2-webui_${project.version}_all.deb</deb>
+                  <dataSet>
+
+                    <!-- ===== -->
+                    <!-- webui -->
+                    <!-- ===== -->
+                    <data>
+                      <type>directory</type>
+                      <src>target/webui/daisy-pipeline-webui</src>
+                      <excludes>
+                        start,
+                        start.bat,
+                        uninstall,
+                        uninstall.bat,
+                        dp2webui/*
+                      </excludes>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.webui.home}</prefix>
+                      </mapper>
+                    </data>
+                    <data>
+                      <src>target/filtered-resources/deb${pipeline.webui.home}/start</src>
+                      <type>file</type>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.webui.home}</prefix>
+                        <filemode>755</filemode>
+                      </mapper>
+                    </data>
+
+                    <!-- ========== -->
+                    <!-- webui data -->
+                    <!-- ========== -->
+                    <data>
+                      <type>directory</type>
+                      <src>target/webui/daisy-pipeline-webui/dp2webui</src>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.webui.data}/webui/dp2webui</prefix>
+                      </mapper>
+                    </data>
+
+                    <!-- ============ -->
+                    <!-- webui daemon -->
+                    <!-- ============ -->
+                    <data>
+                      <src>target/filtered-resources/deb/etc/init.d/pipeline2-webuid</src>
+                      <type>file</type>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>/etc/init.d</prefix>
+                        <filemode>755</filemode>
+                      </mapper>
+                    </data>
+                    
                   </dataSet>
                 </configuration>
               </execution>
