@@ -13,5 +13,5 @@ client_secret: supersecret
 timeout: 60
 #debug
 debug: false
-starting: true
+starting: ${pipeline.cli.starting}
 
