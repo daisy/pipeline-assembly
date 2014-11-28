@@ -1071,7 +1071,15 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>dist-assembly</id>
+                <id>dist-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-linux</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-win</id>
                 <phase>none</phase>
               </execution>
               <execution>
@@ -1383,7 +1391,15 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>dist-assembly</id>
+                <id>dist-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-linux</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-win</id>
                 <phase>none</phase>
               </execution>
             </executions>
