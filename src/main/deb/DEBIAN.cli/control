@@ -1,9 +1,10 @@
-Package: daisy-pipeline2
+Package: daisy-pipeline2-cli
 Version: [[version]]
 Section: text
 Priority: optional
 Architecture: all
-Depends: debconf, lsb-base (>= 3.0-6), java-runtime
+Depends: debconf, lsb-base (>= 3.0-6)
+Recommends: daisy-pipeline2 (>= [[version]])
 Maintainer: Romain Deltour <romain.deltour@gmail.com>
 Description: DAISY Pipeline 2
  .
