@@ -1160,8 +1160,22 @@
                     <data>
                       <type>directory</type>
                       <src>target/bundles/felix</src>
+                      <excludes>
+                        org.apache.felix.org.apache.felix.gogo*
+                      </excludes>
                       <mapper>
                         <prefix>${pipeline.home}/system/felix</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/felix</src>
+                      <includes>
+                        org.apache.felix.org.apache.felix.gogo*
+                      </includes>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/felix/gogo</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
