@@ -683,6 +683,10 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>ssml-to-audio</artifactId>
                 </artifactItem>
+		<artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-helpers</artifactId>
+                </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>text-to-ssml</artifactId>
