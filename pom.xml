@@ -957,6 +957,8 @@
         <pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
         <pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
         <pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
+        <pipeline.cli.home>/opt/daisy-pipeline2-cli</pipeline.cli.home>
+        <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
         <bundles.modules>${pipeline.home}/modules</bundles.modules>
@@ -1051,38 +1053,6 @@
                       <src>target/filtered-resources/deb${pipeline.home}/bin/debian.cfg</src>
                       <dst>${pipeline.home}/bin/debian.cfg</dst>
                     </data>
-                    <data>
-                      <type>directory</type>
-                      <src>target/cli</src>
-                      <excludes>
-                        *.exe,
-                        dp2,
-                        dp2admin,
-                        config.yml
-                      </excludes>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.home}/cli</prefix>
-                      </mapper>
-                    </data>
-                    <data>
-                      <type>directory</type>
-                      <src>target/cli</src>
-                      <includes>
-                        dp2,
-                        dp2admin
-                      </includes>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.home}/cli</prefix>
-                        <filemode>755</filemode>
-                      </mapper>
-                    </data>
-                    <data>
-                      <type>file</type>
-                      <src>target/filtered-resources/cli/config.yml</src>
-                      <dst>${pipeline.home}/cli/config.yml</dst>
-                    </data>
 
                     <!-- ====== -->
                     <!-- daemon -->
@@ -1133,12 +1103,6 @@
                       <symlink>true</symlink>
                       <linkName>${pipeline.config}/system.properties</linkName>
                       <linkTarget>${pipeline.home}/etc/system.properties</linkTarget>
-                    </data>
-                    <data>
-                      <type>link</type>
-                      <symlink>true</symlink>
-                      <linkName>${pipeline.config}/config.yml</linkName>
-                      <linkTarget>${pipeline.home}/cli/config.yml</linkTarget>
                     </data>
                     <data>
                       <type>file</type>
@@ -1226,6 +1190,67 @@
                       </paths>
                     </data>
 
+                  </dataSet>
+                </configuration>
+              </execution>
+              <execution>
+                <id>package-deb-cli</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jdeb</goal>
+                </goals>
+                <configuration>
+                  <controlDir>target/filtered-resources/deb/DEBIAN.cli</controlDir>
+                  <timestamped>true</timestamped>
+                  <classifier>dbg_all</classifier>
+                  <deb>target/daisy-pipeline2-cli_${project.version}_all.deb</deb>
+                  <dataSet>
+
+                    <!-- ============ -->
+                    <!-- cli binaries -->
+                    <!-- ============ -->
+                    <data>
+                      <type>directory</type>
+                      <src>target/cli</src>
+                      <excludes>
+                        *.exe,
+                        dp2,
+                        dp2admin,
+                        config.yml
+                      </excludes>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.cli.home}</prefix>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/cli</src>
+                      <includes>
+                        dp2,
+                        dp2admin
+                      </includes>
+                      <mapper>
+                        <type>perm</type>
+                        <prefix>${pipeline.cli.home}</prefix>
+                        <filemode>755</filemode>
+                      </mapper>
+                    </data>
+
+                    <!-- ======================= -->
+                    <!-- cli configuration files -->
+                    <!-- ======================= -->
+                    <data>
+                      <type>file</type>
+                      <src>target/filtered-resources/cli/config.yml</src>
+                      <dst>${pipeline.cli.home}/config.yml</dst>
+                    </data>
+                    <data>
+                      <type>link</type>
+                      <symlink>true</symlink>
+                      <linkName>${pipeline.cli.config}/config.yml</linkName>
+                      <linkTarget>${pipeline.cli.home}/config.yml</linkTarget>
+                    </data>
                   </dataSet>
                 </configuration>
               </execution>
