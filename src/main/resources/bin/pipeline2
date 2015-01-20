@@ -184,10 +184,10 @@ pathCanonical() {
             dst="`dirname "${dst}"`/$link"
         fi
     done
-	local bas=`basename "${dst}"`
-	local dir=`dirname "${dst}"`
+    local bas=`basename "${dst}"`
+    local dir=`dirname "${dst}"`
     if [ "$bas" != "$dir" ]; then
-		dst="`pathCanonical "$dir"`/$bas"
+        dst="`pathCanonical "$dir"`/$bas"
     fi
     echo "${dst}" | sed -e 's#//#/#g' -e 's#/./#/#g' -e 's#/[^/]*/../#/#g'
 }
@@ -199,9 +199,16 @@ locateJava() {
         [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
     fi
 
-	if [ "x$JAVA_HOME" = "x" ] && [ "$darwin" = "true" ]; then
-		JAVA_HOME=`/usr/libexec/java_home`
-	fi
+    if [ "x$JAVA_HOME" = "x" ] && [ "$darwin" = "true" ]; then
+        JAVA_HOME=`/usr/libexec/java_home`
+        if [ "x$JAVA_HOME" = "x" ]; then
+            JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/"
+        fi
+        if [ ! -d "$JAVA_HOME" ]; then
+                warn "JAVA_HOME is not valid: $JAVA_HOME"
+                JAVA_HOME=""
+        fi
+    fi
     if [ "x$JAVA" = "x" ] && [ -r /etc/gentoo-release ] ; then
         JAVA_HOME=`java-config --jre-home`
     fi
