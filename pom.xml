@@ -156,12 +156,12 @@
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.gogo.command</artifactId>
-                  <version>0.12.0</version>
+                  <version>0.14.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.gogo.runtime</artifactId>
-                  <version>0.10.0</version>
+                  <version>0.12.1</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -207,6 +207,8 @@
                 <artifactItem>
                   <groupId>org.osgi</groupId>
                   <artifactId>org.osgi.enterprise</artifactId>
+                  <!-- FIXME fix that version in the fwk BoM -->
+                  <version>4.2.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
