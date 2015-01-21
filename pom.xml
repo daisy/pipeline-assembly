@@ -1360,7 +1360,7 @@
                 <configuration>
                   <controlDir>target/filtered-resources/deb/DEBIAN.cli</controlDir>
                   <timestamped>true</timestamped>
-                  <classifier>dbg_all</classifier>
+                  <classifier>cli_all</classifier>
                   <deb>target/daisy-pipeline2-cli_${project.version}_all.deb</deb>
                   <dataSet>
                     
