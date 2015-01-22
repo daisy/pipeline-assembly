@@ -1,15 +1,15 @@
 #!/usr/bin/env make -f
 
 DOCKER := docker
+MVN := mvn
 TAG := daisy/daisy-pipeline2
 DEB := target/daisy-pipeline2_1.9-SNAPSHOT_all.deb
 CLI_DEB := target/daisy-pipeline2-cli_1.9-SNAPSHOT_all.deb
-SAMPLE := src/main/resources/samples/zedai/alice.xml
 
-.PHONY: image check
+.PHONY: image
 
-image : Dockerfile $(DEB) $(CLI_DEB) $(SAMPLE)
+image : Dockerfile $(DEB) $(CLI_DEB)
 	tar -cz $^ | $(DOCKER) build -t $(TAG) -
 
-check :
-	$(DOCKER) run -it $(TAG) /bin/bash -c "service pipeline2d start && dp2 zedai-to-pef --i-source /tmp/alice.xml --output /tmp/alice"
+$(DEB) $(CLI_DEB) :
+	$(MVN) clean package -Pdeb,incl-braille
