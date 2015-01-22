@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.8.1 - October 3, 2014
+              DAISY Pipeline 2 - 1.9 - January 22, 2014
 ==============================================================================
 
 
@@ -39,6 +39,7 @@ The package includes:
  - dedicated launchers for the Pipeline 2 Web Service, in the "bin" directory
  - a set of processing modules providing the following conversions:
    * daisy202-to-epub3 - Convert a DAISY 2.02 fileset to EPUB3
+   * daisy202-validator - Schema-validation of a DAISY 2.02 fileset
    * daisy3-to-epub3 - Convert a DAISY 3 fileset to EPUB 3 
    * dtbook-to-daisy3 - Convert a DTBook XML document to DAISY 3 (with TTS audio)
    * dtbook-to-epub3 - Convert a DTBook XML document to EPUB 3
@@ -46,6 +47,7 @@ The package includes:
    * dtbook-to-pef - Convert a DTBook XML document to PEF Braille
    * dtbook-to-zedai - Convert a DTBook XML document to ZedAI XML
    * dtbook-validator - Validate a DTBook 2005-3 XML document
+   * epub3-to-daisy202 - Convert an EPUB 3 publication to DAISY 2.02
    * html-to-epub3 - Convert (an) HTML document(s) to EPUB 3
    * nimas-fileset-validator - Validate a NIMAS Fileset
    * zedai-to-epub3 - Convert a ZedAI document to EPUB 3
@@ -57,117 +59,48 @@ The package includes:
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.8.1 version of the project.
+The package includes the 1.9 version of the project.
 
-### Changes in v1.8.1
+### Changes in v1.9
 
-This is a maintenance release, functionally equivalent to v1.8. Bug fixes are
-mostly related to the Pipeline runtime framework.
+* Distribution
+  * [NEW] new CLI implementation (in Go – https://golang.org/)
+  * [NEW] per-platform distribution, with native CLI executables
+  * improve Java detection on Mac OS X
+  * notify users of unsupported Java version
+  * improve build of Debian packages
 
-* Windows Installer
-  * Fix issue that prevented a 64-bit JRE to be detected
 * Framework and API
-  * Fix a memory leak in the XProc adapter.
-  * Fix a bug preventing the deletion of a job's log in Windows
-  * Fix URI mapping for the non-local mode
-  * Recalculate priorities when a new job is sent to the queue
-  * Add `nicename` to the `jobElement` schema (Web API)
-  * The CLI now returns 255 if the job failed
-* Web UI
-  * Fix issue with reports not being displayed
-* Modules
-  * [zedai-to-epub3] Fix a conversion issue when the source has multiple
-    `toc` elements
-
-
-### Changes in v1.8
-        
-* Framework
-  * Update Calabash (XProc engine) to version 1.0.18
-  * Update Saxon (XSLT/XPath engine) to version 9.5.1.5
-  * Reorganize the framework's packages and projects
-  * The IP address the web service binds to is now configurable
-  * Catch logging statements from EclipseLink libraries
-  * Add a priority-management system to the job queue
-  * New utility class `BinaryFinder` to find executables in `$PATH`
+  * [NEW] Primary outputs are returned in the jobs list from the web API
+  * [NEW] Script version is returned in the web API
+  * Update Calabash (XProc engine) to v1.0.23
+  * Configurable number of concurrent threads  
+  * Fix support for UNC paths on Windows
 
 * Modules
-  * [NEW] dtbook-to-daisy3 script with TTS-based audio production
-  * [NEW] modules for TTS-based audio production, including adapters for:
-    Acapela TTS (v7), eSpeak, Microsoft Windows SAPI5, Max OS X Speech.
-    Note: the SAPI5 adapter requires the pre-installation of Visual C++
-    Redistributable Packages runtime components.
-  * [NEW] modules for NLP-based structure detection
-  * [NEW] EpubCheck adapter module (script not included in this release)
-  * [braille] Property for using an externally installed liblouisutdml only
-  * [braille] Remove `-brl-` prefix from Braille CSS properties
-  * [braille] Add CSS properties `border`, `margin`, `padding`, `left`, `right`
-  * [braille] Deprecate CSS "display: toc-item"
-  * [braille] Improve `pef:compare`
-  * [braille] css-core: allow functions in 'content' declarations
-  * [braille] liblouis-formatter: render TOC items more accurately
-  * [braille] Update to liblouis 2.5.4 and liblouis-java 1.2.0
-  * [braille] Add many tests
-  * [common-utils] New `px:message` step that allows to set logging levels
-  * [common-utils] New `px:i18n-translate` XPath function and XProc step used 
-    for localization
-  * [css-utils] New XSLT utility to retrieve a list of CSS stylesheet URIs from
-    a document
-  * [daisy202-to-epub3] New option to set the output file name
-  * [daisy202-to-epub3] The default EPUB file nameuse is now only based on the
-    identifier
-  * [daisy202-to-epub3] Copy more of the metadata to the resulting EPUB3
-  * [daisy202-to-epub3] Improved performance
-  * [daisy3-to-epub3] temporary files are no longer included in the result
-    directory
-  * [dtbook-to-epub3] temporary files are no longer included in the result
-    directory
-  * [dtbook-to-zedai] Better conversion of image descriptions in prodnotes
-  * [epub3-utils] Compatibility with the latest EPUB 3.0.1 specifications
-  * [epub3-utils] Allow non-linear spine items in `px:epub3-opf-create`
-  * [epub3-utils] Allow non-numbered page breaks (use a hyphen in the Nav Doc)
-  * [file-utils] Expand 8.3 file names during URL normalization
-  * [file-utils] Add a 2-args pf:normalize-uri that discards URI fragments
-  * [fileset-utils] Add support for "file:/...zip!/..." URIs
-  * [fileset-utils] Added "encode-as-base64" option to `px:unzip-fileset`
-  * [fileset-utils] Various fixes and improvements to `px:fileset-store`
-  * [html-utils] Rewrite of the HTML to XHTML5 upgrader + tests
-  * [html-utils] Simplify and improve the `html-to-fileset` implementation
-  * [html-to-epub3] Better conversion of `longdesc` and `aria-describedat`
-    attributes
-  * [html-to-epub3] DIAGRAM descriptions are now converted to HTML embedded
-    in hidden `iframe` elements
-  * [mediaoverlays-utils] improved performance
-  * [validation-utils] Added support for message severity and report metadata
-  * [zedai-to-epub3] temporary files are no longer included in the result
-    directory
-  * [zip-utils] don't create d:file elements for directories when unzipping
-  * [all] Integration of XSpec testing
-  * [all] Update custom XPath functions to the new Saxon 9.5 API
-  * [all] reorganize Maven POMs and BoMs
-  * [all] and other small fixes and improvements
+  * [NEW] DAISY 2.02 validator
+  * [NEW] DTBook to ODT script
+  * [NEW] DTBook to EPUB 3 with TTS-narrated Media Overlays
+  * [NEW] EPUB 3 to DAISY 2.02 script (experimental)
+  * [audio] new API for audio encoders
+  * [audio] make sure we have logs when Lame is failing
+  * [epub3] Set the title metadata in EPUB 3 HTML Content Docs
+  * [epub3] Fix improper tagging of spine items as "non-linear"
+  * [daisy202-to-epub3] Align audio-only conversion to the TIES guidelines
+  * [dtbook] Fix loss of MathML IDs when converting to ZedAI or EPUB 3
+  * [dtbook] Fix support for validation of DTBook 2005-1 and 1.1.0
+  * [nlp] Proper detection of sentences and words in multiple HTML documents
+  * [tts] Fix a bug with voice listing on Mac OS X
+  * [tts] Possibility to use XSLT in TTS SSML adapters
+  * [tts] Improve multithreading
+  * [tts] Gender-based voice selection
+  * [tts] New modules to process EPUB 3 documents
+  * [tts] Fine selection of TTS voice with aural CSS
+  * [tts] improve support for SAPI5
+  * [tts] Delete the generated audio directory when the JVM exits gracefully
 
-* Web UI
-  * The Web UI now must run on the same file system as the Pipeline engine
-  * better file names for downloads
-  * [FIXED] incorrect content type was returned when downloading single files
-  * [FIXED] Unable to set password for newly created account
-  * [FIXED] Missing submit button in "add user" section of admin settings
-  * [FIXED] Web UI does not allow downloading results bigger than 100 MB
-
-* CLI (Ruby implementation)
-  * Add job priority option and print it in the job status
-  * Add client priority options
-  * Add queue command and resource
-  * Add options to move jobs up and down the execution queue
-
-* Installation
-  * Change java version check from nsis installer
-  * A Debian package can now be produced from the assembly project
-
-See also 
-  * https://github.com/daisy/pipeline-tasks/issues?milestone=1&state=closed
-  * https://github.com/daisy/pipeline-issues/issues?milestone=1&state=closed
+See also the full release notes on the release page:
+  https://github.com/daisy/pipeline-assembly/releases/tag/v1.9
 
 4. Prerequisites                   
 ------------------------------------------------------------------------------
