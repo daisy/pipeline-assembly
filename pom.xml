@@ -444,10 +444,10 @@
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>calabash-adapter</artifactId>
                 </artifactItem>
-                <artifactItem>
+                <!--<artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>calabash-custom-steps</artifactId>
-                </artifactItem>
+                </artifactItem>-->
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>common-utils</artifactId>
