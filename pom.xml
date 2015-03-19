@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9</version>
+  <version>1.9.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -64,8 +64,8 @@
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
-        <artifactId>braille-modules-parent</artifactId>
-        <version>1.9</version>
+        <artifactId>braille-modules-bom</artifactId>
+        <version>1.9.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -1540,6 +1540,10 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>common-utils</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>css-calabash</artifactId>
                     </artifactItem>
                     <artifactItem>
@@ -1552,11 +1556,15 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>common-java</artifactId>
+                      <artifactId>dotify-calabash</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>common-utils</artifactId>
+                      <artifactId>dotify-core</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>dotify-formatter</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1572,7 +1580,15 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>html-to-pef</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>libhyphen-core</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline.modules.braille</groupId>
+                      <artifactId>libhyphen-libreoffice-tables</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1583,10 +1599,6 @@
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>libhyphen-native</artifactId>
                       <classifier>mac</classifier>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>libhyphen-libreoffice-tables</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1645,11 +1657,11 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>pef-saxon</artifactId>
+                      <artifactId>pef-core</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>pef-to-html</artifactId>
+                      <artifactId>pef-saxon</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1669,10 +1681,6 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>xml-to-pef</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>zedai-to-pef</artifactId>
                     </artifactItem>
                   </artifactItems>
@@ -1687,48 +1695,56 @@
                   <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
                   <artifactItems>
                     <artifactItem>
-                      <!-- required by SPI-Fly -->
-                      <groupId>org.ow2.asm</groupId>
-                      <artifactId>asm-all</artifactId>
-                      <version>4.0</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>brailleutils-core</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>brailleutils-catalog</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.apache.aries.spifly</groupId>
-                      <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-                      <version>1.0.0</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.apache.aries</groupId>
-                      <artifactId>org.apache.aries.util</artifactId>
-                      <version>1.0.0</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.libs</groupId>
-                      <artifactId>dotify-translator</artifactId>
-                    </artifactItem>
-                    <artifactItem>
                       <groupId>com.googlecode.texhyphj</groupId>
                       <artifactId>texhyphj</artifactId>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>com.ibm.icu</groupId>
-                      <artifactId>icu4j</artifactId>
+                      <groupId>org.daisy.bindings</groupId>
+                      <artifactId>jhyphen</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.braille</groupId>
+                      <artifactId>braille-css</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.braille</groupId>
+                      <artifactId>braille-utils.api</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.braille</groupId>
+                      <artifactId>braille-utils.impl</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.braille</groupId>
+                      <artifactId>braille-utils.pef-tools</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.dotify</groupId>
+                      <artifactId>dotify.api</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.dotify</groupId>
+                      <artifactId>dotify.common</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.dotify</groupId>
+                      <artifactId>dotify.formatter.impl</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.dotify</groupId>
+                      <artifactId>dotify.hyphenator.impl</artifactId>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.dotify</groupId>
+                      <artifactId>dotify.translator.impl</artifactId>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.liblouis</groupId>
                       <artifactId>liblouis-java</artifactId>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.daisy.bindings</groupId>
-                      <artifactId>jhyphen</artifactId>
+                      <groupId>org.unbescape</groupId>
+                      <artifactId>unbescape</artifactId>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
