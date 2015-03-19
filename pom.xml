@@ -19,6 +19,16 @@
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
     <tag>v1.9</tag>
   </scm>
+  <properties>
+    <pipeline.framework.version>1.9</pipeline.framework.version>
+    <pipeline.scripts.version>1.9</pipeline.scripts.version>
+    <pipeline.common-utils.version>1.9</pipeline.common-utils.version>
+    <pipeline.script-utils.version>1.9</pipeline.script-utils.version>
+    <pipeline.braille-modules.version>1.9</pipeline.braille-modules.version>
+    <pipeline.nlp-modules.version>1.9</pipeline.nlp-modules.version>
+    <pipeline.tts-modules.version>1.9</pipeline.tts-modules.version>
+    <pipeline.audio-modules.version>1.9</pipeline.audio-modules.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -37,56 +47,56 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.framework.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-aggregator</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.scripts.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.common-utils.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>script-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.script-utils.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
-        <artifactId>braille-modules-parent</artifactId>
-        <version>1.9</version>
+        <artifactId>braille-modules-bom</artifactId>
+        <version>${pipeline.braille-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>nlp-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.nlp-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>tts-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.tts-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>audio-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.audio-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -1888,6 +1898,144 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>test</id>
+      <properties>
+        <pipeline.framework.source>http://github.com/daisy/pipeline-framework/zipball/v1.9</pipeline.framework.source>
+        <pipeline.scripts.source>http://github.com/daisy/pipeline-scripts/zipball/master</pipeline.scripts.source>
+        <pipeline.common-utils.source>http://github.com/daisy/pipeline-modules-common/zipball/v1.9</pipeline.common-utils.source>
+        <pipeline.script-utils.source>http://github.com/daisy/pipeline-scripts-utils/zipball/v1.9</pipeline.script-utils.source>
+        <pipeline.braille-modules.source>http://github.com/daisy/pipeline-mod-braille/zipball/v1.9</pipeline.braille-modules.source>
+        <pipeline.nlp-modules.source>http://github.com/daisy/pipeline-mod-nlp/zipball/v1.9</pipeline.nlp-modules.source>
+        <pipeline.tts-modules.source>http://github.com/daisy/pipeline-mod-tts/zipball/v1.9</pipeline.tts-modules.source>
+        <pipeline.audio-modules.source>http://github.com/daisy/pipeline-mod-audio/zipball/v1.9</pipeline.audio-modules.source>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-help-plugin</artifactId>
+            <version>2.1.1</version>
+            <executions>
+              <execution>
+                <id>generate-effective-pom</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>effective-pom</goal>
+                </goals>
+                <configuration>
+                  <output>target/tmp/effective-pom.xml</output>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>download-pipeline-sources</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="target/checkout"/>
+                    <get dest="target/checkout/framework.zip" src="${pipeline.framework.source}" skipexisting="true"/>
+                    <get dest="target/checkout/scripts.zip" src="${pipeline.scripts.source}" skipexisting="true"/>
+                    <get dest="target/checkout/common-utils.zip" src="${pipeline.common-utils.source}" skipexisting="true"/>
+                    <get dest="target/checkout/script-utils.zip" src="${pipeline.script-utils.source}" skipexisting="true"/>
+                    <get dest="target/checkout/braille-modules.zip" src="${pipeline.braille-modules.source}" skipexisting="true"/>
+                    <get dest="target/checkout/nlp-modules.zip" src="${pipeline.nlp-modules.source}" skipexisting="true"/>
+                    <get dest="target/checkout/tts-modules.zip" src="${pipeline.tts-modules.source}" skipexisting="true"/>
+                    <get dest="target/checkout/audio-modules.zip" src="${pipeline.audio-modules.source}" skipexisting="true"/>
+                    <delete dir="target/test"/>
+                    <mkdir dir="target/test"/>
+                    <unzip src="target/checkout/framework.zip" dest="target/test"/>
+                    <unzip src="target/checkout/scripts.zip" dest="target/test"/>
+                    <unzip src="target/checkout/common-utils.zip" dest="target/test"/>
+                    <unzip src="target/checkout/script-utils.zip" dest="target/test"/>
+                    <unzip src="target/checkout/braille-modules.zip" dest="target/test"/>
+                    <unzip src="target/checkout/nlp-modules.zip" dest="target/test"/>
+                    <unzip src="target/checkout/tts-modules.zip" dest="target/test"/>
+                    <unzip src="target/checkout/audio-modules.zip" dest="target/test"/>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-test-pom</id>
+                <phase>test</phase> <!-- needs to be executed after analyze-dependencies -->
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <xslt basedir="target/test" destdir="target/test" style="src/test/test-pom.xsl">
+                      <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+                      <patternset>
+                        <include name="**/pom.xml"/>
+                      </patternset>
+                      <mapper type="glob" from="*/pom.xml" to="*/test-pom.xml"/>
+                      <param name="bom-uri" expression="${project.baseUri}/target/tmp/effective-pom.xml"/>
+                    </xslt>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>9.5.1-5</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.9</version>
+            <executions>
+              <execution>
+                <id>analyze-dependencies</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <projectsDirectory>target/test</projectsDirectory>
+                   <pomIncludes>
+                     <pomInclude>**/pom.xml</pomInclude>
+                   </pomIncludes>
+                   <goals>
+                     <goal>dependency:tree</goal>
+                   </goals>
+                   <properties>
+                     <output>tree.graphml</output>
+                     <outputType>graphml</outputType>
+                   </properties>
+                </configuration>
+              </execution>
+              <execution>
+                <id>invoke-tests</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                 <configuration>
+                   <projectsDirectory>target/test</projectsDirectory>
+                   <pomIncludes>
+                     <pomInclude>**/test-pom.xml</pomInclude>
+                   </pomIncludes>
+                   <goals>
+                     <goal>test</goal>
+                   </goals>
+                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
   <repositories>
     <!--
