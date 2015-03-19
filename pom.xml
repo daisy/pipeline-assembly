@@ -20,11 +20,11 @@
     <tag>v1.9</tag>
   </scm>
   <properties>
-    <pipeline.framework.version>1.9</pipeline.framework.version>
+    <pipeline.framework.version>1.10-SNAPSHOT</pipeline.framework.version> <!-- depends on branch assembly-test -->
     <pipeline.scripts.version>1.9</pipeline.scripts.version>
     <pipeline.common-utils.version>1.9</pipeline.common-utils.version>
     <pipeline.script-utils.version>1.9</pipeline.script-utils.version>
-    <pipeline.braille-modules.version>1.9</pipeline.braille-modules.version>
+    <pipeline.braille-modules.version>1.10-SNAPSHOT</pipeline.braille-modules.version> <!-- depends on branch assembly-test -->
     <pipeline.nlp-modules.version>1.9</pipeline.nlp-modules.version>
     <pipeline.tts-modules.version>1.9</pipeline.tts-modules.version>
     <pipeline.audio-modules.version>1.9</pipeline.audio-modules.version>
@@ -156,12 +156,10 @@
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-classic</artifactId>
-                  <version>1.0.11</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-core</artifactId>
-                  <version>1.0.11</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -217,8 +215,6 @@
                 <artifactItem>
                   <groupId>org.osgi</groupId>
                   <artifactId>org.osgi.enterprise</artifactId>
-                  <!-- FIXME fix that version in the fwk BoM -->
-                  <version>4.2.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
@@ -259,17 +255,14 @@
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
                   <artifactId>httpclient-osgi</artifactId>
-                  <version>4.2.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
                   <artifactId>httpcore-osgi</artifactId>
-                  <version>4.2.4</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>jing</artifactId>
-                  <version>20120724.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse</groupId>
@@ -323,12 +316,10 @@
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>com.xmlcalabash</artifactId>
-                  <version>1.0.23</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>saxon-he</artifactId>
-                  <version>9.5.1.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -338,7 +329,6 @@
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>javax.persistence</artifactId>
-                  <version>2.0.3</version>
                 </artifactItem>
                 <!-- From dependencies used at compile time in the Framework parent POM -->
                 <artifactItem>
@@ -421,7 +411,6 @@
                 <artifactItem>
                   <groupId>net.java.dev.jna</groupId>
                   <artifactId>jna</artifactId>
-                  <version>4.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -433,7 +422,6 @@
                   <!-- TODO build our own bundle ? -->
                   <groupId>org.apache.servicemix.bundles</groupId>
                   <artifactId>org.apache.servicemix.bundles.antlr-runtime</artifactId>
-                  <version>3.2_2</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -1700,7 +1688,6 @@
                       <!-- required by SPI-Fly -->
                       <groupId>org.ow2.asm</groupId>
                       <artifactId>asm-all</artifactId>
-                      <version>4.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.libs</groupId>
@@ -1713,12 +1700,10 @@
                     <artifactItem>
                       <groupId>org.apache.aries.spifly</groupId>
                       <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-                      <version>1.0.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.apache.aries</groupId>
                       <artifactId>org.apache.aries.util</artifactId>
-                      <version>1.0.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.libs</groupId>
