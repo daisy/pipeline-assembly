@@ -62,13 +62,14 @@
 				<xsl:variable name="groupId" as="xs:string" select="pom:groupId/normalize-space(string(.))"/>
 				<xsl:variable name="artifactId" as="xs:string" select="pom:artifactId/normalize-space(string(.))"/>
 				<xsl:variable name="type" as="xs:string?" select="pom:type/normalize-space(string(.))"/>
+				<xsl:variable name="classifier" as="xs:string?" select="pom:classifier/normalize-space(string(.))"/>
 				<xsl:variable name="version" as="xs:string" select="pom:version/normalize-space(string(.))"/>
 				<xsl:variable name="scope" as="xs:string?" select="pom:scope/normalize-space(string(.))"/>
 				<xsl:variable name="bom-version" as="xs:string?"
-				              select="$bom-dependencies[pom:is-dependency(.,$groupId,$artifactId,$type)]
+				              select="$bom-dependencies[pom:is-dependency(.,$groupId,$artifactId,$type,$classifier)]
 				                      /pom:version/normalize-space(string(.))"/>
 				<xsl:variable name="is-direct" as="xs:boolean"
-				              select="exists($dependencies[pom:is-dependency(.,$groupId,$artifactId,$type)])"/>
+				              select="exists($dependencies[pom:is-dependency(.,$groupId,$artifactId,$type,$classifier)])"/>
 				<xsl:choose>
 					<xsl:when test="$bom-version and not($bom-version[1]=$version)">
 						<xsl:if test="$is-direct">
@@ -76,7 +77,7 @@
 								                        string-join(($groupId,$artifactId,$type),':'),
 								                        '. Move to BOM?')"/>
 						</xsl:if>
-						<xsl:sequence select="pom:dependency($groupId,$artifactId,$type,$bom-version,$scope)"/>
+						<xsl:sequence select="pom:dependency($groupId,$artifactId,$type,$classifier,$bom-version,$scope)"/>
 					</xsl:when>
 					<xsl:when test="$is-direct">
 						<xsl:sequence select="."/>
@@ -161,8 +162,9 @@
 			<xsl:sequence select="pom:dependency($tokens[1],
 			                                     $tokens[2],
 			                                     if ($tokens[3]='bundle') then () else $tokens[3],
-			                                     $tokens[4],
-			                                     $tokens[5])"/>
+			                                     if ($tokens[6]) then $tokens[4] else (),
+			                                     if ($tokens[6]) then $tokens[5] else $tokens[4],
+			                                     if ($tokens[6]) then $tokens[6] else $tokens[5])"/>
 		</xsl:for-each>
 	</xsl:template>
 	
@@ -176,6 +178,7 @@
 		<xsl:param name="groupId" as="xs:string"/>
 		<xsl:param name="artifactId" as="xs:string"/>
 		<xsl:param name="type" as="xs:string?"/>
+		<xsl:param name="classifier" as="xs:string?"/>
 		<xsl:param name="version" as="xs:string"/>
 		<xsl:param name="scope" as="xs:string?"/>
 		<dependency>
@@ -189,6 +192,11 @@
 				<type>
 					<xsl:value-of select="$type"/>
 				</type>
+			</xsl:if>
+			<xsl:if test="$classifier">
+				<classifier>
+					<xsl:value-of select="$classifier"/>
+				</classifier>
 			</xsl:if>
 			<version>
 				<xsl:value-of select="$version"/>
@@ -205,7 +213,7 @@
 		<xsl:param name="context" as="node()"/>
 		<xsl:param name="groupId" as="xs:string"/>
 		<xsl:param name="artifactId" as="xs:string"/>
-		<xsl:sequence select="pom:is-dependency($context,$groupId,$artifactId,())"/>
+		<xsl:sequence select="pom:is-dependency($context,$groupId,$artifactId,(),())"/>
 	</xsl:function>
 	
 	<xsl:function name="pom:is-dependency" as="xs:boolean">
@@ -213,11 +221,13 @@
 		<xsl:param name="groupId" as="xs:string"/>
 		<xsl:param name="artifactId" as="xs:string"/>
 		<xsl:param name="type" as="xs:string?"/>
+		<xsl:param name="classifier" as="xs:string?"/>
 		<xsl:sequence select="exists($context[
 		                        self::pom:dependency
 		                        and normalize-space(string(pom:groupId))=$groupId
 		                        and normalize-space(string(pom:artifactId))=$artifactId
-		                        and ($type,'jar')[1]=(pom:type/normalize-space(string(.)),'jar')[1]])"/>
+		                        and ($type,'jar')[1]=(pom:type/normalize-space(string(.)),'jar')[1]
+		                        and string($classifier)=normalize-space(string(pom:classifier))])"/>
 	</xsl:function>
 	
 </xsl:stylesheet>
