@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9</version>
+  <version>1.10-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -778,6 +778,11 @@
             <prependGroupId>true</prependGroupId>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.jolokia</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>0.11.2</version>
+        </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
@@ -1167,6 +1172,23 @@
                       <version>1.8.1</version>
                       <type>zip</type>
                       <outputDirectory>${project.build.directory}/webui</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+              <execution>
+                <id>unpack-cli-linux</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>cli</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
@@ -2019,6 +2041,63 @@
                      <goal>test</goal>
                    </goals>
                  </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-deb-profile-active</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireActiveProfile>
+                      <profiles>deb</profiles>
+                    </requireActiveProfile>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <configuration>
+              <sourceDirectory>src/main/assembly</sourceDirectory>
+              <images>
+                <image>
+                  <name>daisy/daisy-pipeline2</name>
+                  <build>
+                    <assembly>
+                      <descriptor>docker-base.xml</descriptor>
+                      <dockerFileDir>docker-base</dockerFileDir>
+                    </assembly>
+                    <tags>
+                      <tag>latest</tag>
+                      <tag>${project.version}</tag>
+                    </tags>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build-docker-images</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
