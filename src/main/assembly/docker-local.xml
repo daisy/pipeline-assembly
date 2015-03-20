@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<assembly>
+	<id>docker-local</id>
+	<fileSets>
+		<fileSet>
+			<directory>target</directory>
+			<includes>
+				<include>daisy-pipeline2-cli_${project.version}_all.deb</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

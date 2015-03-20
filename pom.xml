@@ -2104,6 +2104,109 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>docker-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-deb-profile-active</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireActiveProfile>
+                      <profiles>docker</profiles>
+                    </requireActiveProfile>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <configuration>
+              <images combine.children="append">
+                <image>
+                  <name>daisy/daisy-pipeline2-local</name>
+                  <build>
+                    <assembly>
+                      <descriptor>docker-local.xml</descriptor>
+                      <dockerFileDir>docker-local</dockerFileDir>
+                    </assembly>
+                  </build>
+                  <run>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/main/resources/samples:/samples</volume>
+                      </bind>
+                    </volumes>
+                    <wait>
+                      <time>10000</time>
+                    </wait>
+                    <log>
+                      <prefix>PIPELINE</prefix>
+                    </log>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-docker-containers</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <image>daisy/daisy-pipeline2-local</image>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-docker-containers</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <image>daisy/daisy-pipeline2-local</image>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>exec-docker-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <exec executable="src/test/docker-exec.sh">
+                      <arg value="daisy/daisy-pipeline2-local"/>
+                      <arg value="dp2"/>
+                      <arg value="zedai-to-epub3"/>
+                      <arg value="--i-source"/>
+                      <arg value="/samples/zedai/alice.xml"/>
+                      <arg value="--output"/>
+                      <arg value="/tmp/alice/html"/>
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
   </profiles>
   <repositories>
