@@ -535,21 +535,22 @@
                         <artifactId>swt</artifactId>
                         <version>3.1</version>
                     </artifactItem>
-                    <artifactItem>
-                        <groupId>org.eclipse.swt</groupId>
-                        <artifactId>cocoa.macosx.x86_64</artifactId>
-                        <version>3.1</version>
-                    </artifactItem>
+                    <!--<artifactItem>-->
+                        <!--<groupId>org.eclipse.swt</groupId>-->
+                        <!--[><artifactId>cocoa.macosx.x86_64</artifactId><]-->
+                        <!--<artifactId>cocoa.macosx.x86_64</artifactId>-->
+                        <!--<version>3.1</version>-->
+                    <!--</artifactItem>-->
                     <artifactItem>
                         <groupId>org.eclipse.swt</groupId>
                         <artifactId>gtk.linux.x86_64</artifactId>
                         <version>3.1</version>
                     </artifactItem>
-                    <artifactItem>
-                        <groupId>org.eclipse.swt</groupId>
-                        <artifactId>win32.win32.x86_64</artifactId>
-                        <version>3.1</version>
-                    </artifactItem>
+                    <!--<artifactItem>-->
+                        <!--<groupId>org.eclipse.swt</groupId>-->
+                        <!--<artifactId>win32.win32.x86_64</artifactId>-->
+                        <!--<version>3.1</version>-->
+                    <!--</artifactItem>-->
                     <artifactItem>
                         <groupId>org.eclipse.jface</groupId>
                         <artifactId>jface</artifactId>
