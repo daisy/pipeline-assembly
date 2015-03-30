@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <assembly>
-	<id>docker-base</id>
+	<id>docker-server</id>
 	<fileSets>
 		<fileSet>
 			<directory>target</directory>

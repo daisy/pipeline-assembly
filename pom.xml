@@ -2080,8 +2080,21 @@
                   <name>daisy/daisy-pipeline2</name>
                   <build>
                     <assembly>
-                      <descriptor>docker-base.xml</descriptor>
-                      <dockerFileDir>docker-base</dockerFileDir>
+                      <descriptor>docker-server.xml</descriptor>
+                      <dockerFileDir>docker-server</dockerFileDir>
+                    </assembly>
+                    <tags>
+                      <tag>latest</tag>
+                      <tag>${project.version}</tag>
+                    </tags>
+                  </build>
+                </image>
+                <image>
+                  <name>daisy/daisy-pipeline2-cli</name>
+                  <build>
+                    <assembly>
+                      <descriptor>docker-cli.xml</descriptor>
+                      <dockerFileDir>docker-cli</dockerFileDir>
                     </assembly>
                     <tags>
                       <tag>latest</tag>
