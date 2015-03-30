@@ -1481,7 +1481,8 @@
                         start.bat,
                         uninstall,
                         uninstall.bat,
-                        dp2webui/*
+                        dp2webui,
+                        dp2webui/**/*
                       </excludes>
                       <mapper>
                         <type>perm</type>
@@ -2095,6 +2096,19 @@
                     <assembly>
                       <descriptor>docker-cli.xml</descriptor>
                       <dockerFileDir>docker-cli</dockerFileDir>
+                    </assembly>
+                    <tags>
+                      <tag>latest</tag>
+                      <tag>${project.version}</tag>
+                    </tags>
+                  </build>
+                </image>
+                <image>
+                  <name>daisy/daisy-pipeline2-webui</name>
+                  <build>
+                    <assembly>
+                      <descriptor>docker-webui.xml</descriptor>
+                      <dockerFileDir>docker-webui</dockerFileDir>
                     </assembly>
                     <tags>
                       <tag>latest</tag>
