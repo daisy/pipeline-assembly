@@ -1,0 +1,11 @@
+host: http://server
+port: 8181
+ws_path: ws
+ws_timeup: 25
+exec_line: /dev/null
+local: false
+client_key: cli
+client_secret: foo
+timeout: 60
+debug: false
+starting: false
