@@ -1677,10 +1677,6 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.pipeline.modules.braille</groupId>
-                      <artifactId>xml-to-pef</artifactId>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline.modules.braille</groupId>
                       <artifactId>zedai-to-pef</artifactId>
                     </artifactItem>
                   </artifactItems>
