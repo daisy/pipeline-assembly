@@ -1916,7 +1916,7 @@
       <id>test</id>
       <properties>
         <pipeline.framework.source>http://github.com/daisy/pipeline-framework/zipball/v1.9</pipeline.framework.source>
-        <pipeline.scripts.source>http://github.com/daisy/pipeline-scripts/zipball/master</pipeline.scripts.source>
+        <pipeline.scripts.source>http://github.com/daisy/pipeline-scripts/zipball/v1.9</pipeline.scripts.source>
         <pipeline.common-utils.source>http://github.com/daisy/pipeline-modules-common/zipball/v1.9</pipeline.common-utils.source>
         <pipeline.script-utils.source>http://github.com/daisy/pipeline-scripts-utils/zipball/v1.9</pipeline.script-utils.source>
         <pipeline.braille-modules.source>http://github.com/daisy/pipeline-mod-braille/zipball/v1.9</pipeline.braille-modules.source>
@@ -1970,7 +1970,8 @@
                     <unzip src="target/checkout/script-utils.zip" dest="target/test"/>
                     <unzip src="target/checkout/braille-modules.zip" dest="target/test"/>
                     <unzip src="target/checkout/nlp-modules.zip" dest="target/test"/>
-                    <unzip src="target/checkout/tts-modules.zip" dest="target/test"/>
+                    <!-- FIXME: Non-resolvable import POM -->
+                    <!-- <unzip src="target/checkout/tts-modules.zip" dest="target/test"/> -->
                     <unzip src="target/checkout/audio-modules.zip" dest="target/test"/>
                   </target>
                 </configuration>
@@ -1987,6 +1988,26 @@
                       <factory name="net.sf.saxon.TransformerFactoryImpl"/>
                       <patternset>
                         <include name="**/pom.xml"/>
+                        <!-- FIXME: Non-resolvable parent POM -->
+                        <exclude name="**/calabash-custom-steps/pom.xml"/>
+                        <exclude name="**/framework-volatile/pom.xml"/>
+                        <exclude name="**/logging-activator/pom.xml"/>
+                        <exclude name="**/modules-registry/pom.xml"/>
+                        <exclude name="**/persistence-derby/pom.xml"/>
+                        <exclude name="**/persistence-mysql/pom.xml"/>
+                        <exclude name="**/push-notifier/pom.xml"/>
+                        <exclude name="**/woodstox-osgi-adapter/pom.xml"/>
+                        <exclude name="**/xmlcatalog/pom.xml"/>
+                        <exclude name="**/xpath-registry/pom.xml"/>
+                        <exclude name="**/xproc-api/pom.xml"/>
+                        <exclude name="**/dtbook-break-detection/pom.xml"/>
+                        <exclude name="**/light-lexer/pom.xml"/>
+                        <exclude name="**/nlp-utils/lexing/pom.xml"/>
+                        <exclude name="**/nlp-utils/nlp-common/pom.xml"/>
+                        <exclude name="**/omnilang-lexer/pom.xml"/>
+                        <exclude name="**/ruled-lexer/pom.xml"/>
+                        <!-- FIXME: The version cannot be empty -->
+                        <exclude name="**/html-to-dtbook/poms/bom/pom.xml"/>
                       </patternset>
                       <mapper type="glob" from="*/pom.xml" to="*/test-pom.xml"/>
                       <param name="bom-uri" expression="${project.baseUri}/target/tmp/effective-pom.xml"/>
@@ -2018,6 +2039,28 @@
                    <pomIncludes>
                      <pomInclude>**/pom.xml</pomInclude>
                    </pomIncludes>
+                   <pomExcludes>
+                     <!-- FIXME: Non-resolvable parent POM -->
+                     <pomExclude>**/calabash-custom-steps/pom.xml</pomExclude>
+                     <pomExclude>**/framework-volatile/pom.xml</pomExclude>
+                     <pomExclude>**/logging-activator/pom.xml</pomExclude>
+                     <pomExclude>**/modules-registry/pom.xml</pomExclude>
+                     <pomExclude>**/persistence-derby/pom.xml</pomExclude>
+                     <pomExclude>**/persistence-mysql/pom.xml</pomExclude>
+                     <pomExclude>**/push-notifier/pom.xml</pomExclude>
+                     <pomExclude>**/woodstox-osgi-adapter/pom.xml</pomExclude>
+                     <pomExclude>**/xmlcatalog/pom.xml</pomExclude>
+                     <pomExclude>**/xpath-registry/pom.xml</pomExclude>
+                     <pomExclude>**/xproc-api/pom.xml</pomExclude>
+                     <pomExclude>**/dtbook-break-detection/pom.xml</pomExclude>
+                     <pomExclude>**/light-lexer/pom.xml</pomExclude>
+                     <pomExclude>**/nlp-utils/lexing/pom.xml</pomExclude>
+                     <pomExclude>**/nlp-utils/nlp-common/pom.xml</pomExclude>
+                     <pomExclude>**/omnilang-lexer/pom.xml</pomExclude>
+                     <pomExclude>**/ruled-lexer/pom.xml</pomExclude>
+                     <!-- FIXME: The version cannot be empty -->
+                     <pomExclude>**/html-to-dtbook/poms/bom/pom.xml</pomExclude>
+                   </pomExcludes>
                    <goals>
                      <goal>dependency:tree</goal>
                    </goals>
@@ -2038,6 +2081,16 @@
                    <pomIncludes>
                      <pomInclude>**/test-pom.xml</pomInclude>
                    </pomIncludes>
+                   <pomExcludes>
+                     <!-- FIXME: Artifacts not included in bom, temporarily move to branch -->
+                     <pomExclude>**/liblouis/liblouis-dotify/test-pom.xml</pomExclude>
+                     <pomExclude>**/liblouis/liblouis-pef/test-pom.xml</pomExclude>
+                     <!-- FIXME: woluwe test takes very long, disable it -->
+                     <pomExclude>**/liblouis/liblouis-mathml/test-pom.xml</pomExclude>
+                     <!-- FIXME: Bug in test-pom.xsl -->
+                     <pomExclude>**/libhyphen/liblouis-native/test-pom.xml</pomExclude>
+                     <pomExclude>**/libhyphen/libhyphen-native/test-pom.xml</pomExclude>
+                   </pomExcludes>
                    <goals>
                      <goal>test</goal>
                    </goals>
