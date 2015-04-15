@@ -819,9 +819,9 @@
 
   <profiles>
 
-	<!-- RED HAT Rpm Server Engine -->
+	<!-- REDHAT/CentOS RPM Server Engine -->
 	<profile>
-      <id>redhat</id>
+      <id>centos</id>
       <properties>
 		<pipeline.user>pipeline2</pipeline.user>
 		<pipeline.home>/opt/daisy-pipeline2</pipeline.home>
@@ -830,50 +830,7 @@
 		<bundles.bootstrap>system/bootstrap</bundles.bootstrap>
 		<bundles.framework>system/framework</bundles.framework>
 		<bundles.frontend>system/frontend</bundles.frontend>
-		<bundles.modules>${pipeline.home}/modules</bundles.modules>
-
-		<!-- 
-		pipeline.log=${org.daisy.pipeline.data}/log
-		pipeline.config=${org.daisy.pipeline.home}/etc
-		bundles.auto.deploy=system/felix
-		bundles.bootstrap=system/bootstrap
-		bundles.modules=modules
-		pipeline.ws.host=http://localhost
-		<pipeline.ws.port>8181</pipeline.ws.port>
-		<pipeline.ws.path>ws</pipeline.ws.path>
-		<pipeline.ws.timeout>60</pipeline.ws.timeout>
-		<pipeline.ws.cmd.unix>=../bin/pipeline2</pipeline.ws.cmd.unix>
-		pipeline.ws.cmd.win=..\\bin\\pipeline2.bat
-		pipeline.ws.localfs=true
-		pipeline.ws.authenticate=false
-		pipeline.ws.clientkey=clientid
-		pipeline.ws.clientsecret=supersecret
-		pipeline.cli.starting=true
-		pipeline.cli.timeout=100
-		pipeline.cli.debug=false
-		pipeline.cli.exec_line=../bin/pipeline2
-		
-		
-		<pipeline.data>/var/opt/daisy-pipeline2</pipeline.data>
-		<pipeline.log>/var/log/daisy-pipeline2</pipeline.log>
-		<pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
-		<pipeline.cli.home>/opt/daisy-pipeline2-cli</pipeline.cli.home>
-		<pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
-		<pipeline.webui.user>pipeline2-webui</pipeline.webui.user>
-		<pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
-		<pipeline.webui.data>/var/opt/daisy-pipeline2-webui</pipeline.webui.data>
-		<pipeline.ws.host>http://localhost</pipeline.ws.host>
-		<pipeline.ws.port>8181</pipeline.ws.port>
-		<pipeline.ws.path>ws</pipeline.ws.path>
-		<pipeline.ws.timeout>60</pipeline.ws.timeout>
-		<pipeline.ws.cmd.unix>../bin/pipeline2</pipeline.ws.cmd.unix>
-		<pipeline.ws.local>true</pipeline.ws.local>
-		<pipeline.ws.authenticate>false</pipeline.ws.authenticate>
-		<pipeline.ws.clientkey>clientid</pipeline.ws.clientkey>
-		<pipeline.ws.clientsecret>supersecret</pipeline.ws.clientsecret>
-		<pipeline.cli.exec_line>/dev/null</pipeline.cli.exec_line>
-		<pipeline.cli.starting>false</pipeline.cli.starting>
-		 -->
+		<bundles.modules>modules</bundles.modules>
   	  </properties>
       <activation>
         <os>
@@ -904,7 +861,6 @@
               </execution>
             </executions>
           </plugin>
-          <!--
 		  <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
@@ -928,7 +884,6 @@
               </execution>
             </executions>
 		  </plugin>
-		  -->
 		  <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>rpm-maven-plugin</artifactId>
@@ -942,16 +897,16 @@
                    </execution>
                 </executions>
                 <configuration>
+                	<name>pipeline2</name>
                     <group>daisy-pipeline2</group>
                     <description>daisy-pipeline2</description>
-                    <release>${project.version}</release>
                     <needarch>x86_64</needarch>
                     <mappings>
                        <mapping>
                          <directory>${pipeline.home}</directory>
-                         <filemode>750</filemode>
-                         <username>root</username>
-                         <groupname>root</groupname>
+                         <filemode>0644</filemode>
+                         <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
                          <sources>
 			                <source>
 				                <location>src/main/resources</location>
@@ -979,8 +934,16 @@
 							        <exclude>samples/html/**</exclude>
 							    </excludes>
 			                </source>
+			             </sources>
+			           </mapping>
+			           <mapping>
+                         <directory>${pipeline.home}</directory>
+                         <filemode>0644</filemode>
+                         <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
+                         <sources>
 			                <source>
-				                <location>src/main/resources</location>
+			                	<location>src/main/resources</location>
 							      <includes>
 							        <include>etc/system.properties</include>
 							        <include>etc/config.properties</include>
@@ -988,6 +951,14 @@
 							      </includes>
 							      <filter>true</filter>
 			                </source>
+			             </sources>
+			           </mapping>
+			           <mapping>
+                         <directory>${pipeline.home}</directory>
+                         <filemode>0754</filemode>
+                         <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
+                         <sources>
 			                <source>
 			                	<location>src/main/resources</location>
 							      <includes>
@@ -999,9 +970,9 @@
 			           </mapping>
 			           <mapping>
                          <directory>${pipeline.home}/${bundles.bootstrap}</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/bootstrap</location>
@@ -1010,9 +981,9 @@
                        </mapping>
                        <mapping>
                          <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/felix</location>
@@ -1024,9 +995,9 @@
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.home}/${bundles.auto.deploy}/gogo</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/felix</location>
@@ -1038,9 +1009,9 @@
                     	</mapping>
 			            <mapping>
                          <directory>${pipeline.home}/${bundles.framework}</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/libs</location>
@@ -1049,9 +1020,9 @@
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.home}/${bundles.framework}</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/pipeline</location>
@@ -1060,9 +1031,9 @@
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.home}/${bundles.frontend}</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/frontend</location>
@@ -1070,10 +1041,10 @@
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${bundles.modules}</directory>
-		                 <filemode>750</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+                         <directory>${pipeline.home}/${bundles.modules}</directory>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/modules</location>
@@ -1082,48 +1053,56 @@
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.cli.home}</directory>
-		                 <filemode>755</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0644</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 							<source>
 		                 		<location>src/main/resources/cli</location>
 		                 		<includes>
         							<include>config.yml</include>
       							</includes>
-      							<filter>true</filter>
 							</source>
             			 </sources>
                     	</mapping>
 						<mapping>
                          <directory>${pipeline.cli.home}</directory>
-		                 <filemode>755</filemode>
-		                 <username>root</username>
-		                 <groupname>root</groupname>
+		                 <filemode>0755</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 							<source>
 		                 		<location>${project.basedir}/target/cli/linux32</location>
 		                 		<includes>
         							<include>dp2</include>
       							</includes>
-      							<filter>true</filter>
 							</source>
             			 </sources>
                     	</mapping>
                     </mappings>
+                    <filters>
+							<filter>src/main/assembly/dist.properties</filter>
+                    		<filter>src/main/assembly/dist-nix.properties</filter>
+					</filters>
+                    <postremoveScriptlet>
+                        <script>
+rm -rf /opt/daisy-pipeline2
+                        </script>
+                    </postremoveScriptlet>
                 </configuration>
             </plugin>
         </plugins>
       </build>
     </profile>
     
-    <!-- RED HAT Rpm Web UI -->
+    <!-- REDHAT/CentOS RPM packet Web UI -->
     <profile>
-      <id>redhat-webui</id>
+      <id>centos-webui</id>
       <properties>
         <pipeline.webui-version>1.8.1</pipeline.webui-version>
-		<pipeline.user>pipeline2</pipeline.user>
-		<pipeline.home>/opt/daisy-pipeline2</pipeline.home>
+		<pipeline.webui.user>pipeline2</pipeline.webui.user>
+		<pipeline.webui.group>pipeline2</pipeline.webui.group>
+		<pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
   	  </properties>
       <activation>
         <os>
@@ -1145,7 +1124,7 @@
 	                  <artifactItems>
 	                    <artifactItem>
 	                      <groupId>org.daisy.pipeline</groupId>
-	                      <artifactId>webui-desktop</artifactId>
+	                      <artifactId>webui</artifactId>
 	                      <version>1.8.1</version>
 	                      <type>zip</type>
 	                      <overWrite>true</overWrite>
@@ -1171,16 +1150,17 @@
                    </execution>
                 </executions>
                 <configuration>
+                	<name>pipeline2-webui</name>
                     <group>daisy-pipeline2-webui</group>
                     <description>daisy-pipeline2-webui</description>
-                    <release>${pipeline.webui-version}</release>
-                    <needarch>x86_64</needarch>
+                 	<version>${pipeline.webui-version}</version> 
+                    <needarch>noarch</needarch>
                     <mappings>
                        <mapping>
-                         <directory>${pipeline.home}/webui</directory>
-                         <filemode>760</filemode>
-                         <username>root</username>
-                         <groupname>root</groupname>
+                         <directory>${pipeline.webui.home}</directory>
+                         <filemode>755</filemode>
+                         <username>${pipeline.webui.user}</username>
+                         <groupname>${pipeline.webui.group}</groupname>
                          <sources>
 			                <source>
 				                <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
@@ -1189,10 +1169,10 @@
 							        <include>lib/**</include>
 							        <include>startui/**</include>
 							        <include>themes/**</include>
-							        <include>application.conf</include>
-							        <include>logger.xml</include>
 							    </includes>
 							    <excludes>
+							    	<exclude>application.conf</exclude>
+							        <exclude>logger.xml</exclude>
 							        <exclude>uninstall</exclude>
 							        <exclude>uninstall.bat</exclude>
 							        <exclude>start</exclude>
@@ -1202,10 +1182,35 @@
 			             </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/webui</directory>
+                         <directory>${pipeline.webui.home}</directory>
+                         <filemode>644</filemode>
+                         <username>${pipeline.webui.user}</username>
+                         <groupname>${pipeline.webui.group}</groupname>
+                         <sources>
+			                <source>
+				                <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
+				                 <includes>
+							        <include>application.conf</include>
+							        <include>logger.xml</include>
+							    </includes>
+							    <excludes>
+							    	<exclude>dp2webui/**</exclude>
+							        <exclude>lib/**</exclude>
+							        <exclude>startui/**</exclude>
+							        <exclude>themes/**</exclude>
+							        <exclude>uninstall</exclude>
+							        <exclude>uninstall.bat</exclude>
+							        <exclude>start</exclude>
+							        <exclude>start.bat</exclude>
+      							</excludes>
+			                </source>
+			             </sources>
+                    	</mapping>
+                    	<mapping>
+                         <directory>${pipeline.webui.home}</directory>
                          <filemode>755</filemode>
-                         <username>root</username>
-                         <groupname>root</groupname>
+                         <username>${pipeline.webui.user}</username>
+                         <groupname>${pipeline.webui.group}</groupname>
                          <sources>
 			                <source>
 				                <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
@@ -1219,12 +1224,17 @@
 			             </sources>
                     	</mapping>
                     </mappings>
+                    <preremoveScriptlet>
+                        <script>
+rm -rf /opt/daisy-pipeline2-webui
+                        </script>
+                    </preremoveScriptlet>
                 </configuration>
             </plugin>
         </plugins>
       </build>
     </profile>
-
+ 
     <profile>
       <id>mac</id>
       <activation>
