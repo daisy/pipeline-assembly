@@ -819,48 +819,24 @@
 
   <profiles>
 
-	<!-- REDHAT/CentOS RPM Server Engine -->
+	<!-- REDHAT/CentOS RPM packet server engine -->
 	<profile>
       <id>centos</id>
       <properties>
 		<pipeline.user>pipeline2</pipeline.user>
+		<pipeline.group>pipeline2</pipeline.group>
 		<pipeline.home>/opt/daisy-pipeline2</pipeline.home>
 		<pipeline.cli.home>${pipeline.home}/cli</pipeline.cli.home>
-		<bundles.auto.deploy>system/felix</bundles.auto.deploy>
-		<bundles.bootstrap>system/bootstrap</bundles.bootstrap>
-		<bundles.framework>system/framework</bundles.framework>
-		<bundles.frontend>system/frontend</bundles.frontend>
 		<bundles.modules>modules</bundles.modules>
+		<bundles.system>system</bundles.system>
+		<bundles.felix>felix</bundles.felix>
+		<bundles.gogo>gogo</bundles.gogo>
+		<bundles.bootstrap>bootstrap</bundles.bootstrap>
+		<bundles.framework>framework</bundles.framework>
+		<bundles.frontend>frontend</bundles.frontend>
   	  </properties>
-      <activation>
-        <os>
-          <name>linux</name>
-        </os>
-      </activation>
       <build>
         <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack-cli-linux</id>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>cli</artifactId>
-                      <type>zip</type>
-                      <classifier>linux_386</classifier>
-                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
 		  <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
@@ -938,7 +914,7 @@
 			           </mapping>
 			           <mapping>
                          <directory>${pipeline.home}</directory>
-                         <filemode>0644</filemode>
+                         <filemode>0640</filemode>
                          <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
                          <sources>
@@ -955,7 +931,7 @@
 			           </mapping>
 			           <mapping>
                          <directory>${pipeline.home}</directory>
-                         <filemode>0754</filemode>
+                         <filemode>0550</filemode>
                          <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
                          <sources>
@@ -964,38 +940,47 @@
 							      <includes>
 							        <include>bin/**</include>
 							      </includes>
+							      <excludes>
+							    	<exclude>bin/pipeline2.bat</exclude>
+							      </excludes>	
       						      <filter>true</filter>
 			                </source>
 			             </sources>
 			           </mapping>
 			           <mapping>
-                         <directory>${pipeline.home}/${bundles.bootstrap}</directory>
-		                 <filemode>0755</filemode>
+                         <directory>${pipeline.home}/${bundles.system}</directory>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
-		                 		<location>${project.basedir}/target/bundles/bootstrap</location>
+		                 		<location>${project.basedir}/target/bundles</location>
+		                 		<includes>
+							        <include>${bundles.bootstrap}/**</include>
+							    </includes>
 							</source>
             			 </sources>
                        </mapping>
                        <mapping>
-                         <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
-		                 <filemode>0755</filemode>
+                         <directory>${pipeline.home}/${bundles.system}</directory>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
-		                 		<location>${project.basedir}/target/bundles/felix</location>
-		                 		 <excludes>
+		                 		<location>${project.basedir}/target/bundles</location>
+		                 		<includes>
+							        <include>${bundles.felix}/**</include>
+							    </includes>
+		                 		<excludes>
 							        <exclude>org.apache.felix.org.apache.felix.gogo*</exclude>
 							    </excludes>
 							</source>
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/${bundles.auto.deploy}/gogo</directory>
-		                 <filemode>0755</filemode>
+                         <directory>${pipeline.home}/${bundles.system}/${bundles.felix}/${bundles.gogo}</directory>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
@@ -1008,8 +993,8 @@
             			 </sources>
                     	</mapping>
 			            <mapping>
-                         <directory>${pipeline.home}/${bundles.framework}</directory>
-		                 <filemode>0755</filemode>
+                         <directory>${pipeline.home}/${bundles.system}/${bundles.framework}</directory>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
@@ -1019,8 +1004,8 @@
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/${bundles.framework}</directory>
-		                 <filemode>0755</filemode>
+                         <directory>${pipeline.home}/${bundles.system}/${bundles.framework}</directory>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
@@ -1030,8 +1015,8 @@
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/${bundles.frontend}</directory>
-		                 <filemode>0755</filemode>
+                         <directory>${pipeline.home}/${bundles.system}/${bundles.frontend}</directory>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
@@ -1042,40 +1027,12 @@
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.home}/${bundles.modules}</directory>
-		                 <filemode>0755</filemode>
+		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
 		                 		<location>${project.basedir}/target/bundles/modules</location>
-							</source>
-            			 </sources>
-                    	</mapping>
-                    	<mapping>
-                         <directory>${pipeline.cli.home}</directory>
-		                 <filemode>0644</filemode>
-		                 <username>${pipeline.user}</username>
-        				 <groupname>${pipeline.group}</groupname>
-            			 <sources>
-							<source>
-		                 		<location>src/main/resources/cli</location>
-		                 		<includes>
-        							<include>config.yml</include>
-      							</includes>
-							</source>
-            			 </sources>
-                    	</mapping>
-						<mapping>
-                         <directory>${pipeline.cli.home}</directory>
-		                 <filemode>0755</filemode>
-		                 <username>${pipeline.user}</username>
-        				 <groupname>${pipeline.group}</groupname>
-            			 <sources>
-							<source>
-		                 		<location>${project.basedir}/target/cli/linux32</location>
-		                 		<includes>
-        							<include>dp2</include>
-      							</includes>
 							</source>
             			 </sources>
                     	</mapping>
@@ -1095,6 +1052,97 @@ rm -rf /opt/daisy-pipeline2
       </build>
     </profile>
     
+    <!-- REDHAT/CentOS RPM packet cli -->
+    <profile>
+      <id>centos-cli</id>
+      <properties>
+		<pipeline.user>pipeline2</pipeline.user>
+		<pipeline.group>pipeline2</pipeline.group>
+		<pipeline.home>/opt/daisy-pipeline2</pipeline.home>
+		<pipeline.cli.home>${pipeline.home}/cli</pipeline.cli.home>
+  	  </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-cli-linux</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>cli</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.0.1</version>
+                <executions>
+                   <execution>
+                     <id>generate-rpm</id>
+                     <goals>
+                        <goal>rpm</goal>
+                     </goals>
+                   </execution>
+                </executions>
+                <configuration>
+                	<name>pipeline2-cli</name>
+                    <group>daisy-pipeline2-cli</group>
+                    <description>daisy-pipeline2-cli</description>
+                    <needarch>x86_64</needarch>
+                    <mappings>
+                    <mapping>
+                         <directory>${pipeline.cli.home}</directory>
+		                 <filemode>0640</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
+            			 <sources>
+							<source>
+		                 		<location>src/main/resources/cli</location>
+		                 		<includes>
+        							<include>config.yml</include>
+      							</includes>
+							</source>
+            			 </sources>
+                    	</mapping>
+						<mapping>
+                         <directory>${pipeline.cli.home}</directory>
+		                 <filemode>0640</filemode>
+		                 <username>${pipeline.user}</username>
+        				 <groupname>${pipeline.group}</groupname>
+            			 <sources>
+							<source>
+		                 		<location>${project.basedir}/target/cli/linux32</location>
+		                 		<includes>
+        							<include>dp2</include>
+      							</includes>
+							</source>
+            			 </sources>
+                    	</mapping>
+                    </mappings>
+                    <postremoveScriptlet>
+                        <script>
+rm -rf /opt/daisy-pipeline2/cli
+                        </script>
+                    </postremoveScriptlet>
+                </configuration>
+            </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
     <!-- REDHAT/CentOS RPM packet Web UI -->
     <profile>
       <id>centos-webui</id>
@@ -1104,11 +1152,6 @@ rm -rf /opt/daisy-pipeline2
 		<pipeline.webui.group>pipeline2</pipeline.webui.group>
 		<pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
   	  </properties>
-      <activation>
-        <os>
-          <name>linux</name>
-        </os>
-      </activation>
       <build>
         <plugins>
     		<plugin>
@@ -1158,7 +1201,7 @@ rm -rf /opt/daisy-pipeline2
                     <mappings>
                        <mapping>
                          <directory>${pipeline.webui.home}</directory>
-                         <filemode>755</filemode>
+                         <filemode>660</filemode>
                          <username>${pipeline.webui.user}</username>
                          <groupname>${pipeline.webui.group}</groupname>
                          <sources>
@@ -1183,7 +1226,7 @@ rm -rf /opt/daisy-pipeline2
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.webui.home}</directory>
-                         <filemode>644</filemode>
+                         <filemode>660</filemode>
                          <username>${pipeline.webui.user}</username>
                          <groupname>${pipeline.webui.group}</groupname>
                          <sources>
@@ -1208,17 +1251,14 @@ rm -rf /opt/daisy-pipeline2
                     	</mapping>
                     	<mapping>
                          <directory>${pipeline.webui.home}</directory>
-                         <filemode>755</filemode>
+                         <filemode>550</filemode>
                          <username>${pipeline.webui.user}</username>
                          <groupname>${pipeline.webui.group}</groupname>
                          <sources>
 			                <source>
 				                <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
 							    <includes>
-							        <include>uninstall</include>
-							        <include>uninstall.bat</include>
 							        <include>start</include>
-							        <include>start.bat</include>
       							</includes>
 			                </source>
 			             </sources>
