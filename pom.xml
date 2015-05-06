@@ -1101,7 +1101,7 @@
 
 	<!-- REDHAT/CentOS RPM packet server engine -->
 	<profile>
-      <id>centos</id>
+      <id>rpm</id>
       <properties>
 		<pipeline.user>pipeline2</pipeline.user>
 		<pipeline.group>pipeline2</pipeline.group>
@@ -1334,7 +1334,7 @@ rm -rf /opt/daisy-pipeline2
     
     <!-- REDHAT/CentOS RPM packet cli -->
     <profile>
-      <id>centos-cli</id>
+      <id>rpm-cli</id>
       <properties>
 		<pipeline.user>pipeline2</pipeline.user>
 		<pipeline.group>pipeline2</pipeline.group>
@@ -1425,7 +1425,7 @@ rm -rf /opt/daisy-pipeline2/cli
     
     <!-- REDHAT/CentOS RPM packet Web UI -->
     <profile>
-      <id>centos-webui</id>
+      <id>rpm-webui</id>
       <properties>
         <pipeline.webui-version>1.8.1</pipeline.webui-version>
 		<pipeline.webui.user>pipeline2</pipeline.webui.user>
