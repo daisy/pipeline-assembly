@@ -1106,14 +1106,9 @@
 		<pipeline.user>pipeline2</pipeline.user>
 		<pipeline.group>pipeline2</pipeline.group>
 		<pipeline.home>/opt/daisy-pipeline2</pipeline.home>
-		<pipeline.cli.home>${pipeline.home}/cli</pipeline.cli.home>
-		<bundles.modules>modules</bundles.modules>
-		<bundles.system>system</bundles.system>
-		<bundles.felix>felix</bundles.felix>
-		<bundles.gogo>gogo</bundles.gogo>
-		<bundles.bootstrap>bootstrap</bundles.bootstrap>
-		<bundles.framework>framework</bundles.framework>
-		<bundles.frontend>frontend</bundles.frontend>
+        <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
+        <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
+        <bundles.modules>modules</bundles.modules> <!-- don't change! must be the same as in dist.properties -->
   	  </properties>
       <build>
         <plugins>
@@ -1228,30 +1223,24 @@
 			             </sources>
 			           </mapping>
 			           <mapping>
-                         <directory>${pipeline.home}/${bundles.system}</directory>
+                         <directory>${pipeline.home}/${bundles.bootstrap}</directory>
 		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
-		                 		<location>${project.basedir}/target/bundles</location>
-		                 		<includes>
-							        <include>${bundles.bootstrap}/**</include>
-							    </includes>
+		                 		<location>${project.basedir}/target/bundles/bootstrap</location>
 							</source>
             			 </sources>
                        </mapping>
                        <mapping>
-                         <directory>${pipeline.home}/${bundles.system}</directory>
+                         <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
 		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
             			 <sources>
 			             	<source>
-		                 		<location>${project.basedir}/target/bundles</location>
-		                 		<includes>
-							        <include>${bundles.felix}/**</include>
-							    </includes>
+		                 		<location>${project.basedir}/target/bundles/felix</location>
 		                 		<excludes>
 							        <exclude>org.apache.felix.org.apache.felix.gogo*</exclude>
 							    </excludes>
@@ -1259,7 +1248,7 @@
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/${bundles.system}/${bundles.felix}/${bundles.gogo}</directory>
+                         <directory>${pipeline.home}/${bundles.auto.deploy}/gogo</directory>
 		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
@@ -1273,7 +1262,7 @@
             			 </sources>
                     	</mapping>
 			            <mapping>
-                         <directory>${pipeline.home}/${bundles.system}/${bundles.framework}</directory>
+                         <directory>${pipeline.home}/system/framework</directory>
 		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
@@ -1284,7 +1273,7 @@
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/${bundles.system}/${bundles.framework}</directory>
+                         <directory>${pipeline.home}/system/framework</directory>
 		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
@@ -1295,7 +1284,7 @@
             			 </sources>
                     	</mapping>
                     	<mapping>
-                         <directory>${pipeline.home}/${bundles.system}/${bundles.frontend}</directory>
+                         <directory>${pipeline.home}/system/frontend</directory>
 		                 <filemode>0644</filemode>
 		                 <username>${pipeline.user}</username>
         				 <groupname>${pipeline.group}</groupname>
@@ -1883,7 +1872,7 @@ rm -rf /opt/daisy-pipeline2-webui
         <pipeline.webui.data>/var/opt/daisy-pipeline2-webui</pipeline.webui.data>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
-        <bundles.modules>${pipeline.home}/modules</bundles.modules>
+        <bundles.modules>modules</bundles.modules>
         <pipeline.ws.host>http://localhost</pipeline.ws.host>
         <pipeline.ws.port>8181</pipeline.ws.port>
         <pipeline.ws.path>ws</pipeline.ws.path>
@@ -2077,7 +2066,7 @@ rm -rf /opt/daisy-pipeline2-webui
                       <type>directory</type>
                       <src>target/bundles/bootstrap</src>
                       <mapper>
-                        <prefix>${pipeline.home}/system/bootstrap</prefix>
+                        <prefix>${pipeline.home}/${bundles.bootstrap}</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
@@ -2088,7 +2077,7 @@ rm -rf /opt/daisy-pipeline2-webui
                         org.apache.felix.org.apache.felix.gogo*
                       </excludes>
                       <mapper>
-                        <prefix>${pipeline.home}/system/felix</prefix>
+                        <prefix>${pipeline.home}/${bundles.auto.deploy}</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
@@ -2099,7 +2088,7 @@ rm -rf /opt/daisy-pipeline2-webui
                         org.apache.felix.org.apache.felix.gogo*
                       </includes>
                       <mapper>
-                        <prefix>${pipeline.home}/system/felix/gogo</prefix>
+                        <prefix>${pipeline.home}/${bundles.auto.deploy}/gogo</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
@@ -2140,7 +2129,7 @@ rm -rf /opt/daisy-pipeline2-webui
                         mac,   mac/*
                       </excludes>
                       <mapper>
-                        <prefix>${bundles.modules}</prefix>
+                        <prefix>${pipeline.home}/${bundles.modules}</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
