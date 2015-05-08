@@ -1103,8 +1103,8 @@
     <profile>
       <id>rpm</id>
       <properties>
-        <pipeline.user>pipeline2</pipeline.user>
-        <pipeline.group>pipeline2</pipeline.group>
+        <pipeline.user>root</pipeline.user>
+        <pipeline.group>root</pipeline.group>
         <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
@@ -1325,8 +1325,8 @@ rm -rf /opt/daisy-pipeline2
     <profile>
       <id>rpm-cli</id>
       <properties>
-        <pipeline.user>pipeline2</pipeline.user>
-        <pipeline.group>pipeline2</pipeline.group>
+        <pipeline.user>root</pipeline.user>
+        <pipeline.group>root</pipeline.group>
         <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
         <pipeline.cli.home>${pipeline.home}/cli</pipeline.cli.home>
       </properties>
@@ -1417,8 +1417,8 @@ rm -rf /opt/daisy-pipeline2/cli
       <id>rpm-webui</id>
       <properties>
         <pipeline.webui-version>1.8.1</pipeline.webui-version>
-        <pipeline.webui.user>pipeline2</pipeline.webui.user>
-        <pipeline.webui.group>pipeline2</pipeline.webui.group>
+        <pipeline.webui.user>root</pipeline.webui.user>
+        <pipeline.webui.group>root</pipeline.webui.group>
         <pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
       </properties>
       <build>
