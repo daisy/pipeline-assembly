@@ -18,7 +18,8 @@
 			                                        string(pom:classifier)=$classifier]
 			                                       /pom:version[1]"/>
 			<xsl:variable name="classifierSuffix" select="if ($classifier!='') then concat('-', $classifier) else ''"/>
-			<xsl:result-document href="{concat($dest, '/', 'org.apache.felix.fileinstall-', $prefix, '-', $artifactId, $classifierSuffix, '.cfg')}" format="text">
+			<xsl:variable name="nice-filename" select="if (starts-with($groupId,'org.daisy.pipeline')) then substring-after(concat($groupId,'.',$artifactId),'org.daisy.pipeline.') else concat($groupId,'.',$artifactId)"/>
+			<xsl:result-document href="{concat($dest, '/', 'org.apache.felix.fileinstall-', $prefix, '-', $nice-filename, $classifierSuffix, '.cfg')}" format="text">
 				<xsl:text>felix.fileinstall.start.level=</xsl:text>
 				<xsl:value-of select="$startLevel"/>
 				<xsl:text>&#xA;</xsl:text>
