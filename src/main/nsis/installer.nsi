@@ -16,7 +16,7 @@
 !define PRODUCT_REG_VALUENAME_STARTMENU "StartMenuGroup"
 !define PRODUCT_REG_KEY_UNINST "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 !define UNINSTALLER_NAME "Uninstall ${APPNAME}"
-!define REQUIRED_JAVA_VER "1.8.0.46"
+!define REQUIRED_JAVA_VER "1.8.0.45"
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
 
