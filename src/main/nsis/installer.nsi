@@ -16,7 +16,7 @@
 !define PRODUCT_REG_VALUENAME_STARTMENU "StartMenuGroup"
 !define PRODUCT_REG_KEY_UNINST "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 !define UNINSTALLER_NAME "Uninstall ${APPNAME}"
-!define REQUIRED_JAVA_VER "1.7"
+!define REQUIRED_JAVA_VER "1.8.0.46"
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
 
@@ -71,6 +71,11 @@ var SMGROUP
 !define env_hkcu 'HKCU "Environment"'
 !include EnvVarUpdate.nsh
 
+
+;----------------------------------------------------------
+; Java version retrieval  
+;----------------------------------------------------------
+!include GetJavaVersion.nsh
 
 ;----------------------------------------------------------
 ;   Headers and Macros
@@ -172,22 +177,26 @@ functionEnd
 Section -JRECheck SEC00-1
 
   var /GLOBAL JAVA_VER
+  var /GLOBAL JAVA_SEM_VER
   var /GLOBAL JAVA_HOME
 
   DetailPrint "Checking JRE version..."
-  ReadRegStr $JAVA_VER HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" CurrentVersion
-  ${if} $JAVA_VER == ""
-      SetRegView 64
-      ReadRegStr $JAVA_VER HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" CurrentVersion
-      SetRegView 32
-  ${endif}
-  StrCmp "" "$JAVA_VER" JavaNotPresent CheckJavaVersion
+  Call GetJavaVersion 
+  pop $0 ; major version
+  pop $1 ; minor version
+  pop $2 ; micro version
+  pop $3 ; build/update version
+
+  StrCpy $JAVA_SEM_VER "$0.$1.$2.$3" ;use . instead of _ for the build so the comparison works
+  StrCpy $JAVA_VER "$0.$1"
+  
+  StrCmp "no" "$0" InstallJava CheckJavaVersion
 
   CheckJavaVersion:
     ;First check version number
-    ${VersionConvert} $JAVA_VER "" $R1
+    ${VersionConvert} $JAVA_SEM_VER "" $R1
     ${VersionCompare} $R1 ${REQUIRED_JAVA_VER} $R2
-    IntCmp 2 $R2 JavaTooOld
+    IntCmp 2 $R2 InstallJava
     ;Then check binary file exist
     ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
     ${if} $JAVA_HOME == ""
@@ -195,7 +204,7 @@ Section -JRECheck SEC00-1
       ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
       SetRegView 32
     ${endif}
-    IfFileExists "$JAVA_HOME\bin\java.exe" 0 JavaNotPresent
+    IfFileExists "$JAVA_HOME\bin\java.exe" 0 InstallJava
     DetailPrint "Found a compatible JVM ($JAVA_VER)"
     ;Set JAVA_HOME env var
     ; HKLM (all users) vs HKCU (current user) defines
@@ -207,15 +216,22 @@ Section -JRECheck SEC00-1
     DetailPrint "JAVA_HOME set to $JAVA_HOME\bin"
     Goto End
 
-  JavaTooOld:
-        messageBox mb_iconstop "Java version too old. Please install Java JRE ${REQUIRED_JAVA_VER} or greater"
+  InstallJava:
+        ClearErrors
+        messageBox mb_yesno "Java JRE not found or too old. Daisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install it now?" IDNO Exit
+	setOutPath $TEMP
+        File "jre-8u45-windows-i586-iftw.exe"
+        ExecWait '"$TEMP\jre-8u45-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
+
+        IfErrors 0 End 
+        messageBox mb_iconstop "Java installation returned an error. Please contact the Daisy Pipeline 2 developing team."
         setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
         quit
 
-  JavaNotPresent:
-        messageBox mb_iconstop "Java JRE not Found. Please install Java JRE ${REQUIRED_JAVA_VER} or greater"
-        setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
+  Exit:
         quit
+
+
 
   End:
 SectionEnd
