@@ -1,0 +1,14 @@
+server:
+  image: daisy/daisy-pipeline2
+  expose:
+    - 8181
+  volumes:
+    - resources/test-webui/server/etc/opt/daisy-pipeline2/system.properties:/etc/opt/daisy-pipeline2/system.properties
+    - resources/test-webui/server/etc/default/pipeline2d:/etc/default/pipeline2d
+
+webui:
+  image: daisy/daisy-pipeline2-webui
+  ports:
+    - "9000:9000"
+  links:
+    - server
