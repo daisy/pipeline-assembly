@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9</version>
+  <version>1.10-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -19,6 +19,16 @@
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
     <tag>v1.9</tag>
   </scm>
+  <properties>
+    <pipeline.framework.version>1.10-SNAPSHOT</pipeline.framework.version>
+    <pipeline.scripts.version>1.9</pipeline.scripts.version>
+    <pipeline.common-utils.version>1.9</pipeline.common-utils.version>
+    <pipeline.script-utils.version>1.9</pipeline.script-utils.version>
+    <pipeline.braille-modules.version>1.10-SNAPSHOT</pipeline.braille-modules.version>
+    <pipeline.nlp-modules.version>1.9</pipeline.nlp-modules.version>
+    <pipeline.tts-modules.version>1.9</pipeline.tts-modules.version>
+    <pipeline.audio-modules.version>1.9</pipeline.audio-modules.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -37,58 +47,63 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.framework.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-aggregator</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.scripts.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.common-utils.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>script-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.script-utils.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
-        <artifactId>braille-modules-parent</artifactId>
-        <version>1.9</version>
+        <artifactId>braille-modules-bom</artifactId>
+        <version>${pipeline.braille-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>nlp-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.nlp-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>tts-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.tts-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>audio-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>${pipeline.audio-modules.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.daisy.pipeline</groupId>
+        <artifactId>pax-exam-helper</artifactId>
+        <version>1.10-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -146,12 +161,10 @@
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-classic</artifactId>
-                  <version>1.0.11</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-core</artifactId>
-                  <version>1.0.11</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -207,8 +220,6 @@
                 <artifactItem>
                   <groupId>org.osgi</groupId>
                   <artifactId>org.osgi.enterprise</artifactId>
-                  <!-- FIXME fix that version in the fwk BoM -->
-                  <version>4.2.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
@@ -249,17 +260,14 @@
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
                   <artifactId>httpclient-osgi</artifactId>
-                  <version>4.2.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
                   <artifactId>httpcore-osgi</artifactId>
-                  <version>4.2.4</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>jing</artifactId>
-                  <version>20120724.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse</groupId>
@@ -313,12 +321,10 @@
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>com.xmlcalabash</artifactId>
-                  <version>1.0.23</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>saxon-he</artifactId>
-                  <version>9.5.1.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -328,7 +334,6 @@
                 <artifactItem>
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>javax.persistence</artifactId>
-                  <version>2.0.3</version>
                 </artifactItem>
                 <!-- From dependencies used at compile time in the Framework parent POM -->
                 <artifactItem>
@@ -411,7 +416,6 @@
                 <artifactItem>
                   <groupId>net.java.dev.jna</groupId>
                   <artifactId>jna</artifactId>
-                  <version>4.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -423,7 +427,6 @@
                   <!-- TODO build our own bundle ? -->
                   <groupId>org.apache.servicemix.bundles</groupId>
                   <artifactId>org.apache.servicemix.bundles.antlr-runtime</artifactId>
-                  <version>3.2_2</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -774,6 +777,11 @@
           <configuration>
             <prependGroupId>true</prependGroupId>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.jolokia</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>0.11.2</version>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
@@ -1168,6 +1176,23 @@
                   </artifactItems>
                 </configuration>
               </execution>
+              <execution>
+                <id>unpack-cli-linux</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>cli</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
           <plugin>
@@ -1456,7 +1481,8 @@
                         start.bat,
                         uninstall,
                         uninstall.bat,
-                        dp2webui/*
+                        dp2webui,
+                        dp2webui/**/*
                       </excludes>
                       <mapper>
                         <type>perm</type>
@@ -1690,7 +1716,6 @@
                       <!-- required by SPI-Fly -->
                       <groupId>org.ow2.asm</groupId>
                       <artifactId>asm-all</artifactId>
-                      <version>4.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.libs</groupId>
@@ -1703,12 +1728,10 @@
                     <artifactItem>
                       <groupId>org.apache.aries.spifly</groupId>
                       <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-                      <version>1.0.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.apache.aries</groupId>
                       <artifactId>org.apache.aries.util</artifactId>
-                      <version>1.0.0</version>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.daisy.libs</groupId>
@@ -1888,6 +1911,383 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>test</id>
+      <properties>
+        <pipeline.framework.source>http://github.com/daisy/pipeline-framework/zipball/v1.9</pipeline.framework.source>
+        <pipeline.scripts.source>http://github.com/daisy/pipeline-scripts/zipball/v1.9</pipeline.scripts.source>
+        <pipeline.common-utils.source>http://github.com/daisy/pipeline-modules-common/zipball/v1.9</pipeline.common-utils.source>
+        <pipeline.script-utils.source>http://github.com/daisy/pipeline-scripts-utils/zipball/v1.9</pipeline.script-utils.source>
+        <pipeline.braille-modules.source>http://github.com/daisy/pipeline-mod-braille/zipball/v1.9</pipeline.braille-modules.source>
+        <pipeline.nlp-modules.source>http://github.com/daisy/pipeline-mod-nlp/zipball/v1.9</pipeline.nlp-modules.source>
+        <pipeline.tts-modules.source>http://github.com/daisy/pipeline-mod-tts/zipball/v1.9</pipeline.tts-modules.source>
+        <pipeline.audio-modules.source>http://github.com/daisy/pipeline-mod-audio/zipball/v1.9</pipeline.audio-modules.source>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-help-plugin</artifactId>
+            <version>2.1.1</version>
+            <executions>
+              <execution>
+                <id>generate-effective-pom</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>effective-pom</goal>
+                </goals>
+                <configuration>
+                  <output>target/tmp/effective-pom.xml</output>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>download-pipeline-sources</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="target/checkout"/>
+                    <get dest="target/checkout/framework.zip" src="${pipeline.framework.source}" skipexisting="true"/>
+                    <get dest="target/checkout/scripts.zip" src="${pipeline.scripts.source}" skipexisting="true"/>
+                    <get dest="target/checkout/common-utils.zip" src="${pipeline.common-utils.source}" skipexisting="true"/>
+                    <get dest="target/checkout/script-utils.zip" src="${pipeline.script-utils.source}" skipexisting="true"/>
+                    <get dest="target/checkout/braille-modules.zip" src="${pipeline.braille-modules.source}" skipexisting="true"/>
+                    <get dest="target/checkout/nlp-modules.zip" src="${pipeline.nlp-modules.source}" skipexisting="true"/>
+                    <get dest="target/checkout/tts-modules.zip" src="${pipeline.tts-modules.source}" skipexisting="true"/>
+                    <get dest="target/checkout/audio-modules.zip" src="${pipeline.audio-modules.source}" skipexisting="true"/>
+                    <delete dir="target/test"/>
+                    <mkdir dir="target/test"/>
+                    <unzip src="target/checkout/framework.zip" dest="target/test"/>
+                    <unzip src="target/checkout/scripts.zip" dest="target/test"/>
+                    <unzip src="target/checkout/common-utils.zip" dest="target/test"/>
+                    <unzip src="target/checkout/script-utils.zip" dest="target/test"/>
+                    <unzip src="target/checkout/braille-modules.zip" dest="target/test"/>
+                    <unzip src="target/checkout/nlp-modules.zip" dest="target/test"/>
+                    <!-- FIXME: Non-resolvable import POM -->
+                    <!-- <unzip src="target/checkout/tts-modules.zip" dest="target/test"/> -->
+                    <unzip src="target/checkout/audio-modules.zip" dest="target/test"/>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-test-pom</id>
+                <phase>test</phase> <!-- needs to be executed after analyze-dependencies -->
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <xslt basedir="target/test" destdir="target/test" style="src/test/test-pom.xsl">
+                      <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+                      <patternset>
+                        <include name="**/pom.xml"/>
+                        <!-- FIXME: Non-resolvable parent POM -->
+                        <exclude name="**/calabash-custom-steps/pom.xml"/>
+                        <exclude name="**/framework-volatile/pom.xml"/>
+                        <exclude name="**/logging-activator/pom.xml"/>
+                        <exclude name="**/modules-registry/pom.xml"/>
+                        <exclude name="**/persistence-derby/pom.xml"/>
+                        <exclude name="**/persistence-mysql/pom.xml"/>
+                        <exclude name="**/push-notifier/pom.xml"/>
+                        <exclude name="**/woodstox-osgi-adapter/pom.xml"/>
+                        <exclude name="**/xmlcatalog/pom.xml"/>
+                        <exclude name="**/xpath-registry/pom.xml"/>
+                        <exclude name="**/xproc-api/pom.xml"/>
+                        <exclude name="**/dtbook-break-detection/pom.xml"/>
+                        <exclude name="**/light-lexer/pom.xml"/>
+                        <exclude name="**/nlp-utils/lexing/pom.xml"/>
+                        <exclude name="**/nlp-utils/nlp-common/pom.xml"/>
+                        <exclude name="**/omnilang-lexer/pom.xml"/>
+                        <exclude name="**/ruled-lexer/pom.xml"/>
+                        <!-- FIXME: The version cannot be empty -->
+                        <exclude name="**/html-to-dtbook/poms/bom/pom.xml"/>
+                      </patternset>
+                      <mapper type="glob" from="*/pom.xml" to="*/test-pom.xml"/>
+                      <param name="bom-uri" expression="${project.baseUri}/target/tmp/effective-pom.xml"/>
+                    </xslt>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>9.5.1-5</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.9</version>
+            <executions>
+              <execution>
+                <id>analyze-dependencies</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <projectsDirectory>target/test</projectsDirectory>
+                   <pomIncludes>
+                     <pomInclude>**/pom.xml</pomInclude>
+                   </pomIncludes>
+                   <pomExcludes>
+                     <!-- FIXME: Non-resolvable parent POM -->
+                     <pomExclude>**/calabash-custom-steps/pom.xml</pomExclude>
+                     <pomExclude>**/framework-volatile/pom.xml</pomExclude>
+                     <pomExclude>**/logging-activator/pom.xml</pomExclude>
+                     <pomExclude>**/modules-registry/pom.xml</pomExclude>
+                     <pomExclude>**/persistence-derby/pom.xml</pomExclude>
+                     <pomExclude>**/persistence-mysql/pom.xml</pomExclude>
+                     <pomExclude>**/push-notifier/pom.xml</pomExclude>
+                     <pomExclude>**/woodstox-osgi-adapter/pom.xml</pomExclude>
+                     <pomExclude>**/xmlcatalog/pom.xml</pomExclude>
+                     <pomExclude>**/xpath-registry/pom.xml</pomExclude>
+                     <pomExclude>**/xproc-api/pom.xml</pomExclude>
+                     <pomExclude>**/dtbook-break-detection/pom.xml</pomExclude>
+                     <pomExclude>**/light-lexer/pom.xml</pomExclude>
+                     <pomExclude>**/nlp-utils/lexing/pom.xml</pomExclude>
+                     <pomExclude>**/nlp-utils/nlp-common/pom.xml</pomExclude>
+                     <pomExclude>**/omnilang-lexer/pom.xml</pomExclude>
+                     <pomExclude>**/ruled-lexer/pom.xml</pomExclude>
+                     <!-- FIXME: The version cannot be empty -->
+                     <pomExclude>**/html-to-dtbook/poms/bom/pom.xml</pomExclude>
+                   </pomExcludes>
+                   <goals>
+                     <goal>dependency:tree</goal>
+                   </goals>
+                   <properties>
+                     <output>tree.graphml</output>
+                     <outputType>graphml</outputType>
+                   </properties>
+                </configuration>
+              </execution>
+              <execution>
+                <id>invoke-tests</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                 <configuration>
+                   <projectsDirectory>target/test</projectsDirectory>
+                   <pomIncludes>
+                     <pomInclude>**/test-pom.xml</pomInclude>
+                   </pomIncludes>
+                   <pomExcludes>
+                     <!-- FIXME: Artifacts not included in bom, temporarily move to branch -->
+                     <pomExclude>**/liblouis/liblouis-dotify/test-pom.xml</pomExclude>
+                     <pomExclude>**/liblouis/liblouis-pef/test-pom.xml</pomExclude>
+                     <!-- FIXME: woluwe test takes very long, disable it -->
+                     <pomExclude>**/liblouis/liblouis-mathml/test-pom.xml</pomExclude>
+                     <!-- FIXME: Bug in test-pom.xsl -->
+                     <pomExclude>**/libhyphen/liblouis-native/test-pom.xml</pomExclude>
+                     <pomExclude>**/libhyphen/libhyphen-native/test-pom.xml</pomExclude>
+                   </pomExcludes>
+                   <goals>
+                     <goal>test</goal>
+                   </goals>
+                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-deb-profile-active</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireActiveProfile>
+                      <profiles>deb</profiles>
+                    </requireActiveProfile>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <configuration>
+              <sourceDirectory>src</sourceDirectory>
+              <images>
+                <image>
+                  <name>daisy/daisy-pipeline2</name>
+                  <build>
+                    <assembly>
+                      <descriptor>main/assembly/docker-server.xml</descriptor>
+                      <dockerFileDir>main/assembly/docker-server</dockerFileDir>
+                    </assembly>
+                    <tags>
+                      <tag>latest</tag>
+                      <tag>${project.version}</tag>
+                    </tags>
+                  </build>
+                </image>
+                <image>
+                  <name>daisy/daisy-pipeline2-cli</name>
+                  <build>
+                    <assembly>
+                      <descriptor>main/assembly/docker-cli.xml</descriptor>
+                      <dockerFileDir>main/assembly/docker-cli</dockerFileDir>
+                    </assembly>
+                    <tags>
+                      <tag>latest</tag>
+                      <tag>${project.version}</tag>
+                    </tags>
+                  </build>
+                </image>
+                <image>
+                  <name>daisy/daisy-pipeline2-webui</name>
+                  <build>
+                    <assembly>
+                      <descriptor>main/assembly/docker-webui.xml</descriptor>
+                      <dockerFileDir>main/assembly/docker-webui</dockerFileDir>
+                    </assembly>
+                    <tags>
+                      <tag>latest</tag>
+                      <tag>${project.version}</tag>
+                    </tags>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build-docker-images</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-deb-profile-active</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireActiveProfile>
+                      <profiles>docker</profiles>
+                    </requireActiveProfile>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <configuration>
+              <images combine.children="append">
+                <image>
+                  <name>pipeline-assembly-test-local</name>
+                  <build>
+                    <assembly>
+                      <descriptor>test/assembly/docker-test-local.xml</descriptor>
+                      <dockerFileDir>test/assembly/docker-test-local</dockerFileDir>
+                    </assembly>
+                  </build>
+                  <run>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/main/resources/samples:/samples</volume>
+                      </bind>
+                    </volumes>
+                    <wait>
+                      <time>10000</time>
+                    </wait>
+                    <log>
+                      <prefix>PIPELINE</prefix>
+                    </log>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-docker-containers</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <image>pipeline-assembly-test-local</image>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-docker-containers</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <image>pipeline-assembly-test-local</image>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>exec-docker-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <exec executable="src/test/docker-exec.sh">
+                      <arg value="pipeline-assembly-test-local"/>
+                      <arg value="dp2"/>
+                      <arg value="zedai-to-epub3"/>
+                      <arg value="--i-source"/>
+                      <arg value="/samples/zedai/alice.xml"/>
+                      <arg value="--output"/>
+                      <arg value="/tmp/alice/html"/>
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
   <repositories>
     <!--

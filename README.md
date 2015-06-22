@@ -79,3 +79,19 @@ Install the package:
 Uninstall:
 
     dpkg -r daisy-pipeline
+
+Testing the web UI Docker service
+---------------------------------
+
+When on Mac OS, make sure boot2docker is running and that port 9000 is properly forwarded
+
+    boot2docker up
+    VBoxManage controlvm boot2docker-vm natpf1 "pipeline-webui,tcp,127.0.0.1,9000,,9000"
+
+Launch the server and web UI
+
+    src/test/test-webui.sh
+
+Open the web UI at http://localhost:9000. When asked for the web API's address for the Pipeline 2
+Engine, enter "http://server:8181/ws". The authentication ID is "webui" and the secret token is
+"foo".
