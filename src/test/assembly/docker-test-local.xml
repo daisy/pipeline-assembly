@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <assembly>
-	<id>docker-local</id>
+	<id>docker-test-local</id>
 	<fileSets>
 		<fileSet>
 			<directory>target</directory>

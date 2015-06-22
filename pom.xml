@@ -20,11 +20,11 @@
     <tag>v1.9</tag>
   </scm>
   <properties>
-    <pipeline.framework.version>1.10-SNAPSHOT</pipeline.framework.version> <!-- depends on branch assembly-test -->
+    <pipeline.framework.version>1.10-SNAPSHOT</pipeline.framework.version>
     <pipeline.scripts.version>1.9</pipeline.scripts.version>
     <pipeline.common-utils.version>1.9</pipeline.common-utils.version>
     <pipeline.script-utils.version>1.9</pipeline.script-utils.version>
-    <pipeline.braille-modules.version>1.10-SNAPSHOT</pipeline.braille-modules.version> <!-- depends on branch assembly-test -->
+    <pipeline.braille-modules.version>1.10-SNAPSHOT</pipeline.braille-modules.version>
     <pipeline.nlp-modules.version>1.9</pipeline.nlp-modules.version>
     <pipeline.tts-modules.version>1.9</pipeline.tts-modules.version>
     <pipeline.audio-modules.version>1.9</pipeline.audio-modules.version>
@@ -2128,14 +2128,14 @@
             <groupId>org.jolokia</groupId>
             <artifactId>docker-maven-plugin</artifactId>
             <configuration>
-              <sourceDirectory>src/main/assembly</sourceDirectory>
+              <sourceDirectory>src</sourceDirectory>
               <images>
                 <image>
                   <name>daisy/daisy-pipeline2</name>
                   <build>
                     <assembly>
-                      <descriptor>docker-server.xml</descriptor>
-                      <dockerFileDir>docker-server</dockerFileDir>
+                      <descriptor>main/assembly/docker-server.xml</descriptor>
+                      <dockerFileDir>main/assembly/docker-server</dockerFileDir>
                     </assembly>
                     <tags>
                       <tag>latest</tag>
@@ -2147,8 +2147,8 @@
                   <name>daisy/daisy-pipeline2-cli</name>
                   <build>
                     <assembly>
-                      <descriptor>docker-cli.xml</descriptor>
-                      <dockerFileDir>docker-cli</dockerFileDir>
+                      <descriptor>main/assembly/docker-cli.xml</descriptor>
+                      <dockerFileDir>main/assembly/docker-cli</dockerFileDir>
                     </assembly>
                     <tags>
                       <tag>latest</tag>
@@ -2160,8 +2160,8 @@
                   <name>daisy/daisy-pipeline2-webui</name>
                   <build>
                     <assembly>
-                      <descriptor>docker-webui.xml</descriptor>
-                      <dockerFileDir>docker-webui</dockerFileDir>
+                      <descriptor>main/assembly/docker-webui.xml</descriptor>
+                      <dockerFileDir>main/assembly/docker-webui</dockerFileDir>
                     </assembly>
                     <tags>
                       <tag>latest</tag>
@@ -2213,11 +2213,11 @@
             <configuration>
               <images combine.children="append">
                 <image>
-                  <name>daisy/daisy-pipeline2-local</name>
+                  <name>pipeline-assembly-test-local</name>
                   <build>
                     <assembly>
-                      <descriptor>docker-local.xml</descriptor>
-                      <dockerFileDir>docker-local</dockerFileDir>
+                      <descriptor>test/assembly/docker-test-local.xml</descriptor>
+                      <dockerFileDir>test/assembly/docker-test-local</dockerFileDir>
                     </assembly>
                   </build>
                   <run>
@@ -2244,7 +2244,7 @@
                   <goal>start</goal>
                 </goals>
                 <configuration>
-                  <image>daisy/daisy-pipeline2-local</image>
+                  <image>pipeline-assembly-test-local</image>
                 </configuration>
               </execution>
               <execution>
@@ -2254,7 +2254,7 @@
                   <goal>stop</goal>
                 </goals>
                 <configuration>
-                  <image>daisy/daisy-pipeline2-local</image>
+                  <image>pipeline-assembly-test-local</image>
                 </configuration>
               </execution>
             </executions>
@@ -2271,7 +2271,7 @@
                 <configuration>
                   <target>
                     <exec executable="src/test/docker-exec.sh">
-                      <arg value="daisy/daisy-pipeline2-local"/>
+                      <arg value="pipeline-assembly-test-local"/>
                       <arg value="dp2"/>
                       <arg value="zedai-to-epub3"/>
                       <arg value="--i-source"/>

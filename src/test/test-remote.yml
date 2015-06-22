@@ -3,14 +3,14 @@ server:
   expose:
     - 8181
   volumes:
-    - test-remote/etc/opt/daisy-pipeline2/system.properties:/etc/opt/daisy-pipeline2/system.properties
-    - test-remote/etc/default/pipeline2d:/etc/default/pipeline2d
+    - resources/test-remote/server/etc/opt/daisy-pipeline2/system.properties:/etc/opt/daisy-pipeline2/system.properties
+    - resources/test-remote/server/etc/default/pipeline2d:/etc/default/pipeline2d
 
 cli:
   image: daisy/daisy-pipeline2-cli
   links:
     - server
   volumes:
-    - test-remote/etc/opt/daisy-pipeline2-cli/config.yml:/etc/opt/daisy-pipeline2-cli/config.yml
-    - test-remote/var/opt/daisy-pipeline2-cli:/root/.daisy-pipeline/dp2
-    - test-remote/data:/data
+    - resources/test-remote/cli/etc/opt/daisy-pipeline2-cli/config.yml:/etc/opt/daisy-pipeline2-cli/config.yml
+    - resources/test-remote/cli/var/opt/daisy-pipeline2-cli:/root/.daisy-pipeline/dp2
+    - resources/test-remote/cli/data:/data
