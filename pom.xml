@@ -615,6 +615,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>updater</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
                   <artifactId>webservice-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
