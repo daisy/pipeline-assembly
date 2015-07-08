@@ -1631,7 +1631,7 @@
                 <configuration>
                   <controlDir>target/filtered-resources/deb/DEBIAN.webui</controlDir>
                   <timestamped>true</timestamped>
-                  <classifier>dbg_all</classifier>
+                  <classifier>webui_all</classifier>
                   <deb>target/daisy-pipeline2-webui_${project.version}_all.deb</deb>
                   <dataSet>
 
