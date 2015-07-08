@@ -423,7 +423,6 @@
                   <!-- TODO build our own bundle ? -->
                   <groupId>org.apache.servicemix.bundles</groupId>
                   <artifactId>org.apache.servicemix.bundles.antlr-runtime</artifactId>
-                  <version>3.2_2</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
