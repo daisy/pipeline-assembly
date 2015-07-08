@@ -1358,6 +1358,23 @@
                   </artifactItems>
                 </configuration>
               </execution>
+              <execution>
+                <id>unpack-cli-linux</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>cli</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
           <plugin>
