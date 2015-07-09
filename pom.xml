@@ -5,11 +5,11 @@
     <groupId>org.daisy</groupId>
     <artifactId>daisy</artifactId>
     <version>2</version>
-    <relativePath/>
+    <relativePath />
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9.1-SNAPSHOT</version>
+  <version>1.9.1</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -17,7 +17,7 @@
     <connection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</connection>
     <url>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</url>
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
-    <tag>v1.9</tag>
+    <tag>v1.9.1</tag>
   </scm>
   <dependencies>
     <dependency>
@@ -1004,7 +1004,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
                 <pluginExecution>
@@ -1017,7 +1017,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -1241,31 +1241,31 @@
                 <configuration>
                   <target>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-pipeline-bundles"/>
-                      <arg value="startLevel=30"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=pipeline"/>
-                      <arg value="home=${user.home}"/>
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-bundles" />
+                      <arg value="startLevel=30" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=pipeline" />
+                      <arg value="home=${user.home}" />
                     </java>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-pipeline-modules"/>
-                      <arg value="startLevel=50"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=modules"/>
-                      <arg value="home=${user.home}"/>
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
                     </java>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
-                      <arg value="id=copy-frontend"/>
-                      <arg value="startLevel=100"/>
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
-                      <arg value="prefix=frontend"/>
-                      <arg value="home=${user.home}"/>
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-frontend" />
+                      <arg value="startLevel=100" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=frontend" />
+                      <arg value="home=${user.home}" />
                     </java>
                   </target>
                 </configuration>
