@@ -868,16 +868,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>libhyphen-native</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>libhyphen-native</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>libhyphen-saxon</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -899,21 +889,6 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>liblouis-mathml</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>liblouis-native</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>liblouis-native</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>liblouis-native</artifactId>
-                  <classifier>windows</classifier>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -958,6 +933,64 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>zedai-to-pef</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-pipeline-modules-linux</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/modules/linux</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>libhyphen-native</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>liblouis-native</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-pipeline-modules-mac</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/modules/mac</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>libhyphen-native</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>liblouis-native</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-pipeline-modules-win</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/modules/win</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>liblouis-native</artifactId>
+                  <classifier>windows</classifier>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -1586,6 +1619,14 @@
                     <data>
                       <type>directory</type>
                       <src>target/bundles/modules</src>
+                      <mapper>
+                        <prefix>${bundles.modules}</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/modules/linux</src>
                       <mapper>
                         <prefix>${bundles.modules}</prefix>
                         <type>perm</type>
