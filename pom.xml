@@ -1294,6 +1294,33 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules-linux" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules-mac" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules-win" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-frontend" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
