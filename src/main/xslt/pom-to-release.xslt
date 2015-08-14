@@ -6,10 +6,11 @@
                 version="2.0"
                 exclude-result-prefixes="#all"
                 >
+        <xsl:param name="time"/>
 
         <xsl:template match="/">
                 <xsl:variable name="version" select="/pom:project/pom:version/text()"></xsl:variable> 
-                <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}">
+                <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-felix-launcher']/pom:configuration/pom:artifactItems">
                                 <xsl:with-param name="deployPath">/system/bootstrap</xsl:with-param>
                         </xsl:apply-templates>

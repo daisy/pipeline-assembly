@@ -1585,9 +1585,10 @@
                 <configuration>
                   <target>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-release.xslt" />
-                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml" />
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-release.xslt"/>
+                      <arg value="time=${maven.build.timestamp}"/>
+                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml"/>
                     </java>
                   </target>
                 </configuration>
