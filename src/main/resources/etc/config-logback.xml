@@ -22,6 +22,7 @@
   </appender>
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="org.daisy.pipeline.logging.OSGIFilter"/>   
     <file>${org.daisy.pipeline.logdir}/daisy-pipeline.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       <fileNamePattern>${org.daisy.pipeline.logdir}/daisy-pipeline.%i.log.zip</fileNamePattern>
@@ -38,9 +39,10 @@
   </appender>
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <Pattern>%-5level [%40.40logger{40}] %msg   @%class{36}:%L#%M%n</Pattern>
-    </encoder>
+          <filter class="org.daisy.pipeline.logging.OSGIFilter"/>   
+          <encoder>
+                  <Pattern>%-5level %marker [%40.40logger{40}] %msg   @%class{36}:%L#%M%n</Pattern>
+          </encoder>
   </appender>
 
   <root level="DEBUG">
@@ -50,5 +52,6 @@
   </root>
   <logger name="com.xmlcalabash" level="INFO"/>
   <logger name="org.eclipse.jetty.util.log" level="INFO" />
+  <logger name="cz.vutbr.web" level="WARN"/>
   <logger name="cz.vutbr.web" level="WARN"/>
 </configuration>
