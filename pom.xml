@@ -1675,7 +1675,7 @@
               </execution>
               <execution>
                 <id>package-deb-cli</id>
-                <phase>package</phase>
+                <phase>none</phase>
                 <goals>
                   <goal>jdeb</goal>
                 </goals>
@@ -1721,7 +1721,7 @@
               </execution>
               <execution>
                 <id>package-deb-webui</id>
-                <phase>package</phase>
+                <phase>none</phase>
                 <goals>
                   <goal>jdeb</goal>
                 </goals>
@@ -1787,7 +1787,6 @@
                   </dataSet>
                 </configuration>
               </execution>
-
             </executions>
           </plugin>
           <plugin>
