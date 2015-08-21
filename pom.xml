@@ -1008,6 +1008,9 @@
             <version>1.9.1</version>
           </dependency>
         </dependencies>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
       </plugin>
     </plugins>
     <pluginManagement>
