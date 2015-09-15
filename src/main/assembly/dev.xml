@@ -13,6 +13,7 @@
         <exclude>system.properties</exclude>
         <exclude>org.apache.felix.fileinstall-framework.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-frontend.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-gui.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-modules.cfg</exclude>
       </excludes>
       <outputDirectory>/etc</outputDirectory>

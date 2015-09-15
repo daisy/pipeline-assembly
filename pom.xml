@@ -35,6 +35,11 @@
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
+        <artifactId>gui</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
         <version>1.10.0</version>
         <type>pom</type>
@@ -543,11 +548,11 @@
                         <artifactId>jface</artifactId>
                         <version>3.9</version>
                     </artifactItem>
-                    <artifactItem>
-                        <groupId>org.daisy.pipeline</groupId>
-                        <artifactId>gui</artifactId>
-                        <version>1.0-SNAPSHOT</version>
-                    </artifactItem>
+                    <!--<artifactItem>-->
+                        <!--<groupId>org.daisy.pipeline</groupId>-->
+                        <!--<artifactId>gui</artifactId>-->
+                        <!--<version>1.0-SNAPSHOT</version>-->
+                    <!--</artifactItem>-->
                     <artifactItem>
                         <groupId>org.eclipse.equinox</groupId>
                         <artifactId>common</artifactId>
@@ -659,6 +664,21 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>webservice</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-gui</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/gui</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>gui</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -1420,6 +1440,15 @@
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=frontend" />
                       <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-gui"/>
+                      <arg value="startLevel=100"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=frontend"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                   </target>
                 </configuration>
