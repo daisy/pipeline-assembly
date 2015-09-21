@@ -15,7 +15,10 @@
         <exclude>org.apache.felix.fileinstall-framework.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-modules.cfg</exclude>
         <exclude>gui/org.apache.felix.fileinstall-gui.cfg</exclude>
+        <exclude>gui/org.apache.felix.fileinstall-framework-gui.cfg</exclude>
+        <exclude>gui/org.apache.felix.fileinstall-framework-volatile.cfg</exclude>
         <exclude>webservice/org.apache.felix.fileinstall-frontend.cfg</exclude>
+        <exclude>webservice/org.apache.felix.fileinstall-framework-persistance.cfg</exclude>
       </excludes>
       <outputDirectory>/etc</outputDirectory>
       <filtered>false</filtered>
@@ -48,6 +51,7 @@
       </includes>
       <excludes>
         <exclude>org.apache.felix.fileinstall-frontend.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-framework-persistance.cfg</exclude>
       </excludes>
       <outputDirectory>/etc/webservice</outputDirectory>
       <filtered>true</filtered>
@@ -59,6 +63,8 @@
       </includes>
       <excludes>
         <exclude>org.apache.felix.fileinstall-gui.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-framework-gui.cfg</exclude>
+        <exclude>org.apache.felix.fileinstall-framework-volatile.cfg</exclude>
       </excludes>
       <outputDirectory>/etc/gui</outputDirectory>
       <filtered>true</filtered>
