@@ -12,9 +12,9 @@
         <exclude>config.properties</exclude>
         <exclude>system.properties</exclude>
         <exclude>org.apache.felix.fileinstall-framework.cfg</exclude>
-        <exclude>org.apache.felix.fileinstall-frontend.cfg</exclude>
-        <exclude>org.apache.felix.fileinstall-gui.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-modules.cfg</exclude>
+        <exclude>gui/org.apache.felix.fileinstall-gui.cfg</exclude>
+        <exclude>webservice/org.apache.felix.fileinstall-frontend.cfg</exclude>
       </excludes>
       <outputDirectory>/etc</outputDirectory>
       <filtered>false</filtered>
@@ -34,6 +34,28 @@
         <include>org.apache.felix.fileinstall-*.cfg</include>
       </includes>
       <outputDirectory>/etc</outputDirectory>
+      <filtered>true</filtered>
+    </fileSet>
+    <fileSet>
+      <directory>target/generated-resources/etc/webservice</directory>
+      <includes>
+        <include>org.apache.felix.fileinstall-*.cfg</include>
+      </includes>
+      <excludes>
+        <exclude>org.apache.felix.fileinstall-frontend.cfg</exclude>
+      </excludes>
+      <outputDirectory>/etc/webservice</outputDirectory>
+      <filtered>true</filtered>
+    </fileSet>
+    <fileSet>
+      <directory>target/generated-resources/etc/gui</directory>
+      <includes>
+        <include>org.apache.felix.fileinstall-*.cfg</include>
+      </includes>
+      <excludes>
+        <exclude>org.apache.felix.fileinstall-gui.cfg</exclude>
+      </excludes>
+      <outputDirectory>/etc/gui</outputDirectory>
       <filtered>true</filtered>
     </fileSet>
     <fileSet>
