@@ -65,7 +65,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-bom</artifactId>
-        <version>1.9.4</version>
+        <version>1.9.5</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -470,6 +470,18 @@
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
                   <artifactId>dotify.hyphenator.impl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.dotify</groupId>
+                  <artifactId>dotify.task-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.dotify</groupId>
+                  <artifactId>dotify.task.impl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.dotify</groupId>
+                  <artifactId>dotify.text.impl</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
