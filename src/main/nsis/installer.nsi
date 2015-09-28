@@ -257,7 +257,7 @@ section -Main SEC01
 	#setOutPath "$INSTDIR\${PROJECT_ARTIFACT_ID}"
 
 	#Copy the whole daisy-pipeline dir
-	file /r "${PROJECT_BUILD_DIR}\pipeline2-${VERSION}-webui_windows\daisy-pipeline"
+	file /r "${PROJECT_BUILD_DIR}\pipeline2-${VERSION}_win\daisy-pipeline"
 	file ./pipeline2-gui.vbs
         file ./pipeline2-webservice.vbs
 

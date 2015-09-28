@@ -2609,7 +2609,7 @@ rm -rf /opt/daisy-pipeline2-webui
       <id>installer</id>
       <properties>
         <nsis.scriptfile>target/nsis/installer.nsi</nsis.scriptfile>
-        <nsis.output.file>pipeline2-webui-${project.version}.exe</nsis.output.file>
+        <nsis.output.file>pipeline2-${project.version}.exe</nsis.output.file>
       </properties>
       <build>
         <plugins>
