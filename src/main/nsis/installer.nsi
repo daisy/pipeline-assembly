@@ -251,12 +251,15 @@ section -Main SEC01
 
 	setOutPath $INSTDIR
 	SetOverwrite on
-	file ./logo.ico
+	file ./logo.ico 
+        
 	writeUninstaller "$INSTDIR\uninstall.exe"
 	#setOutPath "$INSTDIR\${PROJECT_ARTIFACT_ID}"
 
 	#Copy the whole daisy-pipeline dir
 	file /r "${PROJECT_BUILD_DIR}\pipeline2-${VERSION}-webui_windows\daisy-pipeline"
+	file ./pipeline2-gui.vbs
+        file ./pipeline2-webservice.vbs
 
 	###############
 	# Registry information for add/remove programs
@@ -291,7 +294,8 @@ Section -StartMenu
 	SetOutPath $INSTDIR
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 	createDirectory "$SMPROGRAMS\${APPNAME}"
-	createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\daisy-pipeline\webui\start.bat" "" "$INSTDIR\logo.ico"
+	createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\pipeline2-gui.vbs" "" "$INSTDIR\logo.ico"
+	#createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}-webservice.lnk" "$INSTDIR\pipeline2-webservice.vbs" "" "$INSTDIR\logo.ico"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\uninstall.lnk" "$INSTDIR\uninstall.exe"
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
