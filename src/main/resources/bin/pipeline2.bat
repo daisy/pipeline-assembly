@@ -229,6 +229,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     if "%1" == "remote" goto :EXECUTE_REMOTE
     if "%1" == "local" goto :EXECUTE_LOCAL
     if "%1" == "clean" goto :EXECUTE_CLEAN
+    if "%1" == "gui" goto :EXECUTE_GUI
     if "%1" == "debug" goto :EXECUTE_DEBUG
     goto :EXECUTE
 
@@ -249,6 +250,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
 
 :EXECUTE_GUI
     SET MODE=-Dorg.daisy.pipeline.main.mode=gui
+    shift
     goto :RUN_LOOP
 
 :EXECUTE_DEBUG
