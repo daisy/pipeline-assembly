@@ -370,7 +370,7 @@ run() {
             export PIPELINE2_LOCAL
 
     fi
-    MAIN=org.daisy.pipeline.felix.Main
+    MAIN=org.apache.felix.main.Main
     OPTS="$PIPELINE2_LOCAL $PIPELINE2_AUTH"
     MODE=" -Dorg.daisy.pipeline.main.mode=webservice"
 

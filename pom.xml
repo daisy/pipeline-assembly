@@ -55,7 +55,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <version>1.9.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -136,12 +136,12 @@
                   <artifactId>org.apache.felix.main</artifactId>
                   <destFileName>felix.jar</destFileName>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>launcher</artifactId>
-                  <version>1.0.0</version>
-                  <destFileName>custom-launcher.jar</destFileName>
-                </artifactItem>
+                <!--<artifactItem>-->
+                  <!--<groupId>org.daisy.pipeline</groupId>-->
+                  <!--<artifactId>launcher</artifactId>-->
+                  <!--<version>1.0.0</version>-->
+                  <!--<destFileName>custom-launcher.jar</destFileName>-->
+                <!--</artifactItem>-->
               </artifactItems>
             </configuration>
           </execution>
