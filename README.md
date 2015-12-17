@@ -67,3 +67,28 @@ Install the package:
 Uninstall:
 
     dpkg -r daisy-pipeline
+
+
+Release Procedure
+-----------------
+Major releases (officially announced) are versioned as "1.x.0". In-between releases, such as
+bugfix releases or the monthly releases done by Bert with braille updates, are versioned as "1.x.y".
+
+The release is performed with Maven:
+
+```sh
+mvn clean release:clean release:prepare -DpushChanges=false
+mvn release:perform -DlocalCheckout=true
+```
+
+Then, in order to upload also the Debian package:
+
+```sh
+git checkout HEAD^ && mvn clean deploy -Pdeb,sonatype-oss-release
+```
+
+Note that the web UI and CLI Debian profiles have been disabled because they are updated less
+frequently than the server.
+
+Then stage the artifacts at https://oss.sonatype.org and do all the required testing before finally
+releasing the artifacts.
