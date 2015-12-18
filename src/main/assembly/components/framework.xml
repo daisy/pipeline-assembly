@@ -68,6 +68,11 @@
     </fileSet>
     <fileSet>
       <directory>target/bundles/modules</directory>
+      <excludes>
+        <exclude>linux</exclude>
+        <exclude>mac</exclude>
+        <exclude>win</exclude>
+      </excludes>
       <outputDirectory>/modules</outputDirectory>
     </fileSet>
   </fileSets>

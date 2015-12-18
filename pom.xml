@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9.2-SNAPSHOT</version>
+  <version>1.9.9-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -37,7 +37,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.9</version>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -65,7 +65,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-bom</artifactId>
-        <version>1.9.1</version>
+        <version>1.9.8</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -473,6 +473,18 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
+                  <artifactId>dotify.task-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.dotify</groupId>
+                  <artifactId>dotify.task.impl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.dotify</groupId>
+                  <artifactId>dotify.text.impl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.dotify</groupId>
                   <artifactId>dotify.translator.impl</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -868,16 +880,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>libhyphen-native</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>libhyphen-native</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>libhyphen-saxon</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -899,21 +901,6 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>liblouis-mathml</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>liblouis-native</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>liblouis-native</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>liblouis-native</artifactId>
-                  <classifier>windows</classifier>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -962,6 +949,64 @@
               </artifactItems>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-pipeline-modules-linux</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/modules/linux</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>libhyphen-native</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>liblouis-native</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-pipeline-modules-mac</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/modules/mac</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>libhyphen-native</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>liblouis-native</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-pipeline-modules-win</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/modules/win</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>liblouis-native</artifactId>
+                  <classifier>windows</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -975,6 +1020,9 @@
             <version>1.9.1</version>
           </dependency>
         </dependencies>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
       </plugin>
     </plugins>
     <pluginManagement>
@@ -1253,6 +1301,33 @@
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-pipeline-modules" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules-linux" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules-mac" />
+                      <arg value="startLevel=50" />
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
+                      <arg value="prefix=modules" />
+                      <arg value="home=${user.home}" />
+                    </java>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                      <arg value="id=copy-pipeline-modules-win" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
@@ -1591,6 +1666,14 @@
                         <type>perm</type>
                       </mapper>
                     </data>
+                    <data>
+                      <type>directory</type>
+                      <src>target/bundles/modules/linux</src>
+                      <mapper>
+                        <prefix>${bundles.modules}</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
 
                     <!-- ========= -->
                     <!-- log files -->
@@ -1607,7 +1690,7 @@
               </execution>
               <execution>
                 <id>package-deb-cli</id>
-                <phase>package</phase>
+                <phase>none</phase>
                 <goals>
                   <goal>jdeb</goal>
                 </goals>
@@ -1653,7 +1736,7 @@
               </execution>
               <execution>
                 <id>package-deb-webui</id>
-                <phase>package</phase>
+                <phase>none</phase>
                 <goals>
                   <goal>jdeb</goal>
                 </goals>
@@ -1719,7 +1802,6 @@
                   </dataSet>
                 </configuration>
               </execution>
-
             </executions>
           </plugin>
           <plugin>

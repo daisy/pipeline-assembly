@@ -9,6 +9,7 @@
   <componentDescriptors>
       <componentDescriptor>src/main/assembly/components/framework.xml</componentDescriptor>
       <componentDescriptor>src/main/assembly/components/cli-linux.xml</componentDescriptor>
+      <componentDescriptor>src/main/assembly/components/modules-linux.xml</componentDescriptor>
       <componentDescriptor>src/main/assembly/components/webui.xml</componentDescriptor>
   </componentDescriptors>
 </assembly>
