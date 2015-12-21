@@ -276,7 +276,8 @@ setupDebugOptions() {
 
 setupDefaults() {
     # add startOnFirstThread for the GUI
-    DEFAULT_JAVA_OPTS="-Xms$JAVA_MIN_MEM -Xmx$JAVA_MAX_MEM -XstartOnFirstThread"
+    # -XstartOnFirstThread
+    DEFAULT_JAVA_OPTS="-Xms$JAVA_MIN_MEM -Xmx$JAVA_MAX_MEM "
 
     #Set the JVM_VENDOR specific JVM flags
     if [ "$JVM_VENDOR" = "SUN" ]; then
