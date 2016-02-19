@@ -431,6 +431,11 @@
                 <!--
                     for braille modules
                 -->
+                <dependency>
+                  <groupId>org.apache.commons</groupId>
+                  <artifactId>commons-lang3</artifactId>
+                  <version>3.4</version>
+                </dependency>
                 <artifactItem>
                   <groupId>com.googlecode.texhyphj</groupId>
                   <artifactId>texhyphj</artifactId>
@@ -490,6 +495,10 @@
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
                   <artifactId>dotify.translator.impl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>io.bit3.jsass</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.liblouis</groupId>
