@@ -1674,6 +1674,11 @@
                     <data>
                       <type>directory</type>
                       <src>target/bundles/modules</src>
+                      <excludes>
+                        linux, linux/*,
+                        win,   win/*,
+                        mac,   mac/*
+                      </excludes>
                       <mapper>
                         <prefix>${bundles.modules}</prefix>
                         <type>perm</type>
@@ -1683,7 +1688,7 @@
                       <type>directory</type>
                       <src>target/bundles/modules/linux</src>
                       <mapper>
-                        <prefix>${bundles.modules}</prefix>
+                        <prefix>${pipeline.home}/${bundles.modules}</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
