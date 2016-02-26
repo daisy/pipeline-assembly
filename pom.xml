@@ -137,10 +137,10 @@
                   <destFileName>felix.jar</destFileName>
                 </artifactItem>
                 <!--<artifactItem>-->
-                  <!--<groupId>org.daisy.pipeline</groupId>-->
-                  <!--<artifactId>launcher</artifactId>-->
-                  <!--<version>1.0.0</version>-->
-                  <!--<destFileName>custom-launcher.jar</destFileName>-->
+                <!--<groupId>org.daisy.pipeline</groupId>-->
+                <!--<artifactId>launcher</artifactId>-->
+                <!--<version>1.0.0</version>-->
+                <!--<destFileName>custom-launcher.jar</destFileName>-->
                 <!--</artifactItem>-->
               </artifactItems>
             </configuration>
@@ -667,6 +667,46 @@
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>gui</artifactId>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>pegdown</artifactId>
+                  <version>1.0.0-SNAPSHOT</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>parboiled</artifactId>
+                  <version>1.0.0-SNAPSHOT</version>
+                </artifactItem>
+                <!--<artifactItem>-->
+                <!--<groupId>org.daisy.libs</groupId>-->
+                <!--<artifactId>parboiled-core</artifactId>-->
+                <!--<version>1.0.0-SNAPSHOT</version>-->
+                <!--</artifactItem>-->
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>5.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm-analysis</artifactId>
+                  <version>5.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm-tree</artifactId>
+                  <version>5.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm-util</artifactId>
+                  <version>5.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.parboiled</groupId>
+                  <artifactId>parboiled-core</artifactId>
+                  <version>1.1.7</version>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -1146,7 +1186,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
                 <pluginExecution>
@@ -1159,7 +1199,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -1378,31 +1418,31 @@
                 <configuration>
                   <target>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-bundles" />
-                      <arg value="startLevel=30" />
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
-                      <arg value="prefix=pipeline" />
-                      <arg value="home=${user.home}" />
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-bundles"/>
+                      <arg value="startLevel=30"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=pipeline"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules" />
-                      <arg value="startLevel=50" />
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
-                      <arg value="prefix=modules" />
-                      <arg value="home=${user.home}" />
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-modules"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=modules"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules-linux" />
-                      <arg value="startLevel=50" />
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
-                      <arg value="prefix=modules" />
-                      <arg value="home=${user.home}" />
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-modules-linux"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=modules"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
@@ -1414,22 +1454,22 @@
                       <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules-mac" />
-                      <arg value="startLevel=50" />
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
-                      <arg value="prefix=modules" />
-                      <arg value="home=${user.home}" />
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-modules-mac"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=modules"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules-win" />
-                      <arg value="startLevel=50" />
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
-                      <arg value="prefix=modules" />
-                      <arg value="home=${user.home}" />
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl"/>
+                      <arg value="id=copy-pipeline-modules-win"/>
+                      <arg value="startLevel=50"/>
+                      <arg value="dest=${project.baseUri}/target/generated-resources/etc"/>
+                      <arg value="prefix=modules"/>
+                      <arg value="home=${user.home}"/>
                     </java>
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml"/>
@@ -1508,7 +1548,6 @@
         </plugins>
       </build>
     </profile>
-
     <profile>
       <id>releaseDescriptor</id>
       <build>
@@ -2386,7 +2425,7 @@ rm -rf /opt/daisy-pipeline2/cli
                   <goal>effective-pom</goal>
                 </goals>
                 <!--<configuration>-->
-                  <!--<output>${basedir}/target/effective-pom.xml</output>-->
+                <!--<output>${basedir}/target/effective-pom.xml</output>-->
                 <!--</configuration>-->
               </execution>
             </executions>
