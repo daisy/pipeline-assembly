@@ -881,6 +881,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>epub3-to-pef</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>html-to-pef</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -954,6 +958,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>texhyph-utils</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>xml-to-pef</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
