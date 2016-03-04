@@ -40,6 +40,11 @@
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
+        <artifactId>updater</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
         <version>1.10.0</version>
         <type>pom</type>
@@ -1303,6 +1308,23 @@
                   </artifactItems>
                 </configuration>
               </execution>
+              <execution>
+                <id>unpack-updater-win</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>windows_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/win32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
           <plugin>
@@ -1358,6 +1380,23 @@
                       <type>zip</type>
                       <classifier>windows_386</classifier>
                       <outputDirectory>${project.build.directory}/cli/win32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+              <execution>
+                <id>unpack-updater-mac</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
@@ -1685,6 +1724,23 @@
                       <type>zip</type>
                       <classifier>linux_386</classifier>
                       <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+              <execution>
+                <id>unpack-updater-linux</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/linux32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
