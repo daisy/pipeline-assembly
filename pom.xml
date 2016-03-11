@@ -1895,6 +1895,7 @@ rm -rf /opt/daisy-pipeline2-webui
         <pipeline.ws.clientsecret>supersecret</pipeline.ws.clientsecret>
         <pipeline.cli.exec_line>/dev/null</pipeline.cli.exec_line>
         <pipeline.cli.starting>false</pipeline.cli.starting>
+        <pipeline.log.jobappender>org.daisy.pipeline.logging.IgnoreSiftAppender</pipeline.log.jobappender>
       </properties>
       <build>
         <plugins>
@@ -1958,6 +1959,7 @@ rm -rf /opt/daisy-pipeline2-webui
                         <include>etc/config.properties</include>
                         <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
                         <include>etc/system.properties</include>
+                        <include>etc/config-logback.xml</include>
                       </includes>
                     </resource>
                     <resource>
@@ -2063,7 +2065,7 @@ rm -rf /opt/daisy-pipeline2-webui
                     </data>
                     <data>
                       <type>file</type>
-                      <src>src/main/resources/etc/config-logback.xml</src>
+                      <src>target/filtered-resources/resources/etc/config-logback.xml</src>
                       <dst>${pipeline.config}/config-logback.xml</dst>
                     </data>
                     <data>
