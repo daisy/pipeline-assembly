@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
 <component>
-  <fileSets>
-    <fileSet>
-      <directory>target/updater/win32</directory>
-      <outputDirectory>updater</outputDirectory>
-      <includes>
-        <include>pipeline-updater*</include>
-      </includes>
-      <fileMode>0755</fileMode>
-    </fileSet>
-  </fileSets>
+        <files>
+                <file>
+                        <source>target/updater/win32/pipeline-updater.exe</source>
+                        <outputDirectory>updater</outputDirectory>
+                        <destName>pipeline-updater.exe</destName>
+                        <fileMode>0755</fileMode>
+                </file>
+                <file>
+                        <source>target/updater/gui/pipeline-updater-gui.exe</source>
+                        <outputDirectory>bin</outputDirectory>
+                        <destName>pipeline-updater-gui.exe</destName>
+                        <fileMode>0755</fileMode>
+                </file>
+        </files>
 </component>

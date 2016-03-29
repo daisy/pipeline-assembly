@@ -295,6 +295,7 @@ Section -StartMenu
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 	createDirectory "$SMPROGRAMS\${APPNAME}"
 	createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\pipeline2-gui.vbs" "" "$INSTDIR\logo.ico"
+	createShortCut "$SMPROGRAMS\${APPNAME}\updater.lnk" "$INSTDIR\daisy-pipeline\bin\pipeline-updater-gui.exe" "" "$INSTDIR\logo.ico"
 	#createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}-webservice.lnk" "$INSTDIR\pipeline2-webservice.vbs" "" "$INSTDIR\logo.ico"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\uninstall.lnk" "$INSTDIR\uninstall.exe"
 	!insertmacro MUI_STARTMENU_WRITE_END
