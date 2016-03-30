@@ -33,7 +33,6 @@
                 <artifact href="http://central.maven.org/maven2/org/daisy/libs/jing/20120724.0.0/jing-20120724.0.0.jar" id="org.daisy.libs/jing" extract="false" deployPath="/system/framework" version="20120724.0.0"/>
                 <artifact href="http://central.maven.org/maven2/nu/validator/htmlparser/htmlparser/1.4/htmlparser-1.4.jar" id="nu.validator.htmlparser/htmlparser" extract="false" deployPath="/system/framework" version="1.4"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/libs/com.xmlcalabash/1.0.23/com.xmlcalabash-1.0.23.jar" id="org.daisy.libs/com.xmlcalabash" extract="false" deployPath="/system/framework" version="1.0.23"/>
-                <artifact href="http://central.maven.org/maven2/org/daisy/libs/logback-osgi-adapter/1.0.0/logback-osgi-adapter-1.0.0.jar" id="org.daisy.libs/logback-osgi-adapter" extract="false" deployPath="/system/framework" version="1.0.0"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/libs/saxon-he/9.5.1.5/saxon-he-9.5.1.5.jar" id="org.daisy.libs/saxon-he" extract="false" deployPath="/system/framework" version="9.5.1.5"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/libs/servlet-api/2.5.0/servlet-api-2.5.0.jar" id="org.daisy.libs/servlet-api" extract="false" deployPath="/system/framework" version="2.5.0"/>
                 <artifact href="http://central.maven.org/maven2/com/google/guava/guava/15.0/guava-15.0.jar" id="com.google.guava/guava" extract="false" deployPath="/system/framework" version="15.0"/>
@@ -83,7 +82,7 @@
                 <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/logging-appender/1.1.0/logging-appender-1.1.0.jar" id="org.daisy.pipeline/logging-appender" extract="false" deployPath="/system/framework" version="1.1.0"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/modules-registry/2.0.0/modules-registry-2.0.0.jar" id="org.daisy.pipeline/modules-registry" extract="false" deployPath="/system/framework" version="2.0.0"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/push-notifier/2.0.0/push-notifier-2.0.0.jar" id="org.daisy.pipeline/push-notifier" extract="false" deployPath="/system/framework" version="2.0.0"/>
-                <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/updater/1.0.0-SNAPSHOT/updater-1.0.0-SNAPSHOT.jar" id="org.daisy.pipeline/updater" extract="false" deployPath="/system/framework" version="1.0.0-SNAPSHOT"/>
+                
                 <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/webservice-utils/2.2.0/webservice-utils-2.2.0.jar" id="org.daisy.pipeline/webservice-utils" extract="false" deployPath="/system/framework" version="2.2.0"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/woodstox-osgi-adapter/2.0.0/woodstox-osgi-adapter-2.0.0.jar" id="org.daisy.pipeline/woodstox-osgi-adapter" extract="false" deployPath="/system/framework" version="2.0.0"/>
                 <artifact href="http://central.maven.org/maven2/org/daisy/pipeline/xmlcatalog/2.0.1/xmlcatalog-2.0.1.jar" id="org.daisy.pipeline/xmlcatalog" extract="false" deployPath="/system/framework" version="2.0.1"/>
