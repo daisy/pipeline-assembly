@@ -27,7 +27,7 @@
                                 <xsl:with-param name="deployPath">/system/frontend</xsl:with-param>
                         </xsl:apply-templates>                        
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-pipeline-modules']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/system/modules</xsl:with-param>
+                                <xsl:with-param name="deployPath">/modules</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates mode="zip" select="/pom:project/pom:profiles/pom:profile/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-win']/pom:configuration/pom:artifactItems/pom:artifactItem">
                                 <xsl:with-param name="deployPath">/cli</xsl:with-param>
