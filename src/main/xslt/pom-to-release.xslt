@@ -68,7 +68,9 @@
                         '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'.jar')"></xsl:variable>
                  
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId),'/')"/>
-                <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$deployPath}" version="{$version}"/>
+
+                <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,'.jar')"></xsl:variable>
+                <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}"/>
         </xsl:template>
         <xsl:template match="pom:artifactItem" mode="zip">
                 <xsl:param name="deployPath" />
@@ -80,8 +82,9 @@
                 <xsl:variable name="href" select="concat('http://search.maven.org/remotecontent?filepath=', replace($groupId,'\.','/'),
                         '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'-',$classifier,'.zip')"></xsl:variable>
                 
+                <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,'-',$classifier,'.zip')"></xsl:variable>
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId),'/')"/>
-                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}"/>
+                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$finalPath}" version="{$version}"/>
         </xsl:template>
 </xsl:stylesheet>
 
