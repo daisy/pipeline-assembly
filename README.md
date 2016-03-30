@@ -68,6 +68,20 @@ Uninstall:
 
     dpkg -r daisy-pipeline
 
+Red Hat/CentOS Distribution
+---------------------------
+
+Build an RPM package with:
+
+    mvn clean package -P rpm
+
+Note: only proven to work on Red Hat/CentOS, although it should be
+theoretically possible to build RPMs on other platforms including Mac
+OS after installing rpmbuild.
+
+To install the package:
+
+    rpm -i target/rpm/pipeline2/RPMS/x86_64/*.rpm
 
 Release Procedure
 -----------------

@@ -400,7 +400,7 @@ run() {
             shift
             ;;
         'shell')
-            GOGO_BUNDLES=$(cd "$PIPELINE2_BASE" && echo $(find system/felix/gogo -name '*.jar' 2>/dev/null | while read f; do echo "file:$f"; done))
+            GOGO_BUNDLES=$(cd "$PIPELINE2_BASE" && echo $(find ${bundles.auto.deploy}/gogo -name '*.jar' 2>/dev/null | while read f; do echo "file:$f"; done))
             if [ -z "$GOGO_BUNDLES" ]; then
                 warn "Shell could not be enabled"
             else

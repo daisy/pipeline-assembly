@@ -11,6 +11,7 @@
       <excludes>
         <exclude>config.properties</exclude>
         <exclude>system.properties</exclude>
+        <exclude>config-logback.xml</exclude>
         <exclude>org.apache.felix.fileinstall-framework.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-frontend.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-modules.cfg</exclude>
@@ -23,6 +24,7 @@
       <includes>
         <include>system.properties</include>
         <include>config.properties</include>
+        <include>config-logback.xml</include>
       </includes>
       <outputDirectory>/etc</outputDirectory>
       <filtered>true</filtered>
@@ -32,6 +34,9 @@
       <includes>
         <include>org.apache.felix.fileinstall-*.cfg</include>
       </includes>
+      <excludes>
+        <exclude>org.apache.felix.fileinstall-pipeline-logging-appender.cfg</exclude>
+      </excludes>
       <outputDirectory>/etc</outputDirectory>
       <filtered>true</filtered>
     </fileSet>
