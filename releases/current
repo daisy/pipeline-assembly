@@ -16,7 +16,7 @@
                 <artifact href="http://central.maven.org/maven2/org/osgi/org.osgi.enterprise/4.2.0/org.osgi.enterprise-4.2.0.jar" id="org.osgi/org.osgi.enterprise" extract="false" deployPath="/system/felix/org.osgi.org.osgi.enterprise-4.2.0.jar" version="4.2.0"/>
                 <artifact href="http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar" id="org.slf4j/slf4j-api" extract="false" deployPath="/system/felix/org.slf4j.slf4j-api-1.7.2.jar" version="1.7.2"/>
                 <artifact href="http://central.maven.org/maven2/org/slf4j/jul-to-slf4j/1.7.2/jul-to-slf4j-1.7.2.jar" id="org.slf4j/jul-to-slf4j" extract="false" deployPath="/system/felix/org.slf4j.jul-to-slf4j-1.7.2.jar" version="1.7.2"/>
-                <artifact href="http://central.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.2/jcl-over-slf4j-1.7.2.jar" id="org.slf4j/jcl-over-slf4j" extract="false" deployPath="/system/felix/org.slf4j.jcl-over-slf4j-1.7.2.jar" version="1.7.2"/>
+                <artifact href="http://central.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.2/jcl-over-slf4j-1.7.2.jar" id="org.slf4j/jcl-over-slf4j" extract="false" deployPath="/system/felix/org.slf4j.jcl-over-slf4j-1.7.2.jar" version="1.7.3"/>
               
                 
                   javax.xml.crypto
