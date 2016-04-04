@@ -1173,6 +1173,51 @@
           <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
+          <plugin>
+            <artifactId>maven-help-plugin</artifactId>
+            <version>2.1.1</version>
+            <executions>
+              <execution>
+                <id>generate-effective-pom</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>effective-pom</goal>
+                </goals>
+                <configuration>
+                  <output>target/tmp/effective-pom.xml</output>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-release-descriptor</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml"/>
+                      <arg value="src/main/xslt/pom-to-release.xslt"/>
+                      <arg value="time=${maven.build.timestamp}"/>
+                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml"/>
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>9.5.1-5</version>
+              </dependency>
+            </dependencies>
+          </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -1439,22 +1484,22 @@
       <id>dev-launcher</id>
       <build>
         <plugins>
-          <plugin>
-            <artifactId>maven-help-plugin</artifactId>
-            <version>2.1.1</version>
-            <executions>
-              <execution>
-                <id>generate-effective-pom</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>effective-pom</goal>
-                </goals>
-                <configuration>
-                  <output>target/tmp/effective-pom.xml</output>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+          <!--<plugin>-->
+            <!--<artifactId>maven-help-plugin</artifactId>-->
+            <!--<version>2.1.1</version>-->
+            <!--<executions>-->
+              <!--<execution>-->
+                <!--<id>generate-effective-pom</id>-->
+                <!--<phase>generate-resources</phase>-->
+                <!--<goals>-->
+                  <!--<goal>effective-pom</goal>-->
+                <!--</goals>-->
+                <!--<configuration>-->
+                  <!--<output>target/tmp/effective-pom.xml</output>-->
+                <!--</configuration>-->
+              <!--</execution>-->
+            <!--</executions>-->
+          <!--</plugin>-->
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -1546,93 +1591,6 @@
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/webservice"/>
                       <arg value="prefix=frontend"/>
                       <arg value="home=${user.home}"/>
-                    </java>
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>Saxon-HE</artifactId>
-                <version>9.5.1-5</version>
-              </dependency>
-            </dependencies>
-          </plugin>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>dist-mac</id>
-                <phase>none</phase>
-              </execution>
-              <execution>
-                <id>dist-linux</id>
-                <phase>none</phase>
-              </execution>
-              <execution>
-                <id>dist-win</id>
-                <phase>none</phase>
-              </execution>
-              <execution>
-                <id>dev-launcher-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src/main/assembly/dev.xml</descriptor>
-                  </descriptors>
-                  <filters>
-                    <filter>src/main/assembly/dev.properties</filter>
-                  </filters>
-                  <appendAssemblyId>false</appendAssemblyId>
-                  <finalName>dev-launcher</finalName>
-                  <attach>false</attach>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>releaseDescriptor</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-help-plugin</artifactId>
-            <version>2.1.1</version>
-            <executions>
-              <execution>
-                <id>generate-effective-pom</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>effective-pom</goal>
-                </goals>
-                <configuration>
-                  <output>target/tmp/effective-pom.xml</output>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>generate-release-descriptor</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-release.xslt"/>
-                      <arg value="time=${maven.build.timestamp}"/>
-                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml"/>
                     </java>
                   </target>
                 </configuration>
@@ -2469,31 +2427,6 @@ rm -rf /opt/daisy-pipeline2/cli
                   <appendAssemblyId>false</appendAssemblyId>
                   <finalName>pipeline2-${project.version}-webui_windows</finalName>
                 </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>releaseDesciptor</id>
-      <properties>
-      </properties>
-      <build>
-        <plugins>
-          <!-- copy nsis file for windows installer generation -->
-          <plugin>
-            <artifactId>maven-help-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-resources</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>effective-pom</goal>
-                </goals>
-                <!--<configuration>-->
-                <!--<output>${basedir}/target/effective-pom.xml</output>-->
-                <!--</configuration>-->
               </execution>
             </executions>
           </plugin>
