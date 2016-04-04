@@ -1,0 +1,20 @@
+apply plugin: 'se.mtm.artifactory-rpm'
+
+buildscript {
+    repositories {
+        maven {
+            url "http://artifactory.mtm.se:8081/artifactory/repo"
+        }
+    }
+    dependencies {
+        classpath 'se.mtm.gradle:gradle-artifactory-rpm-plugin:1.0.11'
+    }
+}
+
+artifactoryRpm {
+	distributionDir = "target/rpm/pipeline2/RPMS/x86_64"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
