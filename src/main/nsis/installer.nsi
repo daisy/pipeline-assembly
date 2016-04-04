@@ -315,6 +315,7 @@ section "uninstall"
 
 	# Remove Start Menu launcher
 	delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
+	delete "$SMPROGRAMS\${APPNAME}\Pipeline Updater.lnk"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
 	rmDir "$SMPROGRAMS\${APPNAME}\uninstall.lnk"
 
