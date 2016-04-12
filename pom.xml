@@ -1427,139 +1427,7 @@ rm -rf /opt/daisy-pipeline2/cli
         </plugins>
       </build>
     </profile>
-    
-    <!-- REDHAT/CentOS RPM packet Web UI -->
-    <profile>
-      <id>rpm-webui</id>
-      <properties>
-        <pipeline.webui-version>1.8.1</pipeline.webui-version>
-        <pipeline.webui.user>root</pipeline.webui.user>
-        <pipeline.webui.group>root</pipeline.webui.group>
-        <pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>webui</artifactId>
-                      <version>1.8.1</version>
-                      <type>zip</type>
-                      <overWrite>true</overWrite>
-                      <outputDirectory>target/webui</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                  <overWriteReleases>false</overWriteReleases>
-                  <overWriteSnapshots>true</overWriteSnapshots>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>rpm-maven-plugin</artifactId>
-            <version>2.0.1</version>
-            <executions>
-              <execution>
-                <id>generate-rpm-webui</id>
-                <goals>
-                  <goal>rpm</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <name>pipeline2-webui</name>
-              <group>daisy-pipeline2-webui</group>
-              <description>daisy-pipeline2-webui</description>
-              <version>${pipeline.webui-version}</version> 
-              <needarch>noarch</needarch>
-              <mappings>
-                <mapping>
-                  <directory>${pipeline.webui.home}</directory>
-                  <filemode>660</filemode>
-                  <username>${pipeline.webui.user}</username>
-                  <groupname>${pipeline.webui.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
-                      <includes>
-                        <include>dp2webui/**</include>
-                        <include>lib/**</include>
-                        <include>startui/**</include>
-                        <include>themes/**</include>
-                      </includes>
-                      <excludes>
-                        <exclude>application.conf</exclude>
-                        <exclude>logger.xml</exclude>
-                        <exclude>uninstall</exclude>
-                        <exclude>uninstall.bat</exclude>
-                        <exclude>start</exclude>
-                        <exclude>start.bat</exclude>
-                      </excludes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.webui.home}</directory>
-                  <filemode>660</filemode>
-                  <username>${pipeline.webui.user}</username>
-                  <groupname>${pipeline.webui.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
-                      <includes>
-                        <include>application.conf</include>
-                        <include>logger.xml</include>
-                      </includes>
-                      <excludes>
-                        <exclude>dp2webui/**</exclude>
-                        <exclude>lib/**</exclude>
-                        <exclude>startui/**</exclude>
-                        <exclude>themes/**</exclude>
-                        <exclude>uninstall</exclude>
-                        <exclude>uninstall.bat</exclude>
-                        <exclude>start</exclude>
-                        <exclude>start.bat</exclude>
-                      </excludes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.webui.home}</directory>
-                  <filemode>550</filemode>
-                  <username>${pipeline.webui.user}</username>
-                  <groupname>${pipeline.webui.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
-                      <includes>
-                        <include>start</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-              </mappings>
-              <preremoveScriptlet>
-                <script>
-rm -rf /opt/daisy-pipeline2-webui
-                </script>
-              </preremoveScriptlet>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
- 
+
     <profile>
       <id>mac</id>
       <activation>
@@ -1617,6 +1485,7 @@ rm -rf /opt/daisy-pipeline2-webui
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>linux</id>
       <activation>
@@ -1970,9 +1839,6 @@ rm -rf /opt/daisy-pipeline2-webui
         <pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
         <pipeline.cli.home>/opt/daisy-pipeline2-cli</pipeline.cli.home>
         <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
-        <pipeline.webui.user>pipeline2-webui</pipeline.webui.user>
-        <pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
-        <pipeline.webui.data>/var/opt/daisy-pipeline2-webui</pipeline.webui.data>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
         <bundles.modules>modules</bundles.modules>
@@ -1994,23 +1860,6 @@ rm -rf /opt/daisy-pipeline2-webui
           <plugin>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
-              <execution>
-                <id>copy-pipeline-webui</id>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>webui</artifactId>
-                      <version>1.8.1</version>
-                      <type>zip</type>
-                      <outputDirectory>${project.build.directory}/webui</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
               <execution>
                 <id>unpack-cli-linux</id>
                 <goals>
@@ -2310,74 +2159,6 @@ rm -rf /opt/daisy-pipeline2-webui
                       <symlink>true</symlink>
                       <linkName>${pipeline.cli.config}/config.yml</linkName>
                       <linkTarget>${pipeline.cli.home}/config.yml</linkTarget>
-                    </data>
-                  </dataSet>
-                </configuration>
-              </execution>
-              <execution>
-                <id>package-deb-webui</id>
-                <phase>none</phase>
-                <goals>
-                  <goal>jdeb</goal>
-                </goals>
-                <configuration>
-                  <controlDir>target/filtered-resources/deb/DEBIAN.webui</controlDir>
-                  <timestamped>true</timestamped>
-                  <classifier>webui_all</classifier>
-                  <deb>target/daisy-pipeline2-webui_${project.version}_all.deb</deb>
-                  <dataSet>
-
-                    <!-- ===== -->
-                    <!-- webui -->
-                    <!-- ===== -->
-                    <data>
-                      <type>directory</type>
-                      <src>target/webui/daisy-pipeline-webui</src>
-                      <excludes>
-                        start,
-                        start.bat,
-                        uninstall,
-                        uninstall.bat,
-                        dp2webui/*
-                      </excludes>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.webui.home}</prefix>
-                      </mapper>
-                    </data>
-                    <data>
-                      <src>target/filtered-resources/deb${pipeline.webui.home}/start</src>
-                      <type>file</type>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.webui.home}</prefix>
-                        <filemode>755</filemode>
-                      </mapper>
-                    </data>
-
-                    <!-- ========== -->
-                    <!-- webui data -->
-                    <!-- ========== -->
-                    <data>
-                      <type>directory</type>
-                      <src>target/webui/daisy-pipeline-webui/dp2webui</src>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.webui.data}/webui/dp2webui</prefix>
-                      </mapper>
-                    </data>
-
-                    <!-- ============ -->
-                    <!-- webui daemon -->
-                    <!-- ============ -->
-                    <data>
-                      <src>target/filtered-resources/deb/etc/init.d/pipeline2-webuid</src>
-                      <type>file</type>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>/etc/init.d</prefix>
-                        <filemode>755</filemode>
-                      </mapper>
                     </data>
                   </dataSet>
                 </configuration>
