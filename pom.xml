@@ -317,7 +317,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
-                  <artifactId>logbackb-osgi-adapter</artifactId>
+                  <artifactId>logback-osgi-adapter</artifactId>
                   <version>1.0.0</version>
                 </artifactItem>
                 <artifactItem>
