@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9.12-SNAPSHOT</version>
+  <version>1.9.12</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -17,7 +17,7 @@
     <connection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</connection>
     <url>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</url>
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
-    <tag>v1.9</tag>
+    <tag>v1.9.12</tag>
   </scm>
   <dependencies>
     <dependency>
@@ -1446,9 +1446,9 @@
                 <configuration>
                   <target>
                     <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml"/>
-                      <arg value="src/main/xslt/pom-to-release.xslt"/>
-                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml"/>
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-release.xslt" />
+                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml" />
                     </java>
                   </target>
                 </configuration>
