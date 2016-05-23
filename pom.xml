@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9.10</version>
+  <version>1.9.13-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -23,7 +23,8 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.main</artifactId>
-      <version>5.4.0</version>
+      <version>4.4.1</version>
+      <!-- <version>4.2.1</version> -->
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -64,8 +65,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-bom</artifactId>
-        <!--  <version>1.9.9</version>  -->
-        <version>1.9.11-SNAPSHOT</version>
+        <version>1.9.13</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -87,6 +87,13 @@
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>audio-modules-bom</artifactId>
         <version>1.9</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.daisy.pipeline.modules.braille</groupId>
+        <artifactId>mod-mtm</artifactId>
+        <version>1.6.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -233,16 +240,18 @@
             <configuration>
               <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
               <artifactItems>
-                <dependency>
-                  	<groupId>javax.xml.crypto</groupId>
-                  	<artifactId>jsr105-api</artifactId>
-                	<version>1.0.1</version>
-                </dependency>
-                <dependency>
-                   	<groupId>javax.xml.parsers</groupId>
-                   	<artifactId>jaxp-api</artifactId>
-                   	<version>1.4.5</version>
-                </dependency>
+                      <dependency>
+                              <groupId>javax.xml.crypto</groupId>
+                              <artifactId>jsr105-api</artifactId>
+                              <version>1.0.1</version>
+                      </dependency>
+                      <dependency>
+                              <groupId>javax.xml.parsers</groupId>
+                              <artifactId>jaxp-api</artifactId>
+                              <version>1.4.5</version>
+                      </dependency>
+
+
                 <!-- Runtime dependencies -->
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
@@ -312,6 +321,11 @@
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>com.xmlcalabash</artifactId>
                   <version>1.0.23</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>logback-osgi-adapter</artifactId>
+                  <version>1.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -1096,469 +1110,6 @@
   </build>
 
   <profiles>
-
-    <!-- REDHAT/CentOS RPM packet server engine -->
-  
-    <profile>
-      <id>rpm</id>
-      <properties>
-        <!-- <pipeline.user>root</pipeline.user> -->
-        <!-- <pipeline.group>root</pipeline.group> -->
-        <pipeline.user>tpbadmin</pipeline.user>
-        <pipeline.group>tpbadmin</pipeline.group>
-        <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
-        <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
-        <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
-        <bundles.modules>modules</bundles.modules> <!-- don't change! must be the same as in dist.properties -->
-        <pipeline.log.jobappender>org.daisy.pipeline.logging.IgnoreSiftAppender</pipeline.log.jobappender>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>dist-linux</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src/main/assembly/dist-linux.xml</descriptor>
-                  </descriptors>
-                  <filters>
-                    <filter>src/main/assembly/dist.properties</filter>
-                    <filter>src/main/assembly/dist-nix.properties</filter>
-                  </filters>
-                  <appendAssemblyId>false</appendAssemblyId>
-                  <finalName>pipeline2-${project.version}_linux</finalName>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>rpm-maven-plugin</artifactId>
-            <version>2.0.1</version>
-            <executions>
-              <execution>
-                <id>generate-rpm</id>
-                <goals>
-                  <goal>rpm</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <name>pipeline2</name>
-              <group>daisy-pipeline2</group>
-              <description>daisy-pipeline2</description>
-              <needarch>x86_64</needarch>
-              <mappings>
-                <mapping>
-                  <directory>${pipeline.home}</directory>
-                  <filemode>0644</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>src/main/resources</location>
-                      <includes>
-                        <include>etc/**</include>
-                        <include>NOTICE.txt</include>
-                        <include>README.txt</include>
-                      </includes>
-                      <excludes>
-                        <exclude>etc/system.properties</exclude>
-                        <exclude>etc/config.properties</exclude>
-                        <exclude>etc/org.apache.felix.fileinstall-modules.cfg</exclude>
-                        <exclude>etc/org.apache.felix.fileinstall-libs.cfg</exclude>
-                      </excludes>
-                    </source>
-                    <source>
-                      <location>src/main/resources</location>
-                      <includes>
-                        <include>samples/daisy202/**</include>
-                        <include>samples/daisy3/**</include>
-                        <include>samples/dtbook/**</include>
-                        <include>samples/zedai/**</include>
-                      </includes>
-                      <excludes>
-                        <exclude>samples/html/**</exclude>
-                      </excludes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}</directory>
-                  <filemode>0640</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>src/main/resources</location>
-                      <includes>
-                        <include>etc/system.properties</include>
-                        <include>etc/config.properties</include>
-                        <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
-                        <include>etc/config-logback.xml</include>
-                      </includes>
-                      <filter>true</filter>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}</directory>
-                  <filemode>0550</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>src/main/resources</location>
-                      <includes>
-                        <include>bin/**</include>
-                      </includes>
-                      <excludes>
-                        <exclude>bin/pipeline2.bat</exclude>
-                      </excludes>
-                      <filter>true</filter>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/${bundles.bootstrap}</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/bootstrap</location>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/felix</location>
-                      <excludes>
-                        <exclude>org.apache.felix.org.apache.felix.gogo*</exclude>
-                      </excludes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/${bundles.auto.deploy}/gogo</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/felix</location>
-                      <includes>
-                        <include>org.apache.felix.org.apache.felix.gogo*</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/system/framework</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/libs</location>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/system/framework</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/pipeline</location>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/system/frontend</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/frontend</location>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/${bundles.modules}</directory>
-                  <filemode>0755</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/modules</location>
-                      <excludes>
-                        <exclude>linux</exclude>
-                        <exclude>linux/*</exclude>
-                        <exclude>win</exclude>
-                        <exclude>win/*</exclude>
-                        <exclude>mac</exclude>
-                        <exclude>mac/*</exclude>
-                      </excludes>
-                    </source>
-                    <source>
-                      <location>${project.basedir}/target/bundles/modules/linux</location>
-                    </source>
-                  </sources>
-                </mapping>
-              </mappings>
-              <filters>
-                <filter>src/main/assembly/dist.properties</filter>
-                <filter>src/main/assembly/dist-nix.properties</filter>
-              </filters>
-              <postremoveScriptlet>
-                <script>
-rm -rf /opt/daisy-pipeline2
-                </script>
-              </postremoveScriptlet>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <!-- REDHAT/CentOS RPM packet cli -->
-    <profile>
-      <id>rpm-cli</id>
-      <properties>
-        <pipeline.user>pipeline2</pipeline.user>
-        <pipeline.group>pipeline2</pipeline.group>
-        <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
-        <pipeline.cli.home>${pipeline.home}/cli</pipeline.cli.home>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack-cli-linux</id>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>cli</artifactId>
-                      <type>zip</type>
-                      <classifier>linux_386</classifier>
-                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>rpm-maven-plugin</artifactId>
-            <version>2.0.1</version>
-            <executions>
-              <execution>
-                <id>generate-rpm</id>
-                <goals>
-                  <goal>rpm</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <name>pipeline2-cli</name>
-              <group>daisy-pipeline2-cli</group>
-              <description>daisy-pipeline2-cli</description>
-              <needarch>x86_64</needarch>
-              <mappings>
-                <mapping>
-                  <directory>${pipeline.cli.home}</directory>
-                  <filemode>0640</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>src/main/resources/cli</location>
-                      <includes>
-                        <include>config.yml</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.cli.home}</directory>
-                  <filemode>0640</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/cli/linux32</location>
-                      <includes>
-                        <include>dp2</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-              </mappings>
-              <postremoveScriptlet>
-                <script>
-rm -rf /opt/daisy-pipeline2/cli
-                </script>
-              </postremoveScriptlet>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <!-- REDHAT/CentOS RPM packet Web UI -->
-    <profile>
-      <id>rpm-webui</id>
-      <properties>
-        <pipeline.webui-version>1.8.1</pipeline.webui-version>
-        <pipeline.webui.user>pipeline2</pipeline.webui.user>
-        <pipeline.webui.group>pipeline2</pipeline.webui.group>
-        <pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>webui</artifactId>
-                      <version>2.0.0</version>
-                      <!-- <version>1.8.1</version>  -->
-                      <type>zip</type>
-                      <overWrite>true</overWrite>
-                      <outputDirectory>target/webui</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                  <overWriteReleases>false</overWriteReleases>
-                  <overWriteSnapshots>true</overWriteSnapshots>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>rpm-maven-plugin</artifactId>
-            <version>2.0.1</version>
-            <executions>
-              <execution>
-                <id>generate-rpm-webui</id>
-                <goals>
-                  <goal>rpm</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <name>pipeline2-webui</name>
-              <group>daisy-pipeline2-webui</group>
-              <description>daisy-pipeline2-webui</description>
-              <version>${pipeline.webui-version}</version> 
-              <needarch>noarch</needarch>
-              <mappings>
-                <mapping>
-                  <directory>${pipeline.webui.home}</directory>
-                  <filemode>660</filemode>
-                  <username>${pipeline.webui.user}</username>
-                  <groupname>${pipeline.webui.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
-                      <includes>
-                        <include>dp2webui/**</include>
-                        <include>lib/**</include>
-                        <include>startui/**</include>
-                        <include>themes/**</include>
-                      </includes>
-                      <excludes>
-                        <exclude>application.conf</exclude>
-                        <exclude>logger.xml</exclude>
-                        <exclude>uninstall</exclude>
-                        <exclude>uninstall.bat</exclude>
-                        <exclude>start</exclude>
-                        <exclude>start.bat</exclude>
-                      </excludes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.webui.home}</directory>
-                  <filemode>660</filemode>
-                  <username>${pipeline.webui.user}</username>
-                  <groupname>${pipeline.webui.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
-                      <includes>
-                        <include>application.conf</include>
-                        <include>logger.xml</include>
-                      </includes>
-                      <excludes>
-                        <exclude>dp2webui/**</exclude>
-                        <exclude>lib/**</exclude>
-                        <exclude>startui/**</exclude>
-                        <exclude>themes/**</exclude>
-                        <exclude>uninstall</exclude>
-                        <exclude>uninstall.bat</exclude>
-                        <exclude>start</exclude>
-                        <exclude>start.bat</exclude>
-                      </excludes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.webui.home}</directory>
-                  <filemode>550</filemode>
-                  <username>${pipeline.webui.user}</username>
-                  <groupname>${pipeline.webui.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/webui/daisy-pipeline-webui</location>
-                      <includes>
-                        <include>start</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-              </mappings>
-              <preremoveScriptlet>
-                <script>
-rm -rf /opt/daisy-pipeline2-webui
-                </script>
-              </preremoveScriptlet>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
- 
     <profile>
       <id>mac</id>
       <activation>
@@ -1616,6 +1167,7 @@ rm -rf /opt/daisy-pipeline2-webui
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>linux</id>
       <activation>
@@ -1673,6 +1225,7 @@ rm -rf /opt/daisy-pipeline2-webui
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>win</id>
       <activation>
@@ -1731,8 +1284,6 @@ rm -rf /opt/daisy-pipeline2-webui
         </plugins>
       </build>
     </profile>
-
-
 
     <profile>
       <id>dev-launcher</id>
@@ -1870,7 +1421,92 @@ rm -rf /opt/daisy-pipeline2-webui
       </build>
     </profile>
 
-
+    <profile>
+      <id>releaseDescriptor</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-help-plugin</artifactId>
+            <version>2.1.1</version>
+            <executions>
+              <execution>
+                <id>generate-effective-pom</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>effective-pom</goal>
+                </goals>
+                <configuration>
+                  <output>target/tmp/effective-pom.xml</output>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-release-descriptor</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="net.sf.saxon.Transform">
+                      <arg value="target/tmp/effective-pom.xml" />
+                      <arg value="src/main/xslt/pom-to-release.xslt" />
+                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>9.5.1-5</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-linux</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-win</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dev-launcher-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dev.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dev.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>dev-launcher</finalName>
+                  <attach>false</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
     <profile>
       <id>deb</id>
@@ -1882,9 +1518,6 @@ rm -rf /opt/daisy-pipeline2-webui
         <pipeline.config>/etc/opt/daisy-pipeline2</pipeline.config>
         <pipeline.cli.home>/opt/daisy-pipeline2-cli</pipeline.cli.home>
         <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
-        <pipeline.webui.user>pipeline2-webui</pipeline.webui.user>
-        <pipeline.webui.home>/opt/daisy-pipeline2-webui</pipeline.webui.home>
-        <pipeline.webui.data>/var/opt/daisy-pipeline2-webui</pipeline.webui.data>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
         <bundles.modules>modules</bundles.modules>
@@ -1899,29 +1532,13 @@ rm -rf /opt/daisy-pipeline2-webui
         <pipeline.ws.clientsecret>supersecret</pipeline.ws.clientsecret>
         <pipeline.cli.exec_line>/dev/null</pipeline.cli.exec_line>
         <pipeline.cli.starting>false</pipeline.cli.starting>
+        <pipeline.log.jobappender>org.daisy.pipeline.logging.IgnoreSiftAppender</pipeline.log.jobappender>
       </properties>
       <build>
         <plugins>
           <plugin>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
-              <execution>
-                <id>copy-pipeline-webui</id>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>webui</artifactId>
-                      <version>1.8.1</version>
-                      <type>zip</type>
-                      <outputDirectory>${project.build.directory}/webui</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
               <execution>
                 <id>unpack-cli-linux</id>
                 <goals>
@@ -1962,6 +1579,7 @@ rm -rf /opt/daisy-pipeline2-webui
                         <include>etc/config.properties</include>
                         <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
                         <include>etc/system.properties</include>
+                        <include>etc/config-logback.xml</include>
                       </includes>
                     </resource>
                     <resource>
@@ -1999,7 +1617,6 @@ rm -rf /opt/daisy-pipeline2-webui
                   <classifier>all</classifier>
                   <deb>target/daisy-pipeline2_${project.version}_all.deb</deb>
                   <dataSet>
-
                     <!-- ======== -->
                     <!-- binaries -->
                     <!-- ======== -->
@@ -2020,7 +1637,6 @@ rm -rf /opt/daisy-pipeline2-webui
                       <src>target/filtered-resources/deb${pipeline.home}/bin/debian.cfg</src>
                       <dst>${pipeline.home}/bin/debian.cfg</dst>
                     </data>
-
                     <!-- ====== -->
                     <!-- daemon -->
                     <!-- ====== -->
@@ -2033,7 +1649,6 @@ rm -rf /opt/daisy-pipeline2-webui
                         <filemode>755</filemode>
                       </mapper>
                     </data>
-
                     <!-- =================== -->
                     <!-- configuration files -->
                     <!-- =================== -->
@@ -2067,7 +1682,7 @@ rm -rf /opt/daisy-pipeline2-webui
                     </data>
                     <data>
                       <type>file</type>
-                      <src>src/main/resources/etc/config-logback.xml</src>
+                      <src>target/filtered-resources/resources/etc/config-logback.xml</src>
                       <dst>${pipeline.config}/config-logback.xml</dst>
                     </data>
                     <data>
@@ -2081,7 +1696,6 @@ rm -rf /opt/daisy-pipeline2-webui
                       <src>src/main/deb/etc/default/pipeline2d</src>
                       <dst>/etc/default/pipeline2d</dst>
                     </data>
-
                     <!-- ============== -->
                     <!-- system bundles -->
                     <!-- ============== -->
@@ -2139,7 +1753,6 @@ rm -rf /opt/daisy-pipeline2-webui
                         <type>perm</type>
                       </mapper>
                     </data>
-
                     <!-- ======= -->
                     <!-- modules -->
                     <!-- ======= -->
@@ -2164,7 +1777,6 @@ rm -rf /opt/daisy-pipeline2-webui
                         <type>perm</type>
                       </mapper>
                     </data>
-
                     <!-- ========= -->
                     <!-- log files -->
                     <!-- ========= -->
@@ -2174,7 +1786,6 @@ rm -rf /opt/daisy-pipeline2-webui
                         <path>${pipeline.log}</path>
                       </paths>
                     </data>
-
                   </dataSet>
                 </configuration>
               </execution>
@@ -2190,7 +1801,6 @@ rm -rf /opt/daisy-pipeline2-webui
                   <classifier>cli_all</classifier>
                   <deb>target/daisy-pipeline2-cli_${project.version}_all.deb</deb>
                   <dataSet>
-                    
                     <!-- ============ -->
                     <!-- cli binaries -->
                     <!-- ============ -->
@@ -2206,7 +1816,6 @@ rm -rf /opt/daisy-pipeline2-webui
                         <filemode>755</filemode>
                       </mapper>
                     </data>
-
                     <!-- ======================= -->
                     <!-- cli configuration files -->
                     <!-- ======================= -->
@@ -2220,74 +1829,6 @@ rm -rf /opt/daisy-pipeline2-webui
                       <symlink>true</symlink>
                       <linkName>${pipeline.cli.config}/config.yml</linkName>
                       <linkTarget>${pipeline.cli.home}/config.yml</linkTarget>
-                    </data>
-                  </dataSet>
-                </configuration>
-              </execution>
-              <execution>
-                <id>package-deb-webui</id>
-                <phase>none</phase>
-                <goals>
-                  <goal>jdeb</goal>
-                </goals>
-                <configuration>
-                  <controlDir>target/filtered-resources/deb/DEBIAN.webui</controlDir>
-                  <timestamped>true</timestamped>
-                  <classifier>webui_all</classifier>
-                  <deb>target/daisy-pipeline2-webui_${project.version}_all.deb</deb>
-                  <dataSet>
-
-                    <!-- ===== -->
-                    <!-- webui -->
-                    <!-- ===== -->
-                    <data>
-                      <type>directory</type>
-                      <src>target/webui/daisy-pipeline-webui</src>
-                      <excludes>
-                        start,
-                        start.bat,
-                        uninstall,
-                        uninstall.bat,
-                        dp2webui/*
-                      </excludes>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.webui.home}</prefix>
-                      </mapper>
-                    </data>
-                    <data>
-                      <src>target/filtered-resources/deb${pipeline.webui.home}/start</src>
-                      <type>file</type>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.webui.home}</prefix>
-                        <filemode>755</filemode>
-                      </mapper>
-                    </data>
-
-                    <!-- ========== -->
-                    <!-- webui data -->
-                    <!-- ========== -->
-                    <data>
-                      <type>directory</type>
-                      <src>target/webui/daisy-pipeline-webui/dp2webui</src>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>${pipeline.webui.data}/webui/dp2webui</prefix>
-                      </mapper>
-                    </data>
-
-                    <!-- ============ -->
-                    <!-- webui daemon -->
-                    <!-- ============ -->
-                    <data>
-                      <src>target/filtered-resources/deb/etc/init.d/pipeline2-webuid</src>
-                      <type>file</type>
-                      <mapper>
-                        <type>perm</type>
-                        <prefix>/etc/init.d</prefix>
-                        <filemode>755</filemode>
-                      </mapper>
                     </data>
                   </dataSet>
                 </configuration>
@@ -2314,6 +1855,340 @@ rm -rf /opt/daisy-pipeline2-webui
         </plugins>
       </build>
     </profile>
+
+    <!-- REDHAT/CentOS RPM packet server engine -->
+    <profile>
+      <id>rpm</id>
+      <properties>
+        <pipeline.user>root</pipeline.user>
+        <pipeline.group>root</pipeline.group>
+        <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
+        <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
+        <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
+        <bundles.modules>modules</bundles.modules> <!-- don't change! must be the same as in dist.properties -->
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-linux</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <formats>dir</formats>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dist-linux.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dist.properties</filter>
+                    <filter>src/main/assembly/dist-nix.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>pipeline2-${project.version}_linux</finalName>
+                </configuration>
+              </execution>
+              <execution>
+                <id>dist-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-win</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>rpm-maven-plugin</artifactId>
+            <version>2.0.1</version>
+            <executions>
+              <execution>
+                <id>generate-rpm</id>
+                <goals>
+                  <goal>attached-rpm</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <name>pipeline2</name>
+              <group>daisy-pipeline2</group>
+              <description>daisy-pipeline2</description>
+              <needarch>x86_64</needarch>
+              <mappings>
+                <mapping>
+                  <directory>${pipeline.home}</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>src/main/resources</location>
+                      <includes>
+                        <include>etc/**</include>
+                        <include>NOTICE.txt</include>
+                        <include>README.txt</include>
+                      </includes>
+                      <excludes>
+                        <exclude>etc/system.properties</exclude>
+                        <exclude>etc/config.properties</exclude>
+                        <exclude>etc/org.apache.felix.fileinstall-modules.cfg</exclude>
+                        <exclude>etc/org.apache.felix.fileinstall-libs.cfg</exclude>
+                      </excludes>
+                    </source>
+                    <source>
+                      <location>src/main/resources</location>
+                      <includes>
+                        <include>samples/daisy202/**</include>
+                        <include>samples/daisy3/**</include>
+                        <include>samples/dtbook/**</include>
+                        <include>samples/zedai/**</include>
+                      </includes>
+                      <excludes>
+                        <exclude>samples/html/**</exclude>
+                      </excludes>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}</directory>
+                  <filemode>0640</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>src/main/resources</location>
+                      <includes>
+                        <include>etc/system.properties</include>
+                        <include>etc/config.properties</include>
+                        <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
+                      </includes>
+                      <filter>true</filter>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}</directory>
+                  <filemode>0550</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>src/main/resources</location>
+                      <includes>
+                        <include>bin/**</include>
+                      </includes>
+                      <excludes>
+                        <exclude>bin/pipeline2.bat</exclude>
+                      </excludes>
+                      <filter>true</filter>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/${bundles.bootstrap}</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/bootstrap</location>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/felix</location>
+                      <excludes>
+                        <exclude>org.apache.felix.org.apache.felix.gogo*</exclude>
+                      </excludes>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/${bundles.auto.deploy}/gogo</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/felix</location>
+                      <includes>
+                        <include>org.apache.felix.org.apache.felix.gogo*</include>
+                      </includes>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/system/framework</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/libs</location>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/system/framework</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/pipeline</location>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/system/frontend</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/frontend</location>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/${bundles.modules}</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/modules</location>
+                      <excludes>
+                        <exclude>linux</exclude>
+                        <exclude>linux/*</exclude>
+                        <exclude>win</exclude>
+                        <exclude>win/*</exclude>
+                        <exclude>mac</exclude>
+                        <exclude>mac/*</exclude>
+                      </excludes>
+                    </source>
+                    <source>
+                      <location>${project.basedir}/target/bundles/modules/linux</location>
+                    </source>
+                  </sources>
+                </mapping>
+              </mappings>
+              <filters>
+                <filter>src/main/assembly/dist.properties</filter>
+                <filter>src/main/assembly/dist-nix.properties</filter>
+              </filters>
+              <postremoveScriptlet>
+                <script>
+rm -rf /opt/daisy-pipeline2
+                </script>
+              </postremoveScriptlet>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- REDHAT/CentOS RPM packet cli -->
+    <profile>
+      <id>rpm-cli</id>
+      <properties>
+        <pipeline.user>root</pipeline.user>
+        <pipeline.group>root</pipeline.group>
+        <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
+        <pipeline.cli.home>${pipeline.home}/cli</pipeline.cli.home>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-cli-linux</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>cli</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/cli/linux32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>rpm-maven-plugin</artifactId>
+            <version>2.0.1</version>
+            <executions>
+              <execution>
+                <id>generate-rpm</id>
+                <goals>
+                  <goal>rpm</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <name>pipeline2-cli</name>
+              <group>daisy-pipeline2-cli</group>
+              <description>daisy-pipeline2-cli</description>
+              <needarch>x86_64</needarch>
+              <mappings>
+                <mapping>
+                  <directory>${pipeline.cli.home}</directory>
+                  <filemode>0640</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>src/main/resources/cli</location>
+                      <includes>
+                        <include>config.yml</include>
+                      </includes>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.cli.home}</directory>
+                  <filemode>0640</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/cli/linux32</location>
+                      <includes>
+                        <include>dp2</include>
+                      </includes>
+                    </source>
+                  </sources>
+                </mapping>
+              </mappings>
+              <postremoveScriptlet>
+                <script>
+rm -rf /opt/daisy-pipeline2/cli
+                </script>
+              </postremoveScriptlet>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>webui</id>
       <build>
@@ -2406,6 +2281,32 @@ rm -rf /opt/daisy-pipeline2-webui
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>releaseDesciptor</id>
+      <properties>
+      </properties>
+      <build>
+        <plugins>
+          <!-- copy nsis file for windows installer generation -->
+          <plugin>
+            <artifactId>maven-help-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>effective-pom</goal>
+                </goals>
+                <!--<configuration>-->
+                  <!--<output>${basedir}/target/effective-pom.xml</output>-->
+                <!--</configuration>-->
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- NSIS Profile for installer generation invoke with -P installer -->
     <profile>
       <id>installer</id>
@@ -2503,5 +2404,11 @@ rm -rf /opt/daisy-pipeline2-webui
       <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
       <url>http://repository.springsource.com/maven/bundles/external</url>
     </repository>
+    <!-- staging address for mod-mtm modules -->
+    <repository>
+		<id>sonatype-nexus-staging</id>
+        <name>Nexus Release Repository</name>
+        <url>https://oss.sonatype.org/content/groups/staging/</url>
+      </repository>
   </repositories>
 </project>
