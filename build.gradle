@@ -3,7 +3,7 @@ apply plugin: 'se.mtm.artifactory-rpm'
 buildscript {
     repositories {
         maven {
-            url "http://artifactory.mtm.se:8081/artifactory/repo"
+            url "http://artifactory.mtm.se:8081/artifactory/libs-both"
         }
     }
     dependencies {
