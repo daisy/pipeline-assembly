@@ -94,8 +94,6 @@
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>mod-mtm</artifactId>
         <version>1.6.0</version>
-        <type>pom</type>
-        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -850,6 +848,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zip-utils</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>mod-mtm</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -2406,9 +2408,9 @@ rm -rf /opt/daisy-pipeline2/cli
     </repository>
     <!-- staging address for mod-mtm modules -->
     <repository>
-		<id>sonatype-nexus-staging</id>
+		<id>sonatype-nexus-staging-not-released</id>
         <name>Nexus Release Repository</name>
-        <url>https://oss.sonatype.org/content/groups/staging/</url>
+        <url>http://oss.sonatype.org/content/groups/staging/</url>
       </repository>
   </repositories>
 </project>
