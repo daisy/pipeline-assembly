@@ -1879,7 +1879,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <formats>dir</formats>
+                  <!-- <formats>dir</formats> -->
                   <descriptors>
                     <descriptor>src/main/assembly/dist-linux.xml</descriptor>
                   </descriptors>
