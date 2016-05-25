@@ -1862,8 +1862,8 @@
     <profile>
       <id>rpm</id>
       <properties>
-        <pipeline.user>tpbadmin</pipeline.user>
-        <pipeline.group>tpbadmin</pipeline.group>
+        <pipeline.user>root</pipeline.user>
+        <pipeline.group>root</pipeline.group>
         <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
@@ -1992,7 +1992,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/${bundles.bootstrap}</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
@@ -2003,7 +2003,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
@@ -2017,7 +2017,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/${bundles.auto.deploy}/gogo</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
@@ -2031,7 +2031,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/system/framework</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
@@ -2042,7 +2042,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/system/framework</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
@@ -2053,7 +2053,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/system/frontend</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
@@ -2064,7 +2064,7 @@
                 </mapping>
                 <mapping>
                   <directory>${pipeline.home}/${bundles.modules}</directory>
-                  <filemode>0644</filemode>
+                  <filemode>0755</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
                   <sources>
