@@ -1868,6 +1868,7 @@
         <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
         <bundles.modules>modules</bundles.modules> <!-- don't change! must be the same as in dist.properties -->
+        <pipeline.log.jobappender>org.daisy.pipeline.logging.IgnoreSiftAppender</pipeline.log.jobappender>
       </properties>
       <build>
         <plugins>
@@ -1939,6 +1940,7 @@
                         <exclude>etc/config.properties</exclude>
                         <exclude>etc/org.apache.felix.fileinstall-modules.cfg</exclude>
                         <exclude>etc/org.apache.felix.fileinstall-libs.cfg</exclude>
+                        <include>etc/config-logback.xml</include>
                       </excludes>
                     </source>
                     <source>
