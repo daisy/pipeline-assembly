@@ -1940,7 +1940,6 @@
                         <exclude>etc/config.properties</exclude>
                         <exclude>etc/org.apache.felix.fileinstall-modules.cfg</exclude>
                         <exclude>etc/org.apache.felix.fileinstall-libs.cfg</exclude>
-                        <include>etc/config-logback.xml</include>
                       </excludes>
                     </source>
                     <source>
@@ -1969,6 +1968,7 @@
                         <include>etc/system.properties</include>
                         <include>etc/config.properties</include>
                         <include>etc/org.apache.felix.fileinstall-modules.cfg</include>
+						<include>etc/config-logback.xml</include>
                       </includes>
                       <filter>true</filter>
                     </source>
