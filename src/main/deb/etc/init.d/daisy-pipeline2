@@ -1,6 +1,6 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          pipeline2
+# Provides:          daisy-pipeline2
 # Required-Start:    $network $local_fs
 # Required-Stop:
 # Default-Start:     2 3 4 5
@@ -14,7 +14,7 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="DAISY Pipeline 2 server"         # Introduce a short description here
-NAME=pipeline2d                        # Introduce the short server's name here
+NAME=daisy-pipeline2                   # Introduce the short server's name here
 DAEMON=${pipeline.home}/bin/pipeline2  # Introduce the server's location here
 DAEMON_ARGS=""                         # Arguments to run the daemon with
 DAEMON_USER=${pipeline.user}
@@ -51,7 +51,7 @@ do_start()
 	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON \
 		--chuid $DAEMON_USER --background --test > /dev/null \
 		|| return 1
-	LOG=$(mktemp /tmp/pipeline2.log.XXXXXXXX)
+	LOG=$(mktemp /tmp/daisy-pipeline2.log.XXXXXXXX)
 	chown $DAEMON_USER $LOG
 	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --chuid $DAEMON_USER --background \
 		--startas /bin/bash -- -c "exec $DAEMON $DAEMON_ARGS > $LOG 2>&1"

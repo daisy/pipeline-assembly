@@ -1943,7 +1943,7 @@
                     <!-- daemon -->
                     <!-- ====== -->
                     <data>
-                      <src>target/filtered-resources/deb/etc/init.d/pipeline2d</src>
+                      <src>target/filtered-resources/deb/etc/init.d/daisy-pipeline2</src>
                       <type>file</type>
                       <mapper>
                         <type>perm</type>
@@ -1995,8 +1995,8 @@
                     </data>
                     <data>
                       <type>file</type>
-                      <src>src/main/deb/etc/default/pipeline2d</src>
-                      <dst>/etc/default/pipeline2d</dst>
+                      <src>src/main/deb/etc/default/daisy-pipeline2</src>
+                      <dst>/etc/default/daisy-pipeline2</dst>
                     </data>
                     <!-- ============== -->
                     <!-- system bundles -->
