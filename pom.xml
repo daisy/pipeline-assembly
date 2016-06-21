@@ -65,7 +65,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-bom</artifactId>
-        <version>1.9.14</version>
+        <version>1.9.15</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
