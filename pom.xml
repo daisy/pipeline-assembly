@@ -1030,6 +1030,11 @@
                   <artifactId>liblouis-native</artifactId>
                   <classifier>windows</classifier>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>libhyphen-native</artifactId>
+                  <classifier>windows</classifier>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
