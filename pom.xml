@@ -43,22 +43,22 @@
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
-        <artifactId>scripts-aggregator</artifactId>
-        <version>1.9</version>
+        <artifactId>scripts-bom</artifactId>
+        <version>1.10.0-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
-        <artifactId>common-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <artifactId>common-utils-bom</artifactId>
+        <version>1.10.0-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
-        <artifactId>script-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <artifactId>scripts-utils-bom</artifactId>
+        <version>1.10.0-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
