@@ -254,7 +254,7 @@
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
                   <artifactId>httpcore-osgi</artifactId>
-                  <version>4.2.4</version>
+                  <version>4.2.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -315,6 +315,82 @@
                   <artifactId>xmlcalabash</artifactId>
                   <version>1.1.9-96</version>
                 </artifactItem>
+                
+                <!-- test adding calabash deps here for now -->
+                <artifactItem>
+                  <groupId>com.nwalsh</groupId>
+                  <artifactId>nwalsh-annotations</artifactId>
+                  <version>1.0.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>junit</groupId>
+                  <artifactId>junit</artifactId>
+                  <version>4.12</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>net.java.dev.msv</groupId>
+                  <artifactId>msv-core</artifactId>
+                  <version>2013.6.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.ibm.icu</groupId>
+                  <artifactId>icu4j</artifactId>
+                  <version>49.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.ant</groupId>
+                  <artifactId>ant</artifactId>
+                  <version>1.9.4</version>
+                </artifactItem>
+                <!--<artifactItem>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-api</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-core</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-slf4j-impl</artifactId>
+                  <version>2.1</version>
+                </artifactItem>-->
+                <artifactItem>
+                  <groupId>org.atteo.classindex</groupId>
+                  <artifactId>classindex</artifactId>
+                  <version>3.3</version>
+                </artifactItem>
+                <!--<artifactItem>
+                  <groupId>org.ccil.cowan.tagsoup</groupId>
+                  <artifactId>tagsoup</artifactId>
+                  <version>1.2.1</version>
+                </artifactItem>-->
+                <artifactItem>
+                  <groupId>org.restlet.jee</groupId>
+                  <artifactId>org.restlet</artifactId>
+                  <version>2.2.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.jee</groupId>
+                  <artifactId>org.restlet.ext.fileupload</artifactId>
+                  <version>2.2.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.jee</groupId>
+                  <artifactId>org.restlet.ext.slf4j</artifactId>
+                  <version>2.2.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.xmlresolver</groupId>
+                  <artifactId>xmlresolver</artifactId>
+                  <version>0.12.3</version>
+                </artifactItem>
+
+                
+                
+                
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>logback-osgi-adapter</artifactId>
