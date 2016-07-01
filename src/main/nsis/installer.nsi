@@ -164,7 +164,12 @@ InstType /COMPONENTSONLYONCUSTOM
 
 
 function .onInit
+        Var /GLOBAL CHECK_JRE
 	setShellVarContext all
+        ${GetParameters} $R0
+        ${GetOptions} $R0 "--check-jre=" $R1
+        StrCpy $CHECK_JRE $R1
+
 	!insertmacro VerifyUserIsAdmin
 	; check the user priviledges
 	!insertmacro MULTIUSER_INIT
@@ -180,6 +185,7 @@ Section -JRECheck SEC00-1
   var /GLOBAL JAVA_SEM_VER
   var /GLOBAL JAVA_HOME
 
+  StrCmp $CHECK_JRE "false" End
   DetailPrint "Checking JRE version..."
   Call GetJavaVersion 
   pop $0 ; major version
@@ -246,7 +252,7 @@ section -Main SEC01
 	#Remove from previous versions 
         DetailPrint "Removing old data..."
 	ReadEnvStr $0 APPDATA
-        IfFileExists "$0\DAISY Pipeline 2" +1 +2 #Because relative jumping instructions is a way of writing really mantainable code
+        IfFileExists "$0\DAISY Pipeline 2" +1 +2 #Because relative jumping instructions is a way of writing really maintainable code
 	rmDir /r "$0\DAISY Pipeline 2"
 
 	setOutPath $INSTDIR
