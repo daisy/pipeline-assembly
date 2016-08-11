@@ -2078,6 +2078,18 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>ch.sbs</groupId>
+            <artifactId>project-version-maven-plugin</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>set-detailed-project-version</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-resources-plugin</artifactId>
             <executions>
               <execution>
@@ -2134,7 +2146,7 @@
                 <configuration>
                   <controlDir>${project.build.directory}/filtered-resources/deb/DEBIAN</controlDir>
                   <timestamped>true</timestamped>
-                  <deb>${project.build.directory}/assembly-${project.version}.deb</deb>
+                  <deb>${project.build.directory}/assembly-${project.detailedVersion}.deb</deb>
                   <dataSet>
                     <!-- ======== -->
                     <!-- binaries -->
