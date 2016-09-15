@@ -221,7 +221,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
     )
     
     SET OPTS=%PIPELINE2_LOCAL% %PIPELINE2_AUTH%
-    SET MAIN=org.daisy.pipeline.felix.Main
+    SET MAIN=org.apache.felix.main.Main
     SET SHIFT=false
     SET MODE=-Dorg.daisy.pipeline.main.mode=webservice
 

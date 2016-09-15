@@ -295,6 +295,7 @@ Section -StartMenu
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 	createDirectory "$SMPROGRAMS\${APPNAME}"
 	createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\pipeline2-gui.vbs" "" "$INSTDIR\logo.ico"
+	createShortCut "$SMPROGRAMS\${APPNAME}\Pipeline Updater.lnk" "$INSTDIR\daisy-pipeline\bin\pipeline-updater-gui.exe" "" "$INSTDIR\logo.ico"
 	#createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}-webservice.lnk" "$INSTDIR\pipeline2-webservice.vbs" "" "$INSTDIR\logo.ico"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\uninstall.lnk" "$INSTDIR\uninstall.exe"
 	!insertmacro MUI_STARTMENU_WRITE_END
@@ -314,6 +315,7 @@ section "uninstall"
 
 	# Remove Start Menu launcher
 	delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
+	delete "$SMPROGRAMS\${APPNAME}\Pipeline Updater.lnk"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
 	rmDir "$SMPROGRAMS\${APPNAME}\uninstall.lnk"
 
