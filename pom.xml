@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.9.16-SNAPSHOT</version>
+  <version>1.10-beta1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -31,48 +31,48 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>cli</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>gui</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>updater</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>updater-gui</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.10.1-SNAPSHOT</version>
+        <version>1.10.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
-        <artifactId>scripts-aggregator</artifactId>
-        <version>1.9</version>
+        <artifactId>scripts-bom</artifactId>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
-        <artifactId>common-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <artifactId>common-utils-bom</artifactId>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
-        <artifactId>script-utils-aggregator</artifactId>
-        <version>1.9</version>
+        <artifactId>scripts-utils-bom</artifactId>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -86,21 +86,21 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>nlp-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>tts-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>audio-modules-bom</artifactId>
-        <version>1.9</version>
+        <version>1.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -685,12 +685,12 @@
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>pegdown</artifactId>
-                  <version>1.0.0-SNAPSHOT</version>
+                  <version>1.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>parboiled</artifactId>
-                  <version>1.0.0-SNAPSHOT</version>
+                  <version>1.0.0</version>
                 </artifactItem>
                 <!--<artifactItem>-->
                 <!--<groupId>org.daisy.libs</groupId>-->
@@ -772,6 +772,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>daisy202-validator</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy3-to-daisy202</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
@@ -903,6 +907,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>mathml-to-ssml</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>mediaoverlay-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -953,12 +961,6 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-adapter-attbin</artifactId>
                 </artifactItem>
-                <!-- Uncomment what follows if you have the ATT's sdk to build the artifact: -->
-                <!-- <artifactItem> -->
-                <!--   <groupId>org.daisy.pipeline.modules</groupId> -->
-                <!--   <artifactId>tts-adapter-attnative</artifactId> -->
-                <!--   <classifier>linux</classifier> -->
-                <!-- </artifactItem> -->
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-adapter-espeak</artifactId>
@@ -974,6 +976,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-common</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-helpers</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
