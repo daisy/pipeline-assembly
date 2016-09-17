@@ -8,7 +8,7 @@
                         <fileMode>0755</fileMode>
                 </file>
                 <file>
-                        <source>target/updater/gui/pipeline-updater-gui.exe</source>
+                        <source>target/updater/win32/pipeline-updater-gui.exe</source>
                         <outputDirectory>bin</outputDirectory>
                         <destName>pipeline-updater-gui.exe</destName>
                         <fileMode>0755</fileMode>
