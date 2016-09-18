@@ -196,10 +196,11 @@ Section -JRECheck SEC00-1
   StrCpy $JAVA_SEM_VER "$0.$1.$2.$3" ;use . instead of _ for the build so the comparison works
   StrCpy $JAVA_VER "$0.$1"
   
-  StrCmp "no" "$0" InstallJava CheckJavaVersion
+  Goto CheckJavaVersion
 
   CheckJavaVersion:
     ;First check version number
+    StrCmp "no" "$0" InstallJava
     ${VersionConvert} $JAVA_SEM_VER "" $R1
     ${VersionCompare} $R1 ${REQUIRED_JAVA_VER} $R2
     IntCmp 2 $R2 InstallJava
@@ -226,8 +227,8 @@ Section -JRECheck SEC00-1
         ClearErrors
         messageBox mb_yesno "Java JRE not found or too old. Daisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install it now?" IDNO Exit
 	setOutPath $TEMP
-        File "jre-8u45-windows-i586-iftw.exe"
-        ExecWait '"$TEMP\jre-8u45-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
+        File "jre-8u102-windows-i586-iftw.exe"
+        ExecWait '"$TEMP\jre-8u102-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
 
         IfErrors 0 End 
         messageBox mb_iconstop "Java installation returned an error. Please contact the Daisy Pipeline 2 developing team."
