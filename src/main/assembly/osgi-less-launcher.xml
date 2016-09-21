@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<assembly>
+  <id>osgi-less</id>
+  <formats>
+    <format>dir</format>
+  </formats>
+  <baseDirectory>.</baseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/osgi-less/resources</directory>
+      <includes>
+        <include>start.sh</include>
+      </includes>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+      <fileMode>0755</fileMode>
+    </fileSet>
+  </fileSets>
+</assembly>

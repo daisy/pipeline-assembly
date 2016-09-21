@@ -105,6 +105,41 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!--
+          for osgi-less
+      -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-configuration2</artifactId>
+        <version>2.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.9.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>eclipselink</artifactId>
+        <version>2.5.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>commonj.sdo</artifactId>
+        <version>2.1.1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -130,6 +165,7 @@
         <version>2.1</version>
       </extension>
     </extensions>
+    <sourceDirectory>src/main/osgi-less/java</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -2836,6 +2872,117 @@ rm -rf /opt/daisy-pipeline2/cli
       </build>
     </profile>
 
+    <profile>
+      <id>osgi-less</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.daisy.pipeline</groupId>
+          <artifactId>calabash-adapter</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.daisy.pipeline</groupId>
+          <artifactId>webservice</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.daisy.pipeline</groupId>
+          <artifactId>common-utils</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.daisy.pipeline</groupId>
+          <artifactId>modules-registry</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-configuration2</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>commons-beanutils</groupId>
+          <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>eclipselink</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>commonj.sdo</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>javax.persistence</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.derby</groupId>
+          <artifactId>derby</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.daisy.pipeline</groupId>
+          <artifactId>persistence-derby</artifactId>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <source>1.7</source>
+                  <target>1.7</target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>osgi-less-launcher</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/osgi-less-launcher.xml</descriptor>
+                  </descriptors>
+                  <finalName>osgi-less</finalName>
+                  <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+              </execution>
+              <execution>
+                <id>osgi-less-uberjar</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>target/osgi-less</outputDirectory>
+                  <descriptors>
+                    <descriptor>src/main/assembly/osgi-less-uberjar.xml</descriptor>
+                  </descriptors>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <archive>
+                    <manifest>
+                      <mainClass>org.daisy.pipeline.Main</mainClass>
+                    </manifest>
+                  </archive>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
   </profiles>
   <repositories>
     <!--
