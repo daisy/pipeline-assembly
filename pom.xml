@@ -1357,7 +1357,7 @@
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>updater</artifactId>
                       <type>zip</type>
-                      <classifier>linux_386</classifier>
+                      <classifier>darwin_386</classifier>
                       <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -1432,8 +1432,8 @@
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>updater</artifactId>
                       <type>zip</type>
-                      <classifier>darwin_386</classifier>
-                      <outputDirectory>${project.build.directory}/updater/linux</outputDirectory>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/linux32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
