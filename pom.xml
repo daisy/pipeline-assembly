@@ -1318,6 +1318,80 @@
 
   <profiles>
     <profile>
+      <id>minimal</id>
+      <!--
+        This profile contains the updater, and any files not downloaded by the updater.
+        These files are not downloaded by the updater, and so are included here (except `/samples`):
+        - `/bin`
+        - `/*.txt`
+        - `/etc`
+      -->
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-updater-all</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/linux32</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>darwin_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>windows_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/win32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-minimal</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dist-minimal.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dist.properties</filter>
+                    <filter>src/main/assembly/dist-nix.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>pipeline2-${project.version}_minimal</finalName>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
       <id>mac</id>
       <activation>
         <os>

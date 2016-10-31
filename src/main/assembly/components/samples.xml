@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<component>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>samples/**</include>
+      </includes>
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
+  </fileSets>
+</component>
