@@ -18,25 +18,25 @@
 </xsl:text>
                 <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-felix-launcher']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/system/bootstrap</xsl:with-param>
+                                <xsl:with-param name="deployPath">system/bootstrap</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-felix-bundles']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/system/felix</xsl:with-param>
+                                <xsl:with-param name="deployPath">system/felix</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-libs-bundles']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/system/framework</xsl:with-param>
+                                <xsl:with-param name="deployPath">system/framework</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-pipeline-bundles']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/system/framework</xsl:with-param>
+                                <xsl:with-param name="deployPath">system/framework</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-frontend']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/system/frontend</xsl:with-param>
+                                <xsl:with-param name="deployPath">system/frontend</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-pipeline-modules']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">/modules</xsl:with-param>
+                                <xsl:with-param name="deployPath">modules</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates mode="zip" select="/pom:project/pom:profiles/pom:profile/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-win']/pom:configuration/pom:artifactItems/pom:artifactItem">
-                                <xsl:with-param name="deployPath">/cli</xsl:with-param>
+                                <xsl:with-param name="deployPath">cli</xsl:with-param>
                                 <xsl:with-param name="classifier">windows_386</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:text>
