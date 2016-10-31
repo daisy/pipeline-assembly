@@ -35,7 +35,15 @@
                         <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-pipeline-modules']/pom:configuration/pom:artifactItems">
                                 <xsl:with-param name="deployPath">modules</xsl:with-param>
                         </xsl:apply-templates>
-                        <xsl:apply-templates mode="zip" select="/pom:project/pom:profiles/pom:profile/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-win']/pom:configuration/pom:artifactItems/pom:artifactItem">
+                        <xsl:apply-templates mode="zip" select="(/pom:project/pom:profiles/pom:profile/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-linux']/pom:configuration/pom:artifactItems/pom:artifactItem)[1]">
+                                <xsl:with-param name="deployPath">cli</xsl:with-param>
+                                <xsl:with-param name="classifier">linux_386</xsl:with-param>
+                        </xsl:apply-templates>
+                        <xsl:apply-templates mode="zip" select="(/pom:project/pom:profiles/pom:profile/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-mac']/pom:configuration/pom:artifactItems/pom:artifactItem)[1]">
+                                <xsl:with-param name="deployPath">cli</xsl:with-param>
+                                <xsl:with-param name="classifier">darwin_386</xsl:with-param>
+                        </xsl:apply-templates>
+                        <xsl:apply-templates mode="zip" select="(/pom:project/pom:profiles/pom:profile/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-win']/pom:configuration/pom:artifactItems/pom:artifactItem)[1]">
                                 <xsl:with-param name="deployPath">cli</xsl:with-param>
                                 <xsl:with-param name="classifier">windows_386</xsl:with-param>
                         </xsl:apply-templates>
@@ -73,7 +81,7 @@
         </xsl:template>
         <xsl:template match="pom:artifactItem" mode="zip">
                 <xsl:param name="deployPath" />
-                <xsl:param name="classifier" />
+                <xsl:param name="classifier" select="()" />
                 <xsl:variable name="artifactId" select="./pom:artifactId/text()"/>
                 <xsl:variable name="groupId" select="./pom:groupId/text()"/>
                 <xsl:variable name="version" select="./pom:version/text()"/>
@@ -81,7 +89,7 @@
                 <xsl:variable name="href" select="concat(if (string($relativeHrefs) = 'true') then '' else 'http://search.maven.org/remotecontent?filepath=',
                         replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'-',$classifier,'.zip')"/>
                 
-                <xsl:variable name="id" select="string-join(($groupId,$artifactId),'/')"/>
+                <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
                 <xsl:text>
     </xsl:text>
                 <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}"/>
