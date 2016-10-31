@@ -85,7 +85,7 @@
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId),'/')"/>
                 <xsl:text>
     </xsl:text>
-                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$finalPath}" version="{$version}"/>
+                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}"/>
         </xsl:template>
 </xsl:stylesheet>
 
