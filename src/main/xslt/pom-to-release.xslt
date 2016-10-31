@@ -79,13 +79,12 @@
                 <xsl:variable name="version" select="./pom:version/text()"/>
                 
                 <xsl:variable name="href" select="concat(if (string($relativeHrefs) = 'true') then '' else 'http://search.maven.org/remotecontent?filepath=',
-                        replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'-',$classifier,'.zip')"></xsl:variable>
+                        replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'-',$classifier,'.zip')"/>
                 
-                <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,'-',$classifier,'.zip')"></xsl:variable>
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId),'/')"/>
                 <xsl:text>
     </xsl:text>
-                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}"/>
+                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}"/>
         </xsl:template>
 </xsl:stylesheet>
 
