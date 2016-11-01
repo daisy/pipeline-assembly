@@ -17,34 +17,67 @@
                 <xsl:text>
 </xsl:text>
                 <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
-                        <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-felix-launcher']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">system/bootstrap</xsl:with-param>
-                        </xsl:apply-templates>
-                        <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-felix-bundles']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">system/felix</xsl:with-param>
-                        </xsl:apply-templates>
-                        <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-libs-bundles']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">system/framework</xsl:with-param>
-                        </xsl:apply-templates>
-                        <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-pipeline-bundles']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">system/framework</xsl:with-param>
-                        </xsl:apply-templates>
-                        <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-frontend']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">system/frontend</xsl:with-param>
-                        </xsl:apply-templates>
-                        <xsl:apply-templates select="/pom:project/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='copy-pipeline-modules']/pom:configuration/pom:artifactItems">
-                                <xsl:with-param name="deployPath">modules</xsl:with-param>
-                        </xsl:apply-templates>
+                        <xsl:for-each select="/pom:project/pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-dependency-plugin']/pom:executions/pom:execution[starts-with(pom:id/text(),'copy-')]">
+                                <xsl:variable name="deployPath">
+                                        <xsl:choose>
+                                                <xsl:when test="pom:id = 'copy-felix-launcher'">
+                                                        <xsl:value-of select="'system/bootstrap'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-felix-bundles'">
+                                                        <xsl:value-of select="'system/felix'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-libs-bundles'">
+                                                        <xsl:value-of select="'system/framework'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-pipeline-bundles'">
+                                                        <xsl:value-of select="'system/framework'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-frontend'">
+                                                        <xsl:value-of select="'system/frontend'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-pipeline-modules'">
+                                                        <xsl:value-of select="'modules'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-pipeline-modules-linux'">
+                                                        <xsl:value-of select="'modules'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-pipeline-modules-mac'">
+                                                        <xsl:value-of select="'modules'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-pipeline-modules-win'">
+                                                        <xsl:value-of select="'modules'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-persistence-libs-bundles'">
+                                                        <xsl:value-of select="'system/framework/persistence'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-persistence-pipeline-bundles'">
+                                                        <xsl:value-of select="'system/framework/persistence'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-volatile-pipeline-bundles'">
+                                                        <xsl:value-of select="'system/framework/volatile'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-gui'">
+                                                        <xsl:value-of select="'system/gui'"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                        <xsl:message terminate="yes" select="concat('the build plugin maven-dependency-plugin has an an execution without an associated deployPath in ',replace(base-uri(),'^.*/',''),': ',pom:id/text())"/>
+                                                </xsl:otherwise>
+                                        </xsl:choose>
+                                </xsl:variable>
+                                <xsl:apply-templates select="pom:configuration/pom:artifactItems">
+                                        <xsl:with-param name="deployPath" select="$deployPath"/>
+                                </xsl:apply-templates>
+                        </xsl:for-each>
                         <xsl:apply-templates mode="zip" select="/pom:project/pom:profiles/pom:profile[pom:id='linux']/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-linux']/pom:configuration/pom:artifactItems/pom:artifactItem">
-                                <xsl:with-param name="deployPath">cli/linux</xsl:with-param>
+                                <xsl:with-param name="deployPath">cli</xsl:with-param>
                                 <xsl:with-param name="classifier">linux_386</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates mode="zip" select="/pom:project/pom:profiles/pom:profile[pom:id='mac']/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-mac']/pom:configuration/pom:artifactItems/pom:artifactItem">
-                                <xsl:with-param name="deployPath">cli/mac</xsl:with-param>
+                                <xsl:with-param name="deployPath">cli</xsl:with-param>
                                 <xsl:with-param name="classifier">darwin_386</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:apply-templates mode="zip" select="/pom:project/pom:profiles/pom:profile[pom:id='win']/pom:build/pom:plugins/pom:plugin/pom:executions/pom:execution[./pom:id/text()='unpack-cli-win']/pom:configuration/pom:artifactItems/pom:artifactItem">
-                                <xsl:with-param name="deployPath">cli/windows</xsl:with-param>
+                                <xsl:with-param name="deployPath">cli</xsl:with-param>
                                 <xsl:with-param name="classifier">windows_386</xsl:with-param>
                         </xsl:apply-templates>
                         <xsl:text>
@@ -60,6 +93,11 @@
                                                         /pom:project/pom:dependencyManagement/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:version/text(),
                                                         /pom:project/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:version/text()
                                                       )[.!=''][1]"/>
+                <xsl:variable name="classifier" select="(
+                                                        ./pom:classifier/text(),
+                                                        /pom:project/pom:dependencyManagement/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:classifier/text(),
+                                                        /pom:project/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:classifier/text()
+                                                      )[.!=''][1]"/>
                 <xsl:variable name="repository">
                         <xsl:choose>
                                 <xsl:when test="string($relativeHrefs) = 'true'"/>
@@ -73,11 +111,11 @@
                         </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="href" select="concat($repository, replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'.jar')"/>
-                <xsl:variable name="id" select="string-join(($groupId,$artifactId),'/')"/>
+                <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
                 <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,'.jar')"></xsl:variable>
                 <xsl:text>
     </xsl:text>
-                <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier=""/>
+                <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}"/>
         </xsl:template>
         <xsl:template match="pom:artifactItem" mode="zip">
                 <xsl:param name="deployPath" />
@@ -90,6 +128,12 @@
                                                         /pom:project/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:version/text()
                                                       )[.!=''][1]"/>
                 
+                <xsl:variable name="classifier" select="(
+                                                        $classifier,
+                                                        ./pom:classifier/text(),
+                                                        /pom:project/pom:dependencyManagement/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:classifier/text(),
+                                                        /pom:project/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:classifier/text()
+                                                      )[.!=''][1]"/>
                 <xsl:variable name="href" select="concat(if (string($relativeHrefs) = 'true') then '' else 'http://search.maven.org/remotecontent?filepath=',
                         replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'-',$classifier,'.zip')"/>
                 
