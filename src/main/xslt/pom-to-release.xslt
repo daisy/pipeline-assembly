@@ -119,7 +119,7 @@
                                                         '.jar')"/>
                 <xsl:text>
     </xsl:text>
-                <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}"/>
+                <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}" overwrite-path="true"/>
         </xsl:template>
         <xsl:template match="pom:artifactItem" mode="zip">
                 <xsl:param name="deployPath" />
@@ -142,11 +142,12 @@
                         replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,
                         if ($classifier) then concat('-',$classifier) else '',
                         '.zip')"/>
+                <xsl:variable name="overwrite-path" select="if ($groupId = 'org.daisy.pipeline' and $artifactId = 'cli') then 'false' else 'true'"/>
                 
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId,$version,$classifier),'/')"/>
                 <xsl:text>
     </xsl:text>
-                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}"/>
+                <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}" overwrite-path="{$overwrite-path}"/>
         </xsl:template>
 </xsl:stylesheet>
 
