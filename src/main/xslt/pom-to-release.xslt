@@ -114,7 +114,9 @@
                                                         if ($classifier) then concat('-',$classifier) else '',
                                                         '.jar')"/>
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
-                <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,'.jar')"></xsl:variable>
+                <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,
+                                                        if ($classifier) then concat('-',$classifier) else '',
+                                                        '.jar')"/>
                 <xsl:text>
     </xsl:text>
                 <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}"/>
