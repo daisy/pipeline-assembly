@@ -110,7 +110,9 @@
                                 <xsl:otherwise>http://central.maven.org/maven2/</xsl:otherwise>
                         </xsl:choose>
                 </xsl:variable>
-                <xsl:variable name="href" select="concat($repository, replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'.jar')"/>
+                <xsl:variable name="href" select="concat($repository, replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,
+                                                        if ($classifier) then concat('-',$classifier) else '',
+                                                        '.jar')"/>
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
                 <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,'.jar')"></xsl:variable>
                 <xsl:text>
@@ -135,7 +137,9 @@
                                                         /pom:project/pom:dependencies/pom:dependency[./pom:artifactId/text()=$artifactId and ./pom:groupId/text()=$groupId]/pom:classifier/text()
                                                       )[.!=''][1]"/>
                 <xsl:variable name="href" select="concat(if (string($relativeHrefs) = 'true') then '' else 'http://search.maven.org/remotecontent?filepath=',
-                        replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,'-',$classifier,'.zip')"/>
+                        replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,
+                        if ($classifier) then concat('-',$classifier) else '',
+                        '.zip')"/>
                 
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
                 <xsl:text>
