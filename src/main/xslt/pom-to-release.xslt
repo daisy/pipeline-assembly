@@ -84,7 +84,7 @@
 </xsl:text>
                 </releaseDescriptor>
         </xsl:template>
-        <xsl:template match="pom:artifactItem">
+        <xsl:template match="pom:artifactItem | pom:dependency">
                 <xsl:param name="deployPath" />
                 <xsl:variable name="artifactId" select="./pom:artifactId/text()"/>
                 <xsl:variable name="groupId" select="./pom:groupId/text()"/>
@@ -113,7 +113,7 @@
                 <xsl:variable name="href" select="concat($repository, replace($groupId,'\.','/'), '/',$artifactId,'/',$version,'/',$artifactId,'-',$version,
                                                         if ($classifier) then concat('-',$classifier) else '',
                                                         '.jar')"/>
-                <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
+                <xsl:variable name="id" select="string-join(($groupId,$artifactId,$version,$classifier),'/')"/>
                 <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,
                                                         if ($classifier) then concat('-',$classifier) else '',
                                                         '.jar')"/>
@@ -143,7 +143,7 @@
                         if ($classifier) then concat('-',$classifier) else '',
                         '.zip')"/>
                 
-                <xsl:variable name="id" select="string-join(($groupId,$artifactId,$classifier),'/')"/>
+                <xsl:variable name="id" select="string-join(($groupId,$artifactId,$version,$classifier),'/')"/>
                 <xsl:text>
     </xsl:text>
                 <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}"/>
