@@ -105,6 +105,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!--
+          Celia module
+      -->
+      <dependency>
+        <groupId>org.daisy.pipeline.modules.braille</groupId>
+        <artifactId>mod-celia</artifactId>
+        <version>1.5.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -1143,6 +1151,13 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>zedai-to-pef</artifactId>
+                </artifactItem>
+                <!--
+                    Celia modules
+                -->
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules.braille</groupId>
+                  <artifactId>mod-celia</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
