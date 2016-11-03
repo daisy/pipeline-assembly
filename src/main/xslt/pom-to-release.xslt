@@ -84,7 +84,7 @@
 </xsl:text>
                 </releaseDescriptor>
         </xsl:template>
-        <xsl:template match="pom:artifactItem | pom:dependency">
+        <xsl:template match="pom:artifactItem">
                 <xsl:param name="deployPath" />
                 <xsl:variable name="artifactId" select="./pom:artifactId/text()"/>
                 <xsl:variable name="groupId" select="./pom:groupId/text()"/>

@@ -316,16 +316,16 @@
             <configuration>
               <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
               <artifactItems>
-                <dependency>
+                <artifactItem>
                   <groupId>javax.xml.crypto</groupId>
                   <artifactId>jsr105-api</artifactId>
                   <version>1.0.1</version>
-                </dependency>
-                <dependency>
+                </artifactItem>
+                <artifactItem>
                   <groupId>javax.xml.parsers</groupId>
                   <artifactId>jaxp-api</artifactId>
                   <version>1.4.5</version>
-                </dependency>
+                </artifactItem>
                 <!-- Runtime dependencies -->
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
@@ -468,11 +468,11 @@
                 <!--
                     for braille modules
                 -->
-                <dependency>
+                <artifactItem>
                   <groupId>org.apache.commons</groupId>
                   <artifactId>commons-lang3</artifactId>
                   <version>3.4</version>
-                </dependency>
+                </artifactItem>
                 <artifactItem>
                   <groupId>com.googlecode.texhyphj</groupId>
                   <artifactId>texhyphj</artifactId>
