@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.10-beta2-SNAPSHOT</version>
+  <version>1.10.0-beta2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -40,7 +40,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>updater</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
@@ -316,16 +316,16 @@
             <configuration>
               <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
               <artifactItems>
-                <dependency>
+                <artifactItem>
                   <groupId>javax.xml.crypto</groupId>
                   <artifactId>jsr105-api</artifactId>
                   <version>1.0.1</version>
-                </dependency>
-                <dependency>
+                </artifactItem>
+                <artifactItem>
                   <groupId>javax.xml.parsers</groupId>
                   <artifactId>jaxp-api</artifactId>
                   <version>1.4.5</version>
-                </dependency>
+                </artifactItem>
                 <!-- Runtime dependencies -->
                 <artifactItem>
                   <groupId>org.apache.httpcomponents</groupId>
@@ -468,11 +468,11 @@
                 <!--
                     for braille modules
                 -->
-                <dependency>
+                <artifactItem>
                   <groupId>org.apache.commons</groupId>
                   <artifactId>commons-lang3</artifactId>
                   <version>3.4</version>
-                </dependency>
+                </artifactItem>
                 <artifactItem>
                   <groupId>com.googlecode.texhyphj</groupId>
                   <artifactId>texhyphj</artifactId>
@@ -1318,6 +1318,80 @@
 
   <profiles>
     <profile>
+      <id>minimal</id>
+      <!--
+        This profile contains the updater, and any files not downloaded by the updater.
+        These files are not downloaded by the updater, and so are included here (except `/samples`):
+        - `/bin`
+        - `/*.txt`
+        - `/etc`
+      -->
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-updater-all</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/linux32</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>darwin_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>windows_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/win32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-minimal</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dist-minimal.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dist.properties</filter>
+                    <filter>src/main/assembly/dist-nix.properties</filter>
+                  </filters>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <finalName>pipeline2-${project.version}_minimal</finalName>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
       <id>mac</id>
       <activation>
         <os>
@@ -1357,7 +1431,7 @@
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>updater</artifactId>
                       <type>zip</type>
-                      <classifier>linux_386</classifier>
+                      <classifier>darwin_386</classifier>
                       <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -1432,8 +1506,8 @@
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>updater</artifactId>
                       <type>zip</type>
-                      <classifier>darwin_386</classifier>
-                      <outputDirectory>${project.build.directory}/updater/linux</outputDirectory>
+                      <classifier>linux_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/linux32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
