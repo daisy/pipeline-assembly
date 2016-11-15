@@ -1,4 +1,4 @@
-# Configuration file for /etc/init.d/pipeline2d
+# Configuration file for /etc/init.d/daisy-pipeline2
 
 # Execute pipeline in remote mode
 #REMOTE=true
