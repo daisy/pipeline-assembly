@@ -18,6 +18,9 @@
     <url>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</url>
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
   </scm>
+  <properties>
+    <cli.version>2.1.0</cli.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -30,7 +33,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>cli</artifactId>
-        <version>2.1.0</version>
+        <version>${cli.version}</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
@@ -2104,7 +2107,7 @@
               </execution>
               <execution>
                 <id>package-deb-cli</id>
-                <phase>none</phase>
+                <phase>package</phase>
                 <goals>
                   <goal>jdeb</goal>
                 </goals>
@@ -2112,7 +2115,7 @@
                   <controlDir>target/filtered-resources/deb/DEBIAN.cli</controlDir>
                   <timestamped>true</timestamped>
                   <classifier>cli_all</classifier>
-                  <deb>target/daisy-pipeline2-cli_${project.version}_all.deb</deb>
+                  <deb>target/daisy-pipeline2-cli_${cli.version}_all.deb</deb>
                   <dataSet>
                     <!-- ============ -->
                     <!-- cli binaries -->
@@ -2470,6 +2473,7 @@ rm -rf /opt/daisy-pipeline2
             <configuration>
               <name>pipeline2-cli</name>
               <group>daisy-pipeline2-cli</group>
+              <projversion>${cli.version}</projversion>
               <description>daisy-pipeline2-cli</description>
               <needarch>x86_64</needarch>
               <mappings>
