@@ -2083,6 +2083,17 @@
                     <!-- log files -->
                     <!-- ========= -->
                     <data>
+                      <type>directory</type>
+                      <src>target/bundles/gui</src>
+                      <mapper>
+                        <prefix>${pipeline.home}/system/gui</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <!-- ========= -->
+                    <!-- log files -->
+                    <!-- ========= -->
+                    <data>
                       <type>template</type>
                       <paths>
                         <path>${pipeline.log}</path>
@@ -2359,6 +2370,17 @@
                   <sources>
                     <source>
                       <location>${project.basedir}/target/bundles/frontend</location>
+                    </source>
+                  </sources>
+                </mapping>
+                <mapping>
+                  <directory>${pipeline.home}/system/gui</directory>
+                  <filemode>0644</filemode>
+                  <username>${pipeline.user}</username>
+                  <groupname>${pipeline.group}</groupname>
+                  <sources>
+                    <source>
+                      <location>${project.basedir}/target/bundles/gui</location>
                     </source>
                   </sources>
                 </mapping>
