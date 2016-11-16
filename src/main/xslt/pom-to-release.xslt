@@ -114,7 +114,14 @@
                                                         if ($classifier) then concat('-',$classifier) else '',
                                                         '.jar')"/>
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId,$version,$classifier),'/')"/>
-                <xsl:variable name="finalPath" select="concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,
+                <!--
+                    This is a hack, real solution is to do this in the POM
+                -->
+                <xsl:variable name="deployPath" select="if (starts-with($artifactId,'org.apache.felix.gogo.'))
+                                                        then concat($deployPath,'/gogo')
+                                                        else $deployPath"/>
+                <xsl:variable name="finalPath" select="if (pom:destFileName) then concat($deployPath,'/',string(pom:destFileName)) else
+                                                       concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,
                                                         if ($classifier) then concat('-',$classifier) else '',
                                                         '.jar')"/>
                 <xsl:text>
