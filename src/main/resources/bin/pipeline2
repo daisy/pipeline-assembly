@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 #    Licensed to the Apache Software Foundation (ASF) under one or more
 #    contributor license agreements.  See the NOTICE file distributed with
@@ -411,7 +411,7 @@ run() {
             shift
             ;;
         'gui')
-            if ! "$JAVA" -showversion 2>&1 | grep oracle >/dev/null; then
+            if "$JAVA" -showversion 2>&1 | grep OpenJDK >/dev/null; then
                 warn "Your version of Java possibly does not support JavaFX, which is required to start the GUI. See http://daisy.github.io/pipeline/wiki/gui/Installation/#javafx for more information."
                 if [ -t 0 ]; then
                     echo "Will continue in 10s. Hit ^C to abort, or ENTER to continue now."
