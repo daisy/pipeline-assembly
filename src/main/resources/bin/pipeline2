@@ -441,7 +441,7 @@ run() {
 }
 
 main() {
-    init
+    init "$@"
     run "$@"
 }
 
