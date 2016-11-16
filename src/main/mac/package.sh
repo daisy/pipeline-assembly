@@ -43,6 +43,5 @@ $JAVA_HOME/bin/javapackager\
  -Bruntime=`/usr/libexec/java_home -v 1.8`\
  -name "DAISY Pipeline 2"\
  -native image\
- -native dmg\
  -vendor "DAISY Consortium"\
  -nosign

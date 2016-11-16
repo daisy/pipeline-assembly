@@ -88,12 +88,18 @@ To install the package:
 MacOS Application Bundle Distribution
 --------------------------------------
 
-Build a MacOS application bundle an put it inside a disk image (DMG file):
+To build a MacOS application bundle:
 
     mvn clean package -Pmac
     src/main/mac/package.sh
 
-The result DMG is placed in `target/javapackager/bundles/`.
+In order to put it inside a disk image (DMG file), first install:
+
+    npm install appdmg
+
+then run:
+
+    node_modules/appdmg/bin/appdmg.js src/main/mac/dmg.json target/pipeline2-1.10.0-rc1-SNAPSHOT_mac.dmg
 
 This distribution can only be built on a Mac.
 
