@@ -8,9 +8,11 @@ The library dependencies and list of Pipeline 2 modules are configured in the ma
 The project allows to build the following distributions:
 
  - the "CLI" distribution (with the command line user interface), packaged as a ZIP (_default_)
- - the "Desktop Web UI" distribution that includes the Braille modules and Web UI (optional)
+ - the "Desktop Web UI" distribution that includes the Web UI
  - the "Developers" distribution generates the configuration files and launcher scripts for a development environment
- - the "Debian" distribution build a DEB package (will disable the default distribution)
+ - the "Debian" distribution (DEB package)
+ - the "CentOS" distribution (RPM package)
+ - the "MacOS Application Bundle" distribution
 
 See the following sections for more details on how to enable these distributions and to know which optional Maven profiles can be activated.
 
@@ -82,6 +84,18 @@ OS after installing rpmbuild.
 To install the package:
 
     rpm -i target/rpm/pipeline2/RPMS/x86_64/*.rpm
+
+MacOS Application Bundle Distribution
+--------------------------------------
+
+Build a MacOS application bundle an put it inside a disk image (DMG file):
+
+    mvn clean package -Pmac
+    src/main/mac/package.sh
+
+The result DMG is placed in `target/javapackager/bundles/`.
+
+This distribution can only be built on a Mac.
 
 Release Procedure
 -----------------
