@@ -235,8 +235,8 @@ locateJava() {
 checkJavaVersion() {
     local VERSION
     VERSION=$( "$JAVA" -version 2>&1 | sed 's/[^ ]* version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q' )
-    if [ "$VERSION" -lt "17" ]; then
-        die "Java version must be at least 1.7"
+    if [ "$VERSION" -lt "18" ]; then
+        die "Java version must be at least 1.8"
     fi
     return 0
 }
