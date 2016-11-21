@@ -1373,6 +1373,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-minimal.xml</descriptor>
                   </descriptors>
@@ -1448,6 +1449,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-mac.xml</descriptor>
                   </descriptors>
@@ -1523,6 +1525,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-linux.xml</descriptor>
                   </descriptors>
@@ -1616,6 +1619,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-win.xml</descriptor>
                   </descriptors>
@@ -1779,6 +1783,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/dev.xml</descriptor>
                   </descriptors>
@@ -1787,7 +1792,6 @@
                   </filters>
                   <appendAssemblyId>false</appendAssemblyId>
                   <finalName>dev-launcher</finalName>
-                  <attach>false</attach>
                 </configuration>
               </execution>
             </executions>
@@ -2195,6 +2199,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <formats>dir</formats>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-linux.xml</descriptor>
@@ -2557,6 +2562,7 @@ rm -rf /opt/daisy-pipeline2/cli
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/webui-mac.xml</descriptor>
                   </descriptors>
@@ -2575,6 +2581,7 @@ rm -rf /opt/daisy-pipeline2/cli
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/webui-linux.xml</descriptor>
                   </descriptors>
@@ -2593,6 +2600,7 @@ rm -rf /opt/daisy-pipeline2/cli
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <attach>false</attach>
                   <descriptors>
                     <descriptor>src/main/assembly/webui-win.xml</descriptor>
                   </descriptors>
