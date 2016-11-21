@@ -1463,6 +1463,129 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.12</version>
+            <executions>
+              <execution>
+                <id>parse-version</id>
+                <goals>
+                  <goal>parse-version</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-app-package</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target xmlns:fx="javafx:com.sun.javafx.tools.ant">
+                    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+                             uri="javafx:com.sun.javafx.tools.ant"
+                             classpath="${env.JAVA_HOME}/lib/ant-javafx.jar"/>
+                    <fx:deploy 
+                        outdir="${project.build.directory}/javapackager"
+                        outfile="dp2"
+                        nativeBundles="image">
+                      <fx:application id="org.daisy.pipeline2"
+                          mainClass="org.apache.felix.main.Main"
+                          name="DAISY Pipeline 2"
+                          version="${project.version}"
+                          >
+                      </fx:application>
+                      <fx:info
+                          description="A tool for automated production of accessible digital publication"
+                          title="DAISY Pipeline 2"
+                          vendor="DAISY Consortium">
+                        <fx:icon href="${project.basedir}/src/main/mac/pipeline-logo.icns"/>
+                      </fx:info>
+                      <fx:platform j2se="8.0+">
+                        <fx:jvmarg value="-Xms256M"/>
+                        <fx:jvmarg value="-Xmx1G"/>
+                        <fx:jvmarg value="-XX:PermSize=16M"/>
+                        <fx:jvmarg value="-XX:MaxPermSize=256M"/>
+                        <fx:property name="org.daisy.pipeline.main.mode" value="gui"/>
+                        <fx:property name="org.daisy.pipeline.home" value="."/>
+                        <fx:property name="org.daisy.pipeline.data" value="data"/>
+                        <fx:property name="org.daisy.pipeline.base" value="."/>
+                        <fx:property name="org.daisy.pipeline.ws.localfs" value="true"/>
+                        <fx:property name="org.daisy.pipeline.ws.authentication" value="false"/>
+                        <fx:property name="felix.config.properties" value="file:etc/config.properties"/>
+                        <fx:property name="felix.system.properties" value="file:etc/system.properties"/>
+                      </fx:platform>
+                      <fx:resources>
+                        <fx:fileset type="jar" dir="${project.build.directory}/pipeline2-${project.version}_mac/daisy-pipeline" includes="system/bootstrap/felix.jar"/>
+                        <fx:fileset type="license" os="osx" dir="${project.build.directory}/pipeline2-${project.version}_mac/daisy-pipeline" includes="NOTICE.txt"/>
+                        <fx:fileset dir="${project.build.directory}/pipeline2-${project.version}_mac/daisy-pipeline">
+                          <include name="**/*"/>
+                        </fx:fileset>
+                      </fx:resources>
+                      <fx:bundleArgument arg="mac.CFBundleIdentifier" value="org.daisy.pipeline2"/>
+                      <fx:bundleArgument arg="mac.CFBundleVersion" value="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}"/>
+                    </fx:deploy>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>1.3</version>
+            <executions>
+              <execution>
+                <id>install-node</id>
+                <goals>
+                  <goal>install-node-and-yarn</goal>
+                </goals>
+                <configuration>
+                  <nodeVersion>v6.9.1</nodeVersion>
+                  <yarnVersion>v0.17.8</yarnVersion>
+                </configuration>
+              </execution>
+              <execution>
+                <id>install-appdmg</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>add appdmg</arguments>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <workingDirectory>${project.build.directory}</workingDirectory>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.5.0</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>node/node</executable>
+              <workingDirectory>${project.build.directory}</workingDirectory>
+              <arguments>
+                <argument>node_modules/appdmg/bin/appdmg.js</argument>
+                <argument>${project.basedir}/src/main/mac/dmg.json</argument>
+                <argument>pipeline2-${project.version}_mac.dmg</argument>
+              </arguments>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>

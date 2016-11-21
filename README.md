@@ -91,7 +91,6 @@ MacOS Application Bundle Distribution
 To build a MacOS application bundle:
 
     mvn clean package -Pmac
-    src/main/mac/package.sh
 
 In order to put it inside a disk image (DMG file), first install:
 
