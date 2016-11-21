@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.10.0-beta1 - September 19, 2016
+              DAISY Pipeline 2 - 1.10.0-rc1 - November 21, 2016
 ==============================================================================
 
 
@@ -70,10 +70,10 @@ The package includes:
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.10.0-beta1 version of the project.
-This is a beta release.
+The package includes the 1.10.0-rc1 version of the project.
+This is a release candidate.
 
-### Changes in v1.10.0-beta1
+### Changes in v1.10.0-rc1
 
 * Distribution
   * [NEW] new graphical user interface (GUI)
