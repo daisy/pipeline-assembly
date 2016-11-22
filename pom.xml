@@ -1216,6 +1216,7 @@
         </dependencies>
         <configuration>
           <tagNameFormat>v@{project.version}</tagNameFormat>
+          <arguments>-Plinux,mac,win</arguments>
         </configuration>
       </plugin>
           <plugin>
