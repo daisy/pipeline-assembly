@@ -2427,7 +2427,9 @@
                 </goals>
                 <configuration>
                   <attach>false</attach>
-                  <formats>dir</formats>
+                  <formats>
+                    <format>dir</format>
+                  </formats>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-linux.xml</descriptor>
                   </descriptors>
