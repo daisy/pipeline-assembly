@@ -1804,6 +1804,36 @@
                   <goal>generate-headerfile</goal>
                   <goal>make</goal>
                 </goals>
+                <configuration>
+                  <attach>false</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- !!!FIXME!!! -->
+          <!-- This a gross hack to detach the `exe` artifact,
+               since nsis-maven-plugin doesn't expose the option 
+               to *not* attach the resulting executable -->
+          <plugin>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>groovy-maven-plugin</artifactId>
+            <version>2.0</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <source>
+                    org.apache.maven.artifact.Artifact exe;
+                    for (artifact in project.getAttachedArtifacts()) {
+                      if(artifact.getType()=="exe")
+                        exe = artifact;
+                    }
+                    project.getAttachedArtifacts().remove(exe);
+                  </source>
+                </configuration>
               </execution>
             </executions>
           </plugin>
