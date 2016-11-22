@@ -1673,6 +1673,10 @@
           <family>windows</family>
         </os>
       </activation>
+      <properties>
+        <nsis.scriptfile>target/nsis/installer.nsi</nsis.scriptfile>
+        <nsis.output.file>pipeline2-${project.version}_windows.exe</nsis.output.file>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -1753,6 +1757,52 @@
                   <appendAssemblyId>false</appendAssemblyId>
                   <finalName>pipeline2-${project.version}_win</finalName>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- NSIS Installer -->
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${basedir}/target/nsis</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/nsis</directory>
+                      <includes>
+                        <include>installer.nsi</include>
+                      </includes>
+                      <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                      <directory>src/main/nsis</directory>
+                      <excludes>
+                        <exclude>installer.nsi</exclude>
+                      </excludes>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>nsis-maven-plugin</artifactId>
+            <version>1.0-alpha-1</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate-headerfile</goal>
+                  <goal>make</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
@@ -2741,64 +2791,6 @@ rm -rf /opt/daisy-pipeline2/cli
       </build>
     </profile>
 
-    <!-- NSIS Profile for installer generation invoke with -P installer -->
-    <profile>
-      <id>installer</id>
-      <properties>
-        <nsis.scriptfile>target/nsis/installer.nsi</nsis.scriptfile>
-        <nsis.output.file>pipeline2-${project.version}.exe</nsis.output.file>
-      </properties>
-      <build>
-        <plugins>
-          <!-- copy nsis file for windows installer generation -->
-          <plugin>
-            <artifactId>maven-resources-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-resources</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${basedir}/target/nsis</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>src/main/nsis</directory>
-                      <includes>
-                        <include>installer.nsi</include>
-                      </includes>
-                      <filtering>true</filtering>
-                    </resource>
-                    <resource>
-                      <directory>src/main/nsis</directory>
-                      <excludes>
-                        <exclude>installer.nsi</exclude>
-                      </excludes>
-                      <filtering>false</filtering>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>nsis-maven-plugin</artifactId>
-            <version>1.0-alpha-1</version>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>generate-headerfile</goal>
-                  <goal>make</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
   <repositories>
     <!--
