@@ -1214,16 +1214,7 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.2</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>1.9.1</version>
-          </dependency>
-        </dependencies>
         <configuration>
           <tagNameFormat>v@{project.version}</tagNameFormat>
           <arguments>-Pnoartifacts</arguments>
@@ -1231,7 +1222,6 @@
       </plugin>
           <plugin>
             <artifactId>maven-help-plugin</artifactId>
-            <version>2.1.1</version>
             <executions>
               <execution>
                 <id>generate-effective-pom</id>
@@ -1283,6 +1273,51 @@
           <configuration>
             <prependGroupId>true</prependGroupId>
           </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.2</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.scm</groupId>
+              <artifactId>maven-scm-provider-gitexe</artifactId>
+              <version>1.9.1</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <artifactId>maven-help-plugin</artifactId>
+          <version>2.1.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.5.0</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>1.3</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>nsis-maven-plugin</artifactId>
+          <version>1.0-alpha-1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.vafer</groupId>
+          <artifactId>jdeb</artifactId>
+          <version>1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>rpm-maven-plugin</artifactId>
+          <version>2.0.1</version>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
@@ -1537,7 +1572,6 @@
           <plugin>
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
-            <version>1.3</version>
             <executions>
               <execution>
                 <id>install-node</id>
@@ -1566,7 +1600,6 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.5.0</version>
             <executions>
               <execution>
                 <id>exec-appdmg</id>
@@ -1589,7 +1622,6 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.0.0</version>
             <executions>
               <execution>
                 <id>parse-version</id>
@@ -2001,7 +2033,6 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>nsis-maven-plugin</artifactId>
-            <version>1.0-alpha-1</version>
             <executions>
               <execution>
                 <phase>package</phase>
@@ -2393,7 +2424,6 @@
           <plugin>
             <groupId>org.vafer</groupId>
             <artifactId>jdeb</artifactId>
-            <version>1.0</version>
             <executions>
               <execution>
                 <id>package-deb</id>
@@ -2739,7 +2769,6 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>rpm-maven-plugin</artifactId>
-            <version>2.0.1</version>
             <executions>
               <execution>
                 <id>generate-rpm</id>
@@ -2957,7 +2986,6 @@ rm -rf /opt/daisy-pipeline2
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>rpm-maven-plugin</artifactId>
-            <version>2.0.1</version>
             <executions>
               <execution>
                 <id>generate-rpm</id>
