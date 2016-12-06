@@ -32,7 +32,6 @@ $JAVA_HOME/bin/javapackager\
  -srcfiles cli\
  -srcfiles etc\
  -srcfiles modules\
- -srcfiles samples\
  -srcfiles system\
  -srcfiles updater\
  -srcfiles NOTICE.txt\

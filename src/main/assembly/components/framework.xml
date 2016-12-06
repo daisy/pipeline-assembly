@@ -5,7 +5,6 @@
       <directory>src/main/resources</directory>
       <includes>
         <include>etc/**</include>
-        <include>samples/**</include>
         <include>NOTICE.txt</include>
         <include>README.txt</include>
       </includes>

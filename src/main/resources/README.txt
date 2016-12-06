@@ -64,8 +64,6 @@ The package includes:
                              Authoring and Interchange) into HTML.
    * zedai-to-pef            Transforms a ZedAI (DAISY 4 XML) document into a
                              PEF.
- - a set of sample documents to test the provided conversions, in the
-   "samples" directory
 
 3. Release Notes
 ------------------------------------------------------------------------------
