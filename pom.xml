@@ -2453,18 +2453,6 @@
                         <exclude>etc/org.apache.felix.fileinstall-libs.cfg</exclude>
                       </excludes>
                     </source>
-                    <source>
-                      <location>src/main/resources</location>
-                      <includes>
-                        <include>samples/daisy202/**</include>
-                        <include>samples/daisy3/**</include>
-                        <include>samples/dtbook/**</include>
-                        <include>samples/zedai/**</include>
-                      </includes>
-                      <excludes>
-                        <exclude>samples/html/**</exclude>
-                      </excludes>
-                    </source>
                   </sources>
                 </mapping>
                 <mapping>
