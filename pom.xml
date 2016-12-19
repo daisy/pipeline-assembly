@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.10-rc1</version>
+  <version>1.10.0-rc2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -39,7 +39,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>gui</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
@@ -61,7 +61,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-bom</artifactId>
-        <version>1.10.0</version>
+        <version>1.10.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -82,7 +82,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-bom</artifactId>
-        <version>1.9.16</version>
+        <version>1.9.17-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
