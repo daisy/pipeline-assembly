@@ -39,7 +39,10 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>gui</artifactId>
-        <version>1.0.1</version>
+        <!--
+            depends on https://github.com/daisy/pipeline-gui/pull/65
+        -->
+        <version>1.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
@@ -54,7 +57,10 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.10.1</version>
+        <!--
+            depends on https://github.com/daisy/pipeline-framework/pull/113
+        -->
+        <version>1.10.2-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
