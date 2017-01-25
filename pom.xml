@@ -140,6 +140,11 @@
         <artifactId>commonj.sdo</artifactId>
         <version>2.1.1</version>
       </dependency>
+      <dependency>
+        <groupId>org.daisy.pipeline</groupId>
+        <artifactId>ds-to-spi-runtime</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -2922,6 +2927,10 @@ rm -rf /opt/daisy-pipeline2/cli
         <dependency>
           <groupId>org.daisy.pipeline</groupId>
           <artifactId>persistence-derby</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.daisy.pipeline</groupId>
+          <artifactId>ds-to-spi-runtime</artifactId>
         </dependency>
       </dependencies>
       <build>

@@ -11,7 +11,7 @@ import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.interpol.ConfigurationInterpolator;
 import org.apache.commons.configuration2.interpol.SystemPropertiesLookup;
-import org.daisy.common.service.CreateOnStart;
+import org.daisy.common.spi.CreateOnStart;
 import org.daisy.pipeline.webservice.impl.PipelineWebService_SPI;
 import  org.daisy.pipeline.job.JobManagerFactory_SPI;
 
