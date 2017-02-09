@@ -812,13 +812,8 @@
                   <artifactId>epubcheck-adapter</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.idpf</groupId>
+                  <groupId>org.daisy</groupId>
                   <artifactId>epubcheck</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>com.google.guava</groupId>
-                  <artifactId>guava</artifactId>
-                  <version>14.0.1</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.commons</groupId>
