@@ -1810,6 +1810,7 @@
             <version>2.0</version>
             <executions>
               <execution>
+                <id>detach-exe</id>
                 <phase>package</phase>
                 <goals>
                   <goal>execute</goal>
@@ -1987,6 +1988,25 @@
                   <appendAssemblyId>false</appendAssemblyId>
                   <finalName>dev-launcher</finalName>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>nsis-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>groovy-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>detach-exe</id>
+                <phase>none</phase>
               </execution>
             </executions>
           </plugin>
