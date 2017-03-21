@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.main</artifactId>
-      <version>4.4.1</version>
+      <version>5.6.2</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -224,14 +224,13 @@
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.scr</artifactId>
-                  <version>1.6.2</version>
+                  <version>2.0.8</version>
                 </artifactItem>
                 <!-- From managed dependencies -->
                 <artifactItem>
                   <groupId>org.osgi</groupId>
                   <artifactId>org.osgi.enterprise</artifactId>
-                  <!-- FIXME fix that version in the fwk BoM -->
-                  <version>4.2.0</version>
+                  <version>5.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
