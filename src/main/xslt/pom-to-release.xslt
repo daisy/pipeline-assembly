@@ -51,6 +51,9 @@
                                                 <xsl:when test="pom:id = 'copy-modules-win-bundles'">
                                                         <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-sbs-modules'">
+                                                        <xsl:value-of select="'modules'"/>
+                                                </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-persistence-libs-bundles'">
                                                         <xsl:value-of select="'system/framework/persistence'"/>
                                                 </xsl:when>
