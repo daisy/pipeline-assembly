@@ -79,6 +79,7 @@ This is a release candidate.
 
 ### Framework and API
 
+- Improve launch-time stability
 - Support file names with spaces inside zipped job context
 - Improve search algorithm for binaries
 - [FIX] Spaces in paths of book files cause job failure
@@ -86,7 +87,6 @@ This is a release candidate.
 ### Modules
 
 - Add basic tests for all scripts
-- Re-enable all XSpec and and XProcSpec tests
 - daisy202-to-epub3
   - [FIX] smil references inside links should also be removed
   - [FIX] Whenever a `epub:textref` attribute is added to a SMIL, an
@@ -100,14 +100,12 @@ This is a release candidate.
 - daisy202-validator
   - [FIX] Attribute "shape" not allowed here
 - Braille modules
-  - Improve launch-time stability
   - Update to latest Dotify releases
   - Add validation-status to `pef-validate`
 - TTS modules
   - [FIX] problem finding lame
 - Utility modules
   - [fileset-utils] change the actual base URI of documents in `px:fileset-load`
-  - [FIX] Circular dependency between `fileset-utils` and `mediatype-utils`
 
 ### Build maintenance
 
@@ -119,6 +117,8 @@ This is a release candidate.
   modules tests
 - Various enhancements to the `pax-exam-helper` test helper
 - Various improvements to the `xproc-maven-plugin`
+- Re-enable all XSpec and and XProcSpec tests in the modules
+
 
 
 See also the full release notes on the release page:
