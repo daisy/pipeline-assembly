@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.10.2 - August 17, 2017
+              DAISY Pipeline 2 - 1.10.2 - August 21, 2017
 ==============================================================================
 
 
@@ -100,8 +100,8 @@ This is a release candidate.
 - daisy202-validator
   - [FIX] Attribute "shape" not allowed here
 - Braille modules
-  - Update to latest Dotify releases
-  - Add validation-status to `pef-validate`
+  - See details at:
+    https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1101
 - TTS modules
   - [FIX] problem finding lame
 - Utility modules
