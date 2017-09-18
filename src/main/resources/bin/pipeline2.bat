@@ -31,13 +31,22 @@ set ARGS=%*
 
 title Pipeline2
 
+if "%PIPELINE2_DATA%" == "" (
+    set PIPELINE2_DATA=%appdata%/DAISY Pipeline 2
+    if not exist "!PIPELINE2_DATA!" (
+      mkdir "!PIPELINE2_DATA!"
+    )
+)
+
 goto BEGIN
 
 :warn
-    echo %PROGNAME%: %*
+    echo %PROGNAME%: %* >> "%PIPELINE2_DATA%/log/daisy-pipeline-launch.log"
 goto :EOF
 
 :BEGIN
+
+call :warn %DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2% %TIME:~0,2%:%TIME:~3,2%:%TIME:~6,2%
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -64,13 +73,6 @@ if "%PIPELINE2_BASE%" == "" (
 if not "%PIPELINE2_DATA%" == "" (
     if not exist "%PIPELINE2_DATA%" (
         mkdir "!PIPELINE2_DATA!"
-    )
-)
-
-if "%PIPELINE2_DATA%" == "" (
-    set PIPELINE2_DATA=%appdata%/DAISY Pipeline 2
-    if not exist "!PIPELINE2_DATA!" (
-      mkdir "!PIPELINE2_DATA!"
     )
 )
 
