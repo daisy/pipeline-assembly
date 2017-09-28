@@ -28,14 +28,5 @@
       <filtered>true</filtered>
       <outputDirectory>/</outputDirectory>
     </fileSet>
-    <fileSet>
-      <directory>src/main/resources</directory>
-      <includes>
-        <include>bin/**</include>
-      </includes>
-      <outputDirectory>/</outputDirectory>
-      <fileMode>0755</fileMode>
-      <filtered>true</filtered>
-    </fileSet>
   </fileSets>
 </component>
