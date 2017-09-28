@@ -44,6 +44,11 @@ goto BEGIN
     echo %PROGNAME%: %* >> "%PIPELINE2_DATA%/log/daisy-pipeline-launch.log"
 goto :EOF
 
+:viewlogs
+    if exist "%PIPELINE2_DATA%\log" start /b "" cscript msgbox-guinostart.vbs "%appdata%\DAISY Pipeline 2\log"
+    if not exist "%appdata%\DAISY Pipeline 2\log" start /b "" cscript msgbox-guinostart.vbs
+goto :EOF
+
 :BEGIN
 
 call :warn %DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2% %TIME:~0,2%:%TIME:~3,2%:%TIME:~6,2%
@@ -258,7 +263,7 @@ if "%PIPELINE2_PROFILER%" == "" goto :RUN
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :END
-
+call :viewlogs
 endlocal
 
 if not "%PAUSE%" == "" pause
