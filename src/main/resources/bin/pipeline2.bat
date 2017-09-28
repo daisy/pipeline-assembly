@@ -41,6 +41,7 @@ if "%PIPELINE2_DATA%" == "" (
 goto BEGIN
 
 :warn
+    echo %PROGNAME%: %*
     echo %PROGNAME%: %* >> "%PIPELINE2_DATA%/log/daisy-pipeline-launch.log"
 goto :EOF
 
