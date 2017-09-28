@@ -13,4 +13,4 @@ FROM openjdk:8-jre
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
 COPY --from=builder /usr/src/daisy-pipeline2/target/pipeline2-*_linux/daisy-pipeline /opt/daisy-pipeline2
 EXPOSE 8181
-ENTRYPOINT ["/opt/daisy-pipeline2/bin/pipeline2"]
+ENTRYPOINT ["/opt/daisy-pipeline2/bin/pipeline2","remote"]
