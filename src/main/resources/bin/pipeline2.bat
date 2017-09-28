@@ -45,8 +45,8 @@ goto BEGIN
 goto :EOF
 
 :viewlogs
-    if exist "%PIPELINE2_DATA%\log" start /b "" cscript msgbox-guinostart.vbs "%appdata%\DAISY Pipeline 2\log"
-    if not exist "%appdata%\DAISY Pipeline 2\log" start /b "" cscript msgbox-guinostart.vbs
+    if exist "%PIPELINE2_DATA%\log" start /b "" cscript %DIRNAME%msgbox-guinostart.vbs "%appdata%\DAISY Pipeline 2\log"
+    if not exist "%appdata%\DAISY Pipeline 2\log" start /b "" cscript %DIRNAME%msgbox-guinostart.vbs
 goto :EOF
 
 :BEGIN
