@@ -1,33 +1,31 @@
 Set oShell = CreateObject ("Wscript.Shell")
 Set oArgs = WScript.Arguments
+
 ' Create and show MsgBox
-Dim Msg, Style, Title, Response
+Dim msg, style, title, response
 If oArgs.Count < 1 Then 
-	Msg = "DAISY Pipeline 2 was unable to start." & vbCrLf & vbCrLf & "No logs were created. Would you like to report this issue?"
-	Style = vbYesNo + vbCritical
-	Title = "Error"
-	Response = MsgBox(Msg, Style, Title)
-	If Response=vbYes Then ReportIssue()
+	msg = "DAISY Pipeline 2 was unable to start." & vbCrLf & vbCrLf & "No logs were created. Would you like to report this issue?"
+	style = vbYesNo + vbCritical
+	title = "Error"
+	response = MsgBox(Msg, Style, Title)
+	If response=vbYes Then reportIssue()
 Else 
-	Msg = "DAISY Pipeline 2 was unable to start." & vbCrLf & vbCrLf & "Click OK to view logs."
-	Style = vbOK + vbCritical
-	Title = "Error"
-	Response = MsgBox(Msg, Style, Title)
-	If Response=vbOK Then OpenLogs()
+	msg = "DAISY Pipeline 2 was unable to start." & vbCrLf & vbCrLf & "Click OK to view logs."
+	style = vbOK + vbCritical
+	title = "Error"
+	response = MsgBox(Msg, Style, Title)
+	If response=vbOK Then openToLogs()
 End If
 
 
 ' Run File Explorer with path
-Sub OpenLogs()
-	Dim RunCmd
-	Dim Path
-	Path = Wscript.Arguments(0)
-	RunCmd = "explorer.exe /e,""" & Path & """" ' escape quotes
-	oShell.Run RunCmd
+Sub openToLogs()
+	Dim path: path = Wscript.Arguments(0)
+	Dim runCmd: runCmd = "explorer.exe /e,""" & path & """" ' escape quotes
+	oShell.Run runCmd
 End Sub
 
-Sub ReportIssue() 
-	Dim Path 
-	Path = "https://github.com/daisy/pipeline/issues/521"
-	oShell.Run(Path)
+Sub reportIssue() 
+	Dim path: path = "https://github.com/daisy/pipeline/issues/new"
+	oShell.Run(path)
 End Sub
