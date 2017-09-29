@@ -12,5 +12,9 @@ RUN mvn clean package
 FROM openjdk:8-jre
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
 COPY --from=builder /usr/src/daisy-pipeline2/target/pipeline2-*_linux/daisy-pipeline /opt/daisy-pipeline2
+ENV PIPELINE2_LOCAL=false \
+    PIPELINE2_AUTH=true \
+    PIPELINE2_AUTH_CLIENTKEY=clientkey \
+    PIPELINE2_AUTH_CLIENTSECRET=sekret
 EXPOSE 8181
-ENTRYPOINT ["/opt/daisy-pipeline2/bin/pipeline2","remote"]
+ENTRYPOINT ["/opt/daisy-pipeline2/bin/pipeline2"]
