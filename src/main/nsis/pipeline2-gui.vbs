@@ -1,51 +1,55 @@
+' OBJECTS
 Set oShell = CreateObject("Wscript.Shell")
+' VARIANTS
 Dim strArgs
-Dim errnum
+Dim exitCode
+' CONSTANTS
+Const NO_ERROR = 0
+Const NO_START = 1
 
-strArgs = "cmd /c pipeline2.bat gui"
-errnum = oShell.Run(strArgs, 1, true) & ""
-If errnum = "" Then
-	MsgBox "No exitCode was found."
-Else
-	MsgBox "errnum: " + errnum
-End If
-'Dim logPath
-'logPath = """oShell.ExpandEnvironmentStrings(""%APPDATA%"")""\DAISY Pipeline 2\log"
-'MsgBox "logPath: " + logPath
+' START
+strArgs = "cmd.exe /c pipeline2.bat gui"
+exitCode = oShell.Run(strArgs, 0, true)
+catchErrorrs exitCode
 
 
-Sub NoStartMsg()
-	' Create and show MsgBox
-	Dim Msg, Style, Title, Response
-	If oArgs.Count < 1 Then
-		Msg = "DAISY Pipeline 2 was unable to start." & vbCrLf & vbCrLf & "No logs were created. Would you like to report this issue?"
-		Style = vbYesNo + vbCritical
-		Title = "Error"
-		Response = MsgBox(Msg, Style, Title)
-		If Response=vbYes Then ReportNewIssue()
-	Else
-		Msg = "DAISY Pipeline 2 was unable to start." & vbCrLf & vbCrLf & "Click OK to view logs."
-		Style = vbOK + vbCritical
-		Title = "Error"
-		Response = MsgBox(Msg, Style, Title)
-		' Open File Explorer to path
-		If Response=vbOK Then
 
-		End If
-	End If
-
+' PROCEDURES
+Sub catchErrorrs(ByVal exitCode)
+    Dim msg
+    Select Case exitCode
+        Case NO_ERROR
+            Exit Sub
+        Case NO_START
+            msg = "DAISY Pipeline 2 was unable to start." & _
+                    vbCrlf & vbCrlf & _
+                    "View logs?"
+            If errorPrompt(msg) Then viewLogs
+        Case Else
+            msg = "Unknown error: " & exitCode & _
+                    vbCrlf & vbCrlf & _
+                    "Would you like to report this issue?"
+            If errorPrompt(UNKNOWN_MSG & exitCode & vbCrlf & vbCrlf & REPORT_MSG) Then reportNewIssue
+    End Select
 End Sub
 
-Sub ReportNewIssue()
-	Dim Path
-	Path = "https://github.com/daisy/pipeline/issues/new"
-	oShell.Run(Path)
+Function errorPrompt(msg)
+    Dim response: response = MsgBox(msg, vbYesNo + vbCritical, "Error")
+    If response=vbYes Then
+        errorPrompt = True 'return
+    Else
+        errorPrompt = False 'return
+    End If
+End Function
+
+Sub reportNewIssue()
+    Dim path
+    path = "https://github.com/daisy/pipeline/issues/new"
+    catchErrorrs oShell.Run(Path)
 End Sub
 
-Sub ViewLogs()
-	Dim RunCmd
-	Dim logPath
-	logPath = """oShell.ExpandEnvironmentStrings(""%APPDATA%"")""\DAISY Pipeline 2\log"
-	RunCmd = "explorer.exe /e,""" & logPath & """" ' escape quotes
-	oShell.Run RunCmd
+Sub viewLogs()
+    Dim logPath: logPath = oShell.ExpandEnvironmentStrings("%APPDATA%") & "\DAISY Pipeline 2\log"
+    Dim runCmd: runCmd = "explorer.exe /e /separate,""" & logPath & """" ' escape quotes just to be sure
+    catchErrorrs oShell.Run(runCmd)
 End Sub

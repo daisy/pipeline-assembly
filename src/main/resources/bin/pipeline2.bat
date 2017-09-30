@@ -28,6 +28,7 @@ setlocal enabledelayedexpansion
 set DIRNAME=%~dp0
 set PROGNAME=%~nx0
 set ARGS=%*
+set exitCode=0 rem Code to return to launcher on failure
 
 title Pipeline2
 
@@ -38,6 +39,8 @@ if "%PIPELINE2_DATA%" == "" (
     )
 )
 
+if not exist "%PIPELINE2_DATA%/log" mkdir "%PIPELINE2_DATA%/log"
+
 goto BEGIN
 
 rem # # SUBROUTINES # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -47,7 +50,6 @@ rem # # SUBROUTINES # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     echo %PROGNAME%: %* >> "%PIPELINE2_DATA%/log/daisy-pipeline-launch.log"
 goto :EOF
 
-rem Not really a subroutine but better for readability
 :fail
     call:warn %*
 goto FAILURE
@@ -58,13 +60,15 @@ goto FAILURE
     if %suffix% equ .jar set CLASSPATH=%CLASSPATH%;%PIPELINE2_HOME%\%BOOTSTRAP:/=\%\%filename%
 goto :EOF
 
+rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 :BEGIN
     call:warn %DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2% %TIME:~0,2%:%TIME:~3,2%:%TIME:~6,2%
-    
+
     rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
     if not "%PIPELINE2_HOME%" == "" call:warn Ignoring predefined value for PIPELINE2_HOME
-    
+
     set PIPELINE2_HOME=%DIRNAME%..
     if not exist "%PIPELINE2_HOME%" call:fail PIPELINE2_HOME is not valid: !PIPELINE2_HOME!
 
@@ -93,7 +97,7 @@ goto :EOF
 
 :PIPELINE2_CLASSPATH_EMPTY
     set CLASSPATH=%PIPELINE2_BASE%\conf
-    
+
 :PIPELINE2_CLASSPATH_END
     rem Support for loading native libraries
     set PATH=%PATH%;%PIPELINE2_BASE%\lib;%PIPELINE2_HOME%\lib
@@ -105,13 +109,13 @@ goto :EOF
 :TryJRE
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment"
     if not exist __reg1.txt goto :TryJDK
-    
+
     type __reg1.txt | find "CurrentVersion" > __reg2.txt
     if errorlevel 1 goto :TryJDK
-    
+
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JavaTemp=%%~x
     if errorlevel 1 goto :TryJDK
-    
+
     set JavaTemp=%JavaTemp%##
     set JavaTemp=%JavaTemp:                ##=##%
     set JavaTemp=%JavaTemp:        ##=##%
@@ -119,33 +123,33 @@ goto :EOF
     set JavaTemp=%JavaTemp:  ##=##%
     set JavaTemp=%JavaTemp: ##=##%
     set JavaTemp=%JavaTemp:##=%
-    
+
     del __reg1.txt
     del __reg2.txt
-    
+
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment\%JavaTemp%"
     if not exist __reg1.txt goto :TryJDK
-    
+
     type __reg1.txt | find "JavaHome" > __reg2.txt
     if errorlevel 1 goto :TryJDK
-    
+
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JAVA_HOME=%%~x
     if errorlevel 1 goto :TryJDK
-    
+
     del __reg1.txt
     del __reg2.txt
 goto TryJDKEnd
-    
+
 :TryJDK
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit"
     if not exist __reg1.txt call:fail Unable to retrieve JAVA_HOME
-        
+
     type __reg1.txt | find "CurrentVersion" > __reg2.txt
     if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
-    
+
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JavaTemp=%%~x
     if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
-    
+
     set JavaTemp=%JavaTemp%##
     set JavaTemp=%JavaTemp:                ##=##%
     set JavaTemp=%JavaTemp:        ##=##%
@@ -153,29 +157,29 @@ goto TryJDKEnd
     set JavaTemp=%JavaTemp:  ##=##%
     set JavaTemp=%JavaTemp: ##=##%
     set JavaTemp=%JavaTemp:##=%
-    
+
     del __reg1.txt
     del __reg2.txt
-    
+
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit\%JavaTemp%"
     if not exist __reg1.txt call:fail Unable to retrieve JAVA_HOME from JDK
-    
+
     type __reg1.txt | find "JavaHome" > __reg2.txt
     if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
-    
+
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JAVA_HOME=%%~x
     if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
-    
+
     del __reg1.txt
     del __reg2.txt
-    
+
 :TryJDKEnd
     if not exist "%JAVA_HOME%" (
         call :warn JAVA_HOME is not valid: "%JAVA_HOME%"
         goto END
     )
     set JAVA=%JAVA_HOME%\bin\java
-		
+
 :Check_JAVA_END
     if "%JAVA_OPTS%" == "" set JAVA_OPTS=%DEFAULT_JAVA_OPTS%
 
@@ -185,15 +189,15 @@ goto TryJDKEnd
 
     set "JAVA_OPTS=%JAVA_DEBUG_OPTS% %JAVA_OPTS%"
     call:warn Enabling Java debug options: %JAVA_DEBUG_OPTS%
-    
+
 :PIPELINE2_DEBUG_END
     if "%PIPELINE2_PROFILER%" == "" goto :PIPELINE2_PROFILER_END
-    
+
     set PIPELINE2_PROFILER_SCRIPT=%PIPELINE2_HOME%\conf\profiler\%PIPELINE2_PROFILER%.cmd
-    
+
     if exist "%PIPELINE2_PROFILER_SCRIPT%" goto :PIPELINE2_PROFILER_END
         call:fail Missing configuration for profiler '%PIPELINE2_PROFILER%': %PIPELINE2_PROFILER_SCRIPT%
-    
+
 :PIPELINE2_PROFILER_END
     set BOOTSTRAP=${bundles.bootstrap}
     rem Setup the classpath
@@ -257,16 +261,12 @@ goto :RUN_LOOP
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :FAILURE
-	set errnum=17
-	echo DAISY Pipeline 2 failed to start
+    set exitCode=1
 
 :END
-	call:viewlogs
-	pause
     endlocal
     if not "%PAUSE%" == "" pause
 
 :END_NO_PAUSE
-	echo exiting with exitCode %errnum%
-	pause
-	exit /b %errnum%
+    pause
+    exit %exitCode%
