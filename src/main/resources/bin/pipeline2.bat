@@ -174,10 +174,7 @@ goto TryJDKEnd
     del __reg2.txt
 
 :TryJDKEnd
-    if not exist "%JAVA_HOME%" (
-        call :warn JAVA_HOME is not valid: "%JAVA_HOME%"
-        goto END
-    )
+    if not exist "%JAVA_HOME%" call:fail JAVA_HOME is not valid: "%JAVA_HOME%"
     set JAVA=%JAVA_HOME%\bin\java
 
 :Check_JAVA_END
