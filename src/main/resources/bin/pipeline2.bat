@@ -261,7 +261,7 @@ goto :RUN_LOOP
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :FAILURE
-    set exitCode=1
+    set exitCode=5
 
 :END
     endlocal
