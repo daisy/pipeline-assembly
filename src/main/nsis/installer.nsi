@@ -267,6 +267,7 @@ section -Main SEC01
 	file /r "${PROJECT_BUILD_DIR}\pipeline2-${VERSION}_win\daisy-pipeline"
 	file .\pipeline2-gui.vbs
 	file .\pipeline2-webservice.vbs
+	file .\errorPrompt.vbs
 
 	###############
 	# Registry information for add/remove programs

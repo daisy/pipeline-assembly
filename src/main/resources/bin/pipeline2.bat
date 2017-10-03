@@ -50,10 +50,6 @@ rem # # SUBROUTINES # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     echo %PROGNAME%: %* >> "%PIPELINE2_DATA%/log/daisy-pipeline-launch.log"
 goto :EOF
 
-:fail
-    call:warn %*
-goto FAILURE
-
 :append_to_classpath
     set filename=%~1
     set suffix=%filename:~-4%
@@ -70,11 +66,15 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     if not "%PIPELINE2_HOME%" == "" call:warn Ignoring predefined value for PIPELINE2_HOME
 
     set PIPELINE2_HOME=%DIRNAME%..
-    if not exist "%PIPELINE2_HOME%" call:fail PIPELINE2_HOME is not valid: !PIPELINE2_HOME!
+    if not exist "%PIPELINE2_HOME%" (
+        call:warn PIPELINE2_HOME is not valid: !PIPELINE2_HOME!
+        goto FAILURE
+    )
 
     if not "%PIPELINE2_BASE%" == "" (
         if not exist "%PIPELINE2_BASE%" (
-           call:fail PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
+           call:warn PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
+           goto FAILURE
         )
     )
 
@@ -142,13 +142,22 @@ goto TryJDKEnd
 
 :TryJDK
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit"
-    if not exist __reg1.txt call:fail Unable to retrieve JAVA_HOME
+    if not exist __reg1.txt (
+        call:warn Unable to retrieve JAVA_HOME
+        goto FAILURE
+    )
 
     type __reg1.txt | find "CurrentVersion" > __reg2.txt
-    if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
+    if errorlevel 1 (
+        call:warn Unable to retrieve JAVA_HOME
+        goto FAILURE
+    )
 
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JavaTemp=%%~x
-    if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
+    if errorlevel 1 (
+        call:warn Unable to retrieve JAVA_HOME
+        goto FAILURE
+    )
 
     set JavaTemp=%JavaTemp%##
     set JavaTemp=%JavaTemp:                ##=##%
@@ -162,19 +171,31 @@ goto TryJDKEnd
     del __reg2.txt
 
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit\%JavaTemp%"
-    if not exist __reg1.txt call:fail Unable to retrieve JAVA_HOME from JDK
+    if not exist __reg1.txt (
+        call:warn Unable to retrieve JAVA_HOME from JDK
+        goto FAILURE
+    )
 
     type __reg1.txt | find "JavaHome" > __reg2.txt
-    if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
+    if errorlevel 1 (
+        call:warn Unable to retrieve JAVA_HOME
+        goto FAILURE
+    )
 
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JAVA_HOME=%%~x
-    if errorlevel 1 call:fail Unable to retrieve JAVA_HOME
+    if errorlevel 1 (
+        call:warn Unable to retrieve JAVA_HOME
+        goto FAILURE
+    )
 
     del __reg1.txt
     del __reg2.txt
 
 :TryJDKEnd
-    if not exist "%JAVA_HOME%" call:fail JAVA_HOME is not valid: "%JAVA_HOME%"
+    if not exist "%JAVA_HOME%" (
+        call:warn JAVA_HOME is not valid: "%JAVA_HOME%"
+        goto FAILURE
+    )
     set JAVA=%JAVA_HOME%\bin\java
 
 :Check_JAVA_END
@@ -192,8 +213,10 @@ goto TryJDKEnd
 
     set PIPELINE2_PROFILER_SCRIPT=%PIPELINE2_HOME%\conf\profiler\%PIPELINE2_PROFILER%.cmd
 
-    if exist "%PIPELINE2_PROFILER_SCRIPT%" goto :PIPELINE2_PROFILER_END
-        call:fail Missing configuration for profiler '%PIPELINE2_PROFILER%': %PIPELINE2_PROFILER_SCRIPT%
+    if exist "%PIPELINE2_PROFILER_SCRIPT%" goto :PIPELINE2_PROFILER_END (
+        call:warn Missing configuration for profiler '%PIPELINE2_PROFILER%': %PIPELINE2_PROFILER_SCRIPT%
+        goto FAILURE
+    )
 
 :PIPELINE2_PROFILER_END
     set BOOTSTRAP=${bundles.bootstrap}
@@ -257,13 +280,14 @@ goto :RUN_LOOP
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-:FAILURE
-    set exitCode=5
-
 :END
     endlocal
-    if not "%PAUSE%" == "" pause
+	goto EXIT
 
-:END_NO_PAUSE
-    pause
-    exit %exitCode%
+:FAILURE
+	endlocal
+    set exitCode=5
+
+:EXIT
+	if not "%PAUSE%" == "" pause
+    exit /b %exitCode%
