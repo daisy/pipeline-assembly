@@ -370,6 +370,9 @@ run() {
     if [ "x$PIPELINE2_AUTH_CLIENTSECRET" != "x" ]; then
         OPTS="$OPTS -Dorg.daisy.pipeline.ws.authentication.secret=$PIPELINE2_AUTH_CLIENTSECRET"
     fi
+    if [ "x$PIPELINE2_HOST" != "x" ]; then
+        OPTS="$OPTS -Dorg.daisy.pipeline.ws.host=$PIPELINE2_HOST"
+    fi
     MAIN=org.apache.felix.main.Main
     MODE=" -Dorg.daisy.pipeline.main.mode=webservice"
 
