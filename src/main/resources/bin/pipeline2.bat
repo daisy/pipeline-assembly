@@ -28,7 +28,8 @@ setlocal enabledelayedexpansion
 set DIRNAME=%~dp0
 set PROGNAME=%~nx0
 set ARGS=%*
-set exitCode=0 rem Code to return to launcher on failure
+rem Code to return to launcher on failure
+set exitCode=0 rem 0:success, 1:unhandled, 2:user-fixable, 3:fatal(we must fix)
 
 title Pipeline2
 
@@ -68,13 +69,15 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     set PIPELINE2_HOME=%DIRNAME%..
     if not exist "%PIPELINE2_HOME%" (
         call:warn PIPELINE2_HOME is not valid: !PIPELINE2_HOME!
-        goto FAILURE
+        set exitCode=3
+        goto END
     )
 
     if not "%PIPELINE2_BASE%" == "" (
         if not exist "%PIPELINE2_BASE%" (
            call:warn PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
-           goto FAILURE
+           set exitCode=3
+           goto END
         )
     )
 
@@ -144,19 +147,22 @@ goto TryJDKEnd
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit"
     if not exist __reg1.txt (
         call:warn Unable to retrieve JAVA_HOME
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
 
     type __reg1.txt | find "CurrentVersion" > __reg2.txt
     if errorlevel 1 (
         call:warn Unable to retrieve JAVA_HOME
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
 
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JavaTemp=%%~x
     if errorlevel 1 (
         call:warn Unable to retrieve JAVA_HOME
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
 
     set JavaTemp=%JavaTemp%##
@@ -173,19 +179,22 @@ goto TryJDKEnd
     start /w regedit /e __reg1.txt "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit\%JavaTemp%"
     if not exist __reg1.txt (
         call:warn Unable to retrieve JAVA_HOME from JDK
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
 
     type __reg1.txt | find "JavaHome" > __reg2.txt
     if errorlevel 1 (
         call:warn Unable to retrieve JAVA_HOME
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
 
     for /f "tokens=2 delims==" %%x in (__reg2.txt) do set JAVA_HOME=%%~x
     if errorlevel 1 (
         call:warn Unable to retrieve JAVA_HOME
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
 
     del __reg1.txt
@@ -194,7 +203,8 @@ goto TryJDKEnd
 :TryJDKEnd
     if not exist "%JAVA_HOME%" (
         call:warn JAVA_HOME is not valid: "%JAVA_HOME%"
-        goto FAILURE
+        set exitCode=2
+        goto END
     )
     set JAVA=%JAVA_HOME%\bin\java
 
@@ -215,7 +225,8 @@ goto TryJDKEnd
 
     if exist "%PIPELINE2_PROFILER_SCRIPT%" goto :PIPELINE2_PROFILER_END (
         call:warn Missing configuration for profiler '%PIPELINE2_PROFILER%': %PIPELINE2_PROFILER_SCRIPT%
-        goto FAILURE
+        set exitCode=3
+        goto END
     )
 
 :PIPELINE2_PROFILER_END
@@ -281,13 +292,9 @@ goto :RUN_LOOP
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :END
-    endlocal
-	goto EXIT
-
-:FAILURE
-	endlocal
-    set exitCode=5
+    endlocal & set exitCode=%exitCode%
+    if not "%PAUSE%" == "" pause
+goto EXIT
 
 :EXIT
-	if not "%PAUSE%" == "" pause
     exit /b %exitCode%

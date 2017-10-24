@@ -4,8 +4,10 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 Set oArgs = WScript.Arguments
 ' VARIANTS
 Dim logPath: logPath = oShell.ExpandEnvironmentStrings("%APPDATA%") & "\DAISY Pipeline 2\log"
-' CONSTANTS
-Const NO_START = "5"
+' ERROR CODES
+Const USER_FIXABLE = "2"
+Const FATAL = "3"
+Const UNKNOWN = "1" 'or whatever else'
 
 catchErrors oArgs(0)
 
@@ -13,24 +15,31 @@ catchErrors oArgs(0)
 Sub catchErrors(ByVal exitCode)
     Dim msg
     If (checkLogs) Then
+        viewLogs
         Select Case exitCode
-        Case NO_START
-            msg = "DAISY Pipeline 2 was unable to start." & _
-                    vbCrlf & vbCrlf & _
-                    readLogs & vbCrlf & _
-                    "View logs?"
-            If errorPrompt(msg) Then viewLogs
-        Case Else
-            msg = "DAISY Pipeline 2 failed." & _
-                    vbCrlf & "Error Code: " & exitCode & _
-                    vbCrlf & vbCrlf & _
-                    "View logs?"
-            If errorPrompt(msg) Then viewLogs
+            Case USER_FIXABLE
+                msg = "DAISY Pipeline 2 was unable to start." & _
+                        vbCrlf & vbCrlf & _
+                        "We may have a solution for this error. " & vbCrlf & _
+                        "Visit troubleshooting?"
+                If errorPrompt(msg) Then visitTroubleshooting
+            Case FATAL
+                msg = "DAISY Pipeline 2 failed to start." & _
+                      vbCrlf & vbCrlf & _
+                      readLogs & vbCrlf & _
+                      "Would you like to report this issue?"
+                If errorPrompt(msg) Then reportNewIssue
+            Case Else
+                msg = "DAISY Pipeline 2 failed." & _
+                        vbCrlf & "Error Code: " & exitCode & _
+                        vbCrlf & vbCrlf & _
+                        "Would you like to report this issue?"
+                If errorPrompt(msg) Then reportNewIssue
         End Select
     Else
         msg = "DAISY Pipeline 2 was unable to start." & _
                 vbCrlf & vbCrlf & _
-                "No Logs were created." & _
+                "No launch logs were created." & _
                 vbCrlf & vbCrlf & _
                 "Would you like to report this issue?"
         If errorPrompt(msg) Then reportNewIssue
@@ -38,38 +47,43 @@ Sub catchErrors(ByVal exitCode)
 End Sub
 
 Function readLogs()
-    Set objFile = fso.OpenTextFile("" & logPath & "\daisy-pipeline-launch.log" & "" , 1)
+    Set objFile = fso.OpenTextFile("" & logPath & "\daisy-pipeline-launch.log""", 1)
     Do While Not objFile.AtEndOfStream
-        readLogs = readLogs & objFile.ReadLine & vbCrLf
+        readLogs = readLogs & objFile.ReadLine & vbCrLf 'return'
     Loop
     objFile.Close
 End Function
 
 Function errorPrompt(msg)
-    Dim response: response = MsgBox(msg, vbYesNo + vbCritical, "Error")
+    Dim response: response = MsgBox(msg, vbYesNo + vbCritical + vbSystemModel, "Error")
     If response=vbYes Then
-        errorPrompt = True 'return
+        errorPrompt = True 'return'
     Else
-        errorPrompt = False 'return
+        errorPrompt = False 'return'
     End If
 End Function
 
 Sub reportNewIssue()
     Dim path
     path = "http://daisy.github.io/pipeline/Get-Help/Issue-Tracker.html"
-    oShell.Run(Path)
+    oShell.Run Path
+End Sub
+
+Sub visitTroubleshooting()
+    Dim path
+    path = "https://daisy.github.io/pipeline/Get-Help/Troubleshooting/Common-Errors-Windows.html"
 End Sub
 
 Sub viewLogs()
     Set fso = CreateObject("Scripting.FileSystemObject")
-    Dim runCmd: runCmd = "explorer.exe /e /separate,""" & logPath & """" ' escape quotes just to be sure
-    oShell.Run(runCmd)
+    Dim runCmd: runCmd = "explorer.exe """ & logPath & """" ' escape quotes
+    oShell.Run runCmd, 2
 End Sub
 
 Function checkLogs()
     If (fso.FolderExists("" & logPath & "")) And (fso.FileExists("" & logPath & "\daisy-pipeline-launch.log" & "")) Then
-        checkLogs = True
+        checkLogs = True 'return'
     Else
-        checkLogs = False
+        checkLogs = False 'return'
     End If
 End Function
