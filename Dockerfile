@@ -17,4 +17,6 @@ ENV PIPELINE2_LOCAL=false \
     PIPELINE2_WS_AUTHENTICATION_KEY=clientid \
     PIPELINE2_WS_AUTHENTICATION_SECRET=sekret
 EXPOSE 8181
+# for the healthcheck use PIPELINE2_HOST if defined. Otherwise use localhost
+HEALTHCHECK --interval=30s --timeout=10s --start-period=1m CMD curl --fail http://${PIPELINE2_WS_HOST-localhost}:${PIPELINE2_WS_PORT:-8181}/${PIPELINE2_WS_PATH:-ws}/alive || exit 1
 ENTRYPOINT ["/opt/daisy-pipeline2/bin/pipeline2"]
