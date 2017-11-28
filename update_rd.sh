@@ -1,7 +1,9 @@
 #!/bin/bash
+set -e
+
 snapshot="false"
 descriptor=./target/release-descriptor/releaseDescriptor.xml
-version=$(xmllint --pretty 2 ./target/release-descriptor/releaseDescriptor.xml | grep version | sed -n '2p' | sed  's/\s//g'| sed -n 's/version="\(.*\)"/\1/p')
+version=$(xmllint --pretty 2 ./target/release-descriptor/releaseDescriptor.xml | grep version | sed -n '2p' | sed  's/ //g'| sed -n 's/version="\(.*\)"/\1/p')
 
 echo "Checking out gh-pages"
 git checkout gh-pages
