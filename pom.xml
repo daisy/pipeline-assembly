@@ -2591,6 +2591,40 @@
       </build>
     </profile>
     <profile>
+      <!--
+          replace framework-persistance bundle with framework-volatile
+      -->
+      <id>without-persistence</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-persistence-libs-bundles</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-persistence-pipeline-bundles</id>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/bundles/pipeline/persistence</outputDirectory>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>framework-volatile</artifactId>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>test-batch</id>
       <activation>
         <os>
