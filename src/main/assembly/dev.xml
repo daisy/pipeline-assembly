@@ -39,9 +39,6 @@
         <include>gui/org.apache.felix.fileinstall-*.cfg</include>
         <include>webservice/org.apache.felix.fileinstall-*.cfg</include>
       </includes>
-      <excludes>
-        <exclude>org.apache.felix.fileinstall-pipeline-logging-appender.cfg</exclude>
-      </excludes>
       <outputDirectory>/etc</outputDirectory>
       <filtered>true</filtered>
     </fileSet>
