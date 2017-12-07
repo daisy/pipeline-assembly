@@ -296,12 +296,12 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-libs-bundles</id>
+            <id>copy-framework-libs-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
+              <outputDirectory>${project.build.directory}/bundles/felix</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>javax.xml.crypto</groupId>
@@ -421,6 +421,17 @@
                   <groupId>com.mysql.jdbc</groupId>
                   <artifactId>com.springsource.com.mysql.jdbc</artifactId>
                 </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-modules-libs-bundles</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/libs</outputDirectory>
+              <artifactItems>
                 <artifactItem>
                   <groupId>net.java.dev.jna</groupId>
                   <artifactId>jna</artifactId>
@@ -549,7 +560,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-volatile-pipeline-bundles</id>
+            <id>copy-volatile-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -564,17 +575,19 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-pipeline-bundles</id>
+            <id>copy-logging-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/bundles/pipeline</outputDirectory>
+              <outputDirectory>${project.build.directory}/bundles/felix</outputDirectory>
+              <!--
+                  logging-appender and dependencies. These are framework bundles that can not be
+                  reloaded dynamically without breaking things. These bundles also have dependencies
+                  in copy-framework-libs-bundles which therefore need to be installed in
+                  bundles/felix as well.
+              -->
               <artifactItems>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>calabash-adapter</artifactId>
-                </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>common-utils</artifactId>
@@ -585,11 +598,26 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>logging-activator</artifactId>
+                  <artifactId>logging-appender</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>logging-appender</artifactId>
+                  <artifactId>xproc-api</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-framework-pipeline-bundles</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/pipeline</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>calabash-adapter</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
@@ -619,15 +647,11 @@
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>xpath-registry</artifactId>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>xproc-api</artifactId>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
           <execution>
-            <id>copy-frontend</id>
+            <id>copy-webservice-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -642,7 +666,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-gui</id>
+            <id>copy-gui-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -694,7 +718,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-pipeline-modules</id>
+            <id>copy-modules-pipeline-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -1115,7 +1139,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-pipeline-modules-linux</id>
+            <id>copy-modules-linux-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -1136,7 +1160,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-pipeline-modules-mac</id>
+            <id>copy-modules-mac-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -1157,7 +1181,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-pipeline-modules-win</id>
+            <id>copy-modules-win-bundles</id>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -1915,7 +1939,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-bundles" />
+                      <arg value="id=copy-framework-pipeline-bundles" />
                       <arg value="startLevel=30" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=pipeline" />
@@ -1924,7 +1948,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules" />
+                      <arg value="id=copy-modules-pipeline-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
@@ -1933,7 +1957,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules-linux" />
+                      <arg value="id=copy-modules-linux-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
@@ -1942,7 +1966,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-frontend" />
+                      <arg value="id=copy-webservice-bundles" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/webservice" />
                       <arg value="prefix=frontend" />
@@ -1951,7 +1975,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules-mac" />
+                      <arg value="id=copy-modules-mac-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
@@ -1960,7 +1984,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-pipeline-modules-win" />
+                      <arg value="id=copy-modules-win-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
@@ -1969,7 +1993,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-gui" />
+                      <arg value="id=copy-gui-bundles" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/gui" />
                       <arg value="prefix=frontend" />
@@ -1978,7 +2002,7 @@
                     <java classname="net.sf.saxon.Transform">
                       <arg value="target/tmp/effective-pom.xml" />
                       <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-volatile-pipeline-bundles" />
+                      <arg value="id=copy-volatile-bundles" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/gui" />
                       <arg value="prefix=frontend" />
