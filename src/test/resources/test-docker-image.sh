@@ -46,7 +46,7 @@ done
 docker run --name cli --rm -it --link pipeline \
        --entrypoint /opt/daisy-pipeline2/cli/dp2 \
        --volume="$(pwd):$MOUNT_POINT:rw" \
-       daisyorg/pipeline2 \
+       daisyorg/pipeline-assembly \
        --host http://pipeline \
        --starting false \
        --client_key $CLIENTKEY \

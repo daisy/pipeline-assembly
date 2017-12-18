@@ -9,7 +9,7 @@ docker :
 	     target/pipeline2-*_linux \
 	     Dockerfile.without_builder \
 	     --transform='s/Dockerfile.without_builder/Dockerfile/' \
-	| docker build -t daisyorg/pipeline2 -
+	| docker build -t daisyorg/pipeline-assembly -
 
 check-docker :
 	bash src/test/resources/test-docker-image.sh
