@@ -355,9 +355,12 @@ init() {
 
 run() {
     # set defaults
-    PIPELINE2_WS_LOCALFS=true
-    PIPELINE2_WS_AUTHENTICATION=false
-
+    if [ "x$PIPELINE2_WS_AUTHENTICATION" = "x" ]; then
+        PIPELINE2_WS_AUTHENTICATION=false
+    fi
+    if [ "x$PIPELINE2_WS_LOCALFS" = "x" ]; then
+        PIPELINE2_WS_LOCALFS=true
+    fi
     MAIN=org.apache.felix.main.Main
     MODE=" -Dorg.daisy.pipeline.main.mode=webservice"
 
@@ -370,13 +373,13 @@ run() {
         #     shift
         #     ;;
         'remote')
-            PIPELINE2_LOCALFS=false
-            PIPELINE2_AUTH=true
+            PIPELINE2_WS_LOCALFS=false
+            PIPELINE2_WS_AUTHENTICATION=true
             shift
             ;;
         'local')
-            PIPELINE2_LOCALFS=true
-            PIPELINE2_AUTH=false
+            PIPELINE2_WS_LOCALFS=true
+            PIPELINE2_WS_AUTHENTICATION=false
             shift
             ;;
         'clean')
@@ -426,13 +429,13 @@ run() {
     fi
     cd "$PIPELINE2_BASE"
 
-    export PIPELINE2_HOME
-    export PIPELINE2_BASE
+    export PIPELINE2_HOME # also available as org.daisy.pipeline.home in system.properties
+    export PIPELINE2_BASE # also available as org.daisy.pipeline.data in system.properties
     export PIPELINE2_DATA
     export PIPELINE2_WS_LOCALFS
     export PIPELINE2_WS_AUTHENTICATION
     
-    eval exec "\"$JAVA"\" "$JAVA_OPTS" -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\"  -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $FELIX_OPTS $MODE -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
+    eval exec "\"$JAVA"\" "$JAVA_OPTS" -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\" -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" $FELIX_OPTS $MODE -classpath "\"$CLASSPATH"\" $MAIN "\"$@"\"
 }
 
 main() {

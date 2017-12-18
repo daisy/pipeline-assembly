@@ -30,7 +30,7 @@ MOUNT_POINT=/mnt
 # run the pipeline
 docker run --name pipeline --detach \
        -e PIPELINE2_WS_HOST=0.0.0.0 \
-       -e PIPELINE2_AUTH=true \
+       -e PIPELINE2_WS_AUTHENTICATION=true \
        -e PIPELINE2_WS_AUTHENTICATION_KEY=$CLIENTKEY \
        -e PIPELINE2_WS_AUTHENTICATION_SECRET=$CLIENTSECRET \
        -p 8181:8181 daisyorg/pipeline2
