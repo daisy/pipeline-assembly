@@ -1,3 +1,6 @@
+GTAR := gtar
+DOCKER := docker
+
 help :
 	echo "make docker:"            >&2
 	echo "	Build a Docker image"  >&2
@@ -5,11 +8,11 @@ help :
 	echo "	Test the Docker image" >&2
 
 docker :
-	gtar -cz \
+	$(GTAR) -cz \
 	     target/pipeline2-*_linux \
 	     Dockerfile.without_builder \
 	     --transform='s/Dockerfile.without_builder/Dockerfile/' \
-	| docker build -t daisyorg/pipeline2 -
+	| $(DOCKER) build -t daisyorg/pipeline-assembly -
 
 check-docker :
 	bash src/test/resources/test-docker-image.sh

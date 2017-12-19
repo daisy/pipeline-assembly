@@ -30,23 +30,29 @@ MOUNT_POINT=/mnt
 # run the pipeline
 docker run --name pipeline --detach \
        -e PIPELINE2_WS_HOST=0.0.0.0 \
-       -e PIPELINE2_AUTH=true \
+       -e PIPELINE2_WS_AUTHENTICATION=true \
        -e PIPELINE2_WS_AUTHENTICATION_KEY=$CLIENTKEY \
        -e PIPELINE2_WS_AUTHENTICATION_SECRET=$CLIENTSECRET \
-       -p 8181:8181 daisyorg/pipeline2
+       -p 8181:8181 daisyorg/pipeline-assembly
 
 # wait for the pipeline to start
 sleep 5
+tries=5
 while ! curl localhost:8181/ws/alive >/dev/null 2>/dev/null; do
-    echo "Waiting for web service to be up..." >&2
-    sleep 2
+    if [[ $tries > 0 ]]; then
+        echo "Waiting for web service to be up..." >&2
+        sleep 2
+        (( tries-- ))
+    else
+        exit 1
+    fi
 done
 
 # run the cli
 docker run --name cli --rm -it --link pipeline \
        --entrypoint /opt/daisy-pipeline2/cli/dp2 \
        --volume="$(pwd):$MOUNT_POINT:rw" \
-       daisyorg/pipeline2 \
+       daisyorg/pipeline-assembly \
        --host http://pipeline \
        --starting false \
        --client_key $CLIENTKEY \

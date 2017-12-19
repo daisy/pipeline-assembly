@@ -12,8 +12,8 @@ RUN mvn clean package
 FROM openjdk:8-jre
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
 COPY --from=builder /usr/src/daisy-pipeline2/target/pipeline2-*_linux/daisy-pipeline /opt/daisy-pipeline2
-ENV PIPELINE2_LOCAL=false \
-    PIPELINE2_AUTH=true \
+ENV PIPELINE2_WS_LOCALFS=false \
+    PIPELINE2_WS_AUTHENTICATION=true \
     PIPELINE2_WS_AUTHENTICATION_KEY=clientid \
     PIPELINE2_WS_AUTHENTICATION_SECRET=sekret
 EXPOSE 8181
