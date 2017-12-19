@@ -33,7 +33,7 @@ docker run --name pipeline --detach \
        -e PIPELINE2_WS_AUTHENTICATION=true \
        -e PIPELINE2_WS_AUTHENTICATION_KEY=$CLIENTKEY \
        -e PIPELINE2_WS_AUTHENTICATION_SECRET=$CLIENTSECRET \
-       -p 8181:8181 daisyorg/pipeline2
+       -p 8181:8181 daisyorg/pipeline-assembly
 
 # wait for the pipeline to start
 sleep 5
