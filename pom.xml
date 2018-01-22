@@ -1288,7 +1288,7 @@
                 <artifactItem>
                   <groupId>ch.sbs.pipeline</groupId>
                   <artifactId>sbs-hyphenation-tables</artifactId>
-                  <version>1.21</version>
+                  <version>1.23</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
