@@ -925,10 +925,12 @@
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-adapter-acapela</artifactId>
                 </artifactItem>
+                <!--
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-adapter-attbin</artifactId>
                 </artifactItem>
+                -->
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-adapter-espeak</artifactId>
