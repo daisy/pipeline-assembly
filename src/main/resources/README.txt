@@ -44,14 +44,18 @@ The package includes:
    * daisy3-to-epub3         Transforms a DAISY 3 publication into an EPUB 3
                              publication.
    * dtbook-to-daisy3        Converts multiple dtbooks to daisy 3 format
-   * dtbook-to-epub3         Converts multiple dtbooks to epub3 format
+   * dtbook-to-epub3         Converts multiple dtbooks to EPUB 3 format
    * dtbook-to-html          Transforms DTBook XML into HTML.
+   * dtbook-to-odt           Transforms DTBook XML into ODT (OpenDocument Text).
    * dtbook-to-pef           Transforms a DTBook (DAISY 3 XML) document into
                              a PEF.
+   * dtbook-to-rtf           Transforms DTBook XML into RTF (Rich Text Format).
    * dtbook-to-zedai         Transforms DTBook XML into ZedAI XML.
    * dtbook-validator        Validates DTBook documents. Supports inclusion of
                              MathML.
-   * epub3-to-daisy202       Transforms an EPUB3 publication into DAISY 2.02.
+   * epub3-to-daisy202       Transforms an EPUB 3 publication into DAISY 2.02.
+   * epub3-to-epub3          Transforms an EPUB 3 publication into an EPUB 3
+                             publication with a braille rendition.
    * epub3-to-pef            Transforms a EPUB 3 publication into a PEF.
    * html-to-epub3           Transforms (X)HTML documents into an EPUB 3
                              publication.
