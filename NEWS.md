@@ -1,6 +1,30 @@
 Changes in release v1.11
 ========================
 
+### Distribution/Installation
+
+- **NEW** The application is now available as a set of Docker images
+
+### Graphical User Interface
+
+- Improved accessibility
+- Improved troubleshooting for application launch issues on Windows
+
+### Framework
+
+- Simplified configuration
+
+### Modules
+
+- **NEW** DTBook to ODT (OpenDocument Text) script
+- **NEW** DTBook to RTF (Rich Text Format) script
+- **NEW** Adapter for Qfrency speech engine
+- **NEW** EPUB 3 enhancer script for adding a braille rendition to an EPUB
+- various changes to braille scripts, see [release notes of Braille modules v1.11.0](https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1110)
+- **FIX** Issues with lost significant spaces in dtbook-to-zedai and zedai-to-html
+- **FIX** Improve support for DTBook 1.1.0
+- Simplified configuration of text-to-speech
+
 
 
 Changes in release v1.10.4
