@@ -629,14 +629,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>updater-wrapper</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>webservice-utils</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
                   <artifactId>woodstox-osgi-adapter</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -671,15 +663,33 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/bundles/gui</outputDirectory>
+              <!--
+                  gui needs to be installed and started as early on as possible
+                  so that we can display a splash screen
+              -->
+              <outputDirectory>${project.build.directory}/bundles/felix</outputDirectory>
               <artifactItems>
-                <artifactItem>
-                  <groupId>de.codecentric.centerdevice</groupId>
-                  <artifactId>centerdevice-nsmenufx</artifactId>
-                </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>gui</artifactId>
+                </artifactItem>
+                <!--
+                    framework dependencies
+                -->
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>updater-wrapper</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>webservice-utils</artifactId>
+                </artifactItem>
+                <!--
+                    3rd-party dependencies
+                -->
+                <artifactItem>
+                  <groupId>de.codecentric.centerdevice</groupId>
+                  <artifactId>centerdevice-nsmenufx</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
@@ -689,11 +699,6 @@
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>parboiled</artifactId>
                 </artifactItem>
-                <!--<artifactItem>-->
-                <!--<groupId>org.daisy.libs</groupId>-->
-                <!--<artifactId>parboiled-core</artifactId>-->
-                <!--<version>1.0.0-SNAPSHOT</version>-->
-                <!--</artifactItem>-->
                 <artifactItem>
                   <groupId>org.ow2.asm</groupId>
                   <artifactId>asm</artifactId>
@@ -1988,15 +1993,6 @@
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
-                      <arg value="localRepository=${settings.localRepository}" />
-                    </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
-                      <arg value="id=copy-gui-bundles" />
-                      <arg value="startLevel=100" />
-                      <arg value="dest=${project.baseUri}/target/generated-resources/etc/gui" />
-                      <arg value="prefix=frontend" />
                       <arg value="localRepository=${settings.localRepository}" />
                     </java>
                     <java classname="net.sf.saxon.Transform">
