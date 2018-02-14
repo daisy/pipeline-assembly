@@ -12,7 +12,6 @@
         <exclude>config.properties</exclude>
         <exclude>system.properties</exclude>
         <exclude>config-logback.xml</exclude>
-        <exclude>org.apache.felix.fileinstall-framework.cfg</exclude>
         <exclude>org.apache.felix.fileinstall-modules.cfg</exclude>
         <exclude>gui/org.apache.felix.fileinstall-framework-volatile.cfg</exclude>
         <exclude>webservice/org.apache.felix.fileinstall-frontend.cfg</exclude>

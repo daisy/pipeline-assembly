@@ -13,7 +13,6 @@
         <exclude>etc/config.properties</exclude>
         <exclude>etc/config-logback.xml</exclude>
         <exclude>etc/org.apache.felix.fileinstall-modules.cfg</exclude>
-        <exclude>etc/org.apache.felix.fileinstall-libs.cfg</exclude>
       </excludes>
       <outputDirectory>/</outputDirectory>
     </fileSet>
