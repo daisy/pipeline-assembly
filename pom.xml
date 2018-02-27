@@ -1251,11 +1251,11 @@
                 </goals>
                 <configuration>
                   <target>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-release.xslt" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-release.xslt" />
                       <arg value="time=${maven.build.timestamp}" />
-                      <arg line="-o:./target/release-descriptor/releaseDescriptor.xml" />
+                      <arg line="-o:${project.basedir}/target/release-descriptor/releaseDescriptor.xml" />
                     </java>
                   </target>
                 </configuration>
@@ -1941,54 +1941,54 @@
                 </goals>
                 <configuration>
                   <target>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-modules-linux-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
                       <arg value="localRepository=${settings.localRepository}" />
                     </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-webservice-bundles" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/webservice" />
                       <arg value="prefix=frontend" />
                       <arg value="localRepository=${settings.localRepository}" />
                     </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-modules-mac-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
                       <arg value="localRepository=${settings.localRepository}" />
                     </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-modules-win-bundles" />
                       <arg value="startLevel=50" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc" />
                       <arg value="prefix=modules" />
                       <arg value="localRepository=${settings.localRepository}" />
                     </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-volatile-bundles" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/gui" />
                       <arg value="prefix=frontend" />
                       <arg value="localRepository=${settings.localRepository}" />
                     </java>
-                    <java classname="net.sf.saxon.Transform">
-                      <arg value="target/tmp/effective-pom.xml" />
-                      <arg value="src/main/xslt/pom-to-fileinstall-config.xsl" />
+                    <java classname="net.sf.saxon.Transform" failonerror="true">
+                      <arg value="${project.basedir}/target/tmp/effective-pom.xml" />
+                      <arg value="${project.basedir}/src/main/xslt/pom-to-fileinstall-config.xsl" />
                       <arg value="id=copy-persistence-pipeline-bundles" />
                       <arg value="startLevel=100" />
                       <arg value="dest=${project.baseUri}/target/generated-resources/etc/webservice" />
@@ -2034,7 +2034,7 @@
                     <descriptor>src/main/assembly/dev.xml</descriptor>
                   </descriptors>
                   <filters>
-                    <filter>src/main/assembly/dev.properties</filter>
+                    <filter>${project.basedir}/src/main/assembly/dev.properties</filter>
                   </filters>
                   <appendAssemblyId>false</appendAssemblyId>
                   <finalName>dev-launcher</finalName>
