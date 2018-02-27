@@ -29,7 +29,8 @@ set DIRNAME=%~dp0
 set PROGNAME=%~nx0
 set ARGS=%*
 rem Code to return to launcher on failure
-set exitCode=0 rem 0:success, 1:unhandled, 2:user-fixable, 3:fatal(we must fix)
+rem 0:success, 1:unhandled, 2:user-fixable, 3:fatal(we must fix)
+set exitCode=0
 
 title Pipeline2
 
