@@ -488,15 +488,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.task-api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
                   <artifactId>dotify.task.impl</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.task-runner</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
@@ -505,6 +497,14 @@
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
                   <artifactId>dotify.translator.impl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.streamline</groupId>
+                  <artifactId>streamline-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.streamline</groupId>
+                  <artifactId>streamline-engine</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
