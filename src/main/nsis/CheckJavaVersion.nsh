@@ -25,7 +25,7 @@
 ;----------------------------------------------------------
 ;  General defines
 ;----------------------------------------------------------
-!define REQUIRED_JAVA_VER "1.8.0.45"
+!define REQUIRED_JAVA_VER "9.0.0"
 
 ;----------------------------------------------------------
 ;  Environ variables defines
@@ -222,6 +222,7 @@ Function CheckJavaVersion
         ClearErrors
         messageBox mb_yesno "Java JRE not found or too old. Daisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install it now?" IDNO Exit
 	setOutPath $TEMP
+        ; FIXME: can not find an online installer for Java 9
         File "jre-8u102-windows-i586-iftw.exe"
         ExecWait '"$TEMP\jre-8u102-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
 
