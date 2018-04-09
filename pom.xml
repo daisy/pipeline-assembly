@@ -52,56 +52,56 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>common-utils-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>scripts-utils-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules.braille</groupId>
         <artifactId>braille-modules-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>nlp-modules-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>tts-modules-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>audio-modules-bom</artifactId>
-        <version>1.11.0</version>
+        <version>1.11.1-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -537,6 +537,14 @@
                   <artifactId>jing</artifactId>
                   <version>20120724.0.0</version>
                 </artifactItem>
+                <!--
+                    epubcheck requires newer version of Saxon
+                -->
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>saxon-he</artifactId>
+                  <version>9.8.0.8-SNAPSHOT</version>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -863,11 +871,6 @@
                 <artifactItem>
                   <groupId>org.idpf</groupId>
                   <artifactId>epubcheck</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>com.google.guava</groupId>
-                  <artifactId>guava</artifactId>
-                  <version>14.0.1</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.commons</groupId>
