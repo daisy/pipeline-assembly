@@ -28,28 +28,28 @@
                                                         <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-framework-libs-bundles'">
-                                                        <xsl:value-of select="'system/framework'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-framework-pipeline-bundles'">
-                                                        <xsl:value-of select="'system/framework'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-webservice-bundles'">
                                                         <xsl:value-of select="'system/frontend'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-libs-bundles'">
-                                                        <xsl:value-of select="'system/framework'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-pipeline-bundles'">
-                                                        <xsl:value-of select="'modules'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-linux-bundles'">
-                                                        <xsl:value-of select="'modules'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-mac-bundles'">
-                                                        <xsl:value-of select="'modules'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-win-bundles'">
-                                                        <xsl:value-of select="'modules'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-persistence-libs-bundles'">
                                                         <xsl:value-of select="'system/framework/persistence'"/>
@@ -61,7 +61,7 @@
                                                         <xsl:value-of select="'system/framework/volatile'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-gui-bundles'">
-                                                        <xsl:value-of select="'system/gui'"/>
+                                                        <xsl:value-of select="'system/felix'"/>
                                                 </xsl:when>
                                                 <xsl:otherwise>
                                                         <xsl:message terminate="yes" select="concat('the build plugin maven-dependency-plugin has an an execution without an associated deployPath in ',replace(base-uri(),'^.*/',''),': ',pom:id/text())"/>
