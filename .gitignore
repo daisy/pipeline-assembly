@@ -22,3 +22,6 @@ Thumbs.db
 
 # Emacs backup files
 *~
+
+# XSpec reports
+*-result.html

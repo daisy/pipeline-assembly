@@ -12,11 +12,11 @@
         <!-- don't include unmatched text nodes in the result -->
         <xsl:template match="text()"/>
         
-        <xsl:template match="/">
                 <xsl:variable name="version" select="/pom:project/pom:version/text()"></xsl:variable>
                 <xsl:text>
 </xsl:text>
                 <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
+        <xsl:template match="/*">
                         <xsl:for-each select="/pom:project/pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-dependency-plugin']/pom:executions/pom:execution[starts-with(pom:id/text(),'copy-')]">
                                 <xsl:variable name="deployPath">
                                         <xsl:choose>
