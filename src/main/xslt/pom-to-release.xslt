@@ -12,11 +12,9 @@
         <!-- don't include unmatched text nodes in the result -->
         <xsl:template match="text()"/>
         
-                <xsl:variable name="version" select="/pom:project/pom:version/text()"></xsl:variable>
-                <xsl:text>
-</xsl:text>
-                <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
         <xsl:template match="/*">
+                <xsl:variable name="version" select="/pom:project/pom:version/text()"/>
+                <xsl:variable name="artifacts" as="element()*">
                         <xsl:for-each select="/pom:project/pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-dependency-plugin']/pom:executions/pom:execution[starts-with(pom:id/text(),'copy-')]">
                                 <xsl:variable name="deployPath">
                                         <xsl:choose>
@@ -86,9 +84,21 @@
                                 <xsl:with-param name="deployPath">cli</xsl:with-param>
                                 <xsl:with-param name="classifier">windows_386</xsl:with-param>
                         </xsl:apply-templates>
-                        <xsl:text>
+                </xsl:variable>
+                
+                <xsl:text>
 </xsl:text>
+                <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
+                        <xsl:for-each select="$artifacts">
+                                <xsl:sort select="xs:boolean(@extract)"/>
+                                <xsl:sort select="@id"/>
+                                <xsl:text>
+    </xsl:text>
+                                <xsl:copy-of select="."/>
+                        </xsl:for-each>
                 </releaseDescriptor>
+                <xsl:text>
+</xsl:text>
         </xsl:template>
         <xsl:template match="pom:artifactItem">
                 <xsl:param name="deployPath" />
@@ -130,8 +140,6 @@
                                                        concat($deployPath,'/',$groupId,'.',$artifactId,'-',$version,
                                                         if ($classifier) then concat('-',$classifier) else '',
                                                         '.jar')"/>
-                <xsl:text>
-    </xsl:text>
                 <artifact href="{$href}" id="{$id}" extract="false" deployPath="{$finalPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}" overwrite-path="true"/>
         </xsl:template>
         <xsl:template match="pom:artifactItem" mode="zip">
@@ -158,8 +166,6 @@
                 <xsl:variable name="overwrite-path" select="if ($groupId = 'org.daisy.pipeline' and $artifactId = 'cli') then 'false' else 'true'"/>
                 
                 <xsl:variable name="id" select="string-join(($groupId,$artifactId,$version,$classifier),'/')"/>
-                <xsl:text>
-    </xsl:text>
                 <artifact href="{$href}" id="{$id}" extract="true" deployPath="{$deployPath}" version="{$version}" artifactId="{$artifactId}" groupId="{$groupId}" classifier="{$classifier}" overwrite-path="{$overwrite-path}"/>
         </xsl:template>
 </xsl:stylesheet>
