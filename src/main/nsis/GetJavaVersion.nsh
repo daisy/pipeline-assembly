@@ -21,6 +21,9 @@
 ;JavaNotInstalled:
 ;  DetailPrint "Java Not Installed"
 ;fin:
+
+!include "x64.nsh"
+
 Function GetJavaVersion
   push $R0
   push $R1
@@ -28,16 +31,43 @@ Function GetJavaVersion
   push $0
   push $3
   push $4
- 
+
+DetectTryJRE64:
+  ${if} ${RunningX64}
+    SetRegView 64
+  ${EndIf}
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-  StrCmp $2 "" DetectTry2
+  StrCmp $2 "" DetectTryJDK64
   ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "MicroVersion"
-  StrCmp $3 "" DetectTry2
+  StrCmp $3 "" DetectTryJDK64
   ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "UpdateVersion"
   StrCmp $4 "" 0 GotFromUpdate
   ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "JavaHome"
   Goto GotJRE
-DetectTry2:
+DetectTryJDK64:
+  ${if} ${RunningX64}
+    SetRegView 64
+  ${EndIf}
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit" "CurrentVersion"
+  StrCmp $2 "" DetectTryJRE32
+  ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "MicroVersion"
+  StrCmp $3 "" DetectTryJRE32
+  ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "UpdateVersion"
+  StrCmp $4 "" 0 GotFromUpdate
+  ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "JavaHome"
+  goto GotJRE
+DetectTryJRE32:
+  SetRegView 32
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
+  StrCmp $2 "" DetectTryJDK32
+  ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "MicroVersion"
+  StrCmp $3 "" DetectTryJDK32
+  ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "UpdateVersion"
+  StrCmp $4 "" 0 GotFromUpdate
+  ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "JavaHome"
+  Goto GotJRE
+DetectTryJDK32:
+  SetRegView 32
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit" "CurrentVersion"
   StrCmp $2 "" NoFound
   ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "MicroVersion"
@@ -46,6 +76,7 @@ DetectTry2:
   StrCmp $4 "" 0 GotFromUpdate
   ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "JavaHome"
 GotJRE:
+  SetRegView 32
   ; calc build version
   strlen $0 $3
   intcmp $0 1 0 0 GetFromMicro
@@ -77,9 +108,10 @@ GetFromMicro:
   strcpy $4 $3
   goto GetFromPath
 GotFromUpdate:
+  SetRegView 32
   push $4
   Exch 6
- 
+
 CalcMicro:
   Push $3 ; micro
   Exch 6
@@ -99,7 +131,7 @@ DotFound:
 GoLooping:
   IntOp $R0 $R0 + 1
   Goto loop
- 
+
 done:
   Push $0 ; minor
   Exch 7
