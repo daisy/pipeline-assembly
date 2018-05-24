@@ -16,9 +16,10 @@
 !define PRODUCT_REG_VALUENAME_STARTMENU "StartMenuGroup"
 !define PRODUCT_REG_KEY_UNINST "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 !define UNINSTALLER_NAME "Uninstall ${APPNAME}"
-!define REQUIRED_JAVA_VER "1.8.0.45"
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
+
+Var /GLOBAL CHECK_JRE
 
 ;----------------------------------------------------------
 ;   Installer General Settings
@@ -64,26 +65,13 @@ var SMGROUP
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_REG_VALUENAME_STARTMENU}"
 
 ;----------------------------------------------------------
-;  Environ variables defines
-;----------------------------------------------------------
-
-!define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
-!define env_hkcu 'HKCU "Environment"'
-!include EnvVarUpdate.nsh
-
-
-;----------------------------------------------------------
-; Java version retrieval  
+; Java version retrieval
 ;----------------------------------------------------------
 !include GetJavaVersion.nsh
 
 ;----------------------------------------------------------
 ;   Headers and Macros
 ;----------------------------------------------------------
-; required for JRE check:
-!include WordFunc.nsh
-!insertmacro VersionConvert
-!insertmacro VersionCompare
 ;other
 !include LogicLib.nsh
 !include "Sections.nsh"
@@ -164,7 +152,6 @@ InstType /COMPONENTSONLYONCUSTOM
 
 
 function .onInit
-        Var /GLOBAL CHECK_JRE
 	setShellVarContext all
         ${GetParameters} $R0
         ${GetOptions} $R0 "--check-jre=" $R1
@@ -180,67 +167,7 @@ functionEnd
 ;----------------------------------------------------------
 
 Section -JRECheck SEC00-1
-
-  var /GLOBAL JAVA_VER
-  var /GLOBAL JAVA_SEM_VER
-  var /GLOBAL JAVA_HOME
-
-  StrCmp $CHECK_JRE "false" End
-  DetailPrint "Checking JRE version..."
-  Call GetJavaVersion 
-  pop $0 ; major version
-  pop $1 ; minor version
-  pop $2 ; micro version
-  pop $3 ; build/update version
-
-  StrCpy $JAVA_SEM_VER "$0.$1.$2.$3" ;use . instead of _ for the build so the comparison works
-  StrCpy $JAVA_VER "$0.$1"
-  
-  Goto CheckJavaVersion
-
-  CheckJavaVersion:
-    ;First check version number
-    StrCmp "no" "$0" InstallJava
-    ${VersionConvert} $JAVA_SEM_VER "" $R1
-    ${VersionCompare} $R1 ${REQUIRED_JAVA_VER} $R2
-    IntCmp 2 $R2 InstallJava
-    ;Then check binary file exist
-    ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
-    ${if} $JAVA_HOME == ""
-      SetRegView 64
-      ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
-      SetRegView 32
-    ${endif}
-    IfFileExists "$JAVA_HOME\bin\java.exe" 0 InstallJava
-    DetailPrint "Found a compatible JVM ($JAVA_VER)"
-    ;Set JAVA_HOME env var
-    ; HKLM (all users) vs HKCU (current user) defines
-    WriteRegExpandStr ${env_hklm} JAVA_HOME "$JAVA_HOME"
-    ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$JAVA_HOME\bin"
-    ; make sure windows knows about the change
-    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-
-    DetailPrint "JAVA_HOME set to $JAVA_HOME\bin"
-    Goto End
-
-  InstallJava:
-        ClearErrors
-        messageBox mb_yesno "Java JRE not found or too old. Daisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install it now?" IDNO Exit
-	setOutPath $TEMP
-        File "jre-8u102-windows-i586-iftw.exe"
-        ExecWait '"$TEMP\jre-8u102-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
-
-        IfErrors 0 End 
-        messageBox mb_iconstop "Java installation returned an error. Please contact the Daisy Pipeline 2 developing team."
-        setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
-        quit
-
-  Exit:
-        quit
-
-
-
-  End:
+  Call GetJavaVersion
 SectionEnd
 
 ;----------------------------------------------------------
