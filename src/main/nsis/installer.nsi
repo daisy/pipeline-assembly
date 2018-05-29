@@ -67,7 +67,7 @@ var SMGROUP
 ;----------------------------------------------------------
 ; Java version retrieval
 ;----------------------------------------------------------
-!include GetJavaVersion.nsh
+!include CheckJavaVersion.nsh
 
 ;----------------------------------------------------------
 ;   Headers and Macros
@@ -167,7 +167,7 @@ functionEnd
 ;----------------------------------------------------------
 
 Section -JRECheck SEC00-1
-  Call GetJavaVersion
+  Call CheckJavaVersion
 SectionEnd
 
 ;----------------------------------------------------------

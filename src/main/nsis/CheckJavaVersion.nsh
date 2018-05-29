@@ -46,7 +46,7 @@
 !include "x64.nsh"
 
 
-Function GetJavaVersion
+Function CheckJavaVersion
   var /GLOBAL JAVA_VER
   var /GLOBAL JAVA_SEM_VER
   var /GLOBAL JAVA_HOME
