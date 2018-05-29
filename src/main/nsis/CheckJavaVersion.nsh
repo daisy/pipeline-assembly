@@ -26,6 +26,7 @@
 ;  General defines
 ;----------------------------------------------------------
 !define REQUIRED_JAVA_VER "9.0.0"
+;----------------------------------------------------------
 
 ;----------------------------------------------------------
 ;  Environ variables defines
@@ -33,6 +34,7 @@
 !define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
 !define env_hkcu 'HKCU "Environment"'
 !include EnvVarUpdate.nsh
+;----------------------------------------------------------
 
 ;----------------------------------------------------------
 ;   Headers and Macros
@@ -43,188 +45,139 @@
 !insertmacro VersionCompare
 ;other
 !include LogicLib.nsh
-!include "x64.nsh"
+!include x64.nsh
+!include Validate.nsh
+
+!define CheckVersionKeys "!insertmacro CheckVersionKeys"
+!macro CheckVersionKeys javaKey goto
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\${javaKey}" "CurrentVersion"
+  StrCmp $2 "" ${goto}
+  ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\${javaKey}\$2" "JavaHome"
+  Goto GetFromPath
+!macroend
+
+!define SetRegViewx64 "!insertmacro SetRegViewx64"
+!macro SetRegViewx64
+  ${if} ${RunningX64}
+    SetRegView 64
+  ${EndIf}
+!macroend
+;----------------------------------------------------------
 
 
 Function CheckJavaVersion
   var /GLOBAL JAVA_VER
-  var /GLOBAL JAVA_SEM_VER
   var /GLOBAL JAVA_HOME
+
+  ;store values for restoration at End:
+  push $R0
+  push $R1
+  push $R2
+  push $0
+  push $1
+  push $2
+  push $3
 
   StrCmp $CHECK_JRE "false" End
   DetailPrint "Checking JRE version..."
 
-  push $R0
-  push $R1
-  push $0
-  push $2
-  push $3
-  push $4
+  TryJRE_64:
+    ${SetRegViewx64}
+    ${CheckVersionKeys} "JRE" "TryJDK_64"
+  TryJDK_64:
+    ${SetRegViewx64}
+    ${CheckVersionKeys} "JDK" "TryJRE_32"
+  TryJRE_32:
+    SetRegView 32
+    ${CheckVersionKeys} "JRE" "TryJDK_32"
+  TryJDK_32:
+    SetRegView 32
+    ${CheckVersionKeys} "JDK" "NoFound"
 
-  DetectTryJRE64:
-    ${if} ${RunningX64}
-      SetRegView 64
-    ${EndIf}
-    ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-    StrCmp $2 "" DetectTryJDK64
-    ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "MicroVersion"
-    StrCmp $3 "" DetectTryJDK64
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "UpdateVersion"
-    StrCmp $4 "" 0 GotFromUpdate
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "JavaHome"
-    Goto GotJRE
-  DetectTryJDK64:
-    ${if} ${RunningX64}
-      SetRegView 64
-    ${EndIf}
-    ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit" "CurrentVersion"
-    StrCmp $2 "" DetectTryJRE32
-    ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "MicroVersion"
-    StrCmp $3 "" DetectTryJRE32
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "UpdateVersion"
-    StrCmp $4 "" 0 GotFromUpdate
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "JavaHome"
-    goto GotJRE
-  DetectTryJRE32:
-    SetRegView 32
-    ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-    StrCmp $2 "" DetectTryJDK32
-    ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "MicroVersion"
-    StrCmp $3 "" DetectTryJDK32
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "UpdateVersion"
-    StrCmp $4 "" 0 GotFromUpdate
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$2" "JavaHome"
-    Goto GotJRE
-  DetectTryJDK32:
-    SetRegView 32
-    ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit" "CurrentVersion"
-    StrCmp $2 "" NoFound
-    ReadRegStr $3 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "MicroVersion"
-    StrCmp $3 "" NoFound
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "UpdateVersion"
-    StrCmp $4 "" 0 GotFromUpdate
-    ReadRegStr $4 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$2" "JavaHome"
-  GotJRE:
-    SetRegView 32
-    ; calc build version
-    strlen $0 $3
-    intcmp $0 1 0 0 GetFromMicro
-    ; get it from the path
   GetFromPath:
-    strlen $R0 $4
-    intop $R0 $R0 - 1
-    StrCpy $0 ""
-  loopP:
-    StrCpy $R1 $4 1 $R0
-    StrCmp $R1 "" DotFoundP
-    StrCmp $R1 "_" UScoreFound
-    StrCmp $R1 "." DotFoundP
-    StrCpy $0 "$R1$0"
-    Goto GoLoopingP
-  DotFoundP:
-    push ""
-    Exch 6
-    goto CalcMicro
-  UScoreFound:
-    push $0
-    Exch 6
-    goto CalcMicro
-  GoLoopingP:
-    intcmp $R0 0 DotFoundP DotFoundP
-    IntOp $R0 $R0 - 1
-    Goto loopP
-  GetFromMicro:
-    strcpy $4 $3
-    goto GetFromPath
-  GotFromUpdate:
+    ;work backwards from end of path, pushing numbers every
+    ;time we encounter a non-digit, until we encounter a hyphen
+    ;example: "C:\Program Files\Java\jdk-10.0.1" -> "10.0.1"
+    StrCpy $R0 "" ;make sure R0 is empty
+    ;end char index -> 0
+    StrLen $0 $JAVA_HOME
+    IntOp $0 $0 - 1
+  Loop:
+    StrCpy $R1 $JAVA_HOME 1 $0 ;current char -> R1
+    IntOp $0 $0 - 1 ;decrement index
+    StrCpy $R2 $JAVA_HOME 1 $0 ;next char -> R2
+
+    StrCpy $R0 "$R1$R0" ;prepend current char ($R1) to current num ($R0)
+    ${Validate} $3 $R2 ${NUMERIC} ;check next char is digit
+    IntCmp $3 0 FoundNonDigit ;$3=0: next char is non-digit
+    goto Loop
+  FoundNonDigit:
+    StrCmp $R2 "-" EndLoop ;Java 9+ is of the form jxx-X.X.X
+    IntOp $0 $0 - 1 ;skip non-digit
+    push $R0 ;push current num
+    StrCpy $R0 "" ;clear current num
+    goto Loop
+  EndLoop:
+    push $R0 ;push major
+    goto Done
+
+  Done:
     SetRegView 32
-    push $4
-    Exch 6
-
-  CalcMicro:
-    Push $3 ; micro
-    Exch 6
-    ; break version into major and minor
-    StrCpy $R0 0
-    StrCpy $0 ""
-  loop:
-    StrCpy $R1 $2 1 $R0
-    StrCmp $R1 "" done
-    StrCmp $R1 "." DotFound
-    StrCpy $0 "$0$R1"
-    Goto GoLooping
-  DotFound:
-    Push $0 ; major
-    Exch 5
-    StrCpy $0 ""
-  GoLooping:
-    IntOp $R0 $R0 + 1
-    Goto loop
-
-  done:
-    Push $0 ; minor
-    Exch 7
-    ; restore register values
-    pop $0
-    pop $2
-    pop $R1
-    pop $R0
-    pop $3
-    pop $4
     goto CheckJavaVersion
   NoFound:
-    pop $4
-    pop $3
-    pop $0
-    pop $2
-    pop $R1
-    pop $R0
+    SetRegView 32
     push ""
     push "installed"
     push "java"
     push "no"
-
+    goto CheckJavaVersion
 
   CheckJavaVersion:
     pop $0 ; major version
     pop $1 ; minor version
-    pop $2 ; micro version
-    pop $3 ; build/update version
+    pop $2 ; build/update version
 
-    StrCpy $JAVA_SEM_VER "$0.$1.$2.$3" ;use . instead of _ for the build so the comparison works
-    StrCpy $JAVA_VER "$0.$1"
+    StrCpy $JAVA_VER "$0.$1.$2"
 
-    ;First check version number
-    StrCmp "no" "$0" InstallJava
-    ${VersionConvert} $JAVA_SEM_VER "" $R1
+    StrCmp "no" "$0" InstallJava ;NoFound
+    ;First check version meets requirements
+    ${VersionConvert} $JAVA_VER "" $R1
     ${VersionCompare} $R1 ${REQUIRED_JAVA_VER} $R2
+    DetailPrint "Found JVM $JAVA_VER"
     IntCmp 2 $R2 InstallJava
-    ;Then check binary file exist
-    ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
-    ${if} $JAVA_HOME == ""
-      SetRegView 64
-      ReadRegStr $JAVA_HOME HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER" JavaHome
-      SetRegView 32
-    ${endif}
+    ;Then check binary file exists
     IfFileExists "$JAVA_HOME\bin\java.exe" 0 InstallJava
     DetailPrint "Found a compatible JVM ($JAVA_VER)"
-    ;Set JAVA_HOME env var
-    ; HKLM (all users) vs HKCU (current user) defines
-    WriteRegExpandStr ${env_hklm} JAVA_HOME "$JAVA_HOME"
-    ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$JAVA_HOME\bin"
-    ; make sure windows knows about the change
-    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-
-    DetailPrint "JAVA_HOME set to $JAVA_HOME\bin"
+    
     Goto End
+    ;FIXME: setting JAVA_HOME doesn't work
+    ${if} $JAVA_HOME == ""
+      ;Set JAVA_HOME env var
+      ; HKLM (all users) vs HKCU (current user) defines
+      WriteRegExpandStr ${env_hklm} JAVA_HOME "$JAVA_HOME"
+      ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$JAVA_HOME\bin"
+      ; make sure windows knows about the change
+      SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
+      DetailPrint "JAVA_HOME set to $JAVA_HOME\bin"
+    ${endIf}
 
   InstallJava:
         ClearErrors
-        messageBox mb_yesno "Java JRE not found or too old. Daisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install it now?" IDNO Exit
-	setOutPath $TEMP
-        ; FIXME: can not find an online installer for Java 9
+        messageBox mb_yesno "Java was not found, or your version doesn't meet our requirements. $\n$\nDaisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install it?" IDNO Exit
+        goto TempJavaInstall
+
+        ; FIXME: can't find an online installer (iftw) for Java 9
+        setOutPath $TEMP
         File "jre-8u102-windows-i586-iftw.exe"
         ExecWait '"$TEMP\jre-8u102-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
+
+        TempJavaInstall:
+          MessageBox MB_OK "You will now be redirected to the Java 10 downloads page. $\n$\nPlease accept the license agreement, download the Java 10 installer for Windows, and run it."
+          ExecShell "open" "http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html"
+          MessageBox MB_YESNO "Please accept the license agreement, download the Java 10 installer for Windows, and run it. $\n$\nWould you like additional instructions for installing Java? " IDNO Wait
+          ExecShell "open" "https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-windows-platforms.htm#JSJIG-GUID-371F38CC-248F-49EC-BB9C-C37FC89E52A0"
+          Wait:
+            MessageBox MB_OK "Once Java 10 has been installed, click OK to resume Daisy Pipeline 2 installation. " IDOK TryAgain
 
         IfErrors 0 End
         messageBox mb_iconstop "Java installation returned an error. Please contact the Daisy Pipeline 2 developing team."
@@ -233,5 +186,23 @@ Function CheckJavaVersion
 
   Exit:
         quit
+  TryAgain:
+    ;restore registry
+    pop $3
+    pop $2
+    pop $1
+    pop $0
+    pop $R2
+    pop $R1
+    pop $R0
+    Call CheckJavaVersion
   End:
+    ;restore registry
+    pop $3
+    pop $2
+    pop $1
+    pop $0
+    pop $R2
+    pop $R1
+    pop $R0
 FunctionEnd
