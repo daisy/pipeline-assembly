@@ -32,6 +32,8 @@ rem Code to return to launcher on failure
 rem 0:success, 1:unhandled, 2:user-fixable, 3:fatal(we must fix)
 set exitCode=0
 
+set REQUIRED_JAVA_VER=9.0.0
+
 title Pipeline2
 
 if "%PIPELINE2_DATA%" == "" (
@@ -71,6 +73,12 @@ goto :EOF
 	rmdir /Q /S "%TEMP%\foo"
 goto :EOF
 
+:get_javaHome_version
+    rem Strip everything after hyphen
+    set JAVA_VER=%JAVA_HOME:*-=%
+    rem if nothing was stripped (hyphen not found)
+    if "%JAVA_VER%" == "%JAVA_HOME%" exit /b 1
+goto :EOF
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :BEGIN
@@ -120,7 +128,7 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     set PATH=%PATH%;%PIPELINE2_BASE%\lib;%PIPELINE2_HOME%\lib
     rem Setup the Java Virtual Machine
     if not "%JAVA%" == "" goto :Check_JAVA_END
-        if not "%JAVA_HOME%" == "" goto :TryJDKEnd
+        if not "%JAVA_HOME%" == "" goto :TryJavaHome
             call:warn JAVA_HOME not set; results may vary
 
 :TryJRE
@@ -221,10 +229,54 @@ goto TryJDKEnd
     del %TEMP%.\__reg2.txt
 
 :TryJDKEnd
+    rem Check version and binary, set %JAVA%
     if not exist "%JAVA_HOME%" (
-        call:warn JAVA_HOME is not valid: "%JAVA_HOME%"
+        call:warn JavaHome from registry is not valid: "%JAVA_HOME%"
         set exitCode=2
         goto END
+    )
+    call:get_javaHome_version
+    if errorLevel 1 (
+      call:warn The registry points to an incompatible JVM; we require at least Java %REQUIRED_JAVA_VER%
+      set exitCode=2
+      goto END
+    )
+    set VER_COMP = call "%~dp0\VersionCompare.vbs" %JAVA_VER% %REQUIRED_JAVA_VER%
+    if "%VER_COMP%"=="-1" (
+        call:warn The registry points to an incompatible JVM %JAVA_VER%; we require at least %REQUIRED_JAVA_VER%
+        set exitCode=2
+        goto END
+    )
+    call:warn Found compatible JVM: %JAVA_VER%
+    if not exist "%JAVA_HOME%\bin\java.exe" (
+        call:warn java.exe not found from registry
+        set exitCode=2
+        goto END
+    )
+    set JAVA=%JAVA_HOME%\bin\java
+goto Check_JAVA_END
+
+:TryJavaHome
+    if not exist "%JAVA_HOME%" (
+        call:warn JAVA_HOME is not valid: "%JAVA_HOME%"
+        goto TryJRE
+    )
+
+    rem Check version and binary, set %JAVA%
+    call:get_javaHome_version
+    if errorLevel 1 (
+      call:warn JAVA_HOME points to an incompatible JVM; we require at least Java %REQUIRED_JAVA_VER%
+      goto TryJRE
+    )
+    set VER_COMP = call "%~dp0\VersionCompare.vbs" %JAVA_VER% %REQUIRED_JAVA_VER%
+    if "%VER_COMP%"=="-1" (
+        call:warn JAVA_HOME points to an incompatible JVM %JAVA_VER%; we require at least %REQUIRED_JAVA_VER%
+        goto TryJRE
+    )
+    call:warn Found compatible JVM: %JAVA_VER%
+    if not exist "%JAVA_HOME%\bin\java.exe" (
+        call:warn java.exe not found from JAVA_HOME
+        goto TryJRE
     )
     set JAVA=%JAVA_HOME%\bin\java
 
