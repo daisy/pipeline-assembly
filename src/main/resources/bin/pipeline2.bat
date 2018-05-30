@@ -60,25 +60,20 @@ goto :EOF
     if %suffix% equ .jar set CLASSPATH=%CLASSPATH%;%PIPELINE2_HOME%\%BOOTSTRAP:/=\%\%filename%
 goto :EOF
 
-:check_temp_directory
-	if "%TEMP%"=="" (
-		call:warn Temporary directory is not set.
-		exit /b 1
-	)
-	mkdir "%TEMP%\foo"
-	if not exist "%TEMP%\foo" (
-		call:warn Temporary directory is not writable.
-		exit /b 1
-	)
-	rmdir /Q /S "%TEMP%\foo"
-goto :EOF
-
 :get_javaHome_version
     rem Strip everything after hyphen
     set JAVA_VER=%JAVA_HOME:*-=%
     rem if nothing was stripped (hyphen not found)
     if "%JAVA_VER%" == "%JAVA_HOME%" exit /b 1
 goto :EOF
+
+rem Reference: http://www.rgagnon.com/javadetails/java-0642.html
+:get_javaHome_from_registry
+    for /f "skip=2 tokens=3" %%x in ('reg query "HKLM\SOFTWARE\JavaSoft\%~1" /v CurrentVersion') do set JavaTemp=%%x
+    for /f "skip=2 tokens=3*" %%a in ('reg query "HKLM\SOFTWARE\JavaSoft\%~1\%JavaTemp%" /v JavaHome') do set JAVA_HOME=%%a %%b
+    echo %JAVA_HOME%
+goto :EOF
+
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :BEGIN
@@ -131,104 +126,10 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
         if not "%JAVA_HOME%" == "" goto :TryJavaHome
             call:warn JAVA_HOME not set; results may vary
 
-:TryJRE
-    call:check_temp_directory
-    if errorLevel 1 (
-        set exitCode=3
-        goto END
-    )
+:TryJavaRegistry
+    call:get_javaHome_from_registry "JRE"
+    if errorLevel 1 call:get_javaHome_from_registry "JDK"
 
-    reg export "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment" %TEMP%.\__reg1.txt
-    if not exist %TEMP%.\__reg1.txt goto :TryJDK
-
-    type %TEMP%.\__reg1.txt | find "CurrentVersion" > %TEMP%.\__reg2.txt
-    if errorlevel 1 goto :TryJDK
-
-    for /f "tokens=2 delims==" %%x in (%TEMP%.\__reg2.txt) do set JavaTemp=%%~x
-    if errorlevel 1 goto :TryJDK
-
-    set JavaTemp=%JavaTemp%##
-    set JavaTemp=%JavaTemp:                ##=##%
-    set JavaTemp=%JavaTemp:        ##=##%
-    set JavaTemp=%JavaTemp:    ##=##%
-    set JavaTemp=%JavaTemp:  ##=##%
-    set JavaTemp=%JavaTemp: ##=##%
-    set JavaTemp=%JavaTemp:##=%
-
-    del %TEMP%.\__reg1.txt
-    del %TEMP%.\__reg2.txt
-
-    reg export "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment\%JavaTemp%" %TEMP%.\__reg1.txt
-    if not exist %TEMP%.\__reg1.txt goto :TryJDK
-
-    type %TEMP%.\__reg1.txt | find "JavaHome" > %TEMP%.\__reg2.txt
-    if errorlevel 1 goto :TryJDK
-
-    for /f "tokens=2 delims==" %%x in (%TEMP%.\__reg2.txt) do set JAVA_HOME=%%~x
-    if errorlevel 1 goto :TryJDK
-
-    del %TEMP%.\__reg1.txt
-    del %TEMP%.\__reg2.txt
-goto TryJDKEnd
-
-:TryJDK
-    reg export "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit" %TEMP%.\__reg1.txt
-    if not exist %TEMP%.\__reg1.txt (
-        call:warn Unable to retrieve JAVA_HOME
-        set exitCode=2
-        goto END
-    )
-
-    type %TEMP%.\__reg1.txt | find "CurrentVersion" > %TEMP%.\__reg2.txt
-    if errorlevel 1 (
-        call:warn Unable to retrieve JAVA_HOME
-        set exitCode=2
-        goto END
-    )
-
-    for /f "tokens=2 delims==" %%x in (%TEMP%.\__reg2.txt) do set JavaTemp=%%~x
-    if errorlevel 1 (
-        call:warn Unable to retrieve JAVA_HOME
-        set exitCode=2
-        goto END
-    )
-
-    set JavaTemp=%JavaTemp%##
-    set JavaTemp=%JavaTemp:                ##=##%
-    set JavaTemp=%JavaTemp:        ##=##%
-    set JavaTemp=%JavaTemp:    ##=##%
-    set JavaTemp=%JavaTemp:  ##=##%
-    set JavaTemp=%JavaTemp: ##=##%
-    set JavaTemp=%JavaTemp:##=%
-
-    del %TEMP%.\__reg1.txt
-    del %TEMP%.\__reg2.txt
-
-    reg export "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit\%JavaTemp%" %TEMP%.\__reg1.txt
-    if not exist %TEMP%.\__reg1.txt (
-        call:warn Unable to retrieve JAVA_HOME from JDK
-        set exitCode=2
-        goto END
-    )
-
-    type %TEMP%.\__reg1.txt | find "JavaHome" > %TEMP%.\__reg2.txt
-    if errorlevel 1 (
-        call:warn Unable to retrieve JAVA_HOME
-        set exitCode=2
-        goto END
-    )
-
-    for /f "tokens=2 delims==" %%x in (%TEMP%.\__reg2.txt) do set JAVA_HOME=%%~x
-    if errorlevel 1 (
-        call:warn Unable to retrieve JAVA_HOME
-        set exitCode=2
-        goto END
-    )
-
-    del %TEMP%.\__reg1.txt
-    del %TEMP%.\__reg2.txt
-
-:TryJDKEnd
     rem Check version and binary, set %JAVA%
     if not exist "%JAVA_HOME%" (
         call:warn JavaHome from registry is not valid: "%JAVA_HOME%"
@@ -259,24 +160,24 @@ goto Check_JAVA_END
 :TryJavaHome
     if not exist "%JAVA_HOME%" (
         call:warn JAVA_HOME is not valid: "%JAVA_HOME%"
-        goto TryJRE
+        goto TryJavaRegistry
     )
 
     rem Check version and binary, set %JAVA%
     call:get_javaHome_version
     if errorLevel 1 (
       call:warn JAVA_HOME points to an incompatible JVM; we require at least Java %REQUIRED_JAVA_VER%
-      goto TryJRE
+      goto TryJavaRegistry
     )
     set VER_COMP = call "%~dp0\VersionCompare.vbs" %JAVA_VER% %REQUIRED_JAVA_VER%
     if "%VER_COMP%"=="-1" (
         call:warn JAVA_HOME points to an incompatible JVM %JAVA_VER%; we require at least %REQUIRED_JAVA_VER%
-        goto TryJRE
+        goto TryJavaRegistry
     )
     call:warn Found compatible JVM: %JAVA_VER%
     if not exist "%JAVA_HOME%\bin\java.exe" (
         call:warn java.exe not found from JAVA_HOME
-        goto TryJRE
+        goto TryJavaRegistry
     )
     set JAVA=%JAVA_HOME%\bin\java
 
