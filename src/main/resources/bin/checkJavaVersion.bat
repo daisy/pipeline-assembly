@@ -15,6 +15,11 @@ set exitCode=0
 set PROGNAME=%~nx0
 set REQUIRED_JAVA_VER=9
 
+rem For unit testing
+if not [%1]==[] (
+    call %*
+    goto :EOF
+)
 
 goto BEGIN
 
