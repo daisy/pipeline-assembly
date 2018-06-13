@@ -50,7 +50,6 @@ rem # # SUBROUTINES # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 :warn
     echo %PROGNAME%: %*
-    echo %PROGNAME%: %* >> "%PIPELINE2_DATA%/log/daisy-pipeline-launch.log"
 goto :EOF
 
 :append_to_classpath
