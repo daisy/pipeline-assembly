@@ -16,10 +16,9 @@
 !define PRODUCT_REG_VALUENAME_STARTMENU "StartMenuGroup"
 !define PRODUCT_REG_KEY_UNINST "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 !define UNINSTALLER_NAME "Uninstall ${APPNAME}"
+!define REQUIRED_JAVA_VER "9.0.0"
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
-
-Var /GLOBAL CHECK_JRE
 
 ;----------------------------------------------------------
 ;   Installer General Settings
@@ -65,17 +64,15 @@ var SMGROUP
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_REG_VALUENAME_STARTMENU}"
 
 ;----------------------------------------------------------
-; Java version retrieval
-;----------------------------------------------------------
-!include CheckJavaVersion.nsh
-
-;----------------------------------------------------------
 ;   Headers and Macros
 ;----------------------------------------------------------
+;JRECheck
+!include MultiDetailPrint.nsh
 ;other
 !include LogicLib.nsh
 !include "Sections.nsh"
 !include "winmessages.nsh"
+!include EnvVarUpdate.nsh
 
 
 ;----------------------------------------------------------
@@ -152,6 +149,7 @@ InstType /COMPONENTSONLYONCUSTOM
 
 
 function .onInit
+        Var /GLOBAL CHECK_JRE
 	setShellVarContext all
         ${GetParameters} $R0
         ${GetOptions} $R0 "--check-jre=" $R1
@@ -161,14 +159,6 @@ function .onInit
 	; check the user priviledges
 	!insertmacro MULTIUSER_INIT
 functionEnd
-
-;----------------------------------------------------------
-;   JRE Check
-;----------------------------------------------------------
-
-Section -JRECheck SEC00-1
-  Call CheckJavaVersion
-SectionEnd
 
 ;----------------------------------------------------------
 ;   Main Section
@@ -221,6 +211,54 @@ section -Main SEC01
 	; make sure windows knows about the change
 	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 sectionEnd
+
+;----------------------------------------------------------
+;   JRE Check
+;----------------------------------------------------------
+
+Section -JRECheck SEC00-1
+  CheckJavaVersion:
+    ${if} $CHECK_JRE == "FALSE"
+        goto Exit
+    ${endIf}
+
+    nsExec::ExecToStack "$INSTDIR\daisy-pipeline\bin\checkJavaVersion.bat"
+    pop $0 ;exitCode
+    pop $1 ;output
+    ;print output
+    push $1
+    Call MultiDetailPrint
+
+    IntCmp $0 0 Exit InstallJava InstallJava
+
+    InstallJava:
+          ClearErrors
+          messageBox mb_yesno "Java was not found, or your version doesn't meet our requirements. $\n$\nDaisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install the latest version of Java?" IDNO Exit
+          goto TempJavaInstall
+
+          ; FIXME: can't find an online installer (iftw) for Java 9
+          setOutPath $TEMP
+          File "jre-8u102-windows-i586-iftw.exe"
+          ExecWait '"$TEMP\jre-8u102-windows-i586-iftw.exe" WEB_JAVA=0 SPONSORS=0'
+
+          TempJavaInstall:
+            MessageBox MB_OK "You will now be redirected to the Java 10 downloads page. $\n$\nPlease accept the license agreement, download the Java 10 installer for Windows, and run it."
+            ExecShell "open" "http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html"
+            MessageBox MB_YESNO "Please accept the license agreement, download the Java 10 installer for Windows, and run it. $\n$\nWould you like additional instructions for installing Java? " IDNO Wait
+            ExecShell "open" "https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-windows-platforms.htm#JSJIG-GUID-371F38CC-248F-49EC-BB9C-C37FC89E52A0"
+            Wait:
+              MessageBox MB_OK "Once Java 10 has been installed, click OK to resume Daisy Pipeline 2 installation. " IDOK TryAgain
+
+          IfErrors 0 Exit
+          messageBox mb_iconstop "Java installation returned an error. Please contact the Daisy Pipeline 2 developing team."
+          setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
+          quit
+
+      TryAgain:
+          goto CheckJavaVersion
+
+      Exit:
+SectionEnd
 
 ;----------------------------------------------------------
 ;   Start Menu
