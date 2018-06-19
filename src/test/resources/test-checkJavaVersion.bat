@@ -15,6 +15,7 @@ rem # # HELPERS # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 goto :EOF
 
 :fail msg
+    set /A failures=failures+1
     set line=    [FAILURE] Test %test%: %testing% %~1
     echo [91m%line%[0m
 goto :EOF
@@ -55,6 +56,8 @@ goto :EOF
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :BEGIN
+
+set failures=0
 
 :TEST1
 rem test validate_version
@@ -219,11 +222,11 @@ rem test search_registry
     call %checkJavaVersion% :%testing% "call %~dpnx0 :mock-reg-query-1"
     if errorLevel 1 (
         call:fail "failed with errorLevel %ERRORLEVEL%"
-        goto END
+        goto EXIT
     )
     if not "%RETURN%" == "10.0.1" (
         call:fail "failed to parse CurrentVersion, output: "%RETURN%""
-        goto END
+        goto EXIT
     )
     call:pass
 
@@ -233,12 +236,13 @@ rem test search_registry
     call %checkJavaVersion% :%testing% "call %~dpnx0 :mock-reg-query-2"
     if errorLevel 1 (
         call:fail "failed with errorLevel %ERRORLEVEL%"
-        goto END
+        goto EXIT
     )
     if not "%RETURN%" == "C:\Program Files\Java\jre-10.0.1" (
         call:fail "failed to parse mock JavaHome, output: "%RETURN%""
-        goto END
+        goto EXIT
     )
     call:pass
 
-:END
+:EXIT
+	exit /b %failures%
