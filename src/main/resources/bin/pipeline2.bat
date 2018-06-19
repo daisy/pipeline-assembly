@@ -159,6 +159,7 @@ goto CLASSPATH_END
     if "%1" == "clean" goto :EXECUTE_CLEAN
     if "%1" == "gui" goto :EXECUTE_GUI
     if "%1" == "debug" goto :EXECUTE_DEBUG
+    if "%1" == "shell" goto :EXECUTE_SHELL
 goto :EXECUTE
 
 :EXECUTE_REMOTE
@@ -187,17 +188,28 @@ goto :RUN_LOOP
     shift
 goto :RUN_LOOP
 
+:EXECUTE_SHELL
+    for /f %%F in ('dir /b "%PIPELINE2_BASE%\system\felix\gogo\*.jar"') do (
+         set GOGO_BUNDLES=!GOGO_BUNDLES! file:system\felix\gogo\%%F
+    )
+    set FELIX_OPTS=%FELIX_OPTS% -Dfelix.auto.start.1="%GOGO_BUNDLES%"
+    shift
+goto :RUN_LOOP
+
 :EXECUTE
     SET ARGS=%1 %2 %3 %4 %5 %6 %7 %8
     rem Execute the Java Virtual Machine
     cd "%PIPELINE2_BASE%"
 
-    SET COMMAND="%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" --add-opens java.base/java.security=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-exports=java.base/sun.net.www.protocol.http=ALL-UNNAMED --add-exports=java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED --add-exports=java.xml.bind/com.sun.xml.internal.bind.v2.runtime=ALL-UNNAMED --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED --add-modules java.xml.ws.annotation,java.corba,java.transaction,java.xml.bind,java.xml.ws -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" -Dorg.daisy.pipeline.base="%PIPELINE2_BASE%" -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" %MODE% %PIPELINE2_OPTS% %MAIN% %ARGS%
+    SET COMMAND="%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" --add-opens java.base/java.security=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-exports=java.base/sun.net.www.protocol.http=ALL-UNNAMED --add-exports=java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED --add-exports=java.xml.bind/com.sun.xml.internal.bind.v2.runtime=ALL-UNNAMED --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED --add-modules java.xml.ws.annotation,java.corba,java.transaction,java.xml.bind,java.xml.ws -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" -Dorg.daisy.pipeline.base="%PIPELINE2_BASE%" -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" %FELIX_OPTS% %MODE% %PIPELINE2_OPTS% %MAIN% %ARGS%
     call:warn Starting java: %COMMAND%
 
-    rem FIXME: sometimes you want to print to terminal
-    call:warn Output is written to daisy-pipeline-java.log
-    %COMMAND% > "%PIPELINE2_DATA%/log/daisy-pipeline-java.log"
+    if not "%GOGO_BUNDLES%" == "" (
+        %COMMAND%
+    ) else (
+        call:warn Output is written to daisy-pipeline-java.log
+        %COMMAND% > "%PIPELINE2_DATA%/log/daisy-pipeline-java.log"
+    )
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
