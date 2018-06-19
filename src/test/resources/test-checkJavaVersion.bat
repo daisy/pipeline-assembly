@@ -2,6 +2,10 @@
 setlocal enabledelayedexpansion
 set checkJavaVersion="..\..\main\resources\bin\checkJavaVersion.bat"
 
+if "%*" == ":mock-reg-query-1"    goto %*
+if "%*" == ":mock-reg-query-2"    goto %*
+if "%*" == ":mock-java-version-1" goto %*
+
 goto BEGIN
 
 rem # # HELPERS # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -20,38 +24,37 @@ goto :EOF
     echo [92m%line%[0m
 goto :EOF
 
-rem # # MOCK SUBROUTINES # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+rem # # MOCKS # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-:create_test_files
-    rem For :mock_search_registry_currVer
-    echo.> testCurrVer.txt
-    echo HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JRE>> testCurrVer.txt
-    echo     CurrentVersion    REG_SZ    10.0.1>> testCurrVer.txt
-    echo.>> testCurrVer.txt
-    echo.>> testCurrVer.txt
-    rem For :mock_search_registry_javaHome
-    echo.> testJavaHome.txt
-    echo HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JRE\10.0.1>> testJavaHome.txt
-    echo     CurrentVersion    REG_SZ    C:\Program Files\Java\jre-10.0.1>> testJavaHome.txt
-    echo.>> testJavaHome.txt
-    echo.>> testJavaHome.txt
-    rem For :mock_parse_java-version_output
-    echo java version "10.0.1" 2018-04-17> testParseVersion.txt
-    echo Java(TM) SE Runtime Environment 18.3 (build 10.0.1+10)>> testParseVersion.txt
-    echo Java HotSpot(TM) 64-Bit Server VM 18.3 (build 10.0.1+10, mixed mode)>> testParseVersion.txt
-    echo.>> testParseVersion.txt
+:mock-reg-query-1
+rem Mock `reg query "HKLM\SOFTWARE\JavaSoft\JRE" /v CurrentVersion`
+    echo.
+    echo HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JRE
+    echo     CurrentVersion    REG_SZ    10.0.1
+    echo.
+    echo.
 goto :EOF
 
-:delete_test_files
-    del testCurrVer.txt
-    del testJavaHome.txt
-    del testParseVersion.txt
+:mock-reg-query-2
+rem Mock `reg query "HKLM\SOFTWARE\JavaSoft\JRE\10.0.1" /v JavaHome`
+    echo.
+    echo HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JRE\10.0.1
+    echo     CurrentVersion    REG_SZ    C:\Program Files\Java\jre-10.0.1
+    echo.
+    echo.
+goto :EOF
+
+:mock-java-version-1
+rem Mock `java -version`
+    echo java version "10.0.1" 2018-04-17
+    echo Java(TM) SE Runtime Environment 18.3 (build 10.0.1+10)
+    echo Java HotSpot(TM) 64-Bit Server VM 18.3 (build 10.0.1+10, mixed mode)
+    echo.
 goto :EOF
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :BEGIN
-    call:create_test_files
 
 :TEST1
 rem test validate_version
@@ -196,7 +199,7 @@ rem test parse_java-version_output
     set testing=parse_java-version_output
     set path=java.exe &rem replace with path to your java exe
     call:info "mock input"
-    call %checkJavaVersion% :%testing% "type testParseVersion.txt"
+    call %checkJavaVersion% :%testing% "call %~dpnx0 :mock-java-version-1"
     if errorLevel 1 (
         call:fail "failed with errorLevel %ERRORLEVEL%"
         goto TEST4
@@ -213,7 +216,7 @@ rem test search_registry
     rem test 4a
     set test=4a
     call:info "mock input"
-    call %checkJavaVersion% :%testing% "type testCurrVer.txt"
+    call %checkJavaVersion% :%testing% "call %~dpnx0 :mock-reg-query-1"
     if errorLevel 1 (
         call:fail "failed with errorLevel %ERRORLEVEL%"
         goto END
@@ -227,7 +230,7 @@ rem test search_registry
     rem test 4b
     set test=4b
     call:info "mock input"
-    call %checkJavaVersion% :%testing% "type testJavaHome.txt"
+    call %checkJavaVersion% :%testing% "call %~dpnx0 :mock-reg-query-2"
     if errorLevel 1 (
         call:fail "failed with errorLevel %ERRORLEVEL%"
         goto END
@@ -239,4 +242,3 @@ rem test search_registry
     call:pass
 
 :END
-    call:delete_test_files
