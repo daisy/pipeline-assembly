@@ -1491,6 +1491,12 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
+                <!--
+                    Note that this will include JRE 8. In order to include JRE 9 we probably have to
+                    build with JDK 9, but we don't support this yet at the moment. However the
+                    reason we depend on Java 9 is to avoid JAWS crashes, in other words it is only
+                    required for Windows.
+                -->
                 <id>generate-app-package</id>
                 <phase>package</phase>
                 <goals>
