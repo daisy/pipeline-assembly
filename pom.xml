@@ -2152,7 +2152,6 @@
         <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
-        <bundles.modules>modules</bundles.modules>
         <pipeline.ws.host>http://localhost</pipeline.ws.host>
         <pipeline.ws.port>8181</pipeline.ws.port>
         <pipeline.ws.path>ws</pipeline.ws.path>
@@ -2546,7 +2545,6 @@
         <pipeline.home>/opt/daisy-pipeline2</pipeline.home>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy> <!-- don't change! must be the same as in dist.properties -->
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap> <!-- don't change! must be the same as in dist.properties -->
-        <bundles.modules>modules</bundles.modules> <!-- don't change! must be the same as in dist.properties -->
         <pipeline.log.jobappender>org.daisy.pipeline.logging.IgnoreSiftAppender</pipeline.log.jobappender>
       </properties>
       <build>
@@ -2734,18 +2732,7 @@
                   </sources>
                 </mapping>
                 <mapping>
-                  <directory>${pipeline.home}/system/gui</directory>
-                  <filemode>0644</filemode>
-                  <username>${pipeline.user}</username>
-                  <groupname>${pipeline.group}</groupname>
-                  <sources>
-                    <source>
-                      <location>${project.basedir}/target/bundles/gui</location>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>${pipeline.home}/${bundles.modules}</directory>
+                  <directory>${pipeline.home}/${bundles.auto.deploy}</directory>
                   <filemode>0644</filemode>
                   <username>${pipeline.user}</username>
                   <groupname>${pipeline.group}</groupname>
