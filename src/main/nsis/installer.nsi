@@ -166,17 +166,17 @@ functionEnd
 
 section -Main SEC01
 
-        
-	#Remove from previous versions 
-        DetailPrint "Removing old data..."
+	# Remove previous versions
+	DetailPrint "Removing old files..."
+	rmDir /r "$INSTDIR\daisy-pipeline"
 	ReadEnvStr $0 APPDATA
-        IfFileExists "$0\DAISY Pipeline 2" +1 +2 #Because relative jumping instructions is a way of writing really maintainable code
+	IfFileExists "$0\DAISY Pipeline 2" +1 +2
 	rmDir /r "$0\DAISY Pipeline 2"
 
 	setOutPath $INSTDIR
 	SetOverwrite on
-	file .\logo.ico 
-        
+	file .\logo.ico
+
 	writeUninstaller "$INSTDIR\uninstall.exe"
 	#setOutPath "$INSTDIR\${PROJECT_ARTIFACT_ID}"
 
