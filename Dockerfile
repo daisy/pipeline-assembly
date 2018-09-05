@@ -9,7 +9,7 @@ WORKDIR /usr/src/daisy-pipeline2
 RUN mvn clean package
 
 # then use the build artifacts to create an image where the pipeline is installed
-FROM openjdk:8-jre
+FROM openjdk:9-jre
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
 COPY --from=builder /usr/src/daisy-pipeline2/target/pipeline2-*_linux/daisy-pipeline /opt/daisy-pipeline2
 ENV PIPELINE2_WS_LOCALFS=false \
