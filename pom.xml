@@ -1385,6 +1385,10 @@
                 </goals>
                 <configuration>
                   <attach>false</attach>
+                  <formats>
+                    <format>dir</format>
+                    <format>zip</format>
+                  </formats>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-minimal.xml</descriptor>
                   </descriptors>
@@ -1454,13 +1458,16 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>dist-mac</id>
+                <id>dist-mac-dir</id>
                 <phase>package</phase>
                 <goals>
                   <goal>single</goal>
                 </goals>
                 <configuration>
                   <attach>false</attach>
+                  <formats>
+                    <format>dir</format>
+                  </formats>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-mac.xml</descriptor>
                   </descriptors>
@@ -1592,6 +1599,145 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>attach-artifact</goal>
+                </goals>
+                <configuration>
+                  <artifacts>
+                    <artifact>
+                      <file>${project.build.directory}/pipeline2-${project.version}_mac.dmg</file>
+                      <type>dmg</type>
+                      <classifier>mac</classifier>
+                    </artifact>
+                  </artifacts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>zip-mac</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-cli-mac</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>cli</artifactId>
+                      <type>zip</type>
+                      <classifier>darwin_386</classifier>
+                      <outputDirectory>${project.build.directory}/cli/mac32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+              <execution>
+                <id>unpack-updater-mac</id>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.daisy.pipeline</groupId>
+                      <artifactId>updater</artifactId>
+                      <type>zip</type>
+                      <classifier>darwin_386</classifier>
+                      <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-mac-zip</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <attach>true</attach>
+                  <formats>
+                    <format>zip</format>
+                  </formats>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dist-mac.xml</descriptor>
+                  </descriptors>
+                  <filters>
+                    <filter>src/main/assembly/dist.properties</filter>
+                    <filter>src/main/assembly/dist-nix.properties</filter>
+                  </filters>
+                  <appendAssemblyId>true</appendAssemblyId>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-app-package</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>install-node</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>install-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>exec-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -1654,7 +1800,10 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <attach>false</attach>
+                  <attach>true</attach>
+                  <formats>
+                    <format>zip</format>
+                  </formats>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-linux.xml</descriptor>
                   </descriptors>
@@ -1662,12 +1811,15 @@
                     <filter>src/main/assembly/dist.properties</filter>
                     <filter>src/main/assembly/dist-nix.properties</filter>
                   </filters>
-                  <appendAssemblyId>false</appendAssemblyId>
-                  <finalName>pipeline2-${project.version}_linux</finalName>
+                  <appendAssemblyId>true</appendAssemblyId>
                 </configuration>
               </execution>
               <execution>
-                <id>dist-mac</id>
+                <id>dist-mac-dir</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-mac-zip</id>
                 <phase>none</phase>
               </execution>
               <execution>
@@ -1705,6 +1857,16 @@
             <executions>
               <execution>
                 <id>exec-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
                 <phase>none</phase>
               </execution>
             </executions>
@@ -1794,6 +1956,9 @@
                 </goals>
                 <configuration>
                   <attach>false</attach>
+                  <formats>
+                    <format>dir</format>
+                  </formats>
                   <descriptors>
                     <descriptor>src/main/assembly/dist-win.xml</descriptor>
                   </descriptors>
@@ -1856,34 +2021,6 @@
               </execution>
             </executions>
           </plugin>
-          <!-- !!!FIXME!!! -->
-          <!-- This a gross hack to detach the `exe` artifact,
-               since nsis-maven-plugin doesn't expose the option 
-               to *not* attach the resulting executable -->
-          <plugin>
-            <groupId>org.codehaus.gmaven</groupId>
-            <artifactId>groovy-maven-plugin</artifactId>
-            <version>2.0</version>
-            <executions>
-              <execution>
-                <id>detach-exe</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <configuration>
-                  <source>
-                    org.apache.maven.artifact.Artifact exe;
-                    for (artifact in project.getAttachedArtifacts()) {
-                      if(artifact.getType()=="exe")
-                        exe = artifact;
-                    }
-                    project.getAttachedArtifacts().remove(exe);
-                  </source>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -1913,6 +2050,16 @@
             <executions>
               <execution>
                 <id>exec-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
                 <phase>none</phase>
               </execution>
             </executions>
@@ -2053,7 +2200,7 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>dist-mac</id>
+                <id>dist-mac-dir</id>
                 <phase>none</phase>
               </execution>
               <execution>
@@ -2132,6 +2279,16 @@
             <executions>
               <execution>
                 <id>exec-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
                 <phase>none</phase>
               </execution>
             </executions>
@@ -2486,7 +2643,7 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>dist-mac</id>
+                <id>dist-mac-dir</id>
                 <phase>none</phase>
               </execution>
               <execution>
@@ -2528,6 +2685,16 @@
             <executions>
               <execution>
                 <id>exec-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
                 <phase>none</phase>
               </execution>
             </executions>
@@ -2575,7 +2742,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>dist-mac</id>
+                <id>dist-mac-dir</id>
                 <phase>none</phase>
               </execution>
               <execution>
