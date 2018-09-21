@@ -1226,7 +1226,7 @@
         </dependencies>
         <configuration>
           <tagNameFormat>v@{project.version}</tagNameFormat>
-          <arguments>-Plinux,mac,win</arguments>
+          <arguments>-Pnoartifacts</arguments>
         </configuration>
       </plugin>
           <plugin>
@@ -2235,16 +2235,6 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.codehaus.gmaven</groupId>
-            <artifactId>groovy-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>detach-exe</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
@@ -3018,6 +3008,87 @@ rm -rf /opt/daisy-pipeline2/cli
                 </script>
               </postremoveScriptlet>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>noartifacts</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-app-package</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>install-node</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>install-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>exec-appdmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-dmg</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>dist-mac-dir</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-mac-zip</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-win</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>dist-linux</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>nsis-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>none</phase>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
