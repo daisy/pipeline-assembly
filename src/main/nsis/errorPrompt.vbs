@@ -47,7 +47,7 @@ Sub catchErrors(ByVal exitCode)
 End Sub
 
 Function readLogs()
-    Set objFile = fso.OpenTextFile("" & logPath & "\daisy-pipeline-launch.log""", 1)
+    Set objFile = fso.OpenTextFile(logPath & "\daisy-pipeline-launch.log", 1)
     Do While Not objFile.AtEndOfStream
         readLogs = readLogs & objFile.ReadLine & vbCrLf 'return'
     Loop
