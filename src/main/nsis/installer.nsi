@@ -233,21 +233,24 @@ Section -JRECheck SEC00-1
 
     InstallJava:
           ClearErrors
-          messageBox mb_yesno "Java was not found, or your version doesn't meet our requirements. $\n$\nDaisy Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install the latest version of Java?" IDNO Exit
+          messageBox mb_yesno "Java was not found, or your version doesn't meet our requirements. $\n$\nDAISY Pipeline 2 needs at least Java ${REQUIRED_JAVA_VER}, would you like to install the latest version of Java?" IDNO NoJava
           MessageBox MB_OK "You will now be redirected to the Java 10 downloads page. $\n$\nPlease accept the license agreement, download the Java 10 installer for Windows, and run it."
           ExecShell "open" "http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html"
           MessageBox MB_YESNO "Please accept the license agreement, download the Java 10 installer for Windows, and run it. $\n$\nWould you like additional instructions for installing Java? " IDNO Wait
           ExecShell "open" "https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-windows-platforms.htm#JSJIG-GUID-371F38CC-248F-49EC-BB9C-C37FC89E52A0"
           Wait:
-            MessageBox MB_OK "Once Java 10 has been installed, click OK to resume Daisy Pipeline 2 installation. " IDOK TryAgain
+            MessageBox MB_OK "Once Java 10 has been installed, click OK to resume DAISY Pipeline 2 installation. " IDOK TryAgain
 
           IfErrors 0 Exit
-          messageBox mb_iconstop "Java installation returned an error. Please contact the Daisy Pipeline 2 developing team."
+          messageBox mb_iconstop "Java installation returned an error. Please contact the DAISY Pipeline 2 developing team."
           setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
           quit
 
       TryAgain:
           goto CheckJavaVersion
+
+      NoJava:
+          MessageBox MB_OK "Not installing Java. DAISY Pipeline 2 will fail to launch. $\n$\nPlease install Java version ≥ ${REQUIRED_JAVA_VER}. It is possible that Java ${REQUIRED_JAVA_VER} is already installed, but that DAISY Pipeline 2 can not locate it. In order to fix this, set the JAVA_HOME environment variable. For more information go to http://daisy.github.io/pipeline/Get-Help/Troubleshooting/Common-Errors-Windows/#setting-java_home."
 
       Exit:
 SectionEnd
