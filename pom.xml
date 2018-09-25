@@ -2303,6 +2303,7 @@
         <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
         <bundles.auto.deploy>system/felix</bundles.auto.deploy>
         <bundles.bootstrap>system/bootstrap</bundles.bootstrap>
+        <bundles.modules>modules</bundles.modules>
         <pipeline.ws.host>http://localhost</pipeline.ws.host>
         <pipeline.ws.port>8181</pipeline.ws.port>
         <pipeline.ws.path>ws</pipeline.ws.path>
