@@ -70,15 +70,17 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     set PIPELINE2_HOME=%DIRNAME%..
     if not exist "%PIPELINE2_HOME%" (
         call:warn PIPELINE2_HOME is not valid: !PIPELINE2_HOME!
+        rem fatal
         set exitCode=3
         goto END
     )
 
     if not "%PIPELINE2_BASE%" == "" (
         if not exist "%PIPELINE2_BASE%" (
-           call:warn PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
-           set exitCode=3
-           goto END
+            call:warn PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
+            rem fatal
+            set exitCode=3
+            goto END
         )
     )
 
@@ -109,6 +111,13 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     call "%~dp0\checkJavaVersion.bat"
     if errorLevel 1 (
         call:warn Compatible JVM not found
+        if errorLevel 2 (
+            rem fatal
+            set exitCode=3
+        ) else (
+            rem user-fixable
+            set exitCode=2
+        )
         goto END
     )
 
@@ -129,6 +138,7 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
     if exist "%PIPELINE2_PROFILER_SCRIPT%" goto :PIPELINE2_PROFILER_END (
         call:warn Missing configuration for profiler '%PIPELINE2_PROFILER%': %PIPELINE2_PROFILER_SCRIPT%
+        rem fatal
         set exitCode=3
         goto END
     )
@@ -215,9 +225,5 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :END
     call:warn Exiting with value %exitCode%
-    endlocal & set exitCode=%exitCode%
     if not "%PAUSE%" == "" pause
-goto EXIT
-
-:EXIT
     exit /b %exitCode%

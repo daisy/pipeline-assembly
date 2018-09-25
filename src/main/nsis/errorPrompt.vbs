@@ -7,7 +7,6 @@ Dim logPath: logPath = oShell.ExpandEnvironmentStrings("%APPDATA%") & "\DAISY Pi
 ' ERROR CODES
 Const USER_FIXABLE = "2"
 Const FATAL = "3"
-Const UNKNOWN = "1" 'or whatever else'
 
 catchErrors oArgs(0)
 
