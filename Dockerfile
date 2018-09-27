@@ -6,6 +6,7 @@
 FROM maven:3.5-jdk-8 as builder
 ADD . /usr/src/daisy-pipeline2
 WORKDIR /usr/src/daisy-pipeline2
+RUN curl -fsSL https://raw.github.com/daisy/maven-parents/travis/settings.xml > $HOME/.m2/settings.xml
 RUN mvn clean package
 RUN cd target && unzip assembly-*-linux.zip
 
