@@ -21,6 +21,7 @@
   </scm>
   <properties>
     <cli.version>2.1.1-SNAPSHOT</cli.version>
+    <javafx.version>11.0.1</javafx.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -104,6 +105,31 @@
         <version>1.11.2-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-base</artifactId>
+        <version>${javafx.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <version>${javafx.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>${javafx.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-web</artifactId>
+        <version>${javafx.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>${javafx.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -222,7 +248,7 @@
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.scr</artifactId>
-                  <version>2.0.14</version>
+                  <version>2.0.14</version> <!-- does not work with 2.1.0 -->
                 </artifactItem>
                 <!-- From managed dependencies -->
                 <artifactItem>
@@ -252,6 +278,26 @@
             <configuration>
               <outputDirectory>${project.build.directory}/bundles/libs/persistence</outputDirectory>
               <artifactItems>
+                <artifactItem>
+                  <groupId>javax.el</groupId>
+                  <artifactId>javax.el-api</artifactId>
+                  <version>3.0.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>javax.enterprise</groupId>
+                  <artifactId>cdi-api</artifactId>
+                  <version>2.0.SP1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>javax.interceptor</groupId>
+                  <artifactId>javax.interceptor-api</artifactId>
+                  <version>1.2.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>javax.transaction</groupId>
+                  <artifactId>javax.transaction-api</artifactId>
+                  <version>1.3</version>
+                </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse</groupId>
                   <artifactId>org.eclipse.gemini.jpa</artifactId>
@@ -719,6 +765,114 @@
                 <artifactItem>
                   <groupId>org.parboiled</groupId>
                   <artifactId>parboiled-core</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-javafx-linux</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/bootstrap/linux</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-base</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-graphics</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-controls</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-web</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-fxml</artifactId>
+                  <classifier>linux</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-javafx-mac</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/bootstrap/mac</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-base</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-graphics</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-controls</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-web</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-fxml</artifactId>
+                  <classifier>mac</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-javafx-win</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/bundles/bootstrap/win</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-base</artifactId>
+                  <classifier>win</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-graphics</artifactId>
+                  <classifier>win</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-controls</artifactId>
+                  <classifier>win</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-web</artifactId>
+                  <classifier>win</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-fxml</artifactId>
+                  <classifier>win</classifier>
                 </artifactItem>
               </artifactItems>
             </configuration>
