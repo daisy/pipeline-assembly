@@ -357,7 +357,8 @@ run() {
     MAIN=org.apache.felix.main.Main
     MODE=" -Dorg.daisy.pipeline.main.mode=webservice"
 
-    case "$1" in
+    while [ "$1" != "" ]; do
+      case "$1" in
         # 'stop')
         #     MAIN=org.apache.karaf.main.Stop
         #     shift
@@ -406,7 +407,8 @@ run() {
             MODE=" -Dorg.daisy.pipeline.main.mode=gui"
             shift
             ;;
-    esac
+      esac
+    done
 
     JAVA_ENDORSED_DIRS="${JAVA_HOME}/jre/lib/endorsed:${JAVA_HOME}/lib/endorsed:${PIPELINE2_HOME}/lib/endorsed"
     JAVA_EXT_DIRS="${JAVA_HOME}/jre/lib/ext:${JAVA_HOME}/lib/ext:${PIPELINE2_HOME}/lib/ext"
