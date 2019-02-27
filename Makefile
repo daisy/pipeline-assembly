@@ -38,7 +38,8 @@ help :
 	echo "make check|check-docker:"                                             >&2
 	echo "	Tests the Docker image"                                             >&2
 
-assembly/VERSION     := 1.11.2-SNAPSHOT
+# FIXME: don't hard-code
+assembly/VERSION     := 1.12.0-SNAPSHOT
 assembly/BASEDIR     := .
 MVN_LOCAL_REPOSITORY ?= $(HOME)/.m2/repository
 
