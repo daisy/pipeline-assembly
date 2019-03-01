@@ -2320,6 +2320,19 @@
                     <data>
                       <type>directory</type>
                       <src>${project.build.directory}/bundles/bootstrap</src>
+                      <excludes>
+                        linux, linux/*,
+                        win,   win/*,
+                        mac,   mac/*
+                      </excludes>
+                      <mapper>
+                        <prefix>${pipeline.home}/${bundles.bootstrap}</prefix>
+                        <type>perm</type>
+                      </mapper>
+                    </data>
+                    <data>
+                      <type>directory</type>
+                      <src>${project.build.directory}/bundles/bootstrap/linux</src>
                       <mapper>
                         <prefix>${pipeline.home}/${bundles.bootstrap}</prefix>
                         <type>perm</type>
