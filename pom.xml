@@ -2178,8 +2178,6 @@
         <pipeline.ws.authenticate>false</pipeline.ws.authenticate>
         <pipeline.ws.clientkey>clientid</pipeline.ws.clientkey>
         <pipeline.ws.clientsecret>supersecret</pipeline.ws.clientsecret>
-        <pipeline.cli.exec_line>/dev/null</pipeline.cli.exec_line>
-        <pipeline.cli.starting>false</pipeline.cli.starting>
         <pipeline.log.jobappender>org.daisy.pipeline.logging.IgnoreSiftAppender</pipeline.log.jobappender>
       </properties>
       <build>
@@ -2212,14 +2210,11 @@
                       <directory>src/main/deb</directory>
                       <targetPath>deb</targetPath>
                       <filtering>true</filtering>
-                    </resource>
-                    <resource>
-                      <directory>src/main/resources/cli</directory>
-                      <targetPath>cli</targetPath>
                       <includes>
-                        <include>config.yml</include>
+                        <include>DEBIAN/</include>
+                        <include>etc/</include>
+                        <include>opt/</include>
                       </includes>
-                      <filtering>true</filtering>
                     </resource>
                   </resources>
                 </configuration>
@@ -2422,9 +2417,44 @@
       <properties>
         <pipeline.cli.home>/opt/daisy-pipeline2-cli</pipeline.cli.home>
         <pipeline.cli.config>/etc/opt/daisy-pipeline2-cli</pipeline.cli.config>
+        <pipeline.cli.exec_line>/dev/null</pipeline.cli.exec_line>
+        <pipeline.cli.starting>false</pipeline.cli.starting>
       </properties>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>filter-deb-cli-resources</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/filtered-resources</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/deb</directory>
+                      <targetPath>deb</targetPath>
+                      <filtering>true</filtering>
+                      <includes>
+                        <include>DEBIAN.cli/</include>
+                      </includes>
+                    </resource>
+                    <resource>
+                      <directory>src/main/resources/cli</directory>
+                      <targetPath>cli</targetPath>
+                      <includes>
+                        <include>config.yml</include>
+                      </includes>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.vafer</groupId>
             <artifactId>jdeb</artifactId>
