@@ -1,6 +1,7 @@
 MVN ?= mvn
 MVN_LOG ?= cat
 DOCKER := docker
+SHELL  := /bin/bash
 
 .PHONY : default
 ifeq ($(shell uname), Darwin)
@@ -210,6 +211,7 @@ PROFILES :=                 \
 .PHONY : mvn
 mvn :
 ifndef DUMP_PROFILES
+	set -o pipefail; \
 	$(MVN) clean install $(shell $(MAKE) -qs DUMP_PROFILES=true -- $(MAKECMDGOALS)) | $(MVN_LOG)
 endif
 
