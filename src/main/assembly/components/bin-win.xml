@@ -7,7 +7,7 @@
         <include>bin/pipeline2.bat</include>
         <include>bin/checkJavaVersion.bat</include>
       </includes>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory></outputDirectory>
       <fileMode>0755</fileMode>
       <filtered>true</filtered>
     </fileSet>
