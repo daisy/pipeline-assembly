@@ -142,7 +142,7 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 :CheckRelative
     call:parse_java_version "%DIRNAME%..\jre\bin\java.exe"
-    if errorLevel 1 goto CheckCurrentVersion
+    if errorLevel 1 goto CheckJAVA
     call:check_version
     if errorLevel 3 goto END
     if errorLevel 1 (
