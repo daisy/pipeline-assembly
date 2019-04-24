@@ -1142,10 +1142,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>dotify-saxon</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>dotify-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
