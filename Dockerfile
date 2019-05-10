@@ -10,9 +10,15 @@ RUN mkdir -p $HOME/.m2 && curl -fsSL https://raw.github.com/daisy/maven-parents/
 RUN mvn clean package -Punpack-cli-linux -Punpack-updater-linux -Passemble-linux-dir
 
 # then use the build artifacts to create an image where the pipeline is installed
-FROM openjdk:11-jre
+#FROM adoptopenjdk/openjdk11
+FROM debian:stretch
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
-COPY --from=builder /usr/src/daisy-pipeline2/target/daisy-pipeline /opt/daisy-pipeline2
+RUN apt-get update && apt-get install -y wget
+COPY --from=builder /usr/src/daisy-pipeline2/target/assembly-*-linux/daisy-pipeline /opt/daisy-pipeline2
+RUN wget "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz" -O /tmp/openjdk.tar.gz --no-verbose \
+    && tar -zxvf /tmp/openjdk.tar.gz -C /opt \
+    && rm /tmp/openjdk.tar.gz
+ENV JAVA_HOME=/opt/jdk-11+28
 ENV PIPELINE2_WS_LOCALFS=false \
     PIPELINE2_WS_AUTHENTICATION=true \
     PIPELINE2_WS_AUTHENTICATION_KEY=clientid \
