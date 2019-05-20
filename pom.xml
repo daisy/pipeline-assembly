@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.12.1-SNAPSHOT</version>
+  <version>1.12.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -999,8 +999,9 @@
                   <artifactId>epubcheck-adapter</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.idpf</groupId>
+                  <groupId>org.w3c</groupId>
                   <artifactId>epubcheck</artifactId>
+                  <version>4.2.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.commons</groupId>
@@ -2827,11 +2828,6 @@
     </profile>
     <profile>
       <id>test-batch</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
       <build>
         <plugins>
           <plugin>
