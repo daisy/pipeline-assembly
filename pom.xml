@@ -1451,7 +1451,7 @@
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>cli</artifactId>
                       <type>zip</type>
-                      <classifier>darwin_386</classifier>
+                      <classifier>darwin_amd64</classifier>
                       <outputDirectory>${project.build.directory}/cli/mac32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -1541,7 +1541,7 @@
                       <groupId>org.daisy.pipeline</groupId>
                       <artifactId>updater</artifactId>
                       <type>zip</type>
-                      <classifier>darwin_386</classifier>
+                      <classifier>darwin_amd64</classifier>
                       <outputDirectory>${project.build.directory}/updater/mac32</outputDirectory>
                     </artifactItem>
                   </artifactItems>
