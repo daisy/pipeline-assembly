@@ -1268,7 +1268,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/bundles/modules</outputDirectory>
+              <outputDirectory>${project.build.directory}/bundles/felix</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>ch.sbs.pipeline</groupId>
