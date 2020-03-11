@@ -85,7 +85,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.13.3</version>
+        <version>1.13.4-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
