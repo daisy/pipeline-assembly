@@ -1909,10 +1909,6 @@
                         <fx:icon href="${project.basedir}/src/main/mac/pipeline-logo.icns" />
                       </fx:info>
                       <fx:platform j2se="8.0+">
-                        <fx:jvmarg value="-Xms256M" />
-                        <fx:jvmarg value="-Xmx1G" />
-                        <fx:jvmarg value="-XX:PermSize=16M" />
-                        <fx:jvmarg value="-XX:MaxPermSize=256M" />
                         <fx:property name="org.daisy.pipeline.main.mode" value="gui" />
                         <fx:property name="org.daisy.pipeline.home" value="." />
                         <fx:property name="org.daisy.pipeline.data" value="data" />
