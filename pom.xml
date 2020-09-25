@@ -596,6 +596,13 @@
                   <groupId>org.codehaus.jackson</groupId>
                   <artifactId>jackson-mapper-asl</artifactId>
                 </artifactItem>
+                <!--
+                    for tts-adapter-google
+                -->
+                <artifactItem>
+                  <groupId>org.json</groupId>
+                  <artifactId>json</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
