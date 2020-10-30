@@ -98,20 +98,14 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     call:warn Enabling Java debug options: %JAVA_DEBUG_OPTS%
 :PIPELINE2_DEBUG_END
 
-    rem Setup the classpath
-    for %%D in (system\bootstrap system\gui\bootstrap) do (
-        for /f %%F in ('dir /b "%PIPELINE2_HOME%\%%D\*.jar"') do (
-            set CLASSPATH=!CLASSPATH!;%%D\%%F
-        )
-    )
-
-    set MAIN=org.apache.felix.main.Main
     set MODE=webservice
+    set ENABLE_OSGI=false
     set ENABLE_PERSISTENCE=true
     set ENABLE_SHELL=false
 
 :RUN_LOOP
     if [%1]==[] goto :EXECUTE
+    if "%1" == "osgi" goto :EXECUTE_OSGI
     if "%1" == "remote" goto :EXECUTE_REMOTE
     if "%1" == "local" goto :EXECUTE_LOCAL
     if "%1" == "clean" goto :EXECUTE_CLEAN
@@ -123,6 +117,11 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     set exitCode=2
     goto END
 goto :EXECUTE
+
+:EXECUTE_OSGI
+    set ENABLE_OSGI=true
+    shift
+goto :RUN_LOOP
 
 :EXECUTE_REMOTE
     set PIPELINE2_WS_LOCALFS=false
@@ -144,6 +143,7 @@ goto :RUN_LOOP
 :EXECUTE_GUI
     set MODE=gui
     set ENABLE_PERSISTENCE=false
+    set ENABLE_OSGI=true
     shift
 goto :RUN_LOOP
 
@@ -159,22 +159,66 @@ goto :RUN_LOOP
 goto :RUN_LOOP
 
 :EXECUTE
+    if %ENABLE_OSGI% == true (
+        set PATHS=!PATHS! system\osgi\bundles
+    ) else (
+        set PATHS=!PATHS! system\no-osgi
+    )
     set PATHS=!PATHS! system\%MODE%
     if %ENABLE_SHELL% == true (
-        set PATHS=!PATHS! system\gogo
+        if %ENABLE_OSGI% == true (
+            set PATHS=!PATHS! system\osgi\gogo
+        ) else (
+            call:warn Shell can only be enabled under OSGi
+        )
     )
     if %ENABLE_PERSISTENCE% == true (
         set PATHS=!PATHS! system\persistence
+        if %ENABLE_OSGI% == true (
+            set PATHS=!PATHS! system\osgi\persistence
+        ) else (
+            set PATHS=!PATHS! system\no-osgi\persistence
+        )
     ) else (
         set PATHS=!PATHS! system\volatile
     )
-	for %%D in (%PATHS%) do (
-        for /f %%F in ('dir /b "%PIPELINE2_HOME%\%%D\*.jar"') do (
-            set AUTO_START_BUNDLES=!AUTO_START_BUNDLES! file:%%D\%%F
+    if %ENABLE_OSGI% == true (
+        for %%D in (system\osgi\bootstrap) do (
+            for /f %%F in ('dir /b "%PIPELINE2_HOME%\%%D\*.jar"') do (
+                set CLASSPATH=!CLASSPATH!;%%D\%%F
+            )
         )
+        if %MODE% == gui (
+            for %%D in (system\gui\bootstrap) do (
+                for /f %%F in ('dir /b "%PIPELINE2_HOME%\%%D\*.jar"') do (
+                    set CLASSPATH=!CLASSPATH!;%%D\%%F
+                )
+            )
+        )
+        set MAIN=org.apache.felix.main.Main
+        for %%D in (%PATHS%) do (
+            for /f %%F in ('dir /b "%PIPELINE2_HOME%\%%D\*.jar"') do (
+                set AUTO_START_BUNDLES=!AUTO_START_BUNDLES! file:%%D\%%F
+            )
+        )
+        rem system/common is included through felix.auto.deploy.dir setting
+        rem  (see felix.properties)
+        rem modules is included through felix.fileinstall.dir settings
+        rem  (see felix.properties and org.apache.felix.fileinstall-modules.cfg)
+        set OSGI_OPTS=-Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/felix.properties" ^
+                      -Dfelix.auto.start.1="!AUTO_START_BUNDLES!"
+    ) else (
+        for %%D in (system\common %PATHS% modules) do (
+            if exist "%PIPELINE2_HOME%\%%D" (
+                rem Using wildcard to avoid "The input line is too long" error
+                set CLASSPATH=!CLASSPATH!;%%D\*
+                rem for /f %%F in ('dir /b "%PIPELINE2_HOME%\%%D\*.jar"') do (
+                rem     set CLASSPATH=!CLASSPATH!;%%D\%%F
+                rem )
+            )
+        )
+        set MAIN=org.daisy.pipeline.webservice.impl.PipelineWebService
     )
-    set FELIX_OPTS=-Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/felix.properties" ^
-                   -Dfelix.auto.start.1="%AUTO_START_BUNDLES%"
 
     rem Execute the Java Virtual Machine
     cd "%PIPELINE2_HOME%"
@@ -211,7 +255,7 @@ goto :RUN_LOOP
             --add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED ^
             --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED ^
             --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED ^
-            %FELIX_OPTS% ^
+            %OSGI_OPTS% ^
             -Dorg.daisy.pipeline.properties="%PIPELINE2_HOME%\etc\pipeline.properties" ^
             %SYSTEM_PROPS% ^
             -classpath "%CLASSPATH%" ^
@@ -219,7 +263,7 @@ goto :RUN_LOOP
     ) else (
         rem version 8
         SET COMMAND="%JAVA%" %JAVA_OPTS% ^
-            %FELIX_OPTS% ^
+            %OSGI_OPTS% ^
             -Dorg.daisy.pipeline.properties="%PIPELINE2_HOME%\etc\pipeline.properties" ^
             %SYSTEM_PROPS% ^
             -classpath "%CLASSPATH%" ^

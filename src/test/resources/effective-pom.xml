@@ -1141,16 +1141,6 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>ch.qos.logback</groupId>
-                                    <artifactId>logback-classic</artifactId>
-                                    <version>1.0.11</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>ch.qos.logback</groupId>
-                                    <artifactId>logback-core</artifactId>
-                                    <version>1.0.11</version>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>org.apache.felix</groupId>
                                     <artifactId>org.apache.felix.configadmin</artifactId>
                                     <version>1.6.0</version>
@@ -1188,18 +1178,6 @@
                                 <artifactItem>
                                     <groupId>org.osgi</groupId>
                                     <artifactId>org.osgi.enterprise</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.slf4j</groupId>
-                                    <artifactId>slf4j-api</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.slf4j</groupId>
-                                    <artifactId>jul-to-slf4j</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.slf4j</groupId>
-                                    <artifactId>jcl-over-slf4j</artifactId>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -1326,10 +1304,6 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.daisy.pipeline</groupId>
-                                    <artifactId>woodstox-osgi-adapter</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.daisy.pipeline</groupId>
                                     <artifactId>xmlcatalog</artifactId>
                                 </artifactItem>
                                 <artifactItem>
@@ -1366,10 +1340,6 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.daisy.libs</groupId>
-                                    <artifactId>logback-osgi-adapter</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.daisy.libs</groupId>
                                     <artifactId>saxon-he</artifactId>
                                 </artifactItem>
                                 <artifactItem>
@@ -1403,6 +1373,43 @@
                                 <artifactItem>
                                     <groupId>com.mysql.jdbc</groupId>
                                     <artifactId>com.springsource.com.mysql.jdbc</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>ch.qos.logback</groupId>
+                                    <artifactId>logback-classic</artifactId>
+                                    <version>1.0.11</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>ch.qos.logback</groupId>
+                                    <artifactId>logback-core</artifactId>
+                                    <version>1.0.11</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.slf4j</groupId>
+                                    <artifactId>slf4j-api</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.slf4j</groupId>
+                                    <artifactId>jul-to-slf4j</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.slf4j</groupId>
+                                    <artifactId>jcl-over-slf4j</artifactId>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-framework-osgi</id>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.daisy.pipeline</groupId>
+                                    <artifactId>woodstox-osgi-adapter</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.daisy.libs</groupId>
+                                    <artifactId>logback-osgi-adapter</artifactId>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

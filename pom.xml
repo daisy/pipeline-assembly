@@ -77,6 +77,11 @@
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
+        <artifactId>ds-to-spi-runtime</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
         <version>1.13.4-SNAPSHOT</version>
         <type>pom</type>
@@ -149,7 +154,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bootstrap</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/osgi/bootstrap</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -165,18 +170,8 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bundles</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/osgi/bundles</outputDirectory>
               <artifactItems>
-                <artifactItem>
-                  <groupId>ch.qos.logback</groupId>
-                  <artifactId>logback-classic</artifactId>
-                  <version>1.0.11</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>ch.qos.logback</groupId>
-                  <artifactId>logback-core</artifactId>
-                  <version>1.0.11</version>
-                </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>org.apache.felix.configadmin</artifactId>
@@ -212,22 +207,9 @@
                   <artifactId>org.apache.felix.scr</artifactId>
                   <version>2.0.14</version> <!-- does not work with 2.1.0 -->
                 </artifactItem>
-                <!-- From managed dependencies -->
                 <artifactItem>
                   <groupId>org.osgi</groupId>
                   <artifactId>org.osgi.enterprise</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>slf4j-api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>jul-to-slf4j</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>jcl-over-slf4j</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -238,7 +220,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/gogo</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/osgi/gogo</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.felix</groupId>
@@ -264,7 +246,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bundles</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/common</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
@@ -293,10 +275,6 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>webservice-utils</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>woodstox-osgi-adapter</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
@@ -339,10 +317,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.libs</groupId>
-                  <artifactId>logback-osgi-adapter</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
                   <artifactId>saxon-he</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -372,6 +346,83 @@
                 <artifactItem>
                   <groupId>org.codehaus.woodstox</groupId>
                   <artifactId>stax2-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>ch.qos.logback</groupId>
+                  <artifactId>logback-classic</artifactId>
+                  <version>1.0.11</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>ch.qos.logback</groupId>
+                  <artifactId>logback-core</artifactId>
+                  <version>1.0.11</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>jul-to-slf4j</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>jcl-over-slf4j</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-framework-osgi</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/jars/osgi/bundles</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>woodstox-osgi-adapter</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>logback-osgi-adapter</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-framework-no-osgi</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/jars/no-osgi</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>ds-to-spi-runtime</artifactId>
+                </artifactItem>
+                <!-- dependency of ds-to-spi-runtime -->
+                <dependency>
+                  <groupId>org.osgi</groupId>
+                  <artifactId>org.osgi.core</artifactId>
+                </dependency>
+                <!-- dependencies of XMLCalabash (the first two are embedded with Bundle-ClassPath) -->
+                <artifactItem>
+                  <groupId>com.nwalsh</groupId>
+                  <artifactId>nwalsh-annotations</artifactId>
+                  <version>1.0.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.xmlresolver</groupId>
+                  <artifactId>xmlresolver</artifactId>
+                  <version>0.13.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.atteo.classindex</groupId>
+                  <artifactId>classindex</artifactId>
+                  <version>3.3</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -466,9 +517,35 @@
                   <groupId>org.eclipse.persistence</groupId>
                   <artifactId>javax.persistence</artifactId>
                 </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-persistence-osgi</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/jars/osgi/persistence</outputDirectory>
+              <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.gemini</groupId>
                   <artifactId>org.apache.derby</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-persistence-no-osgi</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/jars/no-osgi/persistence</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.derby</groupId>
+                  <artifactId>derby</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -707,7 +784,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bundles</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/common</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
@@ -1106,14 +1183,6 @@
                   <artifactId>unbescape</artifactId>
                 </artifactItem>
                 <!--
-                    Dotify and epubcheck require older version of Jing
-                -->
-                <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>jing</artifactId>
-                  <version>20120724.0.0</version>
-                </artifactItem>
-                <!--
                     for epubcheck-adapter
                 -->
                 <artifactItem>
@@ -1143,12 +1212,31 @@
             </configuration>
           </execution>
           <execution>
+            <id>copy-modules-osgi</id>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/jars/osgi/bundles</outputDirectory>
+              <artifactItems>
+                <!--
+                    Dotify and epubcheck require older version of Jing
+                -->
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>jing</artifactId>
+                  <version>20120724.0.0</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
             <id>copy-modules-linux</id>
             <goals>
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bundles/linux</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/common/linux</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1169,7 +1257,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bundles/mac</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/common/mac</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1194,7 +1282,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/jars/bundles/win</outputDirectory>
+              <outputDirectory>${project.build.directory}/jars/common/win</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
@@ -1892,7 +1980,7 @@
                         <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml"/>
                       </fx:platform>
                       <fx:resources>
-                        <fx:fileset type="jar" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline" includes="system/bootstrap/felix.jar" />
+                        <fx:fileset type="jar" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline" includes="system/osgi/bootstrap/felix.jar" />
                         <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline" includes="NOTICE.txt" />
                         <fx:fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
                           <include name="**/*" />
@@ -2175,12 +2263,12 @@
                         gui/bootstrap/win/*,
                         gui/bootstrap/mac,
                         gui/bootstrap/mac/*
-                        bundles/linux,
-                        bundles/linux/*,
-                        bundles/win,
-                        bundles/win/*,
-                        bundles/mac,
-                        bundles/mac/*
+                        common/linux,
+                        common/linux/*,
+                        common/win,
+                        common/win/*,
+                        common/mac,
+                        common/mac/*
                       </excludes>
                       <mapper>
                         <prefix>${deb.pipeline.home}/system</prefix>
@@ -2197,9 +2285,9 @@
                     </data>
                     <data>
                       <type>directory</type>
-                      <src>${project.build.directory}/jars/bundles/linux</src>
+                      <src>${project.build.directory}/jars/common/linux</src>
                       <mapper>
-                        <prefix>${deb.pipeline.home}/system/bundles</prefix>
+                        <prefix>${deb.pipeline.home}/system/common</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
@@ -2404,12 +2492,12 @@
                             <exclude>gui/bootstrap/win/*</exclude>
                             <exclude>gui/bootstrap/mac</exclude>
                             <exclude>gui/bootstrap/mac/*</exclude>
-                            <exclude>bundles/linux</exclude>
-                            <exclude>bundles/linux/*</exclude>
-                            <exclude>bundles/win</exclude>
-                            <exclude>bundles/win/*</exclude>
-                            <exclude>bundles/mac</exclude>
-                            <exclude>bundles/mac/*</exclude>
+                            <exclude>common/linux</exclude>
+                            <exclude>common/linux/*</exclude>
+                            <exclude>common/win</exclude>
+                            <exclude>common/win/*</exclude>
+                            <exclude>common/mac</exclude>
+                            <exclude>common/mac/*</exclude>
                           </excludes>
                         </source>
                       </sources>
@@ -2426,13 +2514,13 @@
                       </sources>
                     </mapping>
                     <mapping>
-                      <directory>${rpm.pipeline.home}/system/bundles</directory>
+                      <directory>${rpm.pipeline.home}/system/common</directory>
                       <filemode>0644</filemode>
                       <username>${rpm.user}</username>
                       <groupname>${rpm.group}</groupname>
                       <sources>
                         <source>
-                          <location>${project.build.directory}/jars/bundles/linux</location>
+                          <location>${project.build.directory}/jars/common/linux</location>
                         </source>
                       </sources>
                     </mapping>

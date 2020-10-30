@@ -19,37 +19,52 @@
                                 <xsl:variable name="deployPath">
                                         <xsl:choose>
                                                 <xsl:when test="pom:id = 'copy-felix-launcher'">
-                                                        <xsl:value-of select="'system/bootstrap'"/>
+                                                        <xsl:value-of select="'system/osgi/bootstrap'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-felix-bundles'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/osgi/bundles'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-felix-gogo'">
                                                         <xsl:value-of select="'system/gogo'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-framework'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/common'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-framework-osgi'">
+                                                        <xsl:value-of select="'system/osgi/bundles'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-framework-no-osgi'">
+                                                        <xsl:value-of select="'system/no-osgi'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-webservice'">
                                                         <xsl:value-of select="'system/webservice'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/common'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-modules-osgi'">
+                                                        <xsl:value-of select="'system/osgi/bundles'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-linux'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/common'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-mac'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/common'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-win'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/common'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-persistence'">
                                                         <xsl:value-of select="'system/persistence'"/>
                                                 </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-persistence-osgi'">
+                                                        <xsl:value-of select="'system/osgi/persistence'"/>
+                                                </xsl:when>
+                                                <xsl:when test="pom:id = 'copy-persistence-no-osgi'">
+                                                        <xsl:value-of select="'system/no-osgi/persistence'"/>
+                                                </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-volatile'">
-                                                        <xsl:value-of select="'system/bundles'"/>
+                                                        <xsl:value-of select="'system/common'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-gui'">
                                                         <xsl:value-of select="'system/gui'"/>

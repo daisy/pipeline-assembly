@@ -6,8 +6,8 @@
       <outputDirectory>system/gui/bootstrap</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>target/jars/bundles/win</directory>
-      <outputDirectory>system/bundles</outputDirectory>
+      <directory>target/jars/common/win</directory>
+      <outputDirectory>system/common</outputDirectory>
     </fileSet>
   </fileSets>
 </component>

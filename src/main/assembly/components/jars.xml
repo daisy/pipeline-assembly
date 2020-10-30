@@ -11,12 +11,12 @@
         <exclude>gui/bootstrap/mac/*</exclude>
         <exclude>gui/bootstrap/win</exclude>
         <exclude>gui/bootstrap/win/*</exclude>
-        <exclude>bundles/linux</exclude>
-        <exclude>bundles/linux/*</exclude>
-        <exclude>bundles/mac</exclude>
-        <exclude>bundles/mac/*</exclude>
-        <exclude>bundles/win</exclude>
-        <exclude>bundles/win/*</exclude>
+        <exclude>common/linux</exclude>
+        <exclude>common/linux/*</exclude>
+        <exclude>common/mac</exclude>
+        <exclude>common/mac/*</exclude>
+        <exclude>common/win</exclude>
+        <exclude>common/win/*</exclude>
       </excludes>
     </fileSet>
   </fileSets>

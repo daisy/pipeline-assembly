@@ -6,8 +6,8 @@
       <outputDirectory>system/gui/bootstrap</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>target/jars/bundles/mac</directory>
-      <outputDirectory>system/bundles</outputDirectory>
+      <directory>target/jars/common/mac</directory>
+      <outputDirectory>system/common</outputDirectory>
     </fileSet>
   </fileSets>
 </component>
