@@ -428,6 +428,8 @@ run() {
     if [ $JAVA_VERSION -lt 9 ]; then
         # java 8
         eval exec "\"$JAVA"\" "$JAVA_OPTS" \
+             -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" \
+             -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\" \
              -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" \
              -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" \
              -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" \
