@@ -366,54 +366,6 @@
                   <artifactId>commons-io</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.restlet.osgi</groupId>
-                  <artifactId>org.restlet</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.restlet.osgi</groupId>
-                  <artifactId>org.restlet.ext.fileupload</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.restlet.osgi</groupId>
-                  <artifactId>org.restlet.ext.xml</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.restlet.osgi</groupId>
-                  <artifactId>org.restlet.ext.jetty</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.restlet.osgi</groupId>
-                  <artifactId>org.restlet.ext.ssl</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jetty</groupId>
-                  <artifactId>jetty-server</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jetty</groupId>
-                  <artifactId>jetty-ajp</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jetty</groupId>
-                  <artifactId>jetty-util</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jetty</groupId>
-                  <artifactId>jetty-http</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jetty</groupId>
-                  <artifactId>jetty-io</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jetty</groupId>
-                  <artifactId>jetty-continuation</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>jsslutils</artifactId>
-                </artifactItem>
-                <artifactItem>
                   <groupId>org.codehaus.woodstox</groupId>
                   <artifactId>woodstox-core-lgpl</artifactId>
                 </artifactItem>
@@ -536,6 +488,54 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
                   <artifactId>webservice</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.fileupload</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.xml</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.jetty</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.ssl</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-server</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-ajp</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-util</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-http</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-io</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-continuation</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>jsslutils</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -935,14 +935,6 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>tts-adapter-osx</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>tts-adapter-sapinative</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>tts-adapter-qfrency</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -1193,6 +1185,10 @@
                   <artifactId>liblouis-utils</artifactId>
                   <classifier>mac</classifier>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-osx</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -1213,6 +1209,10 @@
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
                   <artifactId>libhyphen-utils</artifactId>
                   <classifier>windows</classifier>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>tts-adapter-sapinative</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>

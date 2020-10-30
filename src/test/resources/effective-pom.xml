@@ -1393,6 +1393,29 @@
                                     <artifactId>commons-io</artifactId>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.codehaus.woodstox</groupId>
+                                    <artifactId>woodstox-core-lgpl</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.codehaus.woodstox</groupId>
+                                    <artifactId>stax2-api</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.mysql.jdbc</groupId>
+                                    <artifactId>com.springsource.com.mysql.jdbc</artifactId>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-webservice</id>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.daisy.pipeline</groupId>
+                                    <artifactId>webservice</artifactId>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.restlet.osgi</groupId>
                                     <artifactId>org.restlet</artifactId>
                                 </artifactItem>
@@ -1439,29 +1462,6 @@
                                 <artifactItem>
                                     <groupId>org.daisy.libs</groupId>
                                     <artifactId>jsslutils</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.codehaus.woodstox</groupId>
-                                    <artifactId>woodstox-core-lgpl</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.codehaus.woodstox</groupId>
-                                    <artifactId>stax2-api</artifactId>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.mysql.jdbc</groupId>
-                                    <artifactId>com.springsource.com.mysql.jdbc</artifactId>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-webservice</id>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.daisy.pipeline</groupId>
-                                    <artifactId>webservice</artifactId>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
