@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<component>
+  <fileSets>
+    <fileSet>
+      <directory>target/jars</directory>
+      <outputDirectory>system</outputDirectory>
+      <excludes>
+        <exclude>gui/bootstrap/linux</exclude>
+        <exclude>gui/bootstrap/linux/*</exclude>
+        <exclude>gui/bootstrap/mac</exclude>
+        <exclude>gui/bootstrap/mac/*</exclude>
+        <exclude>gui/bootstrap/win</exclude>
+        <exclude>gui/bootstrap/win/*</exclude>
+        <exclude>bundles/linux</exclude>
+        <exclude>bundles/linux/*</exclude>
+        <exclude>bundles/mac</exclude>
+        <exclude>bundles/mac/*</exclude>
+        <exclude>bundles/win</exclude>
+        <exclude>bundles/win/*</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+</component>

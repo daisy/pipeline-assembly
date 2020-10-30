@@ -276,6 +276,21 @@ setupDebugOptions() {
     fi
 }
 
+listJars() {
+    local var=$1
+    shift
+    local IFS=$'\n'
+    read -d '' -r -a $var < <(cd "$PIPELINE2_BASE" && find $@ -name '*.jar' -d 1 2>/dev/null)
+}
+
+join() {
+    local d=$1
+    shift
+    local f=$1
+    shift
+    printf %s "$f" "${@/#/$d}"
+}
+
 setupDefaults() {
     # add startOnFirstThread for the GUI
     DEFAULT_JAVA_OPTS=""
@@ -293,15 +308,9 @@ setupDefaults() {
         fi
     fi
 
-    # Add the jars in the lib dir
-    for file in "$PIPELINE2_HOME"/system/bootstrap/*.jar
-    do
-        if [ -z "$CLASSPATH" ]; then
-            CLASSPATH="$file"
-        else
-            CLASSPATH="$CLASSPATH:$file"
-        fi
-    done
+    # Add the jars in the bootstram dir
+    listJars cp system/bootstrap system/gui/bootstrap
+    CLASSPATH="$(join : ${cp[@]})"
     DEFAULT_JAVA_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
 
     ##
@@ -357,17 +366,12 @@ init() {
 
 run() {
     MAIN=org.apache.felix.main.Main
-    MODE=" -Dorg.daisy.pipeline.main.mode=webservice"
+    MODE=webservice
+    ENABLE_PERSISTENCE=true
+    ENABLE_SHELL=false
 
     while [ "$#" -gt 0 ]; do
       case "$1" in
-        # 'stop')
-        #     MAIN=org.apache.karaf.main.Stop
-        #     shift
-        #     ;;
-        # 'console')
-        #     shift
-        #     ;;
         'remote')
             PIPELINE2_WS_LOCALFS=false
             PIPELINE2_WS_AUTHENTICATION=true
@@ -390,16 +394,12 @@ run() {
             shift
             ;;
         'shell')
-            GOGO_BUNDLES=$(cd "$PIPELINE2_BASE" && echo $(find system/felix/gogo -name '*.jar' 2>/dev/null | while read f; do echo "file:$f"; done))
-            if [ -z "$GOGO_BUNDLES" ]; then
-                warn "Shell could not be enabled"
-            else
-                FELIX_OPTS="${FELIX_OPTS} -Dfelix.auto.start.1=\"$GOGO_BUNDLES\""
-            fi
+            ENABLE_SHELL=true
             shift
             ;;
         'gui')
-            MODE=" -Dorg.daisy.pipeline.main.mode=gui"
+            MODE=gui
+            ENABLE_PERSISTENCE=false
             shift
             ;;
         '*')
@@ -407,6 +407,20 @@ run() {
             ;;
       esac
     done
+
+    PATHS="$PATHS system/$MODE"
+    if [ "$ENABLE_SHELL" = "true" ]; then
+        PATHS="$PATHS system/gogo"
+    fi
+    if [ "$ENABLE_PERSISTENCE" = "true" ]; then
+        PATHS="$PATHS system/persistence"
+    else
+        PATHS="$PATHS system/volatile"
+    fi
+    eval listJars AUTO_START_BUNDLES $PATHS
+    FELIX_OPTS="-Dfelix.config.properties=\"file:$PIPELINE2_HOME/etc/config.properties\" \
+                -Dfelix.system.properties=\"file:$PIPELINE2_CONFIG/system.properties\" \
+                -Dfelix.auto.start.1=\"$(join ' ' ${AUTO_START_BUNDLES[@]/#/file:})\""
 
     JAVA_ENDORSED_DIRS="${JAVA_HOME}/jre/lib/endorsed:${JAVA_HOME}/lib/endorsed:${PIPELINE2_HOME}/lib/endorsed"
     JAVA_EXT_DIRS="${JAVA_HOME}/jre/lib/ext:${JAVA_HOME}/lib/ext:${PIPELINE2_HOME}/lib/ext"
@@ -433,11 +447,12 @@ run() {
         eval exec "\"$JAVA"\" "$JAVA_OPTS" \
              -Djava.endorsed.dirs="\"${JAVA_ENDORSED_DIRS}"\" \
              -Djava.ext.dirs="\"${JAVA_EXT_DIRS}"\" \
+             -Dorg.daisy.pipeline.mode="$MODE" \
              -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" \
              -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" \
-             -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" \
-             -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" \
-             $FELIX_OPTS $MODE -classpath "\"$CLASSPATH"\" $MAIN
+             $FELIX_OPTS \
+             -classpath "\"$CLASSPATH"\" \
+             $MAIN
     else
         # java >= 9
         eval exec "\"$JAVA"\" "$JAVA_OPTS" \
@@ -453,11 +468,12 @@ run() {
              --add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED \
              --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED \
              --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED \
+             -Dorg.daisy.pipeline.mode="$MODE" \
              -Dorg.daisy.pipeline.home="\"$PIPELINE2_HOME"\" \
              -Dorg.daisy.pipeline.data="\"$PIPELINE2_DATA"\" \
-             -Dfelix.config.properties="\"file:$PIPELINE2_HOME/etc/config.properties"\" \
-             -Dfelix.system.properties="\"file:$PIPELINE2_CONFIG/system.properties"\" \
-             $FELIX_OPTS $MODE -classpath "\"$CLASSPATH"\" $MAIN
+             $FELIX_OPTS \
+             -classpath "\"$CLASSPATH"\" \
+             $MAIN
     fi
 }
 

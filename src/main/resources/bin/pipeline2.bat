@@ -48,12 +48,6 @@ rem # # SUBROUTINES # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     echo %PROGNAME%: %*
 goto :EOF
 
-:append_to_classpath
-    set filename=%~1
-    set suffix=%filename:~-4%
-    if %suffix% equ .jar set CLASSPATH=!CLASSPATH!;%PIPELINE2_HOME%\%BOOTSTRAP:/=\%\%filename%
-goto :EOF
-
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 :BEGIN
@@ -111,15 +105,17 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     call:warn Enabling Java debug options: %JAVA_DEBUG_OPTS%
 :PIPELINE2_DEBUG_END
 
-    set BOOTSTRAP=system/bootstrap
     rem Setup the classpath
-    pushd "%PIPELINE2_HOME%\%BOOTSTRAP:/=\%"
-    for %%G in (*.jar) do call:append_to_classpath %%G
-    popd
+    for %%D in (system\bootstrap system\gui\bootstrap) do (
+        for /f %%F in ('dir /b "%PIPELINE2_BASE%\%%D\*.jar"') do (
+            set CLASSPATH=!CLASSPATH!;%%D\%%F
+        )
+    )
 
-    SET MAIN=org.apache.felix.main.Main
-    SET SHIFT=false
-    SET MODE=-Dorg.daisy.pipeline.main.mode=webservice
+    set MAIN=org.apache.felix.main.Main
+    set MODE=webservice
+    set ENABLE_PERSISTENCE=true
+    set ENABLE_SHELL=false
 
 :RUN_LOOP
     if [%1]==[] goto :EXECUTE
@@ -153,7 +149,8 @@ goto :RUN_LOOP
 goto :RUN_LOOP
 
 :EXECUTE_GUI
-    SET MODE=-Dorg.daisy.pipeline.main.mode=gui
+    set MODE=gui
+    set ENABLE_PERSISTENCE=false
     shift
 goto :RUN_LOOP
 
@@ -164,14 +161,29 @@ goto :RUN_LOOP
 goto :RUN_LOOP
 
 :EXECUTE_SHELL
-    for /f %%F in ('dir /b "%PIPELINE2_BASE%\system\felix\gogo\*.jar"') do (
-         set GOGO_BUNDLES=!GOGO_BUNDLES! file:system\felix\gogo\%%F
-    )
-    set FELIX_OPTS=%FELIX_OPTS% -Dfelix.auto.start.1="%GOGO_BUNDLES%"
+    set ENABLE_SHELL=true
     shift
 goto :RUN_LOOP
 
 :EXECUTE
+    set PATHS=!PATHS! system\%MODE%
+    if %ENABLE_SHELL% == true (
+        set PATHS=!PATHS! system\gogo
+    )
+    if %ENABLE_PERSISTENCE% == true (
+        set PATHS=!PATHS! system\persistence
+    ) else (
+        set PATHS=!PATHS! system\volatile
+    )
+	for %%D in (%PATHS%) do (
+        for /f %%F in ('dir /b "%PIPELINE2_BASE%\%%D\*.jar"') do (
+            set AUTO_START_BUNDLES=!AUTO_START_BUNDLES! file:%%D\%%F
+        )
+    )
+    set FELIX_OPTS=-Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
+                   -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
+                   -Dfelix.auto.start.1="%AUTO_START_BUNDLES%"
+
     rem Execute the Java Virtual Machine
     cd "%PIPELINE2_BASE%"
 
@@ -196,26 +208,28 @@ goto :RUN_LOOP
             --add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED ^
             --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED ^
             --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED ^
+            -Dorg.daisy.pipeline.mode="%MODE%" ^
             -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" ^
             -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
-            -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
-            -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
-            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN%
+            %FELIX_OPTS% ^
+            -classpath "%CLASSPATH%" ^
+            %MAIN%
     ) else (
         rem version 8
         SET COMMAND="%JAVA%" %JAVA_OPTS% ^
+            -Dorg.daisy.pipeline.mode="%MODE%" ^
             -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" ^
             -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
-            -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
-            -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
-            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN%
+            %FELIX_OPTS% ^
+            -classpath "%CLASSPATH%" ^
+            %MAIN%
             rem skipping java.endorsed.dirs and java.ext.dirs because this requires JAVA_HOME which is not always available
             rem -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%PIPELINE2_HOME%\lib\endorsed" ^
             rem -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%PIPELINE2_HOME%\lib\ext" ^
     )
     call:warn Starting java: %COMMAND%
 
-    if not "%GOGO_BUNDLES%" == "" (
+    if %ENABLE_SHELL% == true (
         endlocal & (
             set "PIPELINE2_HOME=%PIPELINE2_HOME%"
             set "PIPELINE2_BASE=%PIPELINE2_BASE%"
