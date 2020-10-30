@@ -373,10 +373,6 @@
                   <groupId>org.codehaus.woodstox</groupId>
                   <artifactId>stax2-api</artifactId>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>com.mysql.jdbc</groupId>
-                  <artifactId>com.springsource.com.mysql.jdbc</artifactId>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
