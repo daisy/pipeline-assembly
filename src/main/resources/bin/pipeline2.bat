@@ -27,7 +27,6 @@ if not "%ECHO%" == "" echo %ECHO%
 setlocal enabledelayedexpansion
 set DIRNAME=%~dp0
 set PROGNAME=%~nx0
-set ARGS=%*
 rem Code to return to launcher on failure
 rem 0:success, 1:unhandled, 2:user-fixable, 3:fatal(we must fix)
 set exitCode=0
@@ -123,12 +122,17 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
     SET MODE=-Dorg.daisy.pipeline.main.mode=webservice
 
 :RUN_LOOP
+    if [%1]==[] goto :EXECUTE
     if "%1" == "remote" goto :EXECUTE_REMOTE
     if "%1" == "local" goto :EXECUTE_LOCAL
     if "%1" == "clean" goto :EXECUTE_CLEAN
     if "%1" == "gui" goto :EXECUTE_GUI
     if "%1" == "debug" goto :EXECUTE_DEBUG
     if "%1" == "shell" goto :EXECUTE_SHELL
+    call:warn Unexpected argument: "%1"
+    rem user-fixable
+    set exitCode=2
+    goto END
 goto :EXECUTE
 
 :EXECUTE_REMOTE
@@ -168,7 +172,6 @@ goto :RUN_LOOP
 goto :RUN_LOOP
 
 :EXECUTE
-    SET ARGS=%1 %2 %3 %4 %5 %6 %7 %8
     rem Execute the Java Virtual Machine
     cd "%PIPELINE2_BASE%"
 
@@ -197,7 +200,7 @@ goto :RUN_LOOP
             -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
             -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
             -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
-            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN% %ARGS%
+            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN%
     ) else (
         rem version 8
         SET COMMAND="%JAVA%" %JAVA_OPTS% ^
@@ -205,7 +208,7 @@ goto :RUN_LOOP
             -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
             -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
             -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
-            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN% %ARGS%
+            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN%
             rem skipping java.endorsed.dirs and java.ext.dirs because this requires JAVA_HOME which is not always available
             rem -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%PIPELINE2_HOME%\lib\endorsed" ^
             rem -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%PIPELINE2_HOME%\lib\ext" ^
