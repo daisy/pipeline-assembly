@@ -1885,11 +1885,11 @@
                         <fx:property name="org.daisy.pipeline.mode" value="gui" />
                         <fx:property name="org.daisy.pipeline.home" value="." />
                         <fx:property name="org.daisy.pipeline.data" value="data" />
-                        <fx:property name="org.daisy.pipeline.base" value="." />
+                        <fx:property name="org.daisy.pipeline.logdir" value="data/log" />
                         <fx:property name="org.daisy.pipeline.ws.localfs" value="true" />
                         <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
-                        <fx:property name="felix.config.properties" value="file:etc/config.properties" />
-                        <fx:property name="felix.system.properties" value="file:etc/system.properties" />
+                        <fx:property name="org.daisy.pipeline.properties" value="file:etc/pipeline.properties" />
+                        <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml"/>
                       </fx:platform>
                       <fx:resources>
                         <fx:fileset type="jar" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline" includes="system/bootstrap/felix.jar" />
@@ -2041,12 +2041,9 @@
                       <targetPath>resources</targetPath>
                       <filtering>true</filtering>
                       <includes>
-                        <!--
-                            note that only system.properties really needs filtering
-                        -->
                         <include>bin/pipeline2</include>
-                        <include>etc/config.properties</include>
-                        <include>etc/system.properties</include>
+                        <include>etc/felix.properties</include>
+                        <include>etc/pipeline.properties</include>
                         <include>etc/config-logback.xml</include>
                       </includes>
                     </resource>
@@ -2122,9 +2119,9 @@
                       <type>directory</type>
                       <src>src/main/resources/etc</src>
                       <excludes>
-                        config.properties,
+                        felix.properties,
                         config-logback.xml,
-                        system.properties
+                        pipeline.properties
                       </excludes>
                       <mapper>
                         <prefix>${deb.pipeline.home}/etc</prefix>
@@ -2135,8 +2132,8 @@
                       <type>directory</type>
                       <src>${project.build.directory}/filtered-resources/resources/etc</src>
                       <includes>
-                        config.properties,
-                        system.properties
+                        felix.properties,
+                        pipeline.properties
                       </includes>
                       <mapper>
                         <prefix>${deb.pipeline.home}/etc</prefix>
@@ -2151,8 +2148,8 @@
                     <data>
                       <type>link</type>
                       <symlink>true</symlink>
-                      <linkName>${deb.pipeline.config}/system.properties</linkName>
-                      <linkTarget>${deb.pipeline.home}/etc/system.properties</linkTarget>
+                      <linkName>${deb.pipeline.config}/pipeline.properties</linkName>
+                      <linkTarget>${deb.pipeline.home}/etc/pipeline.properties</linkTarget>
                     </data>
                     <data>
                       <type>link</type>
@@ -2351,8 +2348,8 @@
                             <include>README.txt</include>
                           </includes>
                           <excludes>
-                            <exclude>etc/system.properties</exclude>
-                            <exclude>etc/config.properties</exclude>
+                            <exclude>etc/pipeline.properties</exclude>
+                            <exclude>etc/felix.properties</exclude>
                           </excludes>
                         </source>
                       </sources>
@@ -2366,8 +2363,8 @@
                         <source>
                           <location>src/main/resources</location>
                           <includes>
-                            <include>etc/system.properties</include>
-                            <include>etc/config.properties</include>
+                            <include>etc/pipeline.properties</include>
+                            <include>etc/felix.properties</include>
                             <include>etc/config-logback.xml</include>
                           </includes>
                           <filter>true</filter>

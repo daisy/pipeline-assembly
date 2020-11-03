@@ -1,5 +1,11 @@
 <configuration debug="false">
 
+  <!--
+      Variables that may be used in this file:
+      - ${org.daisy.pipeline.logdir}
+      - ${org.daisy.pipeline.mode} ("gui" or "webservice")
+  -->
+
   <!-- see http://logback.qos.ch/manual/configuration.html#LevelChangePropagator -->
   <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
 
