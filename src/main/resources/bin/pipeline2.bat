@@ -143,7 +143,6 @@ goto :RUN_LOOP
 :EXECUTE_GUI
     set MODE=gui
     set ENABLE_PERSISTENCE=false
-    set ENABLE_OSGI=true
     shift
 goto :RUN_LOOP
 
@@ -208,7 +207,10 @@ goto :RUN_LOOP
         set OSGI_OPTS=-Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/felix.properties" ^
                       -Dfelix.auto.start.1="!AUTO_START_BUNDLES!"
     ) else (
-        for %%D in (system\common %PATHS% modules) do (
+        if %MODE% == gui (
+            set PATHS=!PATHS! system\gui\bootstrap
+        )
+        for %%D in (system\common !PATHS! modules) do (
             if exist "%PIPELINE2_HOME%\%%D" (
                 rem Using wildcard to avoid "The input line is too long" error
                 set CLASSPATH=!CLASSPATH!;%%D\*
@@ -217,7 +219,11 @@ goto :RUN_LOOP
                 rem )
             )
         )
-        set MAIN=org.daisy.pipeline.webservice.impl.PipelineWebService
+        if %MODE% == webservice (
+            set MAIN=org.daisy.pipeline.webservice.impl.PipelineWebService
+        ) else (
+            set MAIN=org.daisy.pipeline.gui.GUIService
+        )
     )
 
     rem Execute the Java Virtual Machine

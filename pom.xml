@@ -1913,6 +1913,118 @@
       </build>
     </profile>
     <profile>
+      <id>package-mac-app</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>parse-version</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>parse-version</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <!--
+                    Note that this will include JRE 8. In order to include JRE 9 we have to set
+                    j2se="9.0+". Note however that the reason we depend on Java 9 is to avoid JAWS
+                    crashes, so it is only really required for Windows.
+                -->
+                <id>javapackager</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <!-- requires Ant 1.7+ -->
+                  <target xmlns:fx="javafx:com.sun.javafx.tools.ant">
+                    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant"
+                             classpath="${env.JAVA_HOME}/lib/ant-javafx.jar" />
+                    <path id="main.jar">
+                      <fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline/system">
+                        <include name="gui/org.daisy.pipeline.gui-*.jar"/>
+                      </fileset>
+                    </path>
+                    <path id="classpath">
+                      <fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline/system">
+                        <include name="common/**/*"/>
+                        <include name="no-osgi/**/*"/>
+                        <include name="gui/**/*"/>
+                        <include name="volatile/**/*"/>
+                        <exclude name="osgi/**/*"/>
+                        <exclude name="webservice/**/*"/>
+                        <exclude name="persistence/**/*"/>
+                        <exclude name="no-osgi/persistence/**/*"/>
+                        <exclude name="gui/org.daisy.pipeline.gui-*.jar"/>
+                      </fileset>
+                    </path>
+                    <manifestclasspath property="classpath" jarfile="${toString:main.jar}">
+                      <classpath refid="classpath"/>
+                    </manifestclasspath>
+                    <jar update="true" file="${toString:main.jar}">
+                      <manifest>
+                        <attribute name="Class-Path" value="${classpath}"/>
+                      </manifest>
+                    </jar>
+                    <fx:deploy outdir="${project.build.directory}/javapackager" outfile="dp2" nativeBundles="image">
+                      <fx:application id="org.daisy.pipeline2" name="DAISY Pipeline 2" version="${project.version}"
+                                      mainClass="org.daisy.pipeline.gui.GUIService"/>
+                      <fx:info description="A tool for automated production of accessible digital publication"
+                               title="DAISY Pipeline 2" vendor="DAISY Consortium">
+                        <fx:icon href="${project.basedir}/src/main/mac/pipeline-logo.icns" />
+                      </fx:info>
+                      <fx:platform j2se="8.0+">
+                        <fx:property name="org.daisy.pipeline.mode" value="gui" />
+                        <fx:property name="org.daisy.pipeline.home" value="." />
+                        <fx:property name="org.daisy.pipeline.data" value="data" />
+                        <fx:property name="org.daisy.pipeline.logdir" value="data/log" />
+                        <fx:property name="org.daisy.pipeline.ws.localfs" value="true" />
+                        <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
+                        <fx:property name="org.daisy.pipeline.properties" value="file:etc/pipeline.properties" />
+                        <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml"/>
+                      </fx:platform>
+                      <fx:resources>
+                        <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
+                          <include name="NOTICE.txt"/>
+                        </fx:fileset>
+                        <fx:fileset type="jar" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
+                          <include name="system/common/**/*"/>
+                          <include name="system/no-osgi/**/*"/>
+                          <include name="system/gui/**/*"/>
+                          <include name="system/volatile/**/*"/>
+                          <exclude name="system/osgi/**/*"/>
+                          <exclude name="system/webservice/**/*"/>
+                          <exclude name="system/persistence/**/*"/>
+                          <exclude name="system/no-osgi/persistence/**/*"/>
+                        </fx:fileset>
+                        <fx:fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
+                          <include name="**/*"/>
+                          <exclude name="system/**/*"/>
+                          <exclude name="NOTICE.txt"/>
+                          <exclude name="etc/felix.properties"/>
+                        </fx:fileset>
+                      </fx:resources>
+                      <fx:bundleArgument arg="mac.CFBundleIdentifier" value="org.daisy.pipeline2" />
+                      <fx:bundleArgument arg="mac.CFBundleVersion"
+                                         value="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}" />
+                    </fx:deploy>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>package-dmg</id>
       <build>
         <plugins>
@@ -1947,54 +2059,6 @@
             </configuration>
           </plugin>
           <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <!--
-                    Note that this will include JRE 8. In order to include JRE 9 we have to set
-                    j2se="9.0+". Note however that the reason we depend on Java 9 is to avoid JAWS
-                    crashes, so it is only really required for Windows.
-                -->
-                <id>javapackager</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target xmlns:fx="javafx:com.sun.javafx.tools.ant">
-                    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${env.JAVA_HOME}/lib/ant-javafx.jar" />
-                    <fx:deploy outdir="${project.build.directory}/javapackager" outfile="dp2" nativeBundles="image">
-                      <fx:application id="org.daisy.pipeline2" mainClass="org.apache.felix.main.Main" name="DAISY Pipeline 2" version="${project.version}">
-                      </fx:application>
-                      <fx:info description="A tool for automated production of accessible digital publication" title="DAISY Pipeline 2" vendor="DAISY Consortium">
-                        <fx:icon href="${project.basedir}/src/main/mac/pipeline-logo.icns" />
-                      </fx:info>
-                      <fx:platform j2se="8.0+">
-                        <fx:property name="org.daisy.pipeline.mode" value="gui" />
-                        <fx:property name="org.daisy.pipeline.home" value="." />
-                        <fx:property name="org.daisy.pipeline.data" value="data" />
-                        <fx:property name="org.daisy.pipeline.logdir" value="data/log" />
-                        <fx:property name="org.daisy.pipeline.ws.localfs" value="true" />
-                        <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
-                        <fx:property name="org.daisy.pipeline.properties" value="file:etc/pipeline.properties" />
-                        <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml"/>
-                      </fx:platform>
-                      <fx:resources>
-                        <fx:fileset type="jar" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline" includes="system/osgi/bootstrap/felix.jar" />
-                        <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline" includes="NOTICE.txt" />
-                        <fx:fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
-                          <include name="**/*" />
-                        </fx:fileset>
-                      </fx:resources>
-                      <fx:bundleArgument arg="mac.CFBundleIdentifier" value="org.daisy.pipeline2" />
-                      <fx:bundleArgument arg="mac.CFBundleVersion" value="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}" />
-                    </fx:deploy>
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <executions>
@@ -2023,13 +2087,6 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
             <executions>
-              <execution>
-                <id>parse-version</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>parse-version</goal>
-                </goals>
-              </execution>
               <execution>
                 <!--
                     this execution must come after package-appdmg
