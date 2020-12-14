@@ -37,9 +37,6 @@ title Pipeline2
 
 if "%PIPELINE2_DATA%" == "" (
     set PIPELINE2_DATA=%appdata%/DAISY Pipeline 2
-    if not exist "!PIPELINE2_DATA!" (
-      mkdir "!PIPELINE2_DATA!"
-    )
 )
 
 if not exist "%PIPELINE2_DATA%/log" mkdir "%PIPELINE2_DATA%/log"
@@ -55,7 +52,7 @@ goto :EOF
 :append_to_classpath
     set filename=%~1
     set suffix=%filename:~-4%
-    if %suffix% equ .jar set CLASSPATH=%CLASSPATH%;%PIPELINE2_HOME%\%BOOTSTRAP:/=\%\%filename%
+    if %suffix% equ .jar set CLASSPATH=!CLASSPATH!;%PIPELINE2_HOME%\%BOOTSTRAP:/=\%\%filename%
 goto :EOF
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -77,42 +74,21 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
     if not "%PIPELINE2_BASE%" == "" (
         if not exist "%PIPELINE2_BASE%" (
-            call:warn PIPELINE2_BASE is not valid: !PIPELINE2_BASE!
+            call:warn PIPELINE2_BASE is not valid: %PIPELINE2_BASE%
             rem fatal
             set exitCode=3
             goto END
         )
     )
 
-    if "%PIPELINE2_BASE%" == "" set PIPELINE2_BASE=!PIPELINE2_HOME!
+    if "%PIPELINE2_BASE%" == "" set PIPELINE2_BASE=%PIPELINE2_HOME%
 
-    if not "%PIPELINE2_DATA%" == "" (
-        if not exist "%PIPELINE2_DATA%" (
-            mkdir "!PIPELINE2_DATA!"
-        )
-    )
-
-    set LOCAL_CLASSPATH=%CLASSPATH%
-    set DEFAULT_JAVA_OPTS=-Dcom.sun.management.jmxremote
-    set CLASSPATH=%LOCAL_CLASSPATH%;%PIPELINE2_BASE%\conf
-    set DEFAULT_JAVA_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-
-    if "%LOCAL_CLASSPATH%" == "" goto :PIPELINE2_CLASSPATH_EMPTY
-        set CLASSPATH=%LOCAL_CLASSPATH%;%PIPELINE2_BASE%\conf
-        goto :PIPELINE2_CLASSPATH_END
-
-:PIPELINE2_CLASSPATH_EMPTY
-    set CLASSPATH=%PIPELINE2_BASE%\conf
-
-:PIPELINE2_CLASSPATH_END
-    rem Support for loading native libraries
-    set PATH=%PATH%;%PIPELINE2_BASE%\lib;%PIPELINE2_HOME%\lib
     rem Setup the Java Virtual Machine
-    call "%~dp0\checkJavaVersion.bat" 11
+    call "%DIRNAME%\checkJavaVersion.bat" 11
     if errorLevel 1 (
         rem Fall back to Java 8 (or 9 or 10) because web server does not work with Java 11
         call:warn Java 11 not found; Trying Java 8
-        call "%~dp0\checkJavaVersion.bat" 1.8
+        call "%DIRNAME%\checkJavaVersion.bat" 1.8
         if errorLevel 1 (
             if errorLevel 2 (
                 rem fatal
@@ -125,44 +101,23 @@ rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
         )
     )
 
-:Check_JAVA_END
+    set DEFAULT_JAVA_OPTS=-Dcom.sun.management.jmxremote
     if "%JAVA_OPTS%" == "" set JAVA_OPTS=%DEFAULT_JAVA_OPTS%
 
+    set DEFAULT_JAVA_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
     if "%PIPELINE2_DEBUG%" == "" goto :PIPELINE2_DEBUG_END
     rem Use the defaults if JAVA_DEBUG_OPTS was not set
     if "%JAVA_DEBUG_OPTS%" == "" set JAVA_DEBUG_OPTS=%DEFAULT_JAVA_DEBUG_OPTS%
-
     set "JAVA_OPTS=%JAVA_DEBUG_OPTS% %JAVA_OPTS%"
     call:warn Enabling Java debug options: %JAVA_DEBUG_OPTS%
-
 :PIPELINE2_DEBUG_END
-    if "%PIPELINE2_PROFILER%" == "" goto :PIPELINE2_PROFILER_END
 
-    set PIPELINE2_PROFILER_SCRIPT=%PIPELINE2_HOME%\conf\profiler\%PIPELINE2_PROFILER%.cmd
-
-    if exist "%PIPELINE2_PROFILER_SCRIPT%" goto :PIPELINE2_PROFILER_END (
-        call:warn Missing configuration for profiler '%PIPELINE2_PROFILER%': %PIPELINE2_PROFILER_SCRIPT%
-        rem fatal
-        set exitCode=3
-        goto END
-    )
-
-:PIPELINE2_PROFILER_END
     set BOOTSTRAP=system/bootstrap
     rem Setup the classpath
     pushd "%PIPELINE2_HOME%\%BOOTSTRAP:/=\%"
     for %%G in (*.jar) do call:append_to_classpath %%G
     popd
-goto CLASSPATH_END
 
-:CLASSPATH_END
-    rem Execute the JVM or the load the profiler
-    if "%PIPELINE2_PROFILER%" == "" goto :RUN
-        rem Execute the profiler if it has been configured
-        call:warn Loading profiler script: %PIPELINE2_PROFILER_SCRIPT%
-        call %PIPELINE2_PROFILER_SCRIPT%
-
-:RUN
     SET MAIN=org.apache.felix.main.Main
     SET SHIFT=false
     SET MODE=-Dorg.daisy.pipeline.main.mode=webservice
@@ -177,12 +132,14 @@ goto CLASSPATH_END
 goto :EXECUTE
 
 :EXECUTE_REMOTE
-    SET OPTS=-Dorg.daisy.pipeline.ws.localfs=false -Dorg.daisy.pipeline.ws.authentication=true
+    set PIPELINE2_WS_LOCALFS=false
+    set PIPELINE2_WS_AUTHENTICATION=true
     shift
 goto :RUN_LOOP
 
 :EXECUTE_LOCAL
-    SET OPTS=-Dorg.daisy.pipeline.ws.localfs=true -Dorg.daisy.pipeline.ws.authentication=false
+    set PIPELINE2_WS_LOCALFS=true
+    set PIPELINE2_WS_AUTHENTICATION=false
     shift
 goto :RUN_LOOP
 
@@ -215,7 +172,7 @@ goto :RUN_LOOP
     rem Execute the Java Virtual Machine
     cd "%PIPELINE2_BASE%"
 
-    call "%~dp0\checkJavaVersion.bat" _ :compare_versions %JAVA_VER% 9
+    call "%DIRNAME%\checkJavaVersion.bat" _ :compare_versions %JAVA_VER% 9
     if %ERRORLEVEL% geq 0 (
         if errorLevel 3 (
             rem unexpected error
@@ -224,7 +181,7 @@ goto :RUN_LOOP
             goto END
         )
         rem at least version 9
-        SET COMMAND="%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" ^
+        SET COMMAND="%JAVA%" %JAVA_OPTS% ^
             --add-opens java.base/java.security=ALL-UNNAMED ^
             --add-opens java.base/java.net=ALL-UNNAMED ^
             --add-opens java.base/java.lang=ALL-UNNAMED ^
@@ -237,20 +194,18 @@ goto :RUN_LOOP
             --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED ^
             --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED ^
             -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" ^
-            -Dorg.daisy.pipeline.base="%PIPELINE2_BASE%" ^
             -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
             -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
             -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
-            %FELIX_OPTS% %MODE% %PIPELINE2_OPTS% %MAIN% %ARGS%
+            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN% %ARGS%
     ) else (
         rem version 8
-        SET COMMAND="%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" ^
+        SET COMMAND="%JAVA%" %JAVA_OPTS% ^
             -Dorg.daisy.pipeline.home="%PIPELINE2_HOME%" ^
-            -Dorg.daisy.pipeline.base="%PIPELINE2_BASE%" ^
             -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
             -Dfelix.config.properties="file:%PIPELINE2_HOME:\=/%/etc/config.properties" ^
             -Dfelix.system.properties="file:%PIPELINE2_HOME:\=/%/etc/system.properties" ^
-            %FELIX_OPTS% %MODE% %PIPELINE2_OPTS% %MAIN% %ARGS%
+            %FELIX_OPTS% %MODE% -classpath "%CLASSPATH%" %MAIN% %ARGS%
             rem skipping java.endorsed.dirs and java.ext.dirs because this requires JAVA_HOME which is not always available
             rem -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%PIPELINE2_HOME%\lib\endorsed" ^
             rem -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%PIPELINE2_HOME%\lib\ext" ^
@@ -258,10 +213,24 @@ goto :RUN_LOOP
     call:warn Starting java: %COMMAND%
 
     if not "%GOGO_BUNDLES%" == "" (
-        %COMMAND%
+        endlocal & (
+            set "PIPELINE2_HOME=%PIPELINE2_HOME%"
+            set "PIPELINE2_BASE=%PIPELINE2_BASE%"
+            set "PIPELINE2_DATA=%PIPELINE2_DATA%"
+            set "PIPELINE2_WS_LOCALFS=%PIPELINE2_WS_LOCALFS%"
+            set "PIPELINE2_WS_AUTHENTICATION=%PIPELINE2_WS_AUTHENTICATION%"
+            %COMMAND%
+        )
     ) else (
         call:warn Output is written to daisy-pipeline-java.log
-        %COMMAND% > "%PIPELINE2_DATA%/log/daisy-pipeline-java.log"
+        endlocal & (
+            set "PIPELINE2_HOME=%PIPELINE2_HOME%"
+            set "PIPELINE2_BASE=%PIPELINE2_BASE%"
+            set "PIPELINE2_DATA=%PIPELINE2_DATA%"
+            set "PIPELINE2_WS_LOCALFS=%PIPELINE2_WS_LOCALFS%"
+            set "PIPELINE2_WS_AUTHENTICATION=%PIPELINE2_WS_AUTHENTICATION%"
+            %COMMAND% > "%PIPELINE2_DATA%/log/daisy-pipeline-java.log"
+        )
     )
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
