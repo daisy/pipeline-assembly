@@ -280,25 +280,26 @@ goto :RUN_LOOP
     )
     call:warn Starting java: %COMMAND%
 
+    rem FIXME: the endlocal seems to break things when called from pipeline2-gui.vbs
     if %ENABLE_SHELL% == true (
-        endlocal & (
-            set "PIPELINE2_HOME=%PIPELINE2_HOME%"
-            set "PIPELINE2_DATA=%PIPELINE2_DATA%"
-            set "PIPELINE2_LOGDIR=%PIPELINE2_LOGDIR%"
-            set "PIPELINE2_WS_LOCALFS=%PIPELINE2_WS_LOCALFS%"
-            set "PIPELINE2_WS_AUTHENTICATION=%PIPELINE2_WS_AUTHENTICATION%"
-            %COMMAND%
-        )
+        rem endlocal & (
+        rem     set "PIPELINE2_HOME=%PIPELINE2_HOME%"
+        rem     set "PIPELINE2_DATA=%PIPELINE2_DATA%"
+        rem     set "PIPELINE2_LOGDIR=%PIPELINE2_LOGDIR%"
+        rem     set "PIPELINE2_WS_LOCALFS=%PIPELINE2_WS_LOCALFS%"
+        rem     set "PIPELINE2_WS_AUTHENTICATION=%PIPELINE2_WS_AUTHENTICATION%"
+        %COMMAND%
+        rem )
     ) else (
         call:warn Output is written to daisy-pipeline-java.log
-        endlocal & (
-            set "PIPELINE2_HOME=%PIPELINE2_HOME%"
-            set "PIPELINE2_DATA=%PIPELINE2_DATA%"
-            set "PIPELINE2_LOGDIR=%PIPELINE2_LOGDIR%"
-            set "PIPELINE2_WS_LOCALFS=%PIPELINE2_WS_LOCALFS%"
-            set "PIPELINE2_WS_AUTHENTICATION=%PIPELINE2_WS_AUTHENTICATION%"
-            %COMMAND% > "%PIPELINE2_LOGDIR%\daisy-pipeline-java.log"
-        )
+        rem endlocal & (
+        rem     set "PIPELINE2_HOME=%PIPELINE2_HOME%"
+        rem     set "PIPELINE2_DATA=%PIPELINE2_DATA%"
+        rem     set "PIPELINE2_LOGDIR=%PIPELINE2_LOGDIR%"
+        rem     set "PIPELINE2_WS_LOCALFS=%PIPELINE2_WS_LOCALFS%"
+        rem     set "PIPELINE2_WS_AUTHENTICATION=%PIPELINE2_WS_AUTHENTICATION%"
+        %COMMAND% > "%PIPELINE2_LOGDIR%\daisy-pipeline-java.log"
+        rem )
     )
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
