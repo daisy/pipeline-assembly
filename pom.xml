@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.14.0-SNAPSHOT</version>
+  <version>1.14.0</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -17,7 +17,7 @@
     <connection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</connection>
     <url>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</url>
     <developerConnection>scm:git:git@github.com:daisy-consortium/pipeline-assembly.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>v1.14.0</tag>
   </scm>
   <properties>
     <cli.version>2.1.4</cli.version>
@@ -1942,39 +1942,36 @@
                 <configuration>
                   <!-- requires Ant 1.7+ -->
                   <target xmlns:fx="javafx:com.sun.javafx.tools.ant">
-                    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant"
-                             classpath="${env.JAVA_HOME}/lib/ant-javafx.jar" />
+                    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${env.JAVA_HOME}/lib/ant-javafx.jar" />
                     <path id="main.jar">
                       <fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline/system">
-                        <include name="gui/org.daisy.pipeline.gui-*.jar"/>
+                        <include name="gui/org.daisy.pipeline.gui-*.jar" />
                       </fileset>
                     </path>
                     <path id="classpath">
                       <fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline/system">
-                        <include name="common/**/*"/>
-                        <include name="no-osgi/**/*"/>
-                        <include name="gui/**/*"/>
-                        <include name="volatile/**/*"/>
-                        <exclude name="osgi/**/*"/>
-                        <exclude name="webservice/**/*"/>
-                        <exclude name="persistence/**/*"/>
-                        <exclude name="no-osgi/persistence/**/*"/>
-                        <exclude name="gui/org.daisy.pipeline.gui-*.jar"/>
+                        <include name="common/**/*" />
+                        <include name="no-osgi/**/*" />
+                        <include name="gui/**/*" />
+                        <include name="volatile/**/*" />
+                        <exclude name="osgi/**/*" />
+                        <exclude name="webservice/**/*" />
+                        <exclude name="persistence/**/*" />
+                        <exclude name="no-osgi/persistence/**/*" />
+                        <exclude name="gui/org.daisy.pipeline.gui-*.jar" />
                       </fileset>
                     </path>
                     <manifestclasspath property="classpath" jarfile="${toString:main.jar}">
-                      <classpath refid="classpath"/>
+                      <classpath refid="classpath" />
                     </manifestclasspath>
                     <jar update="true" file="${toString:main.jar}">
                       <manifest>
-                        <attribute name="Class-Path" value="${classpath}"/>
+                        <attribute name="Class-Path" value="${classpath}" />
                       </manifest>
                     </jar>
                     <fx:deploy outdir="${project.build.directory}/javapackager" outfile="dp2" nativeBundles="image">
-                      <fx:application id="org.daisy.pipeline2" name="DAISY Pipeline 2" version="${project.version}"
-                                      mainClass="org.daisy.pipeline.gui.GUIService"/>
-                      <fx:info description="A tool for automated production of accessible digital publication"
-                               title="DAISY Pipeline 2" vendor="DAISY Consortium">
+                      <fx:application id="org.daisy.pipeline2" name="DAISY Pipeline 2" version="${project.version}" mainClass="org.daisy.pipeline.gui.GUIService" />
+                      <fx:info description="A tool for automated production of accessible digital publication" title="DAISY Pipeline 2" vendor="DAISY Consortium">
                         <fx:icon href="${project.basedir}/src/main/mac/pipeline-logo.icns" />
                       </fx:info>
                       <fx:platform j2se="8.0+">
@@ -1985,32 +1982,31 @@
                         <fx:property name="org.daisy.pipeline.ws.localfs" value="true" />
                         <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
                         <fx:property name="org.daisy.pipeline.properties" value="file:etc/pipeline.properties" />
-                        <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml"/>
+                        <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml" />
                       </fx:platform>
                       <fx:resources>
                         <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
-                          <include name="NOTICE.txt"/>
+                          <include name="NOTICE.txt" />
                         </fx:fileset>
                         <fx:fileset type="jar" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
-                          <include name="system/common/**/*"/>
-                          <include name="system/no-osgi/**/*"/>
-                          <include name="system/gui/**/*"/>
-                          <include name="system/volatile/**/*"/>
-                          <exclude name="system/osgi/**/*"/>
-                          <exclude name="system/webservice/**/*"/>
-                          <exclude name="system/persistence/**/*"/>
-                          <exclude name="system/no-osgi/persistence/**/*"/>
+                          <include name="system/common/**/*" />
+                          <include name="system/no-osgi/**/*" />
+                          <include name="system/gui/**/*" />
+                          <include name="system/volatile/**/*" />
+                          <exclude name="system/osgi/**/*" />
+                          <exclude name="system/webservice/**/*" />
+                          <exclude name="system/persistence/**/*" />
+                          <exclude name="system/no-osgi/persistence/**/*" />
                         </fx:fileset>
                         <fx:fileset dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
-                          <include name="**/*"/>
-                          <exclude name="system/**/*"/>
-                          <exclude name="NOTICE.txt"/>
-                          <exclude name="etc/felix.properties"/>
+                          <include name="**/*" />
+                          <exclude name="system/**/*" />
+                          <exclude name="NOTICE.txt" />
+                          <exclude name="etc/felix.properties" />
                         </fx:fileset>
                       </fx:resources>
                       <fx:bundleArgument arg="mac.CFBundleIdentifier" value="org.daisy.pipeline2" />
-                      <fx:bundleArgument arg="mac.CFBundleVersion"
-                                         value="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}" />
+                      <fx:bundleArgument arg="mac.CFBundleVersion" value="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}" />
                     </fx:deploy>
                   </target>
                 </configuration>
