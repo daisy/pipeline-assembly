@@ -1981,8 +1981,11 @@
                         <fx:property name="org.daisy.pipeline.logdir" value="data/log" />
                         <fx:property name="org.daisy.pipeline.ws.localfs" value="true" />
                         <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
-                        <fx:property name="org.daisy.pipeline.properties" value="file:etc/pipeline.properties" />
+                        <fx:property name="org.daisy.pipeline.properties" value="etc/pipeline.properties" />
                         <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml" />
+                        <fx:property name="org.daisy.pipeline.updater.bin" value="updater/pipeline-updater"/>
+                        <fx:property name="org.daisy.pipeline.updater.deployPath" value="./"/>
+                        <fx:property name="org.daisy.pipeline.updater.releaseDescriptor" value="etc/releaseDescriptor.xml"/>
                       </fx:platform>
                       <fx:resources>
                         <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
