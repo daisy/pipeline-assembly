@@ -39,8 +39,7 @@ help :
 	echo "make check|check-docker:"                                             >&2
 	echo "	Tests the Docker image"                                             >&2
 
-# FIXME: don't hard-code
-assembly/VERSION     := 1.14.2-SNAPSHOT
+assembly/VERSION     := $(shell xmllint --xpath "/*/*[local-name()='version']/text()" pom.xml)
 assembly/BASEDIR     := .
 MVN_LOCAL_REPOSITORY ?= $(HOME)/.m2/repository
 
