@@ -15,7 +15,7 @@
         <xsl:template match="/*">
                 <xsl:variable name="version" select="/pom:project/pom:version/text()"/>
                 <xsl:variable name="artifacts" as="element()*">
-                        <xsl:for-each select="/pom:project/pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-dependency-plugin']/pom:executions/pom:execution[starts-with(pom:id/text(),'copy-')]">
+                        <xsl:for-each select="/pom:project/pom:profiles/pom:profile[pom:id='copy-artifacts']/pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-dependency-plugin']/pom:executions/pom:execution[starts-with(pom:id/text(),'copy-')]">
                                 <xsl:variable name="deployPath">
                                         <xsl:choose>
                                                 <xsl:when test="pom:id = 'copy-felix-launcher'">
