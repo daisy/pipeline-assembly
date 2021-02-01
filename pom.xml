@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.14.1-SNAPSHOT</version>
+  <version>1.14.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -68,7 +68,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>updater-gui</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.felix</groupId>
@@ -90,7 +90,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.1-SNAPSHOT</version>
+        <version>1.14.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -1994,9 +1994,9 @@
                         <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
                         <fx:property name="org.daisy.pipeline.properties" value="etc/pipeline.properties" />
                         <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml" />
-                        <fx:property name="org.daisy.pipeline.updater.bin" value="updater/pipeline-updater"/>
-                        <fx:property name="org.daisy.pipeline.updater.deployPath" value="./"/>
-                        <fx:property name="org.daisy.pipeline.updater.releaseDescriptor" value="etc/releaseDescriptor.xml"/>
+                        <fx:property name="org.daisy.pipeline.updater.bin" value="updater/pipeline-updater" />
+                        <fx:property name="org.daisy.pipeline.updater.deployPath" value="./" />
+                        <fx:property name="org.daisy.pipeline.updater.releaseDescriptor" value="etc/releaseDescriptor.xml" />
                       </fx:platform>
                       <fx:resources>
                         <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">
