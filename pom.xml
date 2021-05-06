@@ -1236,44 +1236,12 @@
                   <artifactId>braille-css</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.daisy.braille</groupId>
-                  <artifactId>braille-utils.api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.braille</groupId>
-                  <artifactId>braille-utils.impl</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.braille</groupId>
-                  <artifactId>braille-utils.pef-tools</artifactId>
-                </artifactItem>
-                <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.api</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.common</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.formatter.impl</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.hyphenator.impl</artifactId>
+                  <artifactId>dotify.library</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.dotify</groupId>
                   <artifactId>dotify.task.impl</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.text.impl</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.dotify</groupId>
-                  <artifactId>dotify.translator.impl</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.streamline</groupId>
