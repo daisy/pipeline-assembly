@@ -1224,6 +1224,10 @@
                   <artifactId>commons-lang3</artifactId>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.apache.commons</groupId>
+                  <artifactId>commons-text</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>com.googlecode.texhyphj</groupId>
                   <artifactId>texhyphj</artifactId>
                 </artifactItem>
@@ -1246,6 +1250,10 @@
                 <artifactItem>
                   <groupId>org.liblouis</groupId>
                   <artifactId>liblouis-java</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.sharegov</groupId>
+                  <artifactId>mjson</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.unbescape</groupId>
