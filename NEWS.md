@@ -1,8 +1,44 @@
+Changes in release v1.14.3
+==========================
+
+### Modules
+
+- EPUBCheck updated to 4.2.5
+- Improvements to the EPUB 3 enhancer script
+  - **NEW** Option to perform sentence detection even when text-to-speech is disabled. Useful for
+    talking book production with human narration.
+  - **NEW** Option to specify class attribute for sentence spans.
+  - **NEW** Option to include additional metadata in the EPUB package document.
+  - **NEW** Option to update `lang` attributes of content documents based on metadata in the package
+    document.
+  - **NEW** Support for `::before` and `::after` pseudo-elements in speech CSS, to include
+    speech-only content.
+  - **NEW** Option to generate text content for page numbers based on the navigation document or
+    `aria-label` and `title` attributes.
+  - **NEW** Option to generate headings for untitled sections based on `aria-label` attributes.
+  - **FIX** Improvements to sentence detection.
+- Improvements to the EPUB 3 to DAISY 2.02 script
+  - **NEW** NCC now lists the noterefs present in the publication.
+  - **FIX** Page numbers, footnotes, endnotes and sidebars are now skippable.
+  - **FIX** The result does not contain nested `a` elements anymore (invalid HTML).
+- **NEW** Option to enable TTS log (without having to modify the TTS configuration)
+- **FIX** Timeout issues in TTS process
+- Changes to braille production scripts, see [release notes of braille modules v1.14.2](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1142)
+- Various other bugfixes and improvements
+
+### Details
+
+- [Closed issues in braille-css](https://github.com/issues?q=repo%3Adaisy%2Fbraille-css+milestone%3Av1.14.3)
+- [Closed issues in jStyleParser](https://github.com/issues?q=repo%3Adaisy%2FjStyleParser+milestone%3Av1.14.3)
+- [Closed issues in pipeline-assembly](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.3)
+- [Closed issues in pipeline-framework](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.3)
+- [Closed issues in pipeline-modules](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.3)
+
 Changes in release v1.14.2
 ==========================
 
 This is a bugfix release. It fixes some installation and launch issues there were introduced in
-release v1.14.1.
+[release v1.14.1](#changes-in-release-v1141).
 
 - **FIX** Launch script was broken on Linux.
 - **FIX** Debian installer was broken when updating from old version.
@@ -38,8 +74,8 @@ Changes in release v1.14.1
 
 ### Modules
 
-- Changes to braille production scripts, see [release notes of Braille modules v1.14.0](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1140)
-- **NEW** Support for ssml:ph and ssml:alphabet attributes in EPUB 3 (for Text-To-Speech)
+- Changes to braille production scripts, see [release notes of braille modules v1.14.0](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1140)
+- **NEW** Support for ssml:ph and ssml:alphabet attributes in EPUB 3 (for text-to-speech)
 - **NEW** TTS log output for EPUB 3 Enhancer script
 - **FIX** Improvements to TTS voice selection logic
 - **FIX** Timeout issues in TTS process
@@ -69,13 +105,13 @@ Changes in release v1.13.6
 
 ### Modules
 
-- **NEW** Adapter for Google Cloud Text-To-Speech
-- **NEW** New option to create media overlays with TTS in EPUB 3 enhancer script
+- **NEW** Support for Google Cloud text-to-speech engine
+- **NEW** Option to create media overlays with TTS in EPUB 3 enhancer script
 - **NEW** EPUB 3 to DAISY 3 script
 - **NEW** EPUB 2 to EPUB 3 updater script
 - **NEW** EPUB to DAISY convenience script which produces both DAISY 3 and DAISY 2.02.
 - **FIX** A lot of bug fixes and improvements to EPUB 3 to DAISY 2.02
-- Changes to braille production scripts, see [release notes of Braille modules v1.13.7](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1137)
+- Changes to braille production scripts, see [release notes of braille modules v1.13.7](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1137)
 - **FIX** Bug in DAISY 3 to DAISY 2.02 SMIL conversion
 - **FIX** Validation issue in DTBook to DAISY 3
 - Major XProc code cleanup
@@ -102,7 +138,7 @@ Changes in release v1.13.5
 
 ### Modules
 
-- Changes to braille production scripts, see [release notes of Braille modules v1.13.6](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1136)
+- Changes to braille production scripts, see [release notes of braille modules v1.13.6](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1136)
 
 ### Details
 
@@ -115,7 +151,7 @@ Changes in release v1.13.4
 ### Modules
 
 - **FIX** Acapela TTS adapter
-- Changes to braille production scripts, see [release notes of Braille modules v1.13.5](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1135)
+- Changes to braille production scripts, see [release notes of braille modules v1.13.5](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1135)
 
 ### Details
 
@@ -132,7 +168,7 @@ Changes in release v1.13.3
 
 ### Modules
 
-- Changes to braille production scripts, see [release notes of Braille modules v1.13.4](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1134)
+- Changes to braille production scripts, see [release notes of braille modules v1.13.4](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1134)
 
 ### Details
 
@@ -145,7 +181,7 @@ Changes in release v1.13.2
 
 ### Modules
 
-- Changes to braille production scripts, see [release notes of Braille modules v1.13.3](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1133)
+- Changes to braille production scripts, see [release notes of braille modules v1.13.3](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1133)
 
 ### Details
 
@@ -187,7 +223,7 @@ Changes in release v1.13.0
 - **FIX** Speed up the DTBook to ZedAI conversion
 - **FIX** Make it possible to run a DAISY 3 to EPUB 3 conversion offline, or when the DAISY website is down
 - EPUBCheck updated to 4.2.2
-- Various changes to braille production scripts, see [release notes of Braille modules v1.12.1](https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1121)
+- Various changes to braille production scripts, see [release notes of braille modules v1.13.0](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1130)
 - XProc code cleanup
 
 ### Details
@@ -215,7 +251,7 @@ Changes in release v1.12.1
 ==========================
 
 This is a bugfix release. It fixes **epub3-validator** which was broken in [release
-v1.12.0](https://github.com/daisy/pipeline-assembly/releases/tag/v1.12.0).
+v1.12.0](#changes-in-release-v1120).
 
 ### Details
 
@@ -247,7 +283,7 @@ Changes in release v1.12.0
 - **NEW** Improved HTML chunking, incl. new option "chunk-size" for daisy3-to-epub3, dtbook-to-epub3, dtbook-to-html, zedai-to-epub3 and zedai-to-html scripts
 - **NEW** Configuration file for well-known TTS voices
 - Scripts with TTS now fail when audio is missing
-- Various changes to braille production scripts, see [release notes of Braille modules v1.11.2](https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1112)
+- Various changes to braille production scripts, see [release notes of braille modules v1.11.2](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1112)
 - XProc code cleanup
 
 ### Details
@@ -288,7 +324,7 @@ Changes in release v1.11.1
 - **FIX** Support "dir" attribute on dtbook element in **dtbook-to-epub3**
 - **FIX** Support validating unzipped EPUBs
 - **FIX** Issue with adapter for Qfrency speech engine
-- Various changes to braille scripts, see [release notes of Braille modules v1.11.1](https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1111)
+- Various changes to braille scripts, see [release notes of braille modules v1.11.1](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1111)
 
 ### Details
 
@@ -323,9 +359,9 @@ Changes in release v1.11
 
 - **NEW** DTBook to ODT (OpenDocument Text) script
 - **NEW** DTBook to RTF (Rich Text Format) script
-- **NEW** Adapter for Qfrency speech engine
+- **NEW** Support for Qfrency text-to-speech engine
 - **NEW** EPUB 3 enhancer script for adding a braille rendition to an EPUB
-- various changes to braille scripts, see [release notes of Braille modules v1.11.0](https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1110)
+- various changes to braille scripts, see [release notes of braille modules v1.11.0](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1110)
 - **FIX** Issues with lost significant spaces in dtbook-to-zedai and zedai-to-html
 - **FIX** Improve support for DTBook 1.1.0
 - Simplified configuration of text-to-speech
@@ -351,8 +387,7 @@ Changes in release v1.10.4
 ==========================
 
 This is a bugfix release. It includes fixes to **daisy202-to-epub3** and **epub3-to-daisy202** that
-were advertised but not included in
-[release v1.10.2](https://github.com/daisy/pipeline-assembly/releases/tag/v1.10.2).
+were advertised but not included in [release v1.10.2](#changes-in-release-v1102).
 
 ### Details
 
@@ -401,7 +436,7 @@ Changes in release v1.10.2
 - **daisy202-validator**
   - **FIX** Attribute "shape" not allowed here
 - **braille modules**
-  - See [release notes of Braille modules v1.10.1](https://github.com/daisy/pipeline-mod-braille/blob/master/NEWS.md#v1101)
+  - See [release notes of braille modules v1.10.1](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1101)
 - **TTS modules**
   - **FIX** problem finding lame
 - **Utility modules**
