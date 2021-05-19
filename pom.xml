@@ -447,6 +447,8 @@
                 <artifactItem>
                   <groupId>com.google.guava</groupId>
                   <artifactId>guava</artifactId>
+                  <!-- FIXME: remove when framework-bom updated -->
+                  <version>24.1.1-android</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>commons-codec</groupId>
@@ -1269,6 +1271,8 @@
                 <artifactItem>
                   <groupId>org.apache.commons</groupId>
                   <artifactId>commons-compress</artifactId>
+                  <!-- FIXME: remove when modules-bom updated -->
+                  <version>1.20</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.codehaus.jackson</groupId>
