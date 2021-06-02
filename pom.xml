@@ -952,6 +952,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy202-to-daisy3</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>daisy3-to-daisy202</artifactId>
                 </artifactItem>
                 <artifactItem>

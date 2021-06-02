@@ -3,6 +3,7 @@ Changes in next release
 
 ### Modules
 
+- **NEW** DAISY 2.02 to DAISY 3 upgrader script
 - **NEW** Support for CereProc text-to-speech engine
 - Improvements to the EPUB 3 enhancer script
   - **NEW** Options to update `dc:identifier` and `title` in content documents based on EPUB
