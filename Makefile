@@ -151,20 +151,27 @@ src/main/docker/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz :
 	curl -L -o $@ "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/$(notdir $@)"
 
 .PHONY : dev-launcher
+dev-launcher : target/dev-launcher/pipeline2
+target/dev-launcher/pipeline2 : pom.xml
 ifeq ($(shell uname), Darwin)
-dev-launcher : target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
 else
-dev-launcher : target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
+	mkdir -p $(dir $@)
+	echo "#!/usr/bin/env bash"                  >$@
+	echo "JAVA_HOME=$(CURDIR)/$(word 1,$^) \\" >>$@
+	echo "$(CURDIR)/$(word 2,$^) \"\$$@\""     >>$@
+	chmod +x $@
 
-target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pbuild-jre \
-                                                                             -Pcopy-artifacts \
+target/maven-jlink/classifiers/jre : mvn -Pbuild-jre
+
+target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-mac \
                                                                              -Punpack-updater-mac \
                                                                              -Passemble-mac-dir
-target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pbuild-jre \
-                                                                             -Pcopy-artifacts \
+target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-linux \
                                                                              -Punpack-updater-linux \
