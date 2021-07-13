@@ -1,9 +1,18 @@
-Changes in release v1.14.4
-==========================
+Changes in next release
+=======================
 
 ### Modules
 
 - **NEW** Support for CereProc text-to-speech engine
+- Improvements to the EPUB 3 enhancer script
+  - **NEW** Options to update `dc:identifier` and `title` in content documents based on EPUB
+    metadata.
+- Improvements to the EPUB 3 to DAISY 2.02 script
+  - **FIX** Improved handling of anchor elements: `href` attributes are dropped in cases where
+    navigation between elements is handled through SMIL.
+- Improvements to the DAISY 2.02 to EPUB 3 script
+  - **FIX** broken `epub:textref` links in SMILs.
+- Changes to braille production scripts, see [release notes of braille modules v1.14.3](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1143)
 
 
 Changes in release v1.14.3
