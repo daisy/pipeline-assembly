@@ -20,7 +20,7 @@
     <tag>HEAD</tag>
   </scm>
   <properties>
-    <cli.version>2.1.5-SNAPSHOT</cli.version>
+    <cli.version>2.1.5</cli.version>
     <javafx.version>11.0.1</javafx.version>
     <!--
         for package-exe
@@ -83,7 +83,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.14.2-SNAPSHOT</version>
+        <version>1.14.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
