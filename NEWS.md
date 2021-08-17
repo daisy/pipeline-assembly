@@ -7,6 +7,8 @@ Changes in next release
 - Improvements to the EPUB 3 enhancer script
   - **NEW** Options to update `dc:identifier` and `title` in content documents based on EPUB
     metadata.
+  - **FIX** Error when processing EPUB with double-occurrence page numbers in navigation document.
+  - **FIX** Don't strip doctype from XHTML documents.
 - Improvements to the EPUB 3 to DAISY 2.02 script
   - **FIX** Improved handling of anchor elements: `href` attributes are dropped in cases where
     navigation between elements is handled through SMIL.
