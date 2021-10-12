@@ -222,11 +222,13 @@ target/maven-jlink/classifiers/jre-linux                               : src/mai
 endif
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
+                                                                             -Pcompile-simple-api \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-mac \
                                                                              -Punpack-updater-mac \
                                                                              -Passemble-mac-dir
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pcopy-artifacts \
+                                                                             -Pcompile-simple-api \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-linux \
                                                                              -Punpack-updater-linux \
@@ -331,6 +333,7 @@ clean :
 
 PROFILES :=                     \
 	copy-artifacts              \
+	compile-simple-api          \
 	generate-release-descriptor \
 	build-jre                   \
 	build-jre-linux             \
