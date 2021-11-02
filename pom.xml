@@ -2804,6 +2804,23 @@
       </build>
     </profile>
     <profile>
+      <id>without-webservice</id>
+      <!-- FIXME: also exclude pipeline2-webservice.vbs (and start menu shortcut) -->
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-webservice</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>test-batch</id>
       <build>
         <plugins>
