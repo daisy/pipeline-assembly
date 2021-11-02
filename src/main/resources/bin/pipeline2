@@ -416,6 +416,12 @@ run() {
         fi
     fi
     if [ "$ENABLE_PERSISTENCE" = "true" ]; then
+        if ! [ -e "$PIPELINE2_HOME/system/persistence" ]; then
+            warn "Running without persistence"
+            ENABLE_PERSISTENCE=false
+        fi
+    fi
+    if [ "$ENABLE_PERSISTENCE" = "true" ]; then
         PATHS="$PATHS system/persistence"
         if [ "$ENABLE_OSGI" = "true" ]; then
             PATHS="$PATHS system/osgi/persistence"
