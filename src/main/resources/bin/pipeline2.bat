@@ -158,6 +158,14 @@ goto :RUN_LOOP
 goto :RUN_LOOP
 
 :EXECUTE
+    if %MODE% == gui (
+        if not exist "%PIPELINE2_HOME%\system\gui" (
+            call:warn GUI mode not supported
+            rem user-fixable
+            set exitCode=2
+            goto END
+        )
+    )
     if %ENABLE_OSGI% == true (
         if not exist "%PIPELINE2_HOME%\system\osgi\bootstrap" (
             call:warn OSGi can not be enabled

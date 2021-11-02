@@ -2775,6 +2775,35 @@
       </build>
     </profile>
     <profile>
+      <id>without-gui</id>
+      <!-- FIXME: also exclude pipeline2-gui.vbs (and start menu shortcut) -->
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-gui</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-javafx-linux</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-javafx-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-javafx-win</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>test-batch</id>
       <build>
         <plugins>
