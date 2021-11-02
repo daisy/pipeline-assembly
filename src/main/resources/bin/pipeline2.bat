@@ -158,12 +158,24 @@ goto :RUN_LOOP
 goto :RUN_LOOP
 
 :EXECUTE
-    if %MODE% == gui (
-        if not exist "%PIPELINE2_HOME%\system\gui" (
-            call:warn GUI mode not supported
-            rem user-fixable
-            set exitCode=2
-            goto END
+    if %MODE% == webservice (
+        if not exist "%PIPELINE2_HOME%\system\webservice" (
+            if not exist "%PIPELINE2_HOME%\system\gui" (
+                rem fatal
+                set exitCode=3
+                goto END
+            )
+            set MODE=gui
+            set ENABLE_PERSISTENCE=false
+        )
+    ) else (
+        if %MODE% == gui (
+            if not exist "%PIPELINE2_HOME%\system\gui" (
+                call:warn GUI mode not supported
+                rem user-fixable
+                set exitCode=2
+                goto END
+            )
         )
     )
     if %ENABLE_OSGI% == true (
