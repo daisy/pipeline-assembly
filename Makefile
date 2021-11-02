@@ -206,6 +206,9 @@ check-docker :
 .PHONY : --without-persistence
 --without-persistence : -Pwithout-persistence
 
+.PHONY : --without-osgi
+--without-osgi : -Pwithout-osgi
+
 #                         process-sources      generate-resources      process-resources      prepare-package       package
 #                         ---------------      ---------------         -----------------      ---------------       -------
 # copy-artifacts          copy-felix-launcher
@@ -282,7 +285,8 @@ PROFILES :=                     \
 	unpack-updater-mac          \
 	unpack-updater-win          \
 	unpack-updater-gui-win      \
-	without-persistence
+	without-persistence         \
+	without-osgi
 
 .PHONY : mvn
 mvn :

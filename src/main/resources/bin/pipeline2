@@ -403,6 +403,12 @@ run() {
     done
 
     if [ "$ENABLE_OSGI" = "true" ]; then
+        if ! [ -e "$PIPELINE2_HOME/system/osgi/bootstrap" ]; then
+            warn "OSGi can not be enabled"
+            ENABLE_OSGI=false
+        fi
+    fi
+    if [ "$ENABLE_OSGI" = "true" ]; then
         PATHS="$PATHS system/osgi/bundles"
     else
         PATHS="$PATHS system/no-osgi"

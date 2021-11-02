@@ -159,6 +159,12 @@ goto :RUN_LOOP
 
 :EXECUTE
     if %ENABLE_OSGI% == true (
+        if not exist "%PIPELINE2_HOME%\system\osgi\bootstrap" (
+            call:warn OSGi can not be enabled
+            set ENABLE_OSGI=false
+        )
+    )
+    if %ENABLE_OSGI% == true (
         set PATHS=!PATHS! system\osgi\bundles
     ) else (
         set PATHS=!PATHS! system\no-osgi
