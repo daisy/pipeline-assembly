@@ -2725,6 +2725,14 @@
                 <id>copy-persistence</id>
                 <phase>none</phase>
               </execution>
+              <execution>
+                <id>copy-persistence-osgi</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-persistence-no-osgi</id>
+                <phase>none</phase>
+              </execution>
             </executions>
           </plugin>
         </plugins>

@@ -172,6 +172,12 @@ goto :RUN_LOOP
         )
     )
     if %ENABLE_PERSISTENCE% == true (
+        if not exist "%PIPELINE2_HOME%\system\persistence" (
+            call:warn Running without persistence
+            set ENABLE_PERSISTENCE=false
+        )
+    )
+    if %ENABLE_PERSISTENCE% == true (
         set PATHS=!PATHS! system\persistence
         if %ENABLE_OSGI% == true (
             set PATHS=!PATHS! system\osgi\persistence
