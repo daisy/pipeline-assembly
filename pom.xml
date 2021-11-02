@@ -2739,6 +2739,42 @@
       </build>
     </profile>
     <profile>
+      <id>without-osgi</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-felix-launcher</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-felix-bundles</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-felix-gogo</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-framework-osgi</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-modules-osgi</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>copy-persistence-osgi</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>test-batch</id>
       <build>
         <plugins>
