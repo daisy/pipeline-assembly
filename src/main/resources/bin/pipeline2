@@ -402,6 +402,11 @@ run() {
       esac
     done
 
+    if [ "$MODE" = "gui" ]; then
+        if ! [ -e "$PIPELINE2_HOME/system/gui" ] ; then
+            die "GUI mode not supported"
+        fi
+    fi
     if [ "$ENABLE_OSGI" = "true" ]; then
         if ! [ -e "$PIPELINE2_HOME/system/osgi/bootstrap" ]; then
             warn "OSGi can not be enabled"
