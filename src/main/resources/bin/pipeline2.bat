@@ -265,8 +265,6 @@ goto :RUN_LOOP
     set SYSTEM_PROPS=%SYSTEM_PROPS% -Dlogback.configurationFile="file:%PIPELINE2_HOME:\=/%/etc/config-logback.xml"
     rem XMLCalabash base configuration file
     set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.xproc.configuration="%PIPELINE2_HOME:\=/%/etc/config-calabash.xml"
-    rem Version number as returned by "alive" call
-    set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.version=${project.version}
     rem Updater configuration
     set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.updater.bin="%PIPELINE2_HOME:\=/%/updater/pipeline-updater" ^
                                     -Dorg.daisy.pipeline.updater.deployPath="%PIPELINE2_HOME:\=/%/" ^
