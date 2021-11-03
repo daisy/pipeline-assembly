@@ -502,8 +502,6 @@ run() {
     SYSTEM_PROPS="${SYSTEM_PROPS} -Dlogback.configurationFile=\"file:${PIPELINE2_CONFIG}/config-logback.xml\""
     # XMLCalabash base configuration file
     SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.xproc.configuration=\"${PIPELINE2_HOME}/etc/config-calabash.xml\""
-    # Version number as returned by "alive" call
-    SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.version=${project.version}"
     # Updater configuration
     SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.updater.bin=\"${PIPELINE2_HOME}/updater/${pipeline.updater}\"
                                   -Dorg.daisy.pipeline.updater.deployPath=\"${PIPELINE2_HOME}/\"
