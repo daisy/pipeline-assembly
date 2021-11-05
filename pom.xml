@@ -90,7 +90,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.3</version>
+        <version>1.14.5</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -1164,11 +1164,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>common-utils</artifactId>
+                  <artifactId>braille-common</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
-                  <artifactId>css-utils</artifactId>
+                  <artifactId>braille-css-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules.braille</groupId>
