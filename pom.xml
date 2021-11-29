@@ -83,7 +83,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.14.4</version>
+        <version>1.14.6</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -454,10 +454,6 @@
                   <artifactId>guava</artifactId>
                   <!-- FIXME: remove when framework-bom updated -->
                   <version>24.1.1-android</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>commons-codec</groupId>
-                  <artifactId>commons-codec</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>commons-fileupload</groupId>
