@@ -1,9 +1,39 @@
+ifneq ($(firstword $(sort $(MAKE_VERSION) 3.82)), 3.82)
+$(error "GNU Make 3.82 is required to run this script")
+endif
+
+ifeq ($(OS),Windows_NT)
+RUBY := ruby.exe
+else
+RUBY := ruby
+endif
+
+SHELL := $(RUBY)
+.SHELLFLAGS := -e
+
+ifneq ($(shell puts "x"), x)
+$(error "Ruby is required to run this script")
+endif
+
+ifeq ($(shell                               \
+    begin;                                  \
+        gem 'os';                           \
+        gem 'nokogiri';                     \
+        gem 'rubyzip';                      \
+    rescue LoadError => e;                  \
+        STDERR.puts e.message;              \
+        puts "x";                           \
+    end;                                    ), x)
+$(error "One or more Ruby gems are missing. Install them with `gem install os nokogiri rubyzip'")
+endif
+
 MVN ?= mvn
 DOCKER := docker
-SHELL  := /bin/bash
 
 .PHONY : default
-ifeq ($(shell uname), Darwin)
+ifeq ($(shell require 'os'; puts OS.windows?), true)
+default : exe
+else ifeq ($(shell require 'os'; puts OS.mac?), true)
 default : dmg
 else
 default : zip-linux
@@ -11,34 +41,41 @@ endif
 
 .PHONY : help
 help :
-	echo "make [default]:"                                                      >&2
-	echo "	Builds the default package for the current platform"                >&2
-	echo "make dmg:"                                                            >&2
-	echo "	Builds a DMG image (Mac OS disk image)"                             >&2
-	echo "make exe:"                                                            >&2
-	echo "	Builds a EXE (Windows installer)"                                   >&2
-	echo "make deb:"                                                            >&2
-	echo "	Builds a DEB (Debian package)"                                      >&2
-	echo "make rpm:"                                                            >&2
-	echo "	Builds a RPM (RedHat package)"                                      >&2
-	echo "make zip-linux:"                                                      >&2
-	echo "	Builds a ZIP for Linux"                                             >&2
-	echo "make all:"                                                            >&2
-	echo "	Builds a DMG, a EXE, a DEB, a RPM and a ZIP for Linux"              >&2
-	echo "make zip-mac:"                                                        >&2
-	echo "	Builds a ZIP for Mac OS"                                            >&2
-	echo "make zip-win:"                                                        >&2
-	echo "	Builds a ZIP for Windows"                                           >&2
-	echo "make zips:"                                                           >&2
-	echo "	Builds a ZIP for each platform"                                     >&2
-	echo "make zip-minimal:"                                                    >&2
-	echo "	Builds a minimal ZIP that will complete itself upon first update"   >&2
-	echo "make docker:"                                                         >&2
-	echo "	Builds a Docker image"                                              >&2
-	echo "make check|check-docker:"                                             >&2
-	echo "	Tests the Docker image"                                             >&2
+	@STDERR.puts [                                                             \
+		"make [default]:",                                                     \
+		"	Builds the default package for the current platform",              \
+		"make dmg:",                                                           \
+		"	Builds a DMG image (Mac OS disk image)",                           \
+		"make exe:",                                                           \
+		"	Builds a EXE (Windows installer)",                                 \
+		"make deb:",                                                           \
+		"	Builds a DEB (Debian package)",                                    \
+		"make rpm:",                                                           \
+		"	Builds a RPM (RedHat package)",                                    \
+		"make zip-linux:",                                                     \
+		"	Builds a ZIP for Linux",                                           \
+		"make all:",                                                           \
+		"	Builds a DMG, a EXE, a DEB, a RPM and a ZIP for Linux",            \
+		"make zip-mac:",                                                       \
+		"	Builds a ZIP for Mac OS",                                          \
+		"make zip-win:",                                                       \
+		"	Builds a ZIP for Windows",                                         \
+		"make zips:",                                                          \
+		"	Builds a ZIP for each platform",                                   \
+		"make zip-minimal:",                                                   \
+		"	Builds a minimal ZIP that will complete itself upon first update"  ]
+ifneq ($(shell require 'os'; puts OS.windows?), true)
+	@STDERR.puts [                                                             \
+		"make docker:",                                                        \
+		"	Builds a Docker image",                                            \
+		"make check|check-docker:",                                            \
+		"	Tests the Docker image"                                            \
+		"make dev-launcher:",                                                  \
+		"	Builds a version that can be run directly on the current platform" ]
+endif
 
-assembly/VERSION     := $(shell xmllint --xpath "/*/*[local-name()='version']/text()" pom.xml)
+assembly/VERSION     := $(shell require 'nokogiri'; \
+                                puts Nokogiri::XML(File.new("pom.xml")).at_xpath("/*/*[local-name()='version']/text()"))
 assembly/BASEDIR     := .
 MVN_LOCAL_REPOSITORY ?= $(HOME)/.m2/repository
 
@@ -104,7 +141,7 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
                                                                                                                        -Pgenerate-release-descriptor \
                                                                                                                        -Punpack-cli-linux \
                                                                                                                        -Ppackage-deb-cli
-ifeq ($(shell uname), Darwin)
+ifeq ($(shell require 'os'; puts OS.mac?), true)
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION).dmg         : mvn -Pcopy-artifacts \
                                                                                                                        -Pgenerate-release-descriptor \
                                                                                                                        -Punpack-cli-mac \
@@ -114,62 +151,68 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
 	# we run package-dmg in a subsequent mvn call to avoid execution
 	# order issues when the package-mac-app and package-dmg profiles
 	# are activated together
-	$(MVN) install -Ppackage-dmg
-	test -e $@
+	exit(system("$(MVN) install -Ppackage-dmg"))
+	exit(File.exists?("$@"))
 else
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION).dmg         :
-	@echo "Can not build DMG because not running MacOS" >&2
-	exit 1
+	@SDTERR.puts "Can not build DMG because not running MacOS"; \
+	exit(1)
 endif
-ifeq ($(shell test -f /etc/redhat-release; echo $$?), 0)
+ifeq ($(shell puts File.file?("/etc/redhat-release")), true)
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-linux.rpm   : mvn -Pcopy-artifacts \
                                                                                                                        -Pgenerate-release-descriptor \
                                                                                                                        -Passemble-linux-dir \
                                                                                                                        -Ppackage-rpm
-	test -e $@
+	exit(File.exists?("$@"))
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-cli.rpm     : mvn -Pcopy-artifacts \
                                                                                                                        -Pgenerate-release-descriptor \
                                                                                                                        -Punpack-cli-linux \
                                                                                                                        -Ppackage-rpm-cli
-	test -e $@
+	exit(File.exists?("$@"))
 else
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-linux.rpm \
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-cli.rpm :
-	@echo "Can not build RPM because not running RedHat/CentOS" >&2
-	exit 1
+	@STDERR.puts "Can not build RPM because not running RedHat/CentOS"; \
+	exit(1)
 endif
+
+ifneq ($(shell require 'os'; puts OS.windows?), true)
 
 .PHONY : docker
 docker : mvn -Pwithout-gui -Pwithout-osgi \
          target/maven-jlink/classifiers/jre-linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
-	mkdir target/docker
-	cp Dockerfile.without_builder target/docker/Dockerfile
-	cp -r target/assembly-$(assembly/VERSION)-linux/daisy-pipeline target/docker/
-	cp -r $(word 4,$^) target/docker/jre
-	cd target/docker && \
-	$(DOCKER) build -t daisyorg/pipeline-assembly .
+	require 'fileutils';               \
+	FileUtils.mkdir_p("target/docker")
+	exit(system("cp Dockerfile.without_builder target/docker/Dockerfile"))
+	exit(system("cp -r target/assembly-$(assembly/VERSION)-linux/daisy-pipeline target/docker/"))
+	exit(system("cp -r $(word 4,$^) target/docker/jre"))
+	Dir.chdir("target/docker") { exit(system("$(DOCKER) build -t daisyorg/pipeline-assembly .")) }
 
 src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz
-	mkdir -p $@
-	tar -zxvf $< -C $(dir $@)/
+	require 'fileutils';                       \
+	FileUtils.mkdir_p("$@");                   \
+	exit(system("tar -zxvf $< -C $(dir $@)/"))
 
 src/main/docker/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz :
-	mkdir -p $(dir $@)
-	curl -L -o $@ "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/$(notdir $@)"
+	require 'fileutils';                                                                                                            \
+	require 'open-uri';                                                                                                             \
+	FileUtils.mkdir_p("$(dir $@)");                                                                                                 \
+	IO.copy_stream(URI.open('https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/$(notdir $@)'), '$@');
 
 .PHONY : dev-launcher
 dev-launcher : target/dev-launcher/pipeline2
 target/dev-launcher/pipeline2 : pom.xml
-ifeq ($(shell uname), Darwin)
+ifeq ($(shell require 'os'; puts OS.mac?), true)
 target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
 else
 target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
-	mkdir -p $(dir $@)
-	echo "#!/usr/bin/env bash"                  >$@
-	echo "JAVA_HOME=$(CURDIR)/$(word 1,$^) \\" >>$@
-	echo "$(CURDIR)/$(word 2,$^) \"\$$@\""     >>$@
-	chmod +x $@
+	require 'fileutils';                                                  \
+	FileUtils.mkdir_p("$(dir $@)");                                       \
+	File.write("$@", "#!/usr/bin/env bash\n");                            \
+	File.write("$@", "JAVA_HOME=$(CURDIR)/$(word 1,$^) \\\n", mode: "a"); \
+	File.write("$@", "$(CURDIR)/$(word 2,$^) \"\$$@\"\n", mode: "a");     \
+	exit(system("chmod +x $@"))
 
 target/maven-jlink/classifiers/jre                                     : mvn -Pbuild-jre
 target/maven-jlink/classifiers/jre-linux                               : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 \
@@ -186,6 +229,8 @@ target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pc
                                                                              -Punpack-updater-linux \
                                                                              -Passemble-linux-dir
 
+endif
+
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION).exe \
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION).deb \
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-linux.zip \
@@ -195,14 +240,16 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-cli.deb \
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2 \
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 :
-	test -e $@
+	exit(File.exists?("$@"))
 
+ifneq ($(shell require 'os'; puts OS.windows?), true)
 .PHONY : check
 check : check-docker
 
 .PHONY : check-docker
 check-docker :
-	bash src/test/resources/test-docker-image.sh
+	exit(system("bash", "src/test/resources/test-docker-image.sh"))
+endif
 
 .PHONY : --without-persistence
 --without-persistence : -Pwithout-persistence
@@ -308,12 +355,17 @@ PROFILES :=                     \
 .PHONY : mvn
 mvn :
 ifndef DUMP_PROFILES
-	set -o pipefail; \
-	$(MVN) clean install $(shell $(MAKE) -qs DUMP_PROFILES=true -- $(MAKECMDGOALS))
+	profiles = %x( $(MAKE) -qs --no-print-directory DUMP_PROFILES=true -- $(MAKECMDGOALS) ).split(/\n/).grep(/^\-P/); \
+	exit($$?.exitstatus) if !$$?.exitstatus;                                                                          \
+	exit(system("$(MVN) clean install #{profiles.join(' ')}"))
 endif
 
 .PHONY : $(addprefix -P,$(PROFILES))
 ifdef DUMP_PROFILES
 $(addprefix -P,$(PROFILES)) :
-	+echo $@
+	+puts "$@"
+endif
+
+ifndef VERBOSE
+.SILENT:
 endif

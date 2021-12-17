@@ -1,5 +1,12 @@
+# this hack is needed to make this file includable from the super project
+ifeq ($(patsubst %.exe,%,$(notdir $(SHELL))),ruby)
 assembly/SOURCES := $(assembly/BASEDIR)/pom.xml \
-                    $(shell [ -d $(assembly/BASEDIR)/src/main/ ] && find $(assembly/BASEDIR)/src/main/ -type f | sed 's/ /\\ /g')
+                    $(shell Dir['src/**/*'].select { |f| File.file?(f) }.map { |f| f.gsub(/ /,'\\ ') })
+else
+assembly/SOURCES := $(assembly/BASEDIR)/pom.xml \
+                    $(shell [ -d $(assembly/BASEDIR)/src/main/ ] && \
+                            find $(assembly/BASEDIR)/src/main/ -type f | sed 's/ /\\ /g')
+endif
 
 .SECONDARY : assembly/SOURCES
 assembly/SOURCES : $(assembly/SOURCES)
