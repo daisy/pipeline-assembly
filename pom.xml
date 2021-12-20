@@ -2847,6 +2847,36 @@
       </build>
     </profile>
     <profile>
+      <id>without-updater</id>
+      <!-- FIXME: also omit the "Check updates" item in the "Help" menu of the GUI -->
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-updater-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>unpack-updater-linux</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>unpack-updater-win</id>
+                <phase>none</phase>
+              </execution>
+              <!-- FIXME: also exclude the start menu shortcut on Windows -->
+              <execution>
+                <id>unpack-updater-gui-win</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>test-batch</id>
       <build>
         <plugins>

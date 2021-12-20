@@ -271,6 +271,9 @@ endif # neq ($(OS), WINDOWS)
 .PHONY : --without-cli
 --without-cli : -Pwithout-cli
 
+.PHONY : --without-updater
+--without-updater : -Pwithout-updater
+
 clean :
 	for (File f : new File("make/java/").listFiles())  \
 		if (f.getName().matches(".*\\.(java|class)"))  \
@@ -356,7 +359,8 @@ PROFILES :=                     \
 	without-osgi                \
 	without-gui                 \
 	without-webservice          \
-	without-cli
+	without-cli                 \
+	without-updater
 
 .PHONY : mvn
 mvn :
