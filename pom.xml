@@ -2823,6 +2823,30 @@
       </build>
     </profile>
     <profile>
+      <id>without-cli</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-cli-mac</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>unpack-cli-linux</id>
+                <phase>none</phase>
+              </execution>
+              <execution>
+                <id>unpack-cli-win</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>test-batch</id>
       <build>
         <plugins>
