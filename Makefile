@@ -219,6 +219,9 @@ check-docker :
 .PHONY : --without-cli
 --without-cli : -Pwithout-cli
 
+.PHONY : --without-updater
+--without-updater : -Pwithout-updater
+
 #                         process-sources      generate-resources      process-resources      prepare-package       package
 #                         ---------------      ---------------         -----------------      ---------------       -------
 # copy-artifacts          copy-felix-launcher
@@ -299,7 +302,8 @@ PROFILES :=                     \
 	without-osgi                \
 	without-gui                 \
 	without-webservice          \
-	without-cli
+	without-cli                 \
+	without-updater
 
 .PHONY : mvn
 mvn :
