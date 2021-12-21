@@ -60,8 +60,8 @@ help :
 		"	Builds a ZIP for Mac OS",                                          \
 		"make zip-win:",                                                       \
 		"	Builds a ZIP for Windows",                                         \
-		"make zips:",                                                          \
-		"	Builds a ZIP for each platform",                                   \
+		"make dir-word-addin:",                                                \
+		"	Builds a directory to be included in SaveAsDAISY",                 \
 		"make zip-minimal:",                                                   \
 		"	Builds a minimal ZIP that will complete itself upon first update"  ]
 ifneq ($(shell require 'os'; puts OS.windows?), true)
@@ -83,9 +83,6 @@ include deps.mk
 
 .PHONY : all
 all : dmg exe deb rpm zip-linux
-
-.PHONY : zips
-zips : zip-mac zip-linux zip-win
 
 .PHONY : dmg exe deb rpm zip-linux zip-mac zip-win zip-minimal deb-cli rpm-cli
 
@@ -176,6 +173,43 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
 	exit(1)
 endif
 
+.PHONY : dir-word-addin
+dir-word-addin : target/assembly-$(assembly/VERSION)-word-addin
+target/assembly-$(assembly/VERSION)-word-addin : src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
+                                                 src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
+                                                 mvn -Pwithout-osgi \
+                                                     -Pwithout-persistence \
+                                                     -Pwithout-webservice \
+                                                     -Pwithout-gui \
+                                                     -Pwithout-cli \
+                                                     -Pwithout-updater \
+                                                     -Pcompile-simple-api \
+                                                     -Pcopy-artifacts \
+                                                     -Pbuild-jre-win32 \
+                                                     -Pbuild-jre-win64 \
+                                                     -Passemble-word-addin-dir
+
+# gem install rubyzip
+src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
+src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : %.zip
+	require 'fileutils';                             \
+	require 'zip';                                   \
+	Zip::File.open("$<") { |zip_file|                \
+		zip_file.each { |f|                          \
+			f_path=File.join("$(dir $@)", f.name);   \
+			FileUtils.mkdir_p(File.dirname(f_path)); \
+			zip_file.extract(f, f_path);             \
+		}                                            \
+	}
+
+src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz \
+src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8.zip \
+src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8.zip :
+	require 'fileutils';                                                                                                            \
+	require 'open-uri';                                                                                                             \
+	FileUtils.mkdir_p("$(dir $@)");                                                                                                 \
+	IO.copy_stream(URI.open('https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/$(notdir $@)'), '$@');
+
 ifneq ($(shell require 'os'; puts OS.windows?), true)
 
 .PHONY : docker
@@ -188,16 +222,10 @@ docker : mvn -Pwithout-gui -Pwithout-osgi \
 	exit(system("cp -r $(word 4,$^) target/docker/jre"))
 	Dir.chdir("target/docker") { exit(system("$(DOCKER) build -t daisyorg/pipeline-assembly .")) }
 
-src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz
+src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8 : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz
 	require 'fileutils';                       \
-	FileUtils.mkdir_p("$@");                   \
+	FileUtils.mkdir_p("$(dir $@)");            \
 	exit(system("tar -zxvf $< -C $(dir $@)/"))
-
-src/main/docker/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz :
-	require 'fileutils';                                                                                                            \
-	require 'open-uri';                                                                                                             \
-	FileUtils.mkdir_p("$(dir $@)");                                                                                                 \
-	IO.copy_stream(URI.open('https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/$(notdir $@)'), '$@');
 
 .PHONY : dev-launcher
 dev-launcher : target/dev-launcher/pipeline2
@@ -215,7 +243,7 @@ endif
 	exit(system("chmod +x $@"))
 
 target/maven-jlink/classifiers/jre                                     : mvn -Pbuild-jre
-target/maven-jlink/classifiers/jre-linux                               : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 \
+target/maven-jlink/classifiers/jre-linux                               : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8 \
                                                                          mvn -Pbuild-jre-linux
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
@@ -297,6 +325,8 @@ endif
 #                                              generate-release-descriptor
 # build-jre                                                                                                         jlink
 # build-jre-linux                                                                                                   jlink-linux
+# build-jre-win32                                                                                                   jlink-win32
+# build-jre-win64                                                                                                   jlink-win64
 # unpack-cli-mac                               unpack-cli-mac
 # unpack-cli-linux                             unpack-cli-linux
 # unpack-cli-win                               unpack-cli-win
@@ -311,6 +341,7 @@ endif
 # assemble-linux-zip                                                                                                assemble-linux-zip
 # assemble-win-zip                                                                                                  assemble-win-zip
 # assemble-minimal-zip                                                                                              assemble-minimal-zip
+# assemble-word-addin-dir                                                                                           assemble-word-addin-dir
 # package-mac-app                                                                                                   javapackager
 # package-dmg                                                                                 install-node
 #                                                                                             install-appdmg        package-appdmg
@@ -327,12 +358,15 @@ PROFILES :=                     \
 	generate-release-descriptor \
 	build-jre                   \
 	build-jre-linux             \
+	build-jre-win32             \
+	build-jre-win64             \
 	assemble-linux-dir          \
 	assemble-linux-zip          \
 	assemble-mac-dir            \
 	assemble-mac-zip            \
 	assemble-win-dir            \
 	assemble-win-zip            \
+	assemble-word-addin-dir     \
 	assemble-minimal-zip        \
 	package-deb                 \
 	package-deb-cli             \
