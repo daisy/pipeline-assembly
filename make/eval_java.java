@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 public class eval_java {
 
 	public static void main(String[] args) {
+		if ("true".equals(System.getenv("ECHO")))
+			System.err.println(args[0]);
 		try {
 			String javaCode =
 				"import java.io.*;\n"

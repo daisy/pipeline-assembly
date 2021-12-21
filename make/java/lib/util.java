@@ -1,6 +1,7 @@
 package lib;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -92,6 +95,26 @@ public class util {
 			os.write(string.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException("coding error", e);
+		}
+	}
+
+	public static void unzip(File zipFile, File directory) throws IOException {
+		directory.mkdirs();
+		try (ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile))) {
+			ZipEntry entry;
+			while ((entry = zip.getNextEntry()) != null) {
+				File destFile = new File(directory, entry.getName());
+				if (!entry.isDirectory()) {
+					try (BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(destFile))) {
+						byte[] bytes = new byte[1024];
+						int read = 0;
+						while ((read = zip.read(bytes)) != -1)
+							os.write(bytes, 0, read);
+					}
+				} else
+					destFile.mkdirs();
+				zip.closeEntry();
+			}
 		}
 	}
 
