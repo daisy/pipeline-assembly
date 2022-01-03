@@ -2799,6 +2799,25 @@
       <build>
         <plugins>
           <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <executions>
+                    <execution>
+                        <id>download-jdk</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <url>https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz</url>
+                    <unpack>true</unpack>
+                    <outputDirectory>src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8</outputDirectory>
+                </configuration>
+            </plugin>
+          <plugin>
             <artifactId>maven-jlink-plugin</artifactId>
             <executions>
               <execution>
@@ -2836,6 +2855,25 @@
       <id>build-jre-win32</id>
       <build>
         <plugins>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <executions>
+                    <execution>
+                        <id>download-jdk</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <url>https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8.zip</url>
+                    <unpack>true</unpack>
+                    <outputDirectory>src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8</outputDirectory>
+                </configuration>
+            </plugin>
           <plugin>
             <artifactId>maven-jlink-plugin</artifactId>
             <executions>
@@ -2874,6 +2912,25 @@
       <id>build-jre-win64</id>
       <build>
         <plugins>
+          <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <executions>
+                    <execution>
+                        <id>download-jdk</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <url>https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8.zip</url>
+                    <unpack>true</unpack>
+                    <outputDirectory>src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8</outputDirectory>
+                </configuration>
+            </plugin>
           <plugin>
             <artifactId>maven-jlink-plugin</artifactId>
             <executions>
