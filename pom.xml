@@ -2697,6 +2697,7 @@
                     <addModule>java.base</addModule>
                     <addModule>java.desktop</addModule>
                     <addModule>java.instrument</addModule>
+                    <addModule>java.security.jgss</addModule>
                     <addModule>java.sql</addModule>
                     <addModule>java.xml</addModule>
                     <addModule>jdk.management.agent</addModule>
