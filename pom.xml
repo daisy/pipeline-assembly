@@ -2282,6 +2282,11 @@
                       <src>src/main/deb/etc/default/daisy-pipeline2</src>
                       <dst>/etc/default/daisy-pipeline2</dst>
                     </data>
+                    <data>
+                      <type>file</type>
+                      <src>target/release-descriptor/releaseDescriptor.xml</src>
+                      <dst>${deb.pipeline.home}/etc/releaseDescriptor.xml</dst>
+                    </data>
                     <!-- ======= -->
                     <!-- jars -->
                     <!-- ======= -->
