@@ -151,7 +151,7 @@ docker : mvn -Pwithout-gui -Pwithout-osgi \
          target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 ifndef DUMP_PROFILES
 	mkdir target/docker
-	cp Dockerfile.without_builder target/docker/Dockerfile
+	cp src/main/docker/Dockerfile target/docker/Dockerfile
 	cp -r target/assembly-$(assembly/VERSION)-linux/daisy-pipeline target/docker/
 	cp -r $(word 4,$^) target/docker/jre
 	cd target/docker && \
