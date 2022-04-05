@@ -111,11 +111,13 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
                                                                                                                        -Punpack-updater-mac \
                                                                                                                        -Passemble-mac-dir \
                                                                                                                        -Ppackage-mac-app
+ifndef DUMP_PROFILES
 	# we run package-dmg in a subsequent mvn call to avoid execution
 	# order issues when the package-mac-app and package-dmg profiles
 	# are activated together
 	$(MVN) install -Ppackage-dmg
 	test -e $@
+endif
 else
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION).dmg         :
 	@echo "Can not build DMG because not running MacOS" >&2
@@ -126,12 +128,16 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
                                                                                                                        -Pgenerate-release-descriptor \
                                                                                                                        -Passemble-linux-dir \
                                                                                                                        -Ppackage-rpm
+ifndef DUMP_PROFILES
 	test -e $@
+endif
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-cli.rpm     : mvn -Pcopy-artifacts \
                                                                                                                        -Pgenerate-release-descriptor \
                                                                                                                        -Punpack-cli-linux \
                                                                                                                        -Ppackage-rpm-cli
+ifndef DUMP_PROFILES
 	test -e $@
+endif
 else
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-linux.rpm \
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-cli.rpm :
@@ -141,13 +147,16 @@ endif
 
 .PHONY : docker
 docker : mvn -Pwithout-gui -Pwithout-osgi \
-         target/maven-jlink/classifiers/jre-linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+         target/maven-jlink/classifiers/jre-linux \
+         target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+ifndef DUMP_PROFILES
 	mkdir target/docker
 	cp Dockerfile.without_builder target/docker/Dockerfile
 	cp -r target/assembly-$(assembly/VERSION)-linux/daisy-pipeline target/docker/
 	cp -r $(word 4,$^) target/docker/jre
 	cd target/docker && \
 	$(DOCKER) build -t daisyorg/pipeline-assembly .
+endif
 
 src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz
 	mkdir -p $@
@@ -165,15 +174,19 @@ target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assemb
 else
 target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
+ifndef DUMP_PROFILES
 	mkdir -p $(dir $@)
 	echo "#!/usr/bin/env bash"                  >$@
 	echo "JAVA_HOME=$(CURDIR)/$(word 1,$^) \\" >>$@
 	echo "$(CURDIR)/$(word 2,$^) \"\$$@\""     >>$@
 	chmod +x $@
+endif
 
 target/maven-jlink/classifiers/jre                                     : mvn -Pbuild-jre
-target/maven-jlink/classifiers/jre-linux                               : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 \
-                                                                         mvn -Pbuild-jre-linux
+target/maven-jlink/classifiers/jre-linux                               : mvn -Pbuild-jre-linux
+ifndef DUMP_PROFILES
+target/maven-jlink/classifiers/jre-linux                               : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28
+endif
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
@@ -195,7 +208,9 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION)-cli.deb \
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2 \
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 :
+ifndef DUMP_PROFILES
 	test -e $@
+endif
 
 .PHONY : check
 check : check-docker
@@ -301,11 +316,11 @@ PROFILES :=                     \
 mvn :
 ifndef DUMP_PROFILES
 	set -o pipefail; \
-	$(MVN) clean install $(shell $(MAKE) -qs DUMP_PROFILES=true -- $(MAKECMDGOALS))
+	$(MVN) clean install $(shell $(MAKE) DUMP_PROFILES=true -- $(MAKECMDGOALS))
 endif
 
 .PHONY : $(addprefix -P,$(PROFILES))
 ifdef DUMP_PROFILES
 $(addprefix -P,$(PROFILES)) :
-	+echo $@
+	@echo $@
 endif
