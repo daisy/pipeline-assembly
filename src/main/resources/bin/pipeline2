@@ -517,8 +517,6 @@ run() {
     SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.updater.bin=\"${PIPELINE2_HOME}/updater/${pipeline.updater}\"
                                   -Dorg.daisy.pipeline.updater.deployPath=\"${PIPELINE2_HOME}/\"
                                   -Dorg.daisy.pipeline.updater.releaseDescriptor=\"${PIPELINE2_HOME}/etc/releaseDescriptor.xml\""
-    # Workaround for encoding bugs on Windows
-    SYSTEM_PROPS="${SYSTEM_PROPS} -Dfile.encoding=UTF8"
 
     # to make ${org.daisy.pipeline.data}, ${org.daisy.pipeline.logdir} and ${org.daisy.pipeline.mode}
     # available in config-logback.xml and felix.properties
