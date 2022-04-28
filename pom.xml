@@ -58,7 +58,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>gui</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.1</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
@@ -83,7 +83,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.14.6</version>
+        <version>1.14.7</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -2079,9 +2079,6 @@
                         <fx:property name="org.daisy.pipeline.ws.authentication" value="false" />
                         <fx:property name="org.daisy.pipeline.properties" value="etc/pipeline.properties" />
                         <fx:property name="logback.configurationFile" value="file:etc/config-logback.xml" />
-                        <fx:property name="org.daisy.pipeline.updater.bin" value="updater/pipeline-updater" />
-                        <fx:property name="org.daisy.pipeline.updater.deployPath" value="./" />
-                        <fx:property name="org.daisy.pipeline.updater.releaseDescriptor" value="etc/releaseDescriptor.xml" />
                       </fx:platform>
                       <fx:resources>
                         <fx:fileset type="license" os="osx" dir="${project.build.directory}/assembly-${project.version}-mac/daisy-pipeline">

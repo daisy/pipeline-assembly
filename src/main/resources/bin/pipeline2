@@ -511,12 +511,6 @@ run() {
     
     # Logback configuration file
     SYSTEM_PROPS="${SYSTEM_PROPS} -Dlogback.configurationFile=\"file:${PIPELINE2_CONFIG}/config-logback.xml\""
-    # XMLCalabash base configuration file
-    SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.xproc.configuration=\"${PIPELINE2_HOME}/etc/config-calabash.xml\""
-    # Updater configuration
-    SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.updater.bin=\"${PIPELINE2_HOME}/updater/${pipeline.updater}\"
-                                  -Dorg.daisy.pipeline.updater.deployPath=\"${PIPELINE2_HOME}/\"
-                                  -Dorg.daisy.pipeline.updater.releaseDescriptor=\"${PIPELINE2_HOME}/etc/releaseDescriptor.xml\""
 
     # to make ${org.daisy.pipeline.data}, ${org.daisy.pipeline.logdir} and ${org.daisy.pipeline.mode}
     # available in config-logback.xml and felix.properties
