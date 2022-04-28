@@ -401,6 +401,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline</groupId>
+                  <artifactId>logging-activator</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline</groupId>
                   <artifactId>modules-registry</artifactId>
                 </artifactItem>
                 <artifactItem>
