@@ -49,8 +49,8 @@ help :
 		"    Builds a ZIP for Mac OS"                                    + "\n" + \
 		"make zip-win:"                                                  + "\n" + \
 		"    Builds a ZIP for Windows"                                   + "\n" + \
-		"make zips:"                                                     + "\n" + \
-		"    Builds a ZIP for each platform"                             + "\n" + \
+		"make dir-word-addin:"                                           + "\n" + \
+		"	Builds a directory to be included in SaveAsDAISY"            + "\n" + \
 		"make zip-minimal:"                                              + "\n" + \
 		"    Builds a minimal ZIP that will complete itself upon first update");  \
 	if (getOS() != OS.WINDOWS)                                                    \
@@ -74,9 +74,6 @@ all : dmg exe deb zip-linux
 ifeq ($(OS), REDHAT)
 all : rpm
 endif
-
-.PHONY : zips
-zips : zip-mac zip-linux zip-win
 
 .PHONY : dmg exe deb rpm zip-linux zip-mac zip-win zip-minimal deb-cli rpm-cli
 
@@ -173,6 +170,33 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
 	exit(1);
 endif # eq ($(OS), REDHAT)
 
+.PHONY : dir-word-addin
+dir-word-addin : target/assembly-$(assembly/VERSION)-word-addin
+target/assembly-$(assembly/VERSION)-word-addin : mvn -Pwithout-osgi \
+                                                     -Pwithout-persistence \
+                                                     -Pwithout-webservice \
+                                                     -Pwithout-gui \
+                                                     -Pwithout-cli \
+                                                     -Pwithout-updater \
+                                                     -Pcompile-simple-api \
+                                                     -Pcopy-artifacts \
+                                                     -Pbuild-jre-win32 \
+                                                     -Pbuild-jre-win64 \
+                                                     -Passemble-word-addin-dir
+-Pbuild-jre-win64                              : src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8
+-Pbuild-jre-win32                              : src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8
+
+src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
+src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : %.zip
+	unzip(new File("$<"), new File("$(dir $@)"));
+
+src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz \
+src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8.zip \
+src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8.zip :
+	mkdirs("$(dir $@)");                                                                                           \
+	copy(new URL("https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/$(notdir $@)"), \
+	     new File("$@"));
+
 ifneq ($(OS), WINDOWS)
 
 .PHONY : docker
@@ -188,14 +212,9 @@ ifndef DUMP_PROFILES
 	     "$(DOCKER)", "build", "-t", "daisyorg/pipeline-assembly", ".");
 endif
 
-src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28 : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz
-	mkdirs("$@");                                    \
+src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8 : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz
+	mkdirs("$(dir $@)");                             \
 	exec("tar", "-zxvf", "$<", "-C", "$(dir $@)/");
-
-src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28.tar.gz :
-	mkdirs("$(dir $@)");                                                                                           \
-	copy(new URL("https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/$(notdir $@)"), \
-	     new File("$@"));
 
 .PHONY : dev-launcher
 dev-launcher : target/dev-launcher/pipeline2
@@ -217,16 +236,16 @@ endif
 
 target/maven-jlink/classifiers/jre                                     : mvn -Pbuild-jre
 target/maven-jlink/classifiers/jre-linux                               : mvn -Pbuild-jre-linux
-ifndef DUMP_PROFILES
-target/maven-jlink/classifiers/jre-linux                               : src/main/jre/OpenJDK11-jdk_x64_linux_hotspot_11_28/jdk-11+28
-endif
+-Pbuild-jre-linux                                                      : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
+                                                                             -Pcompile-simple-api \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-mac \
                                                                              -Punpack-updater-mac \
                                                                              -Passemble-mac-dir
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pcopy-artifacts \
+                                                                             -Pcompile-simple-api \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-linux \
                                                                              -Punpack-updater-linux \
@@ -268,6 +287,12 @@ endif # neq ($(OS), WINDOWS)
 .PHONY : --without-webservice
 --without-webservice : -Pwithout-webservice
 
+.PHONY : --without-cli
+--without-cli : -Pwithout-cli
+
+.PHONY : --without-updater
+--without-updater : -Pwithout-updater
+
 clean :
 	for (File f : new File("make/java/").listFiles())  \
 		if (f.getName().matches(".*\\.(java|class)"))  \
@@ -299,6 +324,8 @@ clean :
 #                                              generate-release-descriptor
 # build-jre                                                                                                         jlink
 # build-jre-linux                                                                                                   jlink-linux
+# build-jre-win32                                                                                                   jlink-win32
+# build-jre-win64                                                                                                   jlink-win64
 # unpack-cli-mac                               unpack-cli-mac
 # unpack-cli-linux                             unpack-cli-linux
 # unpack-cli-win                               unpack-cli-win
@@ -313,6 +340,7 @@ clean :
 # assemble-linux-zip                                                                                                assemble-linux-zip
 # assemble-win-zip                                                                                                  assemble-win-zip
 # assemble-minimal-zip                                                                                              assemble-minimal-zip
+# assemble-word-addin-dir                                                                                           assemble-word-addin-dir
 # package-mac-app                                                                                                   javapackager
 # package-dmg                                                                                 install-node
 #                                                                                             install-appdmg        package-appdmg
@@ -325,15 +353,19 @@ clean :
 
 PROFILES :=                     \
 	copy-artifacts              \
+	compile-simple-api          \
 	generate-release-descriptor \
 	build-jre                   \
 	build-jre-linux             \
+	build-jre-win32             \
+	build-jre-win64             \
 	assemble-linux-dir          \
 	assemble-linux-zip          \
 	assemble-mac-dir            \
 	assemble-mac-zip            \
 	assemble-win-dir            \
 	assemble-win-zip            \
+	assemble-word-addin-dir     \
 	assemble-minimal-zip        \
 	package-deb                 \
 	package-deb-cli             \
@@ -352,20 +384,22 @@ PROFILES :=                     \
 	without-persistence         \
 	without-osgi                \
 	without-gui                 \
-	without-webservice
+	without-webservice          \
+	without-cli                 \
+	without-updater
 
 .PHONY : mvn
 mvn :
 ifndef DUMP_PROFILES
-	@List<String> cmd = new ArrayList<>();                                                                    \
-	cmd.add("$(MVN)");                                                                                        \
-	cmd.add("clean");                                                                                         \
-	cmd.add("install");                                                                                       \
-	exitOnError(                                                                                              \
-		captureOutput(                                                                                        \
-			Arrays.asList("$(MAKE) --no-print-directory DUMP_PROFILES=true -- $(MAKECMDGOALS)".split("\\s")), \
-			line -> { if (line.startsWith("-P")) cmd.add(line); }));                                          \
-	println(String.join(" ", cmd));                                                                           \
+	@List<String> cmd = new ArrayList<>();                                                                                 \
+	cmd.add("$(MVN)");                                                                                                     \
+	cmd.add("clean");                                                                                                      \
+	cmd.add("install");                                                                                                    \
+	exitOnError(                                                                                                           \
+		captureOutput(                                                                                                     \
+			Arrays.asList("$(MAKE) -s --no-print-directory ECHO=true DUMP_PROFILES=true -- $(MAKECMDGOALS)".split("\\s")), \
+			line -> { if (line.startsWith("-P")) cmd.add(line); }));                                                       \
+	println(String.join(" ", cmd));                                                                                        \
 	exec(runInShell(cmd));
 endif
 
