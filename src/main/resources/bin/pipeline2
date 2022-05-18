@@ -516,11 +516,11 @@ run() {
     export PIPELINE2_WS_AUTHENTICATION
     
     # Logback configuration file
-    SYSTEM_PROPS="${SYSTEM_PROPS} -Dlogback.configurationFile=\"file:${PIPELINE2_CONFIG}/config-logback.xml\""
+    SYSTEM_PROPS="${SYSTEM_PROPS} -Dlogback.configurationFile=\"file:${PIPELINE2_CONFIG}/logback.xml\""
 
     # to make ${org.daisy.pipeline.data}, ${org.daisy.pipeline.logdir} and ${org.daisy.pipeline.mode}
-    # available in config-logback.xml and felix.properties
-    # note that config-logback.xml is the only place where ${org.daisy.pipeline.mode} is used
+    # available in logback.xml and felix.properties
+    # note that logback.xml is the only place where ${org.daisy.pipeline.mode} is used
     SYSTEM_PROPS="${SYSTEM_PROPS} -Dorg.daisy.pipeline.data=\"$PIPELINE2_DATA\"
                                   -Dorg.daisy.pipeline.logdir=\"$PIPELINE2_LOGDIR\"
                                   -Dorg.daisy.pipeline.mode=$MODE"

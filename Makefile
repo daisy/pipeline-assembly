@@ -171,7 +171,7 @@ ifndef DUMP_PROFILES
 	                       "-Dorg.daisy.pipeline.ws.localfs=true "                                     + \
 	                       "-Dorg.daisy.pipeline.ws.authentication=false "                             + \
 	                       "-Dorg.daisy.pipeline.properties=$$APPDIR/etc/pipeline.properties "         + \
-	                       "-Dlogback.configurationFile=$$APPDIR/etc/config-logback.xml");
+	                       "-Dlogback.configurationFile=$$APPDIR/etc/logback.xml");
 	String appVersion = "$(assembly/VERSION)".replaceAll("-.*$$", "");                                   \
 	exec("$(MVN)", "install:install-file",                                                               \
 	               "-Dfile=target/jpackage/DAISY Pipeline 2-" + appVersion + ".dmg",                     \

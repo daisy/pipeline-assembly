@@ -2160,7 +2160,7 @@
                       <src>src/main/resources/etc</src>
                       <excludes>
                         felix.properties,
-                        config-logback.xml,
+                        logback.xml,
                         pipeline.properties
                       </excludes>
                       <mapper>
@@ -2182,8 +2182,8 @@
                     </data>
                     <data>
                       <type>file</type>
-                      <src>src/main/resources/etc/config-logback.xml</src>
-                      <dst>${deb.pipeline.config}/config-logback.xml</dst>
+                      <src>src/main/resources/etc/logback.xml</src>
+                      <dst>${deb.pipeline.config}/logback.xml</dst>
                     </data>
                     <data>
                       <type>link</type>
