@@ -2277,7 +2277,6 @@
                         <include>bin/pipeline2</include>
                         <include>etc/felix.properties</include>
                         <include>etc/pipeline.properties</include>
-                        <include>etc/config-logback.xml</include>
                       </includes>
                     </resource>
                     <resource>
@@ -2375,7 +2374,7 @@
                     </data>
                     <data>
                       <type>file</type>
-                      <src>${project.build.directory}/filtered-resources/resources/etc/config-logback.xml</src>
+                      <src>src/main/resources/etc/config-logback.xml</src>
                       <dst>${deb.pipeline.config}/config-logback.xml</dst>
                     </data>
                     <data>
@@ -2603,7 +2602,6 @@
                           <includes>
                             <include>etc/pipeline.properties</include>
                             <include>etc/felix.properties</include>
-                            <include>etc/config-logback.xml</include>
                           </includes>
                           <filter>true</filter>
                         </source>
