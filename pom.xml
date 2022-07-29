@@ -2797,6 +2797,9 @@
       </build>
     </profile>
     <profile>
+      <!--
+          this profile needs to be run with JDK 11
+      -->
       <id>build-jre-linux</id>
       <build>
         <plugins>
@@ -2836,6 +2839,9 @@
       </build>
     </profile>
     <profile>
+      <!--
+          this profile needs to be run with JDK 11
+      -->
       <id>build-jre-win32</id>
       <build>
         <plugins>
@@ -2874,6 +2880,9 @@
       </build>
     </profile>
     <profile>
+      <!--
+          this profile needs to be run with JDK 11
+      -->
       <id>build-jre-win64</id>
       <build>
         <plugins>

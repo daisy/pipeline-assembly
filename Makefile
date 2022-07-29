@@ -181,21 +181,10 @@ target/assembly-$(assembly/VERSION)-word-addin : mvn -Pwithout-osgi \
                                                      -Pcompile-simple-api \
                                                      -Pcopy-artifacts \
                                                      -Pbuild-jre-win32 \
-                                                     -Pbuild-jre-win64 \
-                                                     -Passemble-word-addin-dir
--Pbuild-jre-win64                              : src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8
--Pbuild-jre-win32                              : src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8
-
-src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
-src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : %.zip
-	unzip(new File("$<"), new File("$(dir $@)"));
-
-src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz \
-src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8.zip \
-src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8.zip :
-	mkdirs("$(dir $@)");                                                                                           \
-	copy(new URL("https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/$(notdir $@)"), \
-	     new File("$@"));
+                                                     -Pbuild-jre-win64
+ifndef DUMP_PROFILES
+	exec("$(MVN)", "install", "-Passemble-word-addin-dir");
+endif
 
 ifneq ($(OS), WINDOWS)
 
@@ -211,10 +200,6 @@ ifndef DUMP_PROFILES
 	exec(new File("target/docker"),                                                                 \
 	     "$(DOCKER)", "build", "-t", "daisyorg/pipeline:latest-snapshot", ".");
 endif
-
-src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8 : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz
-	mkdirs("$(dir $@)");                             \
-	exec("tar", "-zxvf", "$<", "-C", "$(dir $@)/");
 
 .PHONY : dev-launcher
 dev-launcher : target/dev-launcher/pipeline2
@@ -236,7 +221,6 @@ endif
 
 target/maven-jlink/classifiers/jre                                     : mvn -Pbuild-jre
 target/maven-jlink/classifiers/jre-linux                               : mvn -Pbuild-jre-linux
--Pbuild-jre-linux                                                      : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pcompile-simple-api \
@@ -356,16 +340,12 @@ PROFILES :=                     \
 	compile-simple-api          \
 	generate-release-descriptor \
 	build-jre                   \
-	build-jre-linux             \
-	build-jre-win32             \
-	build-jre-win64             \
 	assemble-linux-dir          \
 	assemble-linux-zip          \
 	assemble-mac-dir            \
 	assemble-mac-zip            \
 	assemble-win-dir            \
 	assemble-win-zip            \
-	assemble-word-addin-dir     \
 	assemble-minimal-zip        \
 	package-deb                 \
 	package-deb-cli             \
@@ -408,3 +388,59 @@ ifdef DUMP_PROFILES
 $(addprefix -P,$(PROFILES)) :
 	@println("$@");
 endif
+
+# profiles that are run separately because need to be run with specific JDKs
+
+.PHONY : -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64
+-Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : mvn # to make sure they are run after other profiles
+
+ifeq ($(OS), MACOSX)
+-Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_mac_hotspot_11.0.13_8/jdk-11.0.13+8
+ifndef DUMP_PROFILES
+	rm("target/classes");                                \
+	exec(env("JAVA_HOME", "$(CURDIR)/$</Contents/Home"), \
+	     "$(MVN)", "package", "$@");
+endif
+else ifeq ($(OS), WINDOWS)
+-Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8
+ifndef DUMP_PROFILES
+	rm("target/classes");                                \
+	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
+	     "$(MVN)", "package", "$@");
+endif
+else
+-Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8
+ifndef DUMP_PROFILES
+	rm("target/classes");                                \
+	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
+	     "$(MVN)", "package", "$@");
+endif
+endif
+
+# for dependencies to jmods
+-Pbuild-jre-linux : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8
+-Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8
+-Pbuild-jre-win32 : src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8
+
+# JDKs
+
+src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
+src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : %.zip
+	unzip(new File("$<"), new File("$(dir $@)"));
+
+ifneq ($(OS), WINDOWS)
+src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : | %.tar.gz
+	mkdirs("$(dir $@)");                                                                                       \
+	exec("tar", "-zxvf", "src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz", "-C", "$(dir $@)/");
+src/main/jre/OpenJDK11U-jdk_x64_mac_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : | %.tar.gz
+	mkdirs("$(dir $@)");                                                                                       \
+	exec("tar", "-zxvf", "src/main/jre/OpenJDK11U-jdk_x64_mac_hotspot_11.0.13_8.tar.gz", "-C", "$(dir $@)/");
+endif
+
+src/main/jre/OpenJDK11U-jdk_x64_mac_hotspot_11.0.13_8.tar.gz \
+src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz \
+src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8.zip \
+src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8.zip :
+	mkdirs("$(dir $@)");                                                                                           \
+	copy(new URL("https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/$(notdir $@)"), \
+	     new File("$@"));
