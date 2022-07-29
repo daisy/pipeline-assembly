@@ -2775,9 +2775,11 @@
                     <addModule>java.desktop</addModule>
                     <addModule>java.instrument</addModule>
                     <addModule>java.security.jgss</addModule>
+                    <addModule>java.scripting</addModule> <!-- for gui -->
                     <addModule>java.sql</addModule>
                     <addModule>java.xml</addModule>
                     <addModule>jdk.management.agent</addModule>
+                    <addModule>jdk.unsupported</addModule> <!-- for gui -->
                     <addModule>jdk.zipfs</addModule>
                   </addModules>
                   <modulePaths>
