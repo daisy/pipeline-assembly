@@ -249,10 +249,11 @@ endif
 .PHONY : dev-launcher
 dev-launcher : target/dev-launcher/pipeline2
 target/dev-launcher/pipeline2 : pom.xml
+ifdef BUILD_JRE_FOR_DEV_LAUNCHER
 ifeq ($(OS), MACOSX)
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre-mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
 else
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre-linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
 ifndef DUMP_PROFILES
 	mkdirs("$(dir $@)");                                \
@@ -263,8 +264,23 @@ ifndef DUMP_PROFILES
 	write(f, "$(CURDIR)/$(word 2,$^) \"$$@\"\n");       \
 	exec("chmod", "+x", "$@");
 endif
+else
+ifeq ($(OS), MACOSX)
+target/dev-launcher/pipeline2 : target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
+else
+target/dev-launcher/pipeline2 : target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+endif
+ifndef DUMP_PROFILES
+	mkdirs("$(dir $@)");                                \
+	File f = new File("$@");                            \
+	f.delete();                                         \
+	write(f, "#!/usr/bin/env bash\n");                  \
+	write(f, "$(CURDIR)/$< \"$$@\"\n");                 \
+	exec("chmod", "+x", "$@");
+endif
+endif
 
-target/maven-jlink/classifiers/jre                                     : mvn -Pbuild-jre
+target/maven-jlink/classifiers/jre-mac                                 : mvn -Pbuild-jre-mac
 target/maven-jlink/classifiers/jre-linux                               : mvn -Pbuild-jre-linux
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pwithout-persistence \
@@ -351,7 +367,6 @@ clean :
 #                         copy-modules-win
 # generate-release-descriptor                  generate-effective-pom
 #                                              generate-release-descriptor
-# build-jre                                                                                                         jlink
 # build-jre-linux                                                                                                   jlink-linux
 # build-jre-win32                                                                                                   jlink-win32
 # build-jre-win64                                                                                                   jlink-win64
@@ -382,7 +397,6 @@ PROFILES :=                     \
 	copy-artifacts              \
 	compile-simple-api          \
 	generate-release-descriptor \
-	build-jre                   \
 	assemble-linux-dir          \
 	assemble-linux-zip          \
 	assemble-mac-dir            \
