@@ -1,3 +1,25 @@
+Changes in release v1.14.7
+==========================
+
+### Framework
+
+- Engine optimizations
+
+### Modules
+
+- Improvements to TTS log
+- The `org.daisy.pipeline.tts.log` setting is deprecated. Since v1.14.3 there is a dedicated script option to enable the TTS log.
+- Changes to braille production scripts, see [release notes of braille modules v1.14.8](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1148)
+- Various optimizations
+- Various other improvements and bugfixes
+
+### Details
+- [Closed issues in pipeline-assembly](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.7)
+- [Closed issues in pipeline-framework](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.7)
+- [Closed issues in pipeline-gui](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-gui+milestone%3Av1.14.7)
+- [Closed issues in pipeline-modules](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.7)
+- [Closed issues in pipeline-tasks](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-tasks+milestone%3Av1.14.7)
+
 Changes in release v1.14.6
 ==========================
 
