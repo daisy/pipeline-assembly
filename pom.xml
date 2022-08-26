@@ -90,7 +90,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.8</version>
+        <version>1.14.9</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -967,6 +967,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy3-to-mp3</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>daisy3-utils</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -1304,6 +1308,13 @@
                 <artifactItem>
                   <groupId>org.json</groupId>
                   <artifactId>json</artifactId>
+                </artifactItem>
+                <!--
+                    for audio-common
+                -->
+                <artifactItem>
+                  <groupId>com.googlecode.soundlibs</groupId>
+                  <artifactId>jlayer</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
