@@ -1,3 +1,10 @@
+Changes in release v1.14.8
+==========================
+
+## Framework
+
+- **NEW** `org.daisy.pipeline.ws.cors` setting to permit cross-origin requests from browsers (Cross-Origin Resource Sharing).
+
 Changes in release v1.14.7
 ==========================
 
