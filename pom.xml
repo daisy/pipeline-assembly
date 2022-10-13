@@ -75,7 +75,7 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>ds-to-spi-runtime</artifactId>
-        <version>1.1.1</version>
+        <version>1.2.0</version>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
@@ -87,7 +87,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.10</version>
+        <version>1.14.11</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -882,6 +882,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>daisy202-to-epub3</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>daisy202-to-mp3</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
