@@ -265,12 +265,12 @@ goto :RUN_LOOP
     set SYSTEM_PROPS=%SYSTEM_PROPS% -Dlogback.configurationFile="file:%PIPELINE2_HOME:\=/%/etc/logback.xml"
     rem Workaround for encoding bugs on Windows
     set SYSTEM_PROPS=%SYSTEM_PROPS% -Dfile.encoding=UTF8
-    rem to make ${org.daisy.pipeline.data}, ${org.daisy.pipeline.logdir} and ${org.daisy.pipeline.mode}
-    rem available in logback.xml and felix.properties
-    rem note that logback.xml is the only place where ${org.daisy.pipeline.mode} is used
-    set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%" ^
-                                    -Dorg.daisy.pipeline.logdir="%PIPELINE2_LOGDIR%" ^
-                                    -Dorg.daisy.pipeline.mode=%MODE%
+    rem to make ${org.daisy.pipeline.data} available in felix.properties (for felix.cache.rootdir)
+    if %ENABLE_OSGI% == true (
+        set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%"
+    )
+    rem to make ${org.daisy.pipeline.logdir} available in logback.xml
+    set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.logdir="%PIPELINE2_LOGDIR%"
 
     call "%DIRNAME%\checkJavaVersion.bat" _ :compare_versions %JAVA_VER% 9
     if %ERRORLEVEL% geq 0 (

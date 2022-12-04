@@ -164,7 +164,6 @@ ifndef DUMP_PROFILES
 	     "--main-jar", "system/gui/" + guiJar[0],                                                        \
 	     "--main-class", "org.daisy.pipeline.gui.GUIService",                                            \
 	     "--java-options", "--add-opens=java.base/java.lang=ALL-UNNAMED "                              + \
-	                       "-Dorg.daisy.pipeline.mode=gui "                                            + \
 	                       "-Dorg.daisy.pipeline.home=$$APPDIR "                                       + \
 	                       "-Dorg.daisy.pipeline.data=$$APPDIR/data "                                  + \
 	                       "-Dorg.daisy.pipeline.logdir=$$APPDIR/data/log "                            + \
