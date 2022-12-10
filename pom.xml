@@ -2375,7 +2375,6 @@
                 <configuration>
                   <name>pipeline2</name>
                   <group>daisy-pipeline2</group>
-                  <classifier>linux</classifier>
                   <description>daisy-pipeline2</description>
                   <needarch>x86_64</needarch>
                   <mappings>
