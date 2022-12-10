@@ -149,7 +149,6 @@ $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly
 ifeq ($(OS), MACOSX)
 $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assembly/$(assembly/VERSION)/assembly-$(assembly/VERSION).dmg         : mvn -Pcopy-artifacts \
                                                                                                                        -Pgenerate-release-descriptor \
-                                                                                                                       -Punpack-cli-mac \
                                                                                                                        -Punpack-updater-mac \
                                                                                                                        -Passemble-mac-app-dir \
                                                                                                                        -Pbuild-jre-mac
@@ -176,8 +175,6 @@ ifndef DUMP_PROFILES
 	                       "-Dorg.daisy.pipeline.home=$$APPDIR "                                       + \
 	                       "-Dorg.daisy.pipeline.data=$$APPDIR/data "                                  + \
 	                       "-Dorg.daisy.pipeline.logdir=$$APPDIR/data/log "                            + \
-	                       "-Dorg.daisy.pipeline.ws.localfs=true "                                     + \
-	                       "-Dorg.daisy.pipeline.ws.authentication=false "                             + \
 	                       "-Dorg.daisy.pipeline.properties=$$APPDIR/etc/pipeline.properties "         + \
 	                       "-Dlogback.configurationFile=$$APPDIR/etc/logback.xml");
 	String appVersion = "$(assembly/VERSION)".replaceAll("-.*$$", "");                                   \
