@@ -22,11 +22,8 @@
   <properties>
     <cli.version>2.1.7</cli.version>
     <javafx.version>11.0.1</javafx.version>
-    <!--
-        for package-exe
-    -->
-    <nsis.scriptfile>${project.build.directory}/nsis/installer.nsi</nsis.scriptfile>
-    <nsis.output.file>assembly-${project.version}-win.exe</nsis.output.file>
+    <classifier></classifier>
+    <classifier.dash></classifier.dash> <!-- classifier followed by "-" -->
     <!--
         for package-deb
     -->
@@ -1822,7 +1819,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <attach>true</attach>
+                  <attach>false</attach> <!-- installed by Makefile -->
                   <formats>
                     <format>zip</format>
                   </formats>
@@ -1855,7 +1852,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <attach>true</attach>
+                  <attach>false</attach> <!-- installed by Makefile -->
                   <formats>
                     <format>zip</format>
                   </formats>
@@ -1888,7 +1885,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <attach>true</attach>
+                  <attach>false</attach> <!-- installed by Makefile -->
                   <formats>
                     <format>zip</format>
                   </formats>
@@ -1954,7 +1951,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <attach>true</attach>
+                  <attach>false</attach> <!-- installed by Makefile -->
                   <formats>
                     <format>zip</format>
                   </formats>
@@ -2008,6 +2005,9 @@
     </profile>
     <profile>
       <id>package-exe</id>
+      <properties>
+        <nsis.scriptfile>${project.build.directory}/nsis/installer.nsi</nsis.scriptfile>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -2054,6 +2054,7 @@
                 </goals>
                 <configuration>
                   <attach>true</attach>
+                  <classifier>${classifier}</classifier>
                 </configuration>
               </execution>
             </executions>
@@ -2118,6 +2119,7 @@
                 <configuration>
                   <controlDir>${project.build.directory}/filtered-resources/deb/DEBIAN</controlDir>
                   <timestamped>true</timestamped>
+                  <classifier>${classifier}</classifier>
                   <deb>${project.build.directory}/assembly-${project.version}.deb</deb>
                   <dataSet>
                     <!-- ======== -->
@@ -2318,7 +2320,7 @@
                 <configuration>
                   <controlDir>${project.build.directory}/filtered-resources/deb/DEBIAN.cli</controlDir>
                   <timestamped>true</timestamped>
-                  <classifier>cli</classifier>
+                  <classifier>${classifier.dash}cli</classifier>
                   <deb>${project.build.directory}/assembly-${project.version}-cli.deb</deb>
                   <dataSet>
                     <!-- ============ -->
@@ -2375,6 +2377,7 @@
                 <configuration>
                   <name>pipeline2</name>
                   <group>daisy-pipeline2</group>
+                  <classifier>${classifier}</classifier>
                   <description>daisy-pipeline2</description>
                   <needarch>x86_64</needarch>
                   <mappings>
@@ -2514,7 +2517,7 @@
                   <name>pipeline2-cli</name>
                   <group>daisy-pipeline2-cli</group>
                   <projversion>${cli.version}</projversion>
-                  <classifier>cli</classifier>
+                  <classifier>${classifier.dash}cli</classifier>
                   <description>daisy-pipeline2-cli</description>
                   <needarch>x86_64</needarch>
                   <mappings>
