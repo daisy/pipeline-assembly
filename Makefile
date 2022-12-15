@@ -233,7 +233,7 @@ target/assembly-$(assembly/VERSION)-word-addin : mvn -Pwithout-osgi \
                                                      -Pwithout-gui \
                                                      -Pwithout-cli \
                                                      -Pwithout-updater \
-                                                     -Pcompile-simple-api \
+                                                     -Pwith-simple-api \
                                                      -Pcopy-artifacts \
                                                      -Pbuild-jre-win32 \
                                                      -Pbuild-jre-win64
@@ -295,14 +295,14 @@ target/maven-jlink/classifiers/jre-linux                               : mvn -Pb
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pwithout-persistence \
                                                                              -Pcopy-artifacts \
-                                                                             -Pcompile-simple-api \
+                                                                             -Pwith-simple-api \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-mac \
                                                                              -Punpack-updater-mac \
                                                                              -Passemble-mac-dir
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pwithout-persistence \
                                                                              -Pcopy-artifacts \
-                                                                             -Pcompile-simple-api \
+                                                                             -Pwith-simple-api \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-linux \
                                                                              -Punpack-updater-linux \
@@ -329,24 +329,6 @@ check : check-docker
 check-docker :
 	exec("bash", "src/test/resources/test-docker-image.sh");
 endif # neq ($(OS), WINDOWS)
-
-.PHONY : --without-persistence
---without-persistence : -Pwithout-persistence
-
-.PHONY : --without-osgi
---without-osgi : -Pwithout-osgi
-
-.PHONY : --without-gui
---without-gui : -Pwithout-gui
-
-.PHONY : --without-webservice
---without-webservice : -Pwithout-webservice
-
-.PHONY : --without-cli
---without-cli : -Pwithout-cli
-
-.PHONY : --without-updater
---without-updater : -Pwithout-updater
 
 clean :
 	for (File f : new File("make/java/").listFiles())  \
@@ -405,7 +387,6 @@ clean :
 
 PROFILES :=                     \
 	copy-artifacts              \
-	compile-simple-api          \
 	generate-release-descriptor \
 	assemble-linux-dir          \
 	assemble-linux-zip          \
@@ -426,13 +407,63 @@ PROFILES :=                     \
 	unpack-updater-linux        \
 	unpack-updater-mac          \
 	unpack-updater-win          \
-	unpack-updater-gui-win      \
-	without-persistence         \
-	without-osgi                \
-	without-gui                 \
-	without-webservice          \
-	without-cli                 \
-	without-updater
+	unpack-updater-gui-win
+
+.PHONY : --with-persistence --without-persistence
+--without-persistence : -Pwithout-persistence
+ifneq (--with-persistence,$(filter --with-persistence,$(MAKECMDGOALS)))
+PROFILES += without-persistence
+else
+.PHONY : -Pwithout-persistence
+endif
+
+.PHONY : --with-osgi --without-osgi
+--without-osgi : -Pwithout-osgi
+ifneq (--with-osgi,$(filter --with-osgi,$(MAKECMDGOALS)))
+PROFILES += without-osgi
+else
+.PHONY : -Pwithout-osgi
+endif
+
+.PHONY : --with-gui --without-gui
+--without-gui : -Pwithout-gui
+ifneq (--with-gui,$(filter --with-gui,$(MAKECMDGOALS)))
+PROFILES += without-gui
+else
+.PHONY : -Pwithout-gui
+endif
+
+.PHONY : --with-webservice --without-webservice
+--without-webservice : -Pwithout-webservice
+ifneq (--with-webservice,$(filter --with-webservice,$(MAKECMDGOALS)))
+PROFILES += without-webservice
+else
+.PHONY : -Pwithout-webservice
+endif
+
+.PHONY : --with-cli --without-cli
+--without-cli : -Pwithout-cli
+ifneq (--with-cli,$(filter --with-cli,$(MAKECMDGOALS)))
+PROFILES += without-cli
+else
+.PHONY : -Pwithout-cli
+endif
+
+.PHONY : --with-updater --without-updater
+--without-updater : -Pwithout-updater
+ifneq (--with-updater,$(filter --with-updater,$(MAKECMDGOALS)))
+PROFILES += without-updater
+else
+.PHONY : -Pwithout-updater
+endif
+
+.PHONY : --with-simple-api --without-simple-api
+--with-simple-api : -Pwith-simple-api
+ifneq (--without-simple-api,$(filter --without-simple-api,$(MAKECMDGOALS)))
+PROFILES += with-simple-api
+else
+.PHONY : -Pwith-simple-api
+endif
 
 .PHONY : mvn
 mvn :

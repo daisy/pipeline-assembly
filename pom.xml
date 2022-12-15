@@ -1423,7 +1423,7 @@
       </build>
     </profile>
     <profile>
-      <id>compile-simple-api</id>
+      <id>with-simple-api</id>
       <dependencies>
         <dependency>
           <groupId>org.daisy.pipeline</groupId>
