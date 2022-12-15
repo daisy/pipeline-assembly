@@ -442,6 +442,18 @@ $(addprefix -P,$(PROFILES)) :
 	@println("$@");
 endif
 
+# profiles that require Java 10
+
+ifdef DUMP_PROFILES
+ifeq ($(shell println($(JAVA_VERSION) >= 10);), false)
+-Pwith-simple-api : require-java-10
+.PHONY : require-java-10
+require-java-10 :
+	@err.println("Java 10 is required to compile SimpleAPI.java"); \
+	exit(1);
+endif
+endif
+
 # profiles that are run separately because need to be run with specific JDKs
 
 .PHONY : -Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64
