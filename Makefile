@@ -244,6 +244,8 @@ $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.rpm :
 endif # eq ($(OS), REDHAT)
 
 .PHONY : dir-word-addin
+# Note that when `dir-word-addin' is enabled together with other targets, it is as if --without-osgi, --without-persistence,
+# --without-webservice, --without-gui, --without-cli, --without-updater and --with-simple-api were also specified.
 dir-word-addin                                                                 : assembly/SOURCES
 dir-word-addin                                                                 : mvn -Pwithout-osgi \
                                                                                      -Pwithout-persistence \
@@ -262,6 +264,7 @@ endif
 ifneq ($(OS), WINDOWS)
 
 .PHONY : docker
+# Note that when `docker' is enabled together with other targets, it is as if --without-gui and --without-osgi were also specified.
 docker : mvn -Pwithout-gui -Pwithout-osgi \
          target/maven-jlink/classifiers/jre-linux \
          target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
@@ -311,16 +314,12 @@ endif
 target/maven-jlink/classifiers/jre-mac                                 : mvn -Pbuild-jre-mac
 target/maven-jlink/classifiers/jre-linux                               : mvn -Pbuild-jre-linux
 
-target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pwithout-persistence \
-                                                                             -Pcopy-artifacts \
-                                                                             -Pwith-simple-api \
+target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-mac \
                                                                              -Punpack-updater-mac \
                                                                              -Passemble-mac-dir
-target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pwithout-persistence \
-                                                                             -Pcopy-artifacts \
-                                                                             -Pwith-simple-api \
+target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-linux \
                                                                              -Punpack-updater-linux \
