@@ -138,22 +138,38 @@ target/assembly-$(assembly/VERSION)-linux.zip                                 : 
 target/assembly-$(assembly/VERSION)-mac.zip                                   : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-cli-mac \
-                                                                                    -Punpack-updater-mac \
-                                                                                    -Pbuild-jre-mac
+                                                                                    -Punpack-updater-mac
+ifeq (--without-jre,$(filter --without-jre --with-jre,$(MAKECMDGOALS)))
+target/assembly-$(assembly/VERSION)-mac.zip                                   : mvn -Passemble-mac-zip
+ifndef DUMP_PROFILES
+	exit(new File("$@").exists());
+endif
+else
+target/assembly-$(assembly/VERSION)-mac.zip                                   : mvn -Pbuild-jre-mac
+# -Passemble-mac-zip run separately because -Pbuild-jre-mac also run separately
 ifndef DUMP_PROFILES
 	exec("$(MVN)", "package", "-Passemble-mac-zip");
 	exit(new File("$@").exists());
 endif
+endif # --without-jre
 target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-cli-win \
                                                                                     -Punpack-updater-win \
-                                                                                    -Punpack-updater-gui-win \
-                                                                                    -Pbuild-jre-win64
+                                                                                    -Punpack-updater-gui-win
+ifeq (--without-jre,$(filter --without-jre --with-jre,$(MAKECMDGOALS)))
+target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Passemble-win-zip
+ifndef DUMP_PROFILES
+	exit(new File("$@").exists());
+endif
+else
+target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Pbuild-jre-win64
+# -Passemble-win-zip run separately because -Pbuild-jre-win64 also run separately
 ifndef DUMP_PROFILES
 	exec("$(MVN)", "package", "-Passemble-win-zip");
 	exit(new File("$@").exists());
 endif
+endif # --without-jre
 target/assembly-$(assembly/VERSION)-minimal.zip                               : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-updater-mac \
@@ -464,6 +480,9 @@ PROFILES += with-simple-api
 else
 .PHONY : -Pwith-simple-api
 endif
+
+# handled above (zip-mac and zip-win)
+.PHONY : --with-jre --without-jre
 
 .PHONY : mvn
 mvn :
