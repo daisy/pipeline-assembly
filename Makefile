@@ -244,20 +244,19 @@ $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.rpm :
 endif # eq ($(OS), REDHAT)
 
 .PHONY : dir-word-addin
-dir-word-addin : target/assembly-$(assembly/VERSION)-word-addin
-target/assembly-$(assembly/VERSION)-word-addin : assembly/SOURCES
-target/assembly-$(assembly/VERSION)-word-addin : mvn -Pwithout-osgi \
-                                                     -Pwithout-persistence \
-                                                     -Pwithout-webservice \
-                                                     -Pwithout-gui \
-                                                     -Pwithout-cli \
-                                                     -Pwithout-updater \
-                                                     -Pwith-simple-api \
-                                                     -Pcopy-artifacts \
-                                                     -Pbuild-jre-win32 \
-                                                     -Pbuild-jre-win64
+dir-word-addin                                                                 : assembly/SOURCES
+dir-word-addin                                                                 : mvn -Pwithout-osgi \
+                                                                                     -Pwithout-persistence \
+                                                                                     -Pwithout-webservice \
+                                                                                     -Pwithout-gui \
+                                                                                     -Pwithout-cli \
+                                                                                     -Pwithout-updater \
+                                                                                     -Pwith-simple-api \
+                                                                                     -Pcopy-artifacts \
+                                                                                     -Pbuild-jre-win32 \
+                                                                                     -Pbuild-jre-win64
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "install", "-Passemble-word-addin-dir");
+	exec("$(MVN)", "install", "-Passemble-win-dir");
 endif
 
 ifneq ($(OS), WINDOWS)
@@ -397,7 +396,6 @@ clean :
 # assemble-linux-zip                                                                                                assemble-linux-zip
 # assemble-win-zip                                                                                                  assemble-win-zip
 # assemble-minimal-zip                                                                                              assemble-minimal-zip
-# assemble-word-addin-dir                                                                                           assemble-word-addin-dir
 # package-exe                                                                                 copy-nsis-resources   package-exe
 # package-deb                                                          filter-deb-resources                         package-deb
 # package-deb-cli                                                                                                   package-deb-cli
