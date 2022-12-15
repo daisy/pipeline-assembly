@@ -164,6 +164,9 @@ ifndef DUMP_PROFILES
 endif
 else
 target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Pbuild-jre-win64
+ifeq (--with-jre32,$(filter --with-jre32,$(MAKECMDGOALS)))
+target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Pbuild-jre-win32
+endif # --with-jre32
 # -Passemble-win-zip run separately because -Pbuild-jre-win64 also run separately
 ifndef DUMP_PROFILES
 	exec("$(MVN)", "package", "-Passemble-win-zip");
@@ -483,6 +486,9 @@ endif
 
 # handled above (zip-mac and zip-win)
 .PHONY : --with-jre --without-jre
+
+# handled above (zip-win)
+.PHONY : --with-jre32 --without-jre32
 
 .PHONY : mvn
 mvn :
