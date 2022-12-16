@@ -314,7 +314,9 @@ endif # neq ($(OS), WINDOWS)
 .PHONY : --without-updater
 --without-updater : -Pwithout-updater
 
+.PHONY : clean
 clean :
+	exec("$(MVN)", "clean");
 	for (File f : new File("make/java/").listFiles())  \
 		if (f.getName().matches(".*\\.(java|class)"))  \
 			f.delete();
@@ -497,3 +499,11 @@ src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.3_7.tar.gz :
 	mkdirs("$(dir $@)");                                                                                          \
 	copy(new URL("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/$(notdir $@)"), \
 	     new File("$@"));
+
+.PHONY : clean-jdk
+clean : clean-jdk
+clean-jdk :
+	rm("src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.3_7/jdk-17.0.3+7");          \
+	rm("src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8");      \
+	rm("src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8");    \
+	rm("src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8");
