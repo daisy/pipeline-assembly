@@ -127,10 +127,10 @@ locateData() {
 locateLog() {
     if [ "x$PIPELINE2_LOGDIR" != "x" ]; then
         if [ ! -d "$PIPELINE2_LOGDIR" ]; then
-                mkdir -p $PIPELINE2_LOG
+                mkdir -p $PIPELINE2_LOGDIR
         fi
     else
-        PIPELINE2_LOGDIR=$PIPELINE2_DATA/log
+        PIPELINE2_LOGDIR=$PIPELINE2_HOME/log
     fi
 }
 

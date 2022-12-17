@@ -211,7 +211,7 @@ ifndef DUMP_PROFILES
 	     "--java-options", "--add-opens=java.base/java.lang=ALL-UNNAMED "                              + \
 	                       "-Dorg.daisy.pipeline.home=$$APPDIR "                                       + \
 	                       "-Dorg.daisy.pipeline.data=$$APPDIR/data "                                  + \
-	                       "-Dorg.daisy.pipeline.logdir=$$APPDIR/data/log "                            + \
+	                       "-Dorg.daisy.pipeline.logdir=$$APPDIR/log "                                 + \
 	                       "-Dorg.daisy.pipeline.properties=$$APPDIR/etc/pipeline.properties "         + \
 	                       "-Dlogback.configurationFile=$$APPDIR/etc/logback.xml");
 	exec("mv", "target/jpackage/DAISY Pipeline 2-$(app_version).dmg", "$@");

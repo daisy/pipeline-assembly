@@ -40,7 +40,7 @@ if "%PIPELINE2_DATA%" == "" (
 if not exist "%PIPELINE2_DATA%" mkdir "%PIPELINE2_DATA%"
 
 if "%PIPELINE2_LOGDIR%" == "" (
-    set PIPELINE2_LOGDIR=%PIPELINE2_DATA%\log
+    set PIPELINE2_LOGDIR=%appdata%/DAISY Pipeline 2\log
 )
 if not exist "%PIPELINE2_LOGDIR%" mkdir "%PIPELINE2_LOGDIR%"
 

@@ -1,9 +1,8 @@
 <configuration debug="false">
 
-  <!--
-      Variables that may be used in this file:
-      - ${org.daisy.pipeline.logdir}
-  -->
+  <Properties>
+    <Property name="org.daisy.pipeline.logdir">${user.home:-.}</Property>
+  </Properties>
 
   <!-- see http://logback.qos.ch/manual/configuration.html#LevelChangePropagator -->
   <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
