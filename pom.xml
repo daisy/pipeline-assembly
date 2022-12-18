@@ -2146,12 +2146,6 @@
                       <linkTarget>${deb.pipeline.home}/etc/pipeline.properties</linkTarget>
                     </data>
                     <data>
-                      <type>link</type>
-                      <symlink>true</symlink>
-                      <linkName>${deb.pipeline.config}/tts-default-config.xml</linkName>
-                      <linkTarget>${deb.pipeline.home}/etc/tts-default-config.xml</linkTarget>
-                    </data>
-                    <data>
                       <type>file</type>
                       <src>src/main/deb/etc/default/daisy-pipeline2</src>
                       <dst>/etc/default/daisy-pipeline2</dst>
