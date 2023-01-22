@@ -45,7 +45,6 @@
         <include>common/**</include>
         <include>no-osgi/**</include>
         <include>gui/**</include>
-        <include>volatile/**</include>
       </includes>
       <excludes>
         <exclude>common/linux</exclude>

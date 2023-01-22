@@ -1,3 +1,16 @@
+Changes in release v1.14.10
+===========================
+
+## Framework
+
+- **FIX** Bug in web server: store files with spaces in their name correctly in result ZIP
+
+## Details
+
+- [Closed issues in pipeline-assembly](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.10)
+- [Closed issues in pipeline-framework](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.10)
+- [Closed issues in pipeline-gui](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-gui+milestone%3Av1.14.10)
+
 Changes in release v1.14.9
 ==========================
 
@@ -31,7 +44,7 @@ Changes in release v1.14.8
 - [Closed issues in pipeline-assembly](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.8)
 - [Closed issues in pipeline-cli-go](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-cli-go+milestone%3Av1.14.8)
 - [Closed issues in pipeline-framework](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.8)
-- [Closed issues in pipeline-modules](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.8)
+- [Closed issues in pipeline-modules](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.8)
 
 Changes in release v1.14.7
 ==========================
@@ -50,11 +63,11 @@ Changes in release v1.14.7
 
 ### Details
 
-- [Closed issues in pipeline-assembly](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.7)
-- [Closed issues in pipeline-framework](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.7)
-- [Closed issues in pipeline-gui](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-gui+milestone%3Av1.14.7)
-- [Closed issues in pipeline-modules](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.7)
-- [Closed issues in pipeline-tasks](tps://github.com/issues?q=repo%3Adaisy%2Fpipeline-tasks+milestone%3Av1.14.7)
+- [Closed issues in pipeline-assembly](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.7)
+- [Closed issues in pipeline-framework](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.7)
+- [Closed issues in pipeline-gui](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-gui+milestone%3Av1.14.7)
+- [Closed issues in pipeline-modules](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.7)
+- [Closed issues in pipeline-tasks](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-tasks+milestone%3Av1.14.7)
 
 Changes in release v1.14.6
 ==========================

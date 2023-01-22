@@ -459,8 +459,6 @@ run() {
         else
             PATHS="$PATHS system/no-osgi/persistence"
         fi
-    else
-        PATHS="$PATHS system/volatile"
     fi
     if [ "$ENABLE_OSGI" = "true" ]; then
         if [ "$MODE" = "gui" ]; then

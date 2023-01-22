@@ -360,7 +360,6 @@ clean :
 #                         copy-framework
 #                         copy-framework-osgi
 #                         copy-framework-no-osgi
-#                         copy-volatile
 #                         copy-persistence
 #                         copy-persistence-osgi
 #                         copy-persistence-no-osgi

@@ -210,8 +210,6 @@ goto :RUN_LOOP
         ) else (
             set PATHS=!PATHS! system\no-osgi\persistence
         )
-    ) else (
-        set PATHS=!PATHS! system\volatile
     )
     if %ENABLE_OSGI% == true (
         for %%D in (system\osgi\bootstrap) do (
