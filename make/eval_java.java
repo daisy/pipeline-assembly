@@ -31,9 +31,12 @@ public class eval_java {
 			File classFile = new File(javaDir, className + ".class");
 			if (!classFile.exists()) {
 				File javaFile = new File(javaDir, className + ".java");
-				try (OutputStream os = new FileOutputStream(javaFile)) {
+				OutputStream os = new FileOutputStream(javaFile);
+				try {
 					os.write(javaCode.getBytes("UTF-8"));
 					os.flush();
+				} finally {
+					os.close();
 				}
 				String javac = "javac";
 				String JAVA_HOME = System.getenv("JAVA_HOME");
