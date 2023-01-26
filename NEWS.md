@@ -5,6 +5,13 @@ Changes in release v1.14.11
 
 - **FIX** Issue of empty job log files.
 
+## Modules
+
+- **FIX** Various fixes and improvements to DAISY 3 to MP3 and DAISY 2.02 to MP3 scripts.
+- **FIX** Headings generated from `aria-label` attributes are now inserted after any leading page
+  breaks.
+- Other bugfixes
+
 Changes in release v1.14.10
 ===========================
 
