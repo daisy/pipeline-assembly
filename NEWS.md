@@ -6,6 +6,7 @@ Changes in release v1.14.10
 - **NEW** Script to transform a DAISY 2.02 into a folder structure with MP3 files (experimental)
 - **NEW** Script to unscramble audio files in a DAISY 2.02 publication
 - **NEW** Support for new type of Windows text-to-speech voices ("OneCore" voices).
+- Changes to braille production scripts, see [release notes of braille modules v1.14.11](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v11411)
 
 ## Framework
 
