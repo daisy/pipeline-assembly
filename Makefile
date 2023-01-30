@@ -148,7 +148,7 @@ else
 target/assembly-$(assembly/VERSION)-mac.zip                                   : mvn -Pbuild-jre-mac
 # -Passemble-mac-zip run separately because -Pbuild-jre-mac also run separately
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "package", "-Passemble-mac-zip");
+	exec("$(MVN)", "assembly:single", "-Passemble-mac-zip");
 	exit(new File("$@").exists());
 endif
 endif # --without-jre
@@ -169,7 +169,7 @@ target/assembly-$(assembly/VERSION)-win.zip                                   : 
 endif # --with-jre32
 # -Passemble-win-zip run separately because -Pbuild-jre-win64 also run separately
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "package", "-Passemble-win-zip");
+	exec("$(MVN)", "assembly:single", "-Passemble-win-zip");
 	exit(new File("$@").exists());
 endif
 endif # --without-jre
@@ -204,7 +204,7 @@ ifndef DUMP_PROFILES
 	     "--vendor", "DAISY Consortium",                                                                 \
 	     "--icon", "src/main/mac/pipeline.icns",                                                         \
 	     "--mac-package-identifier", "org.daisy.pipeline2",                                              \
-	     "--runtime-image", "target/maven-jlink/classifiers/jre-mac",                                    \
+	     "--runtime-image", "target/maven-jlink/classifiers/mac",                                        \
 	     "--input", "target/assembly-$(assembly/VERSION)-mac-app/daisy-pipeline",                        \
 	     "--main-jar", "system/gui/" + guiJar[0],                                                        \
 	     "--main-class", "org.daisy.pipeline.gui.GUIService",                                            \
@@ -258,7 +258,7 @@ dir-word-addin                                                                 :
                                                                                      -Pbuild-jre-win32 \
                                                                                      -Pbuild-jre-win64
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "install", "-Passemble-win-dir");
+	exec("$(MVN)", "assembly:single", "-Passemble-win-dir");
 endif
 
 ifneq ($(OS), WINDOWS)
@@ -266,7 +266,7 @@ ifneq ($(OS), WINDOWS)
 .PHONY : docker
 # Note that when `docker' is enabled together with other targets, it is as if --without-gui and --without-osgi were also specified.
 docker : mvn -Pwithout-gui -Pwithout-osgi \
-         target/maven-jlink/classifiers/jre-linux \
+         target/maven-jlink/classifiers/linux \
          target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 ifndef DUMP_PROFILES
 	mkdirs("target/docker");                                                                        \
@@ -282,9 +282,9 @@ dev-launcher : target/dev-launcher/pipeline2
 target/dev-launcher/pipeline2 : pom.xml
 ifdef BUILD_JRE_FOR_DEV_LAUNCHER
 ifeq ($(OS), MACOSX)
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre-mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
 else
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/jre-linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
 ifndef DUMP_PROFILES
 	mkdirs("$(dir $@)");                                \
@@ -311,8 +311,8 @@ ifndef DUMP_PROFILES
 endif
 endif
 
-target/maven-jlink/classifiers/jre-mac                                 : mvn -Pbuild-jre-mac
-target/maven-jlink/classifiers/jre-linux                               : mvn -Pbuild-jre-linux
+target/maven-jlink/classifiers/mac                                     : mvn -Pbuild-jre-mac
+target/maven-jlink/classifiers/linux                                   : mvn -Pbuild-jre-linux
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
@@ -514,7 +514,7 @@ endif
 
 ifdef DUMP_PROFILES
 ifeq ($(shell println($(JAVA_VERSION) >= 10);), false)
--Pwith-simple-api : require-java-10
+--with-simple-api : require-java-10
 .PHONY : require-java-10
 require-java-10 :
 	@err.println("Java 10 is required to compile SimpleAPI.java"); \
@@ -522,7 +522,8 @@ require-java-10 :
 endif
 endif
 
-# profiles that are run separately because need to be run with specific JDKs, and because they should not be installed
+# profiles that are run separately because need to be run with specific JDKs, because they should not be
+# installed, and because they require a pom without dependencies
 
 .PHONY : -Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64
 -Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : mvn # to make sure they are run after other profiles
@@ -532,27 +533,27 @@ ifeq ($(OS), MACOSX)
 ifndef DUMP_PROFILES
 	rm("target/classes");                                \
 	exec(env("JAVA_HOME", "$(CURDIR)/$</Contents/Home"), \
-	     "$(MVN)", "package", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
 endif
 -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_mac_hotspot_11.0.13_8/jdk-11.0.13+8
 ifndef DUMP_PROFILES
 	rm("target/classes");                                \
 	exec(env("JAVA_HOME", "$(CURDIR)/$</Contents/Home"), \
-	     "$(MVN)", "package", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
 endif
 else ifeq ($(OS), WINDOWS)
 -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8
 ifndef DUMP_PROFILES
 	rm("target/classes");                                \
 	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
-	     "$(MVN)", "package", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
 endif
 else
 -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8
 ifndef DUMP_PROFILES
 	rm("target/classes");                                \
 	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
-	     "$(MVN)", "package", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
 endif
 endif
 
