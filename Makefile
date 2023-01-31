@@ -350,9 +350,8 @@ endif # neq ($(OS), WINDOWS)
 .PHONY : clean
 clean :
 	exec("$(MVN)", "clean");
-	for (File f : new File("make/java/").listFiles())  \
-		if (f.getName().matches(".*\\.(java|class)"))  \
-			f.delete();
+	rm("make/java/temp"); \
+	rm("make/classes/temp");
 
 #                         process-sources      generate-resources      process-resources      prepare-package       package
 #                         ---------------      ---------------         -----------------      ---------------       -------

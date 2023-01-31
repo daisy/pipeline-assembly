@@ -14,8 +14,10 @@ public class eval_java {
 		if ("true".equals(System.getenv("ECHO")))
 			System.err.println(javaCode);
 		try {
+			String packageName = "temp";
 			javaCode =
-				"import java.io.*;\n"
+				"package " + packageName + ";\n"
+				+ "import java.io.*;\n"
 				+ "import static java.lang.System.err;\n"
 				+ "import java.net.*;\n"
 				+ "import java.nio.file.*;\n"
@@ -28,9 +30,11 @@ public class eval_java {
 			String className = "temp_" + md5(javaCode) + "_" + getJavaVersion();
 			javaCode = javaCode.replace("[CLASSNAME]", className);
 			File javaDir = new File(thisExecutable.getParentFile(), "java");
-			File classFile = new File(javaDir, className + ".class");
+			File classesDir = new File(thisExecutable.getParentFile(), "classes");
+			File classFile = new File(new File(classesDir, packageName.replace('.', '/')), className + ".class");
 			if (!classFile.exists()) {
-				File javaFile = new File(javaDir, className + ".java");
+				File javaFile = new File(new File(javaDir, packageName.replace('.', '/')), className + ".java");
+				javaFile.getParentFile().mkdirs();
 				OutputStream os = new FileOutputStream(javaFile);
 				try {
 					os.write(javaCode.getBytes("UTF-8"));
@@ -48,13 +52,19 @@ public class eval_java {
 					if (f.exists())
 						javac = f.getAbsolutePath();
 				}
-				int rv = new ProcessBuilder(javac, "-cp", javaDir.getAbsolutePath(), javaFile.getAbsolutePath()).inheritIO().start().waitFor();
+				classesDir.mkdirs();
+				int rv = new ProcessBuilder(
+					javac,
+					"-cp", classesDir.getAbsolutePath(),
+					"-d", classesDir.getAbsolutePath(),
+					javaFile.getAbsolutePath()
+				).inheritIO().start().waitFor();
 				System.out.flush();
 				System.err.flush();
 				if (rv != 0)
 					System.exit(rv);
 			}
-			Class.forName(className).getDeclaredMethod("main", String[].class).invoke(null, (Object)new String[0]);
+			Class.forName(packageName + "." + className).getDeclaredMethod("main", String[].class).invoke(null, (Object)new String[0]);
 		} catch (Throwable e) {
 			e.printStackTrace();
 			System.err.flush();

@@ -1,6 +1,6 @@
 # Makefile
-/make/java/*.java
-/make/java/*.class
+/make/java/temp/
+/make/classes/temp/
 /src/main/jre/
 
 # Maven
