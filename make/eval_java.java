@@ -42,13 +42,12 @@ public class eval_java {
 				} finally {
 					os.close();
 				}
-				String javac = "javac";
+				String javac = System.getProperty("os.name").toLowerCase().startsWith("windows")
+					? "javac.exe"
+					: "javac";
 				String JAVA_HOME = System.getenv("JAVA_HOME");
 				if (JAVA_HOME != null) {
-					File f = new File(new File(JAVA_HOME),
-					                  System.getProperty("os.name").toLowerCase().startsWith("windows")
-					                      ? "bin\\javac.exe"
-					                      : "bin/javac");
+					File f = new File(new File(new File(JAVA_HOME), "bin"), javac);
 					if (f.exists())
 						javac = f.getAbsolutePath();
 				}

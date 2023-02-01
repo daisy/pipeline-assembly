@@ -104,14 +104,53 @@ public class util {
 		}
 	}
 
+	public static void cp(String src, String dest) throws FileNotFoundException, IOException {
+		copy(src, dest);
+	}
+
+	public static void cp(File src, File dest) throws FileNotFoundException, IOException {
+		copy(src, dest);
+	}
+
+	public static void cp(URL url, File file) throws FileNotFoundException, IOException {
+		copy(url, file);
+	}
+
+	public static void cp(InputStream src, OutputStream dest) throws IOException {
+		copy(src, dest);
+	}
+
+	public static void copy(String src, String dest) throws FileNotFoundException, IOException {
+		File srcFile = new File(src);
+		File destFile = new File(dest);
+		if (!destFile.exists() && dest.endsWith("/")) {
+			destFile.mkdirs();
+			destFile = new File(destFile, srcFile.getName());
+		}
+		copy(srcFile, destFile);
+	}
+
+	public static void copy(File src, File dest) throws FileNotFoundException, IOException {
+		if (dest.isDirectory())
+			dest = new File(dest, src.getName());
+		try (InputStream is = new FileInputStream(src);
+		     OutputStream os = new FileOutputStream(dest)) {
+			copy(is, os);
+		}
+	}
+
 	public static void copy(URL url, File file) throws FileNotFoundException, IOException {
 		try (InputStream is = new BufferedInputStream(url.openStream());
 		     OutputStream os = new FileOutputStream(file)) {
-			byte data[] = new byte[1024];
-			int read;
-			while ((read = is.read(data)) != -1)
-				os.write(data, 0, read);
+			copy(is, os);
 		}
+	}
+
+	public static void copy(InputStream src, OutputStream dest) throws IOException {
+		byte data[] = new byte[1024];
+		int read;
+		while ((read = src.read(data)) != -1)
+			dest.write(data, 0, read);
 	}
 
 	public static void write(File file, String string) throws IOException {
@@ -235,6 +274,20 @@ public class util {
 		} else {
 			return cmd;
 		}
+	}
+
+	public static void javac(String... cmd) throws IOException, InterruptedException {
+		String javac = getOS() == OS.WINDOWS ? "javac.exe" : "javac";
+		String JAVA_HOME = System.getenv("JAVA_HOME");
+		if (JAVA_HOME != null) {
+			File f = new File(new File(new File(JAVA_HOME), "bin"), javac);
+			if (f.exists())
+				javac = f.getAbsolutePath();
+		}
+		String[] javacCmd = new String[1 + cmd.length];
+		javacCmd[0] = javac;
+		System.arraycopy(cmd, 0, javacCmd, 1, cmd.length);
+		exec(javacCmd);
 	}
 
 	private static String quote(String s) {
