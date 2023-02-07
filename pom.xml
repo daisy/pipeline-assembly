@@ -462,12 +462,10 @@
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-classic</artifactId>
-                  <version>1.2.8</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>ch.qos.logback</groupId>
                   <artifactId>logback-core</artifactId>
-                  <version>1.2.8</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>

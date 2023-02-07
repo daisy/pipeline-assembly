@@ -1,3 +1,10 @@
+Changes in release v1.14.11
+===========================
+
+## Framework
+
+- **FIX** Issue of empty job log files.
+
 Changes in release v1.14.10
 ===========================
 
