@@ -4,6 +4,7 @@ Changes in release v1.14.11
 ## Framework
 
 - **FIX** Issue of empty job log files.
+- **FIX** Regression in web server: handling of simultaneous requests was broken in release 1.14.10.
 
 ## Modules
 
