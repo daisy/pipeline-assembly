@@ -13,6 +13,12 @@ Changes in release v1.14.11
   breaks.
 - Other bugfixes
 
+## Details
+
+- [Closed issues in pipeline-assembly](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-assembly+milestone%3Av1.14.11)
+- [Closed issues in pipeline-framework](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-framework+milestone%3Av1.14.11)
+- [Closed issues in pipeline-modules](https://github.com/issues?q=repo%3Adaisy%2Fpipeline-modules+milestone%3Av1.14.11)
+
 Changes in release v1.14.10
 ===========================
 
