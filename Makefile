@@ -10,29 +10,12 @@ DOCKER := docker
 --classifier ?=
 CLASSIFIER := $(shell println("$(--classifier)".replaceAll("^.+$$", "-$$0"));)
 
-.PHONY : default
-ifeq ($(OS), WINDOWS)
-default : exe
-else ifeq ($(OS), MACOSX)
-default : dmg
-else ifeq ($(OS), REDHAT)
-default : rpm
-else
-default : zip-linux
-endif
-
 .PHONY : help
 help :
 	@err.println(                                                                 \
-		"make [default]:"                                                + "\n" + \
-		"    Builds the default package for the current platform");               \
-	if (getOS() == OS.MACOSX)                                                     \
-		err.println(                                                              \
-			"make dmg:"                                                  + "\n" + \
-			"    Builds a DMG image (Mac OS disk image)");                        \
+		"make help:"                                                     + "\n" + \
+		"    Print list of commands");                                            \
 	err.println(                                                                  \
-		"make exe:"                                                      + "\n" + \
-		"    Builds a EXE (Windows installer)"                           + "\n" + \
 		"make deb:"                                                      + "\n" + \
 		"    Builds a DEB (Debian package)");                                     \
 	if (getOS() == OS.REDHAT)                                                     \
@@ -67,10 +50,8 @@ INSTALL_DIR                  := $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assem
 
 include deps.mk
 
-.PHONY : dmg exe deb rpm zip-linux zip-mac zip-win zip-minimal deb-cli rpm-cli
+.PHONY : deb rpm zip-linux zip-mac zip-win zip-minimal deb-cli rpm-cli
 
-dmg         : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).dmg
-exe         : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).exe
 deb         : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).deb
 rpm         : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).rpm
 zip-linux   : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-linux.zip
@@ -85,7 +66,6 @@ release-descriptor : target/release-descriptor/releaseDescriptor.xml
 target/release-descriptor/releaseDescriptor.xml : mvn -Pgenerate-release-descriptor
 
 # some artifacts are installed through command line
-$(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).dmg         \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-linux.zip   \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-mac.zip     \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-win.zip     \
@@ -99,13 +79,6 @@ ifndef DUMP_PROFILES
 	exit(new File("$@").exists());
 endif
 
-$(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).exe                  : mvn -Pcopy-artifacts \
-                                                                                    -Pgenerate-release-descriptor \
-                                                                                    -Punpack-cli-win \
-                                                                                    -Punpack-updater-win \
-                                                                                    -Punpack-updater-gui-win \
-                                                                                    -Passemble-win-dir \
-                                                                                    -Ppackage-exe
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).deb                  : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-updater-linux \
@@ -135,8 +108,7 @@ endif # --without-jre
 target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-cli-win \
-                                                                                    -Punpack-updater-win \
-                                                                                    -Punpack-updater-gui-win
+                                                                                    -Punpack-updater-win
 ifeq (--without-jre,$(filter --without-jre --with-jre,$(MAKECMDGOALS)))
 target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Passemble-win-zip
 ifndef DUMP_PROFILES
@@ -163,44 +135,6 @@ $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.deb              : 
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-cli-linux \
                                                                                     -Ppackage-deb-cli
-ifeq ($(OS), MACOSX)
-app_version := $(shell println("$(assembly/VERSION)".replaceAll("-.*$$", ""));)
-target/assembly-$(assembly/VERSION).dmg                                        : mvn -Pcopy-artifacts \
-                                                                                     -Pgenerate-release-descriptor \
-                                                                                     -Punpack-updater-mac \
-                                                                                     -Passemble-mac-app-dir \
-                                                                                     -Pbuild-jre-mac
-ifndef DUMP_PROFILES
-	rm("target/jpackage");                                                                               \
-	String[] guiJar = new File("target/assembly-$(assembly/VERSION)-mac-app/daisy-pipeline/system/gui")  \
-	                  .list((dir, name) -> name.matches("org\\.daisy\\.pipeline\\.gui-.*\\.jar"));       \
-	exitOnError(guiJar != null && guiJar.length == 1);                                                   \
-	exec("src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.3_7/jdk-17.0.3+7/Contents/Home/bin/jpackage", \
-	     "--dest", "target/jpackage",                                                                    \
-	     "--type", "dmg",                                                                                \
-	     "--app-version", "$(app_version)",                                                              \
-	     "--description", "A tool for automated production of accessible digital publication",           \
-	     "--name", "DAISY Pipeline 2",                                                                   \
-	     "--vendor", "DAISY Consortium",                                                                 \
-	     "--icon", "src/main/mac/pipeline.icns",                                                         \
-	     "--mac-package-identifier", "org.daisy.pipeline2",                                              \
-	     "--runtime-image", "target/maven-jlink/classifiers/mac",                                        \
-	     "--input", "target/assembly-$(assembly/VERSION)-mac-app/daisy-pipeline",                        \
-	     "--main-jar", "system/gui/" + guiJar[0],                                                        \
-	     "--main-class", "org.daisy.pipeline.gui.GUIService",                                            \
-	     "--java-options", "--add-opens=java.base/java.lang=ALL-UNNAMED "                              + \
-	                       "-Dorg.daisy.pipeline.home=$$APPDIR "                                       + \
-	                       "-Dorg.daisy.pipeline.data=$$APPDIR/data "                                  + \
-	                       "-Dorg.daisy.pipeline.logdir=$$APPDIR/log "                                 + \
-	                       "-Dorg.daisy.pipeline.properties=$$APPDIR/etc/pipeline.properties "         + \
-	                       "-Dlogback.configurationFile=$$APPDIR/etc/logback.xml");
-	exec("mv", "target/jpackage/DAISY Pipeline 2-$(app_version).dmg", "$@");
-endif
-else
-target/assembly-$(assembly/VERSION).dmg :
-	@err.println("Can not build DMG because not running MacOS"); \
-	exit(1);
-endif # eq ($(OS), MACOSX)
 ifeq ($(OS), REDHAT)
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).rpm                   : mvn -Pcopy-artifacts \
                                                                                      -Pgenerate-release-descriptor \
@@ -225,12 +159,11 @@ endif # eq ($(OS), REDHAT)
 
 .PHONY : dir-word-addin
 # Note that when `dir-word-addin' is enabled together with other targets, it is as if --without-osgi, --without-persistence,
-# --without-webservice, --without-gui, --without-cli, --without-updater and --with-simple-api were also specified.
+# --without-webservice, --without-cli, --without-updater and --with-simple-api were also specified.
 dir-word-addin                                                                 : assembly/SOURCES
 dir-word-addin                                                                 : mvn -Pwithout-osgi \
                                                                                      -Pwithout-persistence \
                                                                                      -Pwithout-webservice \
-                                                                                     -Pwithout-gui \
                                                                                      -Pwithout-cli \
                                                                                      -Pwithout-updater \
                                                                                      -Pwith-simple-api \
@@ -244,8 +177,8 @@ endif
 ifneq ($(OS), WINDOWS)
 
 .PHONY : docker
-# Note that when `docker' is enabled together with other targets, it is as if --without-gui and --without-osgi were also specified.
-docker : mvn -Pwithout-gui -Pwithout-osgi \
+# Note that when `docker' is enabled together with other targets, it is as if --without-osgi was also specified.
+docker : mvn -Pwithout-osgi \
          target/maven-jlink/classifiers/linux \
          target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 ifndef DUMP_PROFILES
@@ -307,7 +240,6 @@ target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pc
 
 endif # neq ($(OS), WINDOWS)
 
-$(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).exe           \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).deb           \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.deb       \
 target/assembly-$(assembly/VERSION)-linux.zip             \
@@ -344,10 +276,6 @@ clean :
 #                         copy-persistence-osgi
 #                         copy-persistence-no-osgi
 #                         copy-webservice
-#                         copy-gui
-#                         copy-javafx-linux
-#                         copy-javafx-mac
-#                         copy-javafx-win
 #                         copy-modules
 #                         copy-modules-osgi
 #                         copy-modules-linux
@@ -365,16 +293,13 @@ clean :
 # unpack-updater-mac                           unpack-updater-mac
 # unpack-updater-linux                         unpack-updater-linux
 # unpack-updater-win                           unpack-updater-win
-# unpack-updater-gui-win                       unpack-updater-gui-win
 # assemble-mac-dir                                                                            assemble-mac-dir
-# assemble-mac-app-dir                                                                                              assemble-mac-app-dir
 # assemble-linux-dir                                                                          assemble-linux-dir
 # assemble-win-dir                                                                            assemble-win-dir
 # assemble-mac-zip                                                                                                  assemble-mac-zip
 # assemble-linux-zip                                                                                                assemble-linux-zip
 # assemble-win-zip                                                                                                  assemble-win-zip
 # assemble-minimal-zip                                                                                              assemble-minimal-zip
-# package-exe                                                                                 copy-nsis-resources   package-exe
 # package-deb                                                          filter-deb-resources                         package-deb
 # package-deb-cli                                                                                                   package-deb-cli
 # package-rpm                                                                                                       package-rpm
@@ -386,14 +311,12 @@ PROFILES :=                     \
 	assemble-linux-dir          \
 	assemble-linux-zip          \
 	assemble-mac-dir            \
-	assemble-mac-app-dir        \
 	assemble-mac-zip            \
 	assemble-win-dir            \
 	assemble-win-zip            \
 	assemble-minimal-zip        \
 	package-deb                 \
 	package-deb-cli             \
-	package-exe                 \
 	package-rpm                 \
 	package-rpm-cli             \
 	unpack-cli-linux            \
@@ -401,8 +324,7 @@ PROFILES :=                     \
 	unpack-cli-win              \
 	unpack-updater-linux        \
 	unpack-updater-mac          \
-	unpack-updater-win          \
-	unpack-updater-gui-win
+	unpack-updater-win
 
 .PHONY : --with-persistence --without-persistence
 --without-persistence : -Pwithout-persistence
@@ -418,14 +340,6 @@ ifneq (--with-osgi,$(filter --with-osgi,$(MAKECMDGOALS)))
 PROFILES += without-osgi
 else
 .PHONY : -Pwithout-osgi
-endif
-
-.PHONY : --with-gui --without-gui
---without-gui : -Pwithout-gui
-ifneq (--with-gui,$(filter --with-gui,$(MAKECMDGOALS)))
-PROFILES += without-gui
-else
-.PHONY : -Pwithout-gui
 endif
 
 .PHONY : --with-webservice --without-webservice

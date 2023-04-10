@@ -21,7 +21,6 @@
   </scm>
   <properties>
     <cli.version>2.1.7</cli.version>
-    <javafx.version>11.0.1</javafx.version>
     <classifier />
     <classifier.dash /> <!-- classifier followed by "-" -->
     <!--
@@ -54,17 +53,7 @@
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
-        <artifactId>gui</artifactId>
-        <version>1.3.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.daisy.pipeline</groupId>
         <artifactId>updater</artifactId>
-        <version>1.0.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.daisy.pipeline</groupId>
-        <artifactId>updater-gui</artifactId>
         <version>1.0.2</version>
       </dependency>
       <dependency>
@@ -91,31 +80,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-base</artifactId>
-        <version>${javafx.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-graphics</artifactId>
-        <version>${javafx.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>${javafx.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-web</artifactId>
-        <version>${javafx.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-fxml</artifactId>
-        <version>${javafx.version}</version>
-      </dependency>
       <!-- missing from framework-bom -->
       <dependency>
         <groupId>com.nwalsh</groupId>
@@ -136,8 +100,7 @@
   </dependencyManagement>
   <dependencies>
     <!--
-        dependencies needed to run Pipeline as library (no webservice, no persistence, no gui, no
-        updater, no OSGi)
+        dependencies needed to run Pipeline as library (no webservice, no persistence, no updater, no OSGi)
 
         this section must be kept in sync with the corresponding maven-dependency-plugin sections below
     -->
@@ -2177,183 +2140,6 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-gui</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/jars/gui</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>gui</artifactId>
-                </artifactItem>
-                <!--
-                    framework dependencies
-                -->
-                <artifactItem>
-                  <groupId>org.daisy.pipeline</groupId>
-                  <artifactId>updater-wrapper</artifactId>
-                </artifactItem>
-                <!--
-                    3rd-party dependencies
-                -->
-                <dependency>
-                  <groupId>de.jangassen</groupId>
-                  <artifactId>nsmenufx</artifactId>
-                  <version>2.1.8</version>
-                </dependency>
-                <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>pegdown</artifactId>
-                  <version>1.0.0</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>parboiled</artifactId>
-                  <version>1.0.0</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.ow2.asm</groupId>
-                  <artifactId>asm</artifactId>
-                  <version>5.0.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.ow2.asm</groupId>
-                  <artifactId>asm-analysis</artifactId>
-                  <version>5.0.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.ow2.asm</groupId>
-                  <artifactId>asm-tree</artifactId>
-                  <version>5.0.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.ow2.asm</groupId>
-                  <artifactId>asm-util</artifactId>
-                  <version>5.0.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.parboiled</groupId>
-                  <artifactId>parboiled-core</artifactId>
-                  <version>1.1.7</version>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-javafx-linux</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/jars/gui/bootstrap/linux</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-base</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-graphics</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-controls</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-web</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-fxml</artifactId>
-                  <classifier>linux</classifier>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-javafx-mac</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/jars/gui/bootstrap/mac</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-base</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-graphics</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-controls</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-web</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-fxml</artifactId>
-                  <classifier>mac</classifier>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-javafx-win</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/jars/gui/bootstrap/win</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-base</artifactId>
-                  <classifier>win</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-graphics</artifactId>
-                  <classifier>win</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-controls</artifactId>
-                  <classifier>win</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-web</artifactId>
-                  <classifier>win</classifier>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.openjfx</groupId>
-                  <artifactId>javafx-fxml</artifactId>
-                  <classifier>win</classifier>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
             <id>copy-modules</id>
             <phase>process-sources</phase>
             <goals>
@@ -3160,36 +2946,6 @@
       </build>
     </profile>
     <profile>
-      <id>unpack-updater-gui-win</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack-updater-gui-win</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.daisy.pipeline</groupId>
-                      <artifactId>updater-gui</artifactId>
-                      <type>zip</type>
-                      <classifier>windows_386</classifier>
-                      <outputDirectory>${project.build.directory}/updater/win32</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>assemble-mac-dir</id>
       <build>
         <plugins>
@@ -3424,39 +3180,6 @@
       </build>
     </profile>
     <profile>
-      <id>assemble-mac-app-dir</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>assemble-mac-app-dir</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <attach>false</attach>
-                  <formats>
-                    <format>dir</format>
-                  </formats>
-                  <descriptors>
-                    <descriptor>src/main/assembly/dist-mac-app.xml</descriptor>
-                  </descriptors>
-                  <filters>
-                    <filter>src/main/assembly/dist.properties</filter>
-                    <filter>src/main/assembly/dist-mac.properties</filter>
-                  </filters>
-                  <appendAssemblyId>true</appendAssemblyId>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>package-exe</id>
       <properties>
         <nsis.scriptfile>${project.build.directory}/nsis/installer.nsi</nsis.scriptfile>
@@ -3663,12 +3386,6 @@
                       <type>directory</type>
                       <src>${project.build.directory}/jars</src>
                       <excludes>
-                        gui/bootstrap/linux,
-                        gui/bootstrap/linux/*,
-                        gui/bootstrap/win,
-                        gui/bootstrap/win/*,
-                        gui/bootstrap/mac,
-                        gui/bootstrap/mac/*
                         common/linux,
                         common/linux/*,
                         common/win,
@@ -3678,14 +3395,6 @@
                       </excludes>
                       <mapper>
                         <prefix>${deb.pipeline.home}/system</prefix>
-                        <type>perm</type>
-                      </mapper>
-                    </data>
-                    <data>
-                      <type>directory</type>
-                      <src>${project.build.directory}/jars/gui/bootstrap/linux</src>
-                      <mapper>
-                        <prefix>${deb.pipeline.home}/system/gui/bootstrap</prefix>
                         <type>perm</type>
                       </mapper>
                     </data>
@@ -3891,12 +3600,6 @@
                         <source>
                           <location>${project.build.directory}/jars</location>
                           <excludes>
-                            <exclude>gui/bootstrap/linux</exclude>
-                            <exclude>gui/bootstrap/linux/*</exclude>
-                            <exclude>gui/bootstrap/win</exclude>
-                            <exclude>gui/bootstrap/win/*</exclude>
-                            <exclude>gui/bootstrap/mac</exclude>
-                            <exclude>gui/bootstrap/mac/*</exclude>
                             <exclude>common/linux</exclude>
                             <exclude>common/linux/*</exclude>
                             <exclude>common/win</exclude>
@@ -3904,17 +3607,6 @@
                             <exclude>common/mac</exclude>
                             <exclude>common/mac/*</exclude>
                           </excludes>
-                        </source>
-                      </sources>
-                    </mapping>
-                    <mapping>
-                      <directory>${rpm.pipeline.home}/system/gui/bootstrap</directory>
-                      <filemode>0644</filemode>
-                      <username>${rpm.user}</username>
-                      <groupname>${rpm.group}</groupname>
-                      <sources>
-                        <source>
-                          <location>${project.build.directory}/jars/gui/bootstrap/linux</location>
                         </source>
                       </sources>
                     </mapping>
@@ -4070,37 +3762,7 @@
       </build>
     </profile>
     <profile>
-      <id>without-gui</id>
-      <!-- FIXME: also exclude pipeline2-gui.vbs (and start menu shortcut) -->
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-gui</id>
-                <phase>none</phase>
-              </execution>
-              <execution>
-                <id>copy-javafx-linux</id>
-                <phase>none</phase>
-              </execution>
-              <execution>
-                <id>copy-javafx-mac</id>
-                <phase>none</phase>
-              </execution>
-              <execution>
-                <id>copy-javafx-win</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>without-webservice</id>
-      <!-- FIXME: also exclude pipeline2-webservice.vbs (and start menu shortcut) -->
       <build>
         <plugins>
           <plugin>
@@ -4141,7 +3803,6 @@
     </profile>
     <profile>
       <id>without-updater</id>
-      <!-- FIXME: also omit the "Check updates" item in the "Help" menu of the GUI -->
       <build>
         <plugins>
           <plugin>
@@ -4157,11 +3818,6 @@
               </execution>
               <execution>
                 <id>unpack-updater-win</id>
-                <phase>none</phase>
-              </execution>
-              <!-- FIXME: also exclude the start menu shortcut on Windows -->
-              <execution>
-                <id>unpack-updater-gui-win</id>
                 <phase>none</phase>
               </execution>
             </executions>
