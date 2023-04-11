@@ -1,24 +1,4 @@
-ifneq ($(firstword $(sort $(MAKE_VERSION) 3.82)), 3.82)
-$(error "GNU Make 3.82 is required to run this script")
-endif
-
-ifeq ($(OS),Windows_NT)
-SHELL := make\\eval-java.exe
-else
-SHELL := make/eval-java
-endif
-.SHELLFLAGS :=
-
-JAVA_VERSION := $(shell println(getJavaVersion());)
-
-ifeq ($(JAVA_VERSION),)
-# probably because java not found or exited with a UnsupportedClassVersionError
-$(error "Java 8 is required to run this script")
-else ifeq ($(shell println($(JAVA_VERSION) >= 8);), false)
-$(error "Java 8 is required to run this script")
-endif
-
-OS := $(shell println(getOS());)
+include make/enable-java-shell.mk
 
 ifeq ($(OS), WINDOWS)
 MVN ?= mvn.cmd
@@ -350,8 +330,7 @@ endif # neq ($(OS), WINDOWS)
 .PHONY : clean
 clean :
 	exec("$(MVN)", "clean");
-	rm("make/java/temp"); \
-	rm("make/classes/temp");
+	rm("make/recipes");
 
 #                         process-sources      generate-resources      process-resources      prepare-package       package
 #                         ---------------      ---------------         -----------------      ---------------       -------
@@ -490,17 +469,17 @@ endif
 .PHONY : mvn
 mvn :
 ifndef DUMP_PROFILES
-	@List<String> cmd = new ArrayList<>();                                                                                 \
-	cmd.add("$(MVN)");                                                                                                     \
-	cmd.add("clean");                                                                                                      \
-	cmd.add("install");                                                                                                    \
-	cmd.add("-Dclassifier=$(--classifier)");                                                                               \
-	cmd.add("-Dclassifier.dash=$(shell println("$(--classifier)".replaceAll("^.+$$", "$$0-"));)");                         \
-	exitOnError(                                                                                                           \
-		captureOutput(                                                                                                     \
-			Arrays.asList("$(MAKE) -s --no-print-directory ECHO=true DUMP_PROFILES=true -- $(MAKECMDGOALS)".split("\\s")), \
-			line -> { if (line.startsWith("-P")) cmd.add(line); }));                                                       \
-	println(String.join(" ", cmd));                                                                                        \
+	@List<String> cmd = new ArrayList<>();                                                                                   \
+	cmd.add("$(MVN)");                                                                                                       \
+	cmd.add("clean");                                                                                                        \
+	cmd.add("install");                                                                                                      \
+	cmd.add("-Dclassifier=$(--classifier)");                                                                                 \
+	cmd.add("-Dclassifier.dash=$(shell println("$(--classifier)".replaceAll("^.+$$", "$$0-"));)");                           \
+	exitOnError(                                                                                                             \
+		captureOutput(                                                                                                       \
+			line -> { if (line.startsWith("-P")) cmd.add(line); },                                                           \
+			Arrays.asList("$(MAKE) -s --no-print-directory ECHO=true DUMP_PROFILES=true -- $(MAKECMDGOALS)".split("\\s")))); \
+	println(String.join(" ", cmd));                                                                                          \
 	exec(runInShell(cmd));
 endif
 
@@ -567,6 +546,7 @@ endif
 
 src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8 \
 src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8 : %/jdk-11.0.13+8 : %.zip
+	mkdirs("$(dir $@)"); \
 	unzip(new File("$<"), new File("$(dir $@)"));
 
 ifneq ($(OS), WINDOWS)
