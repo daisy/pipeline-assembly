@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:bookworm
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
 ADD daisy-pipeline /opt/daisy-pipeline2
 ADD logback.xml /opt/daisy-pipeline2/etc/logback.xml
