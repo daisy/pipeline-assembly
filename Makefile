@@ -184,6 +184,7 @@ docker : mvn -Pwithout-osgi \
 ifndef DUMP_PROFILES
 	mkdirs("target/docker");                                                                        \
 	exec("cp", "src/main/docker/Dockerfile", "target/docker/Dockerfile");
+	exec("cp", "src/main/docker/logback.xml", "target/docker/logback.xml");
 	exec("cp", "-r", "target/assembly-$(assembly/VERSION)-linux/daisy-pipeline", "target/docker/");
 	exec("cp", "-r", "$(word 3,$^)", "target/docker/jre");
 	exec(new File("target/docker"),                                                                 \
