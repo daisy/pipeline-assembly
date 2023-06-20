@@ -185,7 +185,7 @@ ifndef DUMP_PROFILES
 	mkdirs("target/docker");                                                                        \
 	exec("cp", "src/main/docker/Dockerfile", "target/docker/Dockerfile");
 	exec("cp", "-r", "target/assembly-$(assembly/VERSION)-linux/daisy-pipeline", "target/docker/");
-	exec("cp", "-r", "$(word 4,$^)", "target/docker/jre");
+	exec("cp", "-r", "$(word 3,$^)", "target/docker/jre");
 	exec(new File("target/docker"),                                                                 \
 	     "$(DOCKER)", "build", "-t", "daisyorg/pipeline:latest-snapshot", ".");
 endif
