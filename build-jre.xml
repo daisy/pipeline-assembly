@@ -31,7 +31,7 @@
     <profile>
       <id>build-jre-linux</id>
       <!--
-          this profile needs to be run with JDK 11
+          this profile needs to be run with JDK 17
       -->
       <build>
         <plugins>
@@ -58,7 +58,7 @@
                     <addModule>jdk.zipfs</addModule>
                   </addModules>
                   <modulePaths>
-                    <modulePath>src/main/jre/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8/jdk-11.0.13+8/jmods</modulePath>
+                    <modulePath>src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7/jmods</modulePath>
                   </modulePaths>
                 </configuration>
               </execution>
@@ -94,7 +94,7 @@
                     <addModule>jdk.zipfs</addModule>
                   </addModules>
                   <modulePaths>
-                    <modulePath>src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.3_7/jdk-17.0.3+7/Contents/Home/jmods</modulePath>
+                    <modulePath>src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7/Contents/Home/jmods</modulePath>
                   </modulePaths>
                 </configuration>
               </execution>
@@ -106,7 +106,7 @@
     <profile>
       <id>build-jre-win32</id>
       <!--
-          this profile needs to be run with JDK 11
+          this profile needs to be run with JDK 17
       -->
       <build>
         <plugins>
@@ -127,7 +127,7 @@
                     <addModule>jdk.zipfs</addModule>
                   </addModules>
                   <modulePaths>
-                    <modulePath>src/main/jre/OpenJDK11U-jdk_x86-32_windows_hotspot_11.0.13_8/jdk-11.0.13+8/jmods</modulePath>
+                    <modulePath>src/main/jre/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.7_7/jdk-17.0.7+7/jmods</modulePath>
                   </modulePaths>
                 </configuration>
               </execution>
@@ -157,7 +157,7 @@
                     <addModule>jdk.zipfs</addModule>
                   </addModules>
                   <modulePaths>
-                    <modulePath>src/main/jre/OpenJDK11U-jdk_x64_windows_hotspot_11.0.13_8/jdk-11.0.13+8/jmods</modulePath>
+                    <modulePath>src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7/jmods</modulePath>
                   </modulePaths>
                 </configuration>
               </execution>
