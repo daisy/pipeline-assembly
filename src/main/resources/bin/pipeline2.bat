@@ -224,6 +224,7 @@ goto :RUN_LOOP
 
     rem Logback configuration file
     set SYSTEM_PROPS=%SYSTEM_PROPS% -Dlogback.configurationFile="file:%PIPELINE2_HOME:\=/%/etc/logback.xml"
+    set SYSTEM_PROPS=%SYSTEM_PROPS% -Djava.util.logging.config.file="%PIPELINE2_HOME:\=/%/etc/logging.properties"
     rem to make ${org.daisy.pipeline.data} available in felix.properties (for felix.cache.rootdir)
     if %ENABLE_OSGI% == true (
         set SYSTEM_PROPS=%SYSTEM_PROPS% -Dorg.daisy.pipeline.data="%PIPELINE2_DATA%"
