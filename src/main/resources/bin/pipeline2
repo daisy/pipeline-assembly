@@ -464,7 +464,7 @@ run() {
             CLASSPATH="$CLASSPATH:system/simple-api"
         fi
         if [ "$MODE" = "webservice" ]; then
-            MAIN=org.daisy.pipeline.webservice.impl.PipelineWebService
+            MAIN=org.daisy.pipeline.webservice.restlet.impl.PipelineWebService
         else
             MAIN=SimpleAPI
         fi
