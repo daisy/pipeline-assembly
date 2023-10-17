@@ -1894,10 +1894,10 @@
                     assembly. (It does work in unit tests.) As a workaround, log JUL messages to
                     stdout through the logging.properties configuration file.
                 -->
-                <!--<artifactItem>
+                <artifactItem>
                   <groupId>org.slf4j</groupId>
                   <artifactId>jul-to-slf4j</artifactId>
-                </artifactItem>-->
+                </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
                   <artifactId>jcl-over-slf4j</artifactId>
