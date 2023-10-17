@@ -15,6 +15,7 @@ Changes in release v1.14.15
 - **FIX** Retain master.smil if present in a DAISY 2.02 publication
 - **FIX** Preserve indentation and DOCTYPE declaration of documents in a DAISY 2.02 publication
 - **FIX** Better marking of page breaks in EPUB 3 output
+- **FIX** Issues in SAPI adapter
 - Other bugfixes
 - Changes to braille production scripts, see [release notes of braille modules v1.14.14](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v11414)
 
