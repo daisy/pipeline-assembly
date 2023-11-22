@@ -1,3 +1,10 @@
+Changes in release v1.14.16
+===========================
+
+## Modules
+
+- **FIX** Connection issue in Google TTS adapter
+
 Changes in release v1.14.15
 ===========================
 
