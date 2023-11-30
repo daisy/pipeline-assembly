@@ -36,9 +36,10 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * A simplified Java API consisting of a {@link #startJob()} method that starts a job based on a
- * script name and a list of options, and {@link #getNewMessages()} and {@link #getLastJobStatus()}
- * methods. It is used to build a simple Java CLI (see the {@link #main()} method). The simplified
- * API also makes it easier to bridge with other programming languages using JNI.
+ * script name and a list of options and returns a {@link CommandLineJob}. This object provices
+ * convenience methods for monitoring the status and messages. This class is used to build a simple
+ * Java CLI (see the {@link #main()} method). The simplified API also makes it easier to bridge with
+ * other programming languages using JNI.
  */
 @Component(
 	name = "SimpleAPI",
@@ -71,7 +72,8 @@ public class SimpleAPI {
 		this.jobFactory = jobFactory;
 	}
 
-	private void _startJob(String scriptName, Map<String,? extends Iterable<String>> options) throws IllegalArgumentException, FileNotFoundException {
+	private CommandLineJob _startJob(String scriptName, Map<String,? extends Iterable<String>> options)
+			throws IllegalArgumentException, FileNotFoundException {
 		ScriptService<?> scriptService = scriptRegistry.getScript(scriptName);
 		if (scriptService == null)
 			throw new IllegalArgumentException(scriptName + " script not found");
@@ -82,24 +84,31 @@ public class SimpleAPI {
 			for (String value : e.getValue())
 				parser.withArgument(e.getKey(), value);
 		CommandLineJob job = parser.createJob(jobFactory);
-		MessageAccessor accessor = job.getMonitor().getMessageAccessor();
-		accessor.listen(
-			num -> {
-				consumeMessage(accessor, num);
-			}
-		);
-		job.getMonitor().getStatusUpdates().listen(s -> updateJobStatus(s));
 		new Thread(job).start();
+		return job;
 	}
 
-	public static void startJob(String scriptName, Map<String,? extends Iterable<String>> options) throws IllegalArgumentException, FileNotFoundException {
-		getInstance()._startJob(scriptName, options);
+	/**
+	 * Start a new job
+	 *
+	 * @param scriptName the name of the script
+	 * @param options the command line arguments, providing the inputs and option values for the
+	 *                job, and file locations where results must be stored.
+	 * @return The job, wrapped in a {@link CommandLineJob} object for easy monitoring.
+	 */
+	public static CommandLineJob startJob(String scriptName, Map<String,? extends Iterable<String>> options)
+			throws IllegalArgumentException, FileNotFoundException {
+		return getInstance()._startJob(scriptName, options);
 	}
 
 	/**
 	 * Singleton thread safe instance of SimpleAPI.
 	 */
 	private static SimpleAPI INSTANCE;
+
+	/**
+	 * Get the singleton {@link SimpleAPI} instance.
+	 */
 	private static SimpleAPI getInstance() {
 		if (INSTANCE == null) {
 			for (CreateOnStart o : ServiceLoader.load(CreateOnStart.class))
@@ -109,39 +118,6 @@ public class SimpleAPI {
 				throw new IllegalStateException();
 		}
 		return INSTANCE;
-	}
-
-	private static Job.Status lastJobStatus = null;
-	private static synchronized void updateJobStatus(Job.Status status) {
-		lastJobStatus = status;
-	}
-	private static List<Message> messagesQueue = new ArrayList<>();
-	private static int lastMessage = -1;
-	private static synchronized void consumeMessage(MessageAccessor accessor, int seqNum) {
-		for (Message m :
-				accessor.createFilter()
-				        .greaterThan(lastMessage)
-				        .filterLevels(Collections.singleton(Level.INFO))
-				        .getMessages()) {
-			if (m.getSequence() > lastMessage) {
-				messagesQueue.add(m);
-			}
-		}
-		lastMessage = seqNum;
-	}
-
-	/**
-	 * Get the list of new top-level messages (messages that have not
-	 * been returned yet by a previous call to {@link #getNewMessages()}).
-	 */
-	public static synchronized List<Message> getNewMessages() {
-		List<Message> result = List.copyOf(messagesQueue);
-		messagesQueue.clear();
-		return result;
-	}
-
-	public static synchronized Job.Status getLastJobStatus() {
-		return lastJobStatus;
 	}
 
 	/**
@@ -171,8 +147,9 @@ public class SimpleAPI {
 			}
 			list.add(args[i + 1]);
 		}
+		CommandLineJob job = null;
 		try {
-			SimpleAPI.startJob(script, options);
+			job = SimpleAPI.startJob(script, options);
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
@@ -181,10 +158,10 @@ public class SimpleAPI {
 			System.exit(1);
 		}
 		while (true) {
-			for (Message m : SimpleAPI.getNewMessages()) {
+			for (Message m : job.getNewMessages()) {
 				System.err.println(m.getText());
 			}
-			switch (SimpleAPI.getLastJobStatus()) {
+			switch (job.getStatus()) {
 			case SUCCESS:
 			case FAIL:
 			case ERROR:
@@ -197,6 +174,9 @@ public class SimpleAPI {
 		}
 	}
 
+	/**
+	 * Builder class to create a {@link CommandLineJob} object by parsing command line arguments.
+	 */
 	private static class CommandLineJobParser {
 
 		private final Script script;
@@ -368,8 +348,18 @@ public class SimpleAPI {
 		private CommandLineJob(Job job, Map<String,URI> resultLocations) {
 			this.job = job;
 			this.resultLocations = resultLocations;
+			// Simplify monitoring of messages
+			MessageAccessor accessor = job.getMonitor().getMessageAccessor();
+			accessor.listen(
+				num -> {
+					consumeMessage(accessor, num);
+				}
+			);
 		}
 
+		/**
+		 * Run the job and store the results
+		 */
 		public void run() {
 			job.run();
 			try {
@@ -407,6 +397,9 @@ public class SimpleAPI {
 			completed.set(true);
 		}
 
+		/**
+		 * Get the current status
+		 */
 		public Job.Status getStatus() {
 			Job.Status s = job.getStatus();
 			switch (s) {
@@ -421,6 +414,52 @@ public class SimpleAPI {
 			}
 		}
 
+		private final List<Message> messagesQueue = new ArrayList<>();
+		private int lastMessage = -1;
+
+		/**
+		 * Fill the message buffer queue for logging. The queue is returned and emptied on each
+		 * {@link #getNewMessages()} call.
+		 *
+		 * @param accessor the job's {@link MessageAccessor}
+		 * @param seqNum see {@link MessageAccessor#listen()}
+		 */
+		private synchronized void consumeMessage(MessageAccessor accessor, int seqNum) {
+			for (Message m :
+					accessor.createFilter()
+					        .greaterThan(lastMessage)
+					        .filterLevels(Collections.singleton(Level.INFO))
+					        .getMessages()) {
+				if (m.getSequence() > lastMessage) {
+					messagesQueue.add(m);
+				}
+			}
+			lastMessage = seqNum;
+		}
+
+		/**
+		 * Get the list of new top-level messages (messages that have not been returned yet by a
+		 * previous call to {@link #getNewMessages()}).
+		 */
+		public synchronized List<Message> getNewMessages() {
+			List<Message> result = List.copyOf(messagesQueue);
+			messagesQueue.clear();
+			return result;
+		}
+
+		/**
+		 * Get the list of all error messages reported during the job execution.
+		 */
+		public List<Message> getErrors() {
+			return job.getMonitor().getMessageAccessor().getErrors();
+		}
+
+		/**
+		 * For advanced job monitoring, get the job's {@link JobMonitor}. From this object, you can
+		 * access all messages reported for the job through {@link JobMonitor#getMessageAccessor()},
+		 * or register your own status notifications callback through {@link
+		 * JobMonitor#getStatusUpdates()}.
+		 */
 		public JobMonitor getMonitor() {
 			return job.getMonitor();
 		}
