@@ -40,6 +40,23 @@
   </build>
   <profiles>
     <profile>
+      <id>include-jdwp-agent</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-jlink-plugin</artifactId>
+              <configuration>
+                <addModules combine.children="append">
+                  <addModule>jdk.jdwp.agent</addModule>
+                </addModules>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
       <id>build-jre-linux</id>
       <!--
           this profile needs to be run with JDK 17
