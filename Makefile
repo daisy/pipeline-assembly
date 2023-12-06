@@ -466,21 +466,21 @@ ifeq ($(OS), MACOSX)
 -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 -Pbuild-jre-mac : src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7
 ifndef DUMP_PROFILES
 	rm("target/classes");
-ifdef DEV
+ifdef FOR_DEBUGGING
 	exec(env("JAVA_HOME", "$(CURDIR)/$</Contents/Home"), \
-	     "$(MVN)", "-f", "build-jre-dev.xml", "jlink:jlink", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@", "-Pinclude-jdwp-agent");
 else
 	exec(env("JAVA_HOME", "$(CURDIR)/$</Contents/Home"), \
 	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
-endif # DEV
+endif # FOR_DEBUGGING
 endif
 else ifeq ($(OS), WINDOWS)
 -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64                 : src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7
 ifndef DUMP_PROFILES
 	rm("target/classes");
-ifdef DEV
+ifdef FOR_DEBUGGING
 	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
-	     "$(MVN)", "-f", "build-jre-dev.xml", "jlink:jlink", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@", "-Pinclude-jdwp-agent");
 else
 	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
 	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
@@ -490,9 +490,9 @@ else
 -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64                 : src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7
 ifndef DUMP_PROFILES
 	rm("target/classes");
-ifdef DEV
+ifdef FOR_DEBUGGING
 	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
-	     "$(MVN)", "-f", "build-jre-dev.xml", "jlink:jlink", "$@");
+	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@", "-Pinclude-jdwp-agent");
 else
 	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
 	     "$(MVN)", "-f", "build-jre.xml", "jlink:jlink", "$@");
