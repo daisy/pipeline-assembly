@@ -76,7 +76,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.20</version>
+        <version>1.14.21</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -459,16 +459,6 @@
     <dependency>
       <groupId>org.daisy.pipeline.modules</groupId>
       <artifactId>common-utils</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.daisy.pipeline.modules</groupId>
-      <artifactId>css-speech</artifactId>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
@@ -2145,10 +2135,6 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>common-utils</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.daisy.pipeline.modules</groupId>
-                  <artifactId>css-speech</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
