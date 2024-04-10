@@ -8,7 +8,11 @@ else
 ifeq ($(shell uname -s),Darwin)
 SHELL := $(dir $(lastword $(MAKEFILE_LIST)))bin/darwin_amd64/eval-java
 else
+ifeq ($(shell uname -s),Linux)
 SHELL := $(dir $(lastword $(MAKEFILE_LIST)))bin/linux_amd64/eval-java
+else
+SHELL := $(dir $(lastword $(MAKEFILE_LIST)))bin/windows_amd64/eval-java.exe
+endif
 endif
 endif
 .SHELLFLAGS :=
