@@ -1,7 +1,33 @@
+Changes in release v1.14.18
+===========================
+
+## Framework
+
+- **NEW** API for analyzing CSS style sheets and exposing Sass variables.
+
+## Modules
+
+- **NEW** Script options to specify user lexicons
+- **NEW** Global setting for default user lexicon
+- **NEW** Global setting for default speaking rate
+- **FIX** Major simplification of configuration of braille scripts, see release notes of braille modules [v1.14.24](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v11424) and [v1.14.25](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v11425)
+- **FIX** Fix bugs in handling of language during voice selection.
+- **FIX** Fix bugs in processing of aural CSS.
+- **FIX** Improved usability of the DAISY 3 and DAISY 2.02 MegaVoice multi-level scripts.
+- **FIX** Improve support for DPUB ARIA
+- **FIX** Preserve external hyperlinks in EPUB
+- **FIX** Include page source identification metadata in EPUB created from DTBook
+- Other bugfixes and optimizations
+
+## Details
+
+See [all the closed issues of this release](https://github.com/orgs/daisy/projects/4). To view using the [Github CLI](https://cli.github.com/): `gh project --owner daisy item-list 4`
+
 Changes in release v1.14.17
 ===========================
 
 ## Framework
+
 - **NEW** API for getting and setting TTS and other properties globally
 
 ## Modules
