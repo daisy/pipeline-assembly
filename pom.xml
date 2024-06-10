@@ -2467,10 +2467,6 @@
                   <artifactId>jna</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.daisy.libs</groupId>
-                  <artifactId>jnaerator</artifactId>
-                </artifactItem>
-                <artifactItem>
                   <!-- required by jstyleparser -->
                   <!-- TODO build our own bundle ? -->
                   <groupId>org.apache.servicemix.bundles</groupId>
@@ -2615,6 +2611,14 @@
                 <artifactItem>
                   <groupId>org.codehaus.jackson</groupId>
                   <artifactId>jackson-mapper-asl</artifactId>
+                </artifactItem>
+                <!--
+                    JNAerator (including JNA 4.0.0)
+                    the version embedded in tts-adapter-acapela is not used in OSGi
+                -->
+                <artifactItem>
+                  <groupId>org.daisy.libs</groupId>
+                  <artifactId>jnaerator</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
