@@ -20,7 +20,7 @@
     <tag>HEAD</tag>
   </scm>
   <properties>
-    <cli.version>2.1.8</cli.version>
+    <cli.version>2.2.0</cli.version>
     <classifier />
     <classifier.dash /> <!-- classifier followed by "-" -->
     <!--
