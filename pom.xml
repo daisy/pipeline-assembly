@@ -1028,6 +1028,16 @@
     </dependency>
     <dependency>
       <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>word-to-dtbook</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
       <artifactId>zedai-to-epub3</artifactId>
       <exclusions>
         <exclusion>
@@ -2401,6 +2411,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>word-to-dtbook</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zedai-to-epub3</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -2581,6 +2595,29 @@
                   <groupId>com.googlecode.soundlibs</groupId>
                   <artifactId>jlayer</artifactId>
                 </artifactItem>
+                <!--
+                    for word-to-dtbook
+                -->
+                <dependency>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi-ooxml</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi-scratchpad</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.libreoffice</groupId>
+                  <artifactId>libreoffice</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.libreoffice</groupId>
+                  <artifactId>unoloader</artifactId>
+                </dependency>
               </artifactItems>
             </configuration>
           </execution>
