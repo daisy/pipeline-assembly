@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.daisy.pipeline</groupId>
   <artifactId>assembly</artifactId>
-  <version>1.14.19-SNAPSHOT</version>
+  <version>1.14.20-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>DAISY Pipeline 2 :: Assembly</name>
   <description>Builds the main distribution of the DAISY Pipeline 2.</description>
@@ -69,14 +69,14 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.14.19-SNAPSHOT</version>
+        <version>1.14.19</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.26-SNAPSHOT</version>
+        <version>1.14.26</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -1019,6 +1019,16 @@
     <dependency>
       <groupId>org.daisy.pipeline.modules</groupId>
       <artifactId>validation-utils</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>word-to-dtbook</artifactId>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
@@ -2401,6 +2411,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>word-to-dtbook</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>zedai-to-epub3</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -2581,6 +2595,29 @@
                   <groupId>com.googlecode.soundlibs</groupId>
                   <artifactId>jlayer</artifactId>
                 </artifactItem>
+                <!--
+                    for word-to-dtbook
+                -->
+                <dependency>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi-ooxml</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.poi</groupId>
+                  <artifactId>poi-scratchpad</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.libreoffice</groupId>
+                  <artifactId>libreoffice</artifactId>
+                </dependency>
+                <dependency>
+                  <groupId>org.libreoffice</groupId>
+                  <artifactId>unoloader</artifactId>
+                </dependency>
               </artifactItems>
             </configuration>
           </execution>
