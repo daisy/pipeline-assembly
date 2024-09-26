@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -314,7 +316,7 @@ public class SimpleAPI {
 					if (file.isDirectory()) {
 						if (file.list().length > 0)
 							throw new IllegalArgumentException("Directory is not empty: " + file);
-						resultLocations.put(port, URI.create(file.toURI() + "/"));
+						resultLocations.put(port, file.toURI());
 					} else {
 						if (p.isSequence())
 							throw new IllegalArgumentException("Not a directory: " + file);
@@ -373,7 +375,7 @@ public class SimpleAPI {
 							File f = new File(u);
 							if (u.toString().endsWith("/"))
 								for (JobResult r : job.getResults().getResults(port)) {
-									File dest = new File(f, r.strip().getIdx());
+									File dest = new File(f, URLDecoder.decode(r.strip().getIdx(), StandardCharsets.UTF_8));
 									if (dest.exists())
 										existingFiles.add(dest);
 									else
