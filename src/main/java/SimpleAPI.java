@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class SimpleAPI {
 	}
 
 	private CommandLineJob _startJob(String scriptName, Map<String,? extends Iterable<String>> options)
-			throws IllegalArgumentException, FileNotFoundException {
+			throws IllegalArgumentException, FileNotFoundException, URISyntaxException {
 		ScriptService<?> scriptService = scriptRegistry.getScript(scriptName);
 		if (scriptService == null)
 			throw new IllegalArgumentException(scriptName + " script not found");
@@ -99,7 +100,7 @@ public class SimpleAPI {
 	 * @return The job, wrapped in a {@link CommandLineJob} object for easy monitoring.
 	 */
 	public static CommandLineJob startJob(String scriptName, Map<String,? extends Iterable<String>> options)
-			throws IllegalArgumentException, FileNotFoundException {
+			throws IllegalArgumentException, FileNotFoundException, URISyntaxException {
 		return getInstance()._startJob(scriptName, options);
 	}
 
@@ -155,7 +156,7 @@ public class SimpleAPI {
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException|URISyntaxException e) {
 			System.err.println("File does not exist: " + e.getMessage());
 			System.exit(1);
 		}
@@ -196,7 +197,8 @@ public class SimpleAPI {
 		/**
 		 * Parse command line argument
 		 */
-		public CommandLineJobParser withArgument(String key, String value) throws IllegalArgumentException, FileNotFoundException {
+		public CommandLineJobParser withArgument(String key, String value)
+				throws IllegalArgumentException, FileNotFoundException, URISyntaxException {
 			if (script.getInputPort(key) != null)
 				return withInput(key, value);
 			else if (script.getOption(key) != null)
@@ -238,13 +240,22 @@ public class SimpleAPI {
 		 *         the value is not valid according to the option type.
 		 * @throws FileNotFoundException if the option type is "anyFileURI" and the value can not be
 		 *         resolved to a document.
+		 * @throws URISyntaxException if the option type is "anyFileURI" or "anyDirURI" and the
+		 *         value starts with "file:/" but is an invalid URI
 		 */
-		private CommandLineJobParser withOption(String name, String value) throws IllegalArgumentException, FileNotFoundException {
+		private CommandLineJobParser withOption(String name, String value)
+				throws IllegalArgumentException, FileNotFoundException, URISyntaxException {
 			ScriptOption o = script.getOption(name);
 			if (o != null) {
 				String type = o.getType().getId();
 				if ("anyFileURI".equals(type)) {
-					File file = new File(value);
+					File file; {
+						if (value.startsWith("file:/")) {
+							file = new File(new URI(value));
+						} else {
+							file = new File(value);
+						}
+					}
 					if (!file.isAbsolute()) {
 						if (fileBase == null)
 							throw new FileNotFoundException("File must be an absolute path, but got " + file);
@@ -256,7 +267,13 @@ public class SimpleAPI {
 						throw new UncheckedIOException(e);
 					}
 				} else if ("anyDirURI".equals(type)) {
-					File dir = new File(value);
+					File dir; {
+						if (value.startsWith("file:/")) {
+							dir = new File(new URI(value));
+						} else {
+							dir = new File(value);
+						}
+					}
 					if (!dir.isAbsolute()) {
 						if (fileBase == null)
 							throw new FileNotFoundException("File must be an absolute path, but got " + dir);
