@@ -80,6 +80,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- temporary until updated to modules 1.14.29 -->
+      <dependency>
+        <groupId>com.microsoft.cognitiveservices.speech</groupId>
+        <artifactId>client-sdk</artifactId>
+        <version>1.37.0</version>
+      </dependency>
       <!-- missing from framework-bom -->
       <dependency>
         <groupId>com.nwalsh</groupId>

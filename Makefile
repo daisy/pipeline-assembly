@@ -114,7 +114,7 @@ ifeq ($(OS), MACOSX)
 	else {                                                                                                      \
 	    String id = identities.size() == 1 ? identities.get(0) : null;                                          \
 	    File tmpDir = new File("target/codesign-workaround/");                                                  \
-	    File jar = new File("target/jars/common/com.microsoft.cognitiveservices.speech.client-sdk-1.27.0.jar"); \
+	    File jar = new File("target/jars/common/com.microsoft.cognitiveservices.speech.client-sdk-1.37.0.jar"); \
 	    File unzipDir = new File(tmpDir, jar.getName().replaceAll(".jar$$", ""));                               \
 	    mkdirs(unzipDir);                                                                                       \
 	    // FIXME: not using unzip() because it currently does not preserve file permissions                     \
