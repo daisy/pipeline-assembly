@@ -1,3 +1,15 @@
+Changes in release v1.15.0
+===========================
+
+## Framework
+
+- **NEW** Experimental Pipeline 1 backend with selected Pipeline 1 scripts
+
+## Modules
+
+- **NEW** Pipeline 1 scripts (proof-of-concept for now; more scripts will be made available in upcoming releases)
+  - DTBook to Latex
+
 Changes in release v1.14.21
 ===========================
 
