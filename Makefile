@@ -153,7 +153,7 @@ ifeq ($(OS), MACOSX)
 	                        System.exit(1);                                                                     \
 	                    }                                                                                       \
 	                }                                                                                           \
-	                exitOnError(captureOutput(err::println, "codesign", "-s", id, "-v", f.getPath())); }        \
+	                exitOnError(captureOutput(err::println, "codesign", "--options", "runtime", "-s", id, "-v", f.getPath())); }        \
 	        }                                                                                                   \
 	    }                                                                                                       \
 	    for (File f : unpacked) {                                                                               \
