@@ -153,7 +153,14 @@ ifeq ($(OS), MACOSX)
 	                        System.exit(1);                                                                     \
 	                    }                                                                                       \
 	                }                                                                                           \
-	                exitOnError(captureOutput(err::println, "codesign", "--options", "runtime", "-s", id, "-v", f.getPath())); }        \
+	                if (f.getName().matches(".*\\.(dylib|jnilib)$$"))                                           \
+	                    exitOnError(captureOutput(err::println, "codesign", "-s", id, "-v", f.getPath()));      \
+	                else                                                                                        \
+	                    exitOnError(captureOutput(err::println, "codesign", "--options", "runtime",             \
+	                                                                        "-s", id, "-v", f.getPath()));      \
+	                exitOnError(captureOutput(err::println, "codesign", "--verify", "-v", f.getPath()));        \
+	                if (!f.getName().matches(".*\\.(dylib|jnilib)$$"))                                          \
+	                    exitOnError(captureOutput(err::println, "codesign", "--display", "-v", f.getPath())); } \
 	        }                                                                                                   \
 	    }                                                                                                       \
 	    for (File f : unpacked) {                                                                               \
