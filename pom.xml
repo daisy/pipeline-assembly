@@ -76,7 +76,7 @@
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.14.28</version>
+        <version>1.14.29</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
