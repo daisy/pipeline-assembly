@@ -1,3 +1,26 @@
+Changes in release v1.14.20
+===========================
+
+## Framework
+
+- **NEW** API for voice previews
+- **NEW** Allow setting `org.daisy.pipeline.tts.config` property through settings API
+- **FIX** Remove error stack traces from webservice responses
+- **FIX** Java API: Make job input parser more relaxed about boolean option values
+
+## Modules
+
+- **NEW** Support for Microsoft natural voices over [NaturalVoicesSAPIAdapter](https://github.com/gexgd0419/NaturalVoiceSAPIAdapter)
+- **FIX** Support standard CSS's `voice-family` property (backward compatibility with the old behavior is ensured)
+- **FIX** Compatibility with espeak-ng
+- **FIX** Wrong doctype declaration of SMIL files in output of DAISY 3 to DAISY 2.02
+- **FIX** Indent TTS log output
+- Various other bugfixes and improvements
+
+## Details
+
+See [all the closed issues of this release](https://github.com/orgs/daisy/projects/6). To view using the [Github CLI](https://cli.github.com/): `gh project --owner daisy item-list 6`
+
 Changes in release v1.14.19
 ===========================
 

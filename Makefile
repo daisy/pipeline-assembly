@@ -112,34 +112,64 @@ ifeq ($(OS), MACOSX)
 	if (identities.isEmpty())                                                                                   \
 	    err.println("No identity found to sign code");                                                          \
 	else {                                                                                                      \
+	    // replace signature of binary files within jars                                                        \
 	    String id = identities.size() == 1 ? identities.get(0) : null;                                          \
-	    File tmpDir = new File("target/codesign-workaround/");                                                  \
-	    File jar = new File("target/jars/common/com.microsoft.cognitiveservices.speech.client-sdk-1.27.0.jar"); \
-	    File unzipDir = new File(tmpDir, jar.getName().replaceAll(".jar$$", ""));                               \
-	    mkdirs(unzipDir);                                                                                       \
-	    // FIXME: not using unzip() because it currently does not preserve file permissions                     \
-	    //unzip(jar, unzipDir);                                                                                 \
-	    exitOnError(captureOutput(err::println, unzipDir, "unzip", jar.getAbsolutePath()));                     \
-	    // replace signature of *.extension.kws.ort.dylib files                                                 \
-	    for (File f : glob(unzipDir.getPath() + "/ASSETS/osx-*/*.extension.kws.ort.dylib")) {                   \
-	        exitOnError(captureOutput(err::println, "codesign", "--remove-signature", f.getPath()));            \
-	        if (id == null) {                                                                                   \
-	            err.println("Choose identity to sign code (move with arrows and press ENTER):");                \
-	            try {                                                                                           \
-	                id = identities.get(prompt(identityDescriptions));                                          \
-	            } catch (IOException e) {                                                                       \
-	                System.exit(1);                                                                             \
-	            }                                                                                               \
+	    LinkedList<String> paths = new LinkedList<>();                                                          \
+	    LinkedList<File> unpacked = new LinkedList<>();                                                         \
+	    for (String p : new String[]{                                                                           \
+	        "com.microsoft.cognitiveservices.speech.client-sdk-*.jar/ASSETS/osx-*/*.extension.kws.ort.dylib",   \
+	        "net.java.dev.jna.jna-*.jar/com/sun/jna/darwin-*/libjnidispatch.jnilib",                            \
+	        "org.daisy.libs.io.bit3.jsass-*.jar/darwin-*/libjsass.dylib",                                       \
+	        "*.audio-encoder-lame-*.jar/macosx/lame",                                                           \
+	        "mac/*.libhyphen-utils-*-mac.jar/native/macosx/*/libhyphen.dylib",                                  \
+	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouis.dylib",                                    \
+	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouisutdml/file2brl",                            \
+	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouisutdml/*.dylib",                             \
+	        "*.tts-adapter-acapela-3.1.5.jar/jnaerator-0.11-p1.jar/com/sun/jna/darwin/libjnidispatch.jnilib"    \
+	    })                                                                                                      \
+	        paths.add("target/jars/common/" + p);                                                               \
+	    while (!paths.isEmpty()) {                                                                              \
+	        String p = paths.pop();                                                                             \
+	        String jarPath = p.substring(0, p.indexOf(".jar") + 4);                                             \
+	        File jar = glob(jarPath).get(0);                                                                    \
+	        File unpackDir = new File(jar.getParentFile(), jar.getName().replaceAll(".jar$$", ""));             \
+	        if (!unpackDir.exists()) {                                                                          \
+	            mkdirs(unpackDir);                                                                              \
+	            // FIXME: not using unzip() because it currently does not preserve file permissions             \
+	            //unzip(jar, unpackDir);                                                                        \
+	            exitOnError(captureOutput(err::println, unpackDir, "unzip", jar.getAbsolutePath()));            \
+	            unpacked.push(unpackDir); }                                                                     \
+	        p = p.substring(jarPath.length());                                                                  \
+	        if (p.contains(".jar"))                                                                             \
+	            paths.add(unpackDir.getPath() + p);                                                             \
+	        else {                                                                                              \
+	            for (File f : glob(unpackDir.getPath() + p)) {                                                  \
+	                exitOnError(captureOutput(err::println, "codesign", "--remove-signature", f.getPath()));    \
+	                if (id == null) {                                                                           \
+	                    err.println("Choose identity to sign code (move with arrows and press ENTER):");        \
+	                    try {                                                                                   \
+	                        id = identities.get(prompt(identityDescriptions));                                  \
+	                    } catch (IOException e) {                                                               \
+	                        System.exit(1);                                                                     \
+	                    }                                                                                       \
+	                }                                                                                           \
+	                if (f.getName().matches(".*\\.(dylib|jnilib)$$"))                                           \
+	                    exitOnError(captureOutput(err::println, "codesign", "-s", id, "-v", f.getPath()));      \
+	                else                                                                                        \
+	                    exitOnError(captureOutput(err::println, "codesign", "--options", "runtime",             \
+	                                                                        "-s", id, "-v", f.getPath()));      \
+	                exitOnError(captureOutput(err::println, "codesign", "--verify", "-v", f.getPath()));        \
+	                if (!f.getName().matches(".*\\.(dylib|jnilib)$$"))                                          \
+	                    exitOnError(captureOutput(err::println, "codesign", "--display", "-v", f.getPath())); } \
 	        }                                                                                                   \
-	        exitOnError(captureOutput(err::println, "codesign", "-s", id, "-v", f.getPath())); }                \
-	    // delete META-INF folder with signature files                                                          \
-	    rm(new File(unzipDir, "META-INF"));                                                                     \
-	    File fixedJar = new File(tmpDir, jar.getName());                                                        \
-	    exitOnError(                                                                                            \
-	        captureOutput(err::println, "jar", "cvf", fixedJar.getPath(), "-C", unzipDir.getPath(), "."));      \
-	    rm(jar);                                                                                                \
-	    cp(fixedJar, jar);                                                                                      \
-	    rm(tmpDir);                                                                                             \
+	    }                                                                                                       \
+	    for (File f : unpacked) {                                                                               \
+	        File jar = new File(f.getAbsolutePath() + ".jar");                                                  \
+	        rm(jar);                                                                                            \
+	        exitOnError(                                                                                        \
+	            captureOutput(err::println, "ditto", "-c", "-k", f.getPath(), jar.getPath()));                  \
+	        rm(f);                                                                                              \
+	    }                                                                                                       \
 	}
 endif
 	exec("$(MVN)", "assembly:single", "-Passemble-mac-zip");
@@ -219,7 +249,7 @@ ifneq ($(OS), WINDOWS)
 .PHONY : docker
 # Note that when `docker' is enabled together with other targets, it is as if --without-osgi was also specified.
 docker : mvn -Pwithout-osgi \
-         target/maven-jlink/classifiers/linux \
+         jre/target/maven-jlink/classifiers/linux \
          target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 ifndef DUMP_PROFILES
 	mkdirs("target/docker");                                                                           \
@@ -249,9 +279,9 @@ dev-launcher : target/dev-launcher/pipeline2
 target/dev-launcher/pipeline2 : pom.xml
 ifdef BUILD_JRE_FOR_DEV_LAUNCHER
 ifeq ($(OS), MACOSX)
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : jre/target/maven-jlink/classifiers/mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
 else
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : jre/target/maven-jlink/classifiers/linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
 ifndef DUMP_PROFILES
 	mkdirs("$(dir $@)");                                \
@@ -278,8 +308,8 @@ ifndef DUMP_PROFILES
 endif
 endif
 
-target/maven-jlink/classifiers/mac                                     : mvn -Pbuild-jre-mac
-target/maven-jlink/classifiers/linux                                   : mvn -Pbuild-jre-linux
+jre/target/maven-jlink/classifiers/mac                                 : mvn -Pbuild-jre-mac
+jre/target/maven-jlink/classifiers/linux                               : mvn -Pbuild-jre-linux
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
