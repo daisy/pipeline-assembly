@@ -64,14 +64,14 @@
       <dependency>
         <groupId>org.daisy.pipeline</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1.15.0</version>
+        <version>1.15.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.daisy.pipeline.modules</groupId>
         <artifactId>modules-bom</artifactId>
-        <version>1.15.0</version>
+        <version>1.15.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -584,6 +584,16 @@
     <dependency>
       <groupId>org.daisy.pipeline.modules</groupId>
       <artifactId>dtbook-break-detection</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.daisy.pipeline.modules</groupId>
+      <artifactId>dtbook-to-ebraille</artifactId>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
@@ -2120,6 +2130,10 @@
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
                   <artifactId>dtbook-break-detection</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.daisy.pipeline.modules</groupId>
+                  <artifactId>dtbook-to-ebraille</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.daisy.pipeline.modules</groupId>
