@@ -2027,8 +2027,16 @@
                   <artifactId>org.restlet.ext.xml</artifactId>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.restlet.osgi</groupId>
+                  <artifactId>org.restlet.ext.json</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>servlet-api</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.google.code.gson</groupId>
+                  <artifactId>gson</artifactId>
                 </artifactItem>
                 <!-- Jetty -->
                 <artifactItem>
