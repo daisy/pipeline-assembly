@@ -372,6 +372,16 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <!--
         copy-framework-no-osgi
     -->
@@ -1860,6 +1870,10 @@
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
                   <artifactId>jcl-over-slf4j</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -3803,7 +3817,7 @@
               </execution>
               <!-- FIXME: websockets are currently broken under OSGi (and the solution in
                    https://stackoverflow.com/questions/39740531/jetty-websocket-java-lang-runtimeexception-cannot-load-platform-configurator
-                   does not seem to work: could this be because spifly does not work, e.g. because asm 4.0 is too old?)
+                   does not seem to work: could this be because spifly does not work)
               --><!--
               <execution>
                 <id>copy-webservice-osgi</id>
@@ -3832,11 +3846,6 @@
                       <groupId>org.apache.aries</groupId>
                       <artifactId>org.apache.aries.util</artifactId>
                       <version>1.0.0</version>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.ow2.asm</groupId>
-                      <artifactId>asm-all</artifactId>
-                      <version>4.0</version>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
