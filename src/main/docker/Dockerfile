@@ -1,8 +1,10 @@
 FROM debian:bookworm
 LABEL maintainer="DAISY Consortium (http://www.daisy.org/)"
+RUN apt-get update && apt-get install -y espeak
 ADD daisy-pipeline /opt/daisy-pipeline2
 ADD logback.xml /opt/daisy-pipeline2/etc/logback.xml
-ADD jre /opt/daisy-pipeline2/jre
+ARG TARGETARCH
+ADD jre/$TARGETARCH /opt/daisy-pipeline2/jre
 ENV JAVA_HOME=/opt/daisy-pipeline2/jre
 ENV PIPELINE2_WS_LOCALFS=false \
     PIPELINE2_WS_AUTHENTICATION=true \

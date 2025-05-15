@@ -1,9 +1,23 @@
+EXTRA_CLASSPATH := $(CLASSPATH)
+EXTRA_IMPORTS := $(IMPORTS)
+EXTRA_STATIC_IMPORTS := $(STATIC_IMPORTS)
+
 include make/enable-java-shell.mk
 
+CLASSPATH := $(CLASSPATH) $(EXTRA_CLASSPATH)
+IMPORTS := $(IMPORTS) $(EXTRA_IMPORTS)
+STATIC_IMPORTS := $(STATIC_IMPORTS) $(EXTRA_STATIC_IMPORTS)
+
+export CLASSPATH IMPORTS STATIC_IMPORTS
+
 ifeq ($(OS), WINDOWS)
-MVN ?= mvn.cmd
+MVN ?= try { \
+           System.setProperty("jdk.lang.Process.allowAmbiguousCommands", "true"); \
+           exec(cons("mvn.cmd", commandLineArgs)); } \
+       finally { \
+           System.setProperty("jdk.lang.Process.allowAmbiguousCommands", "false"); }
 else
-MVN ?= mvn
+MVN ?= exec(cons("mvn", commandLineArgs));
 endif
 
 DOCKER := docker
@@ -30,9 +44,7 @@ help :
 		"make zip-win:"                                                  + "\n" + \
 		"    Builds a ZIP for Windows"                                   + "\n" + \
 		"make dir-word-addin:"                                           + "\n" + \
-		"	Builds a directory to be included in SaveAsDAISY"            + "\n" + \
-		"make zip-minimal:"                                              + "\n" + \
-		"    Builds a minimal ZIP that will complete itself upon first update");  \
+		"	Builds a directory to be included in SaveAsDAISY");                   \
 	if (getOS() != OS.WINDOWS)                                                    \
 		err.println(                                                              \
 			"make docker:"                                               + "\n" + \
@@ -50,14 +62,13 @@ INSTALL_DIR                  := $(MVN_LOCAL_REPOSITORY)/org/daisy/pipeline/assem
 
 include deps.mk
 
-.PHONY : deb rpm zip-linux zip-mac zip-win zip-minimal deb-cli rpm-cli
+.PHONY : deb rpm zip-linux zip-mac zip-win deb-cli rpm-cli
 
 deb         : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).deb
 rpm         : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).rpm
 zip-linux   : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-linux.zip
 zip-mac     : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-mac.zip
 zip-win     : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-win.zip
-zip-minimal : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-minimal.zip
 deb-cli     : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.deb
 rpm-cli     : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.rpm
 
@@ -68,30 +79,27 @@ target/release-descriptor/releaseDescriptor.xml : mvn -Pgenerate-release-descrip
 # some artifacts are installed through command line
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-linux.zip   \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-mac.zip     \
-$(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-win.zip     \
-$(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-minimal.zip : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)% : target/assembly-$(assembly/VERSION)%
+$(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-win.zip     : $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)% : target/assembly-$(assembly/VERSION)%
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "install:install-file",                                                                               \
-	               "-Dfile=$<",                                                                                          \
-	               "-DpomFile=pom.xml",                                                                                  \
-	               "-Dclassifier=$(patsubst -%,%,$(patsubst assembly-$(assembly/VERSION)%,%,$(basename $(notdir $@))))", \
-	               "-Dpackaging=$(patsubst .%,%,$(suffix $@))");
+	exec("$(SHELL)", $(call quote-for-java,$(MVN)), "--",                                                      \
+	     "install:install-file",                                                                               \
+	     "-Dfile=$<",                                                                                          \
+	     "-DpomFile=pom.xml",                                                                                  \
+	     "-Dclassifier=$(patsubst -%,%,$(patsubst assembly-$(assembly/VERSION)%,%,$(basename $(notdir $@))))", \
+	     "-Dpackaging=$(patsubst .%,%,$(suffix $@))");
 	exit(new File("$@").exists());
 endif
 
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).deb                  : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
-                                                                                    -Punpack-updater-linux \
                                                                                     -Ppackage-deb
 target/assembly-$(assembly/VERSION)-linux.zip                                 : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-cli-linux \
-                                                                                    -Punpack-updater-linux \
                                                                                     -Passemble-linux-zip
 target/assembly-$(assembly/VERSION)-mac.zip                                   : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
-                                                                                    -Punpack-cli-mac \
-                                                                                    -Punpack-updater-mac
+                                                                                    -Punpack-cli-mac
 ifneq (--without-jre,$(filter --without-jre --with-jre,$(MAKECMDGOALS)))
 target/assembly-$(assembly/VERSION)-mac.zip                                   : mvn -Pbuild-jre-mac
 endif
@@ -112,43 +120,72 @@ ifeq ($(OS), MACOSX)
 	if (identities.isEmpty())                                                                                   \
 	    err.println("No identity found to sign code");                                                          \
 	else {                                                                                                      \
+	    // replace signature of binary files within jars                                                        \
 	    String id = identities.size() == 1 ? identities.get(0) : null;                                          \
-	    File tmpDir = new File("target/codesign-workaround/");                                                  \
-	    File jar = new File("target/jars/common/com.microsoft.cognitiveservices.speech.client-sdk-1.27.0.jar"); \
-	    File unzipDir = new File(tmpDir, jar.getName().replaceAll(".jar$$", ""));                               \
-	    mkdirs(unzipDir);                                                                                       \
-	    // FIXME: not using unzip() because it currently does not preserve file permissions                     \
-	    //unzip(jar, unzipDir);                                                                                 \
-	    exitOnError(captureOutput(err::println, unzipDir, "unzip", jar.getAbsolutePath()));                     \
-	    // replace signature of *.extension.kws.ort.dylib files                                                 \
-	    for (File f : glob(unzipDir.getPath() + "/ASSETS/osx-*/*.extension.kws.ort.dylib")) {                   \
-	        exitOnError(captureOutput(err::println, "codesign", "--remove-signature", f.getPath()));            \
-	        if (id == null) {                                                                                   \
-	            err.println("Choose identity to sign code (move with arrows and press ENTER):");                \
-	            try {                                                                                           \
-	                id = identities.get(prompt(identityDescriptions));                                          \
-	            } catch (IOException e) {                                                                       \
-	                System.exit(1);                                                                             \
-	            }                                                                                               \
+	    LinkedList<String> paths = new LinkedList<>();                                                          \
+	    LinkedList<File> unpacked = new LinkedList<>();                                                         \
+	    for (String p : new String[]{                                                                           \
+	        "com.microsoft.cognitiveservices.speech.client-sdk-*.jar/ASSETS/osx-*/*.extension.kws.ort.dylib",   \
+	        "net.java.dev.jna.jna-*.jar/com/sun/jna/darwin-*/libjnidispatch.jnilib",                            \
+	        "org.daisy.libs.io.bit3.jsass-*.jar/darwin-*/libjsass.dylib",                                       \
+	        "*.audio-encoder-lame-*.jar/macosx/lame",                                                           \
+	        "mac/*.libhyphen-utils-*-mac.jar/native/macosx/*/libhyphen.dylib",                                  \
+	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouis.dylib",                                    \
+	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouisutdml/file2brl",                            \
+	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouisutdml/*.dylib",                             \
+	        "*.tts-adapter-acapela-*.jar/jnaerator-*.jar/com/sun/jna/darwin/libjnidispatch.jnilib"              \
+	    })                                                                                                      \
+	        paths.add("target/jars/common/" + p);                                                               \
+	    while (!paths.isEmpty()) {                                                                              \
+	        String p = paths.pop();                                                                             \
+	        String jarPath = p.substring(0, p.indexOf(".jar") + 4);                                             \
+	        File jar = glob(jarPath).get(0);                                                                    \
+	        File unpackDir = new File(jar.getParentFile(), jar.getName().replaceAll(".jar$$", ""));             \
+	        if (!unpackDir.exists()) {                                                                          \
+	            mkdirs(unpackDir);                                                                              \
+	            // FIXME: not using unzip() because it currently does not preserve file permissions             \
+	            //unzip(jar, unpackDir);                                                                        \
+	            exitOnError(captureOutput(err::println, unpackDir, "unzip", jar.getAbsolutePath()));            \
+	            unpacked.push(unpackDir); }                                                                     \
+	        p = p.substring(jarPath.length());                                                                  \
+	        if (p.contains(".jar"))                                                                             \
+	            paths.add(unpackDir.getPath() + p);                                                             \
+	        else {                                                                                              \
+	            for (File f : glob(unpackDir.getPath() + p)) {                                                  \
+	                exitOnError(captureOutput(err::println, "codesign", "--remove-signature", f.getPath()));    \
+	                if (id == null) {                                                                           \
+	                    err.println("Choose identity to sign code (move with arrows and press ENTER):");        \
+	                    try {                                                                                   \
+	                        id = identities.get(prompt(identityDescriptions));                                  \
+	                    } catch (IOException e) {                                                               \
+	                        System.exit(1);                                                                     \
+	                    }                                                                                       \
+	                }                                                                                           \
+	                if (f.getName().matches(".*\\.(dylib|jnilib)$$"))                                           \
+	                    exitOnError(captureOutput(err::println, "codesign", "-s", id, "-v", f.getPath()));      \
+	                else                                                                                        \
+	                    exitOnError(captureOutput(err::println, "codesign", "--options", "runtime",             \
+	                                                                        "-s", id, "-v", f.getPath()));      \
+	                exitOnError(captureOutput(err::println, "codesign", "--verify", "-v", f.getPath()));        \
+	                if (!f.getName().matches(".*\\.(dylib|jnilib)$$"))                                          \
+	                    exitOnError(captureOutput(err::println, "codesign", "--display", "-v", f.getPath())); } \
 	        }                                                                                                   \
-	        exitOnError(captureOutput(err::println, "codesign", "-s", id, "-v", f.getPath())); }                \
-	    // delete META-INF folder with signature files                                                          \
-	    rm(new File(unzipDir, "META-INF"));                                                                     \
-	    File fixedJar = new File(tmpDir, jar.getName());                                                        \
-	    exitOnError(                                                                                            \
-	        captureOutput(err::println, "jar", "cvf", fixedJar.getPath(), "-C", unzipDir.getPath(), "."));      \
-	    rm(jar);                                                                                                \
-	    cp(fixedJar, jar);                                                                                      \
-	    rm(tmpDir);                                                                                             \
+	    }                                                                                                       \
+	    for (File f : unpacked) {                                                                               \
+	        File jar = new File(f.getAbsolutePath() + ".jar");                                                  \
+	        rm(jar);                                                                                            \
+	        exitOnError(                                                                                        \
+	            captureOutput(err::println, "ditto", "-c", "-k", f.getPath(), jar.getPath()));                  \
+	        rm(f);                                                                                              \
+	    }                                                                                                       \
 	}
 endif
-	exec("$(MVN)", "assembly:single", "-Passemble-mac-zip");
+	exec("$(SHELL)", $(call quote-for-java,$(MVN)), "--", "assembly:single", "-Passemble-mac-zip");
 	exit(new File("$@").exists());
 endif
 target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
-                                                                                    -Punpack-cli-win \
-                                                                                    -Punpack-updater-win
+                                                                                    -Punpack-cli-win
 ifeq (--without-jre,$(filter --without-jre --with-jre,$(MAKECMDGOALS)))
 target/assembly-$(assembly/VERSION)-win.zip                                   : mvn -Passemble-win-zip
 ifndef DUMP_PROFILES
@@ -161,16 +198,10 @@ target/assembly-$(assembly/VERSION)-win.zip                                   : 
 endif # --with-jre32
 # -Passemble-win-zip run separately because -Pbuild-jre-win64 also run separately
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "assembly:single", "-Passemble-win-zip");
+	exec("$(SHELL)", $(call quote-for-java,$(MVN)), "--", "assembly:single", "-Passemble-win-zip");
 	exit(new File("$@").exists());
 endif
 endif # --without-jre
-target/assembly-$(assembly/VERSION)-minimal.zip                               : mvn -Pcopy-artifacts \
-                                                                                    -Pgenerate-release-descriptor \
-                                                                                    -Punpack-updater-mac \
-                                                                                    -Punpack-updater-linux \
-                                                                                    -Punpack-updater-win \
-                                                                                    -Passemble-minimal-zip
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.deb              : mvn -Pcopy-artifacts \
                                                                                     -Pgenerate-release-descriptor \
                                                                                     -Punpack-cli-linux \
@@ -198,35 +229,34 @@ $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.rpm :
 endif # eq ($(OS), REDHAT)
 
 .PHONY : dir-word-addin
-# Note that when `dir-word-addin' is enabled together with other targets, it is as if --without-osgi, --without-persistence,
-# --without-webservice, --without-cli, --without-updater and --with-simple-api were also specified.
+# Note that when `dir-word-addin' is enabled together with other targets, it is as if --without-persistence,
+# --without-webservice, --without-cli and --with-simple-api were also specified.
 dir-word-addin                                                                 : assembly/SOURCES
-dir-word-addin                                                                 : mvn -Pwithout-osgi \
-                                                                                     -Pwithout-persistence \
+dir-word-addin                                                                 : mvn -Pwithout-persistence \
                                                                                      -Pwithout-webservice \
                                                                                      -Pwithout-cli \
-                                                                                     -Pwithout-updater \
                                                                                      -Pwith-simple-api \
                                                                                      -Pcopy-artifacts \
                                                                                      -Pbuild-jre-win32 \
                                                                                      -Pbuild-jre-win64
 ifndef DUMP_PROFILES
-	exec("$(MVN)", "assembly:single", "-Passemble-win-dir");
+	exec("$(SHELL)", $(call quote-for-java,$(MVN)), "--", "assembly:single", "-Passemble-win-dir");
 endif
 
 ifneq ($(OS), WINDOWS)
 
 .PHONY : docker
-# Note that when `docker' is enabled together with other targets, it is as if --without-osgi was also specified.
-docker : mvn -Pwithout-osgi \
-         target/maven-jlink/classifiers/linux \
+docker : mvn \
+         jre/target/maven-jlink/classifiers/linux \
+         jre/target/maven-jlink/classifiers/linux-arm64 \
          target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 ifndef DUMP_PROFILES
-	mkdirs("target/docker");                                                                           \
+	mkdirs("target/docker/jre");                                                                       \
 	exec("cp", "src/main/docker/Dockerfile", "target/docker/Dockerfile");
 	exec("cp", "src/main/docker/logback.xml", "target/docker/logback.xml");
 	exec("cp", "-r", "target/assembly-$(assembly/VERSION)-linux/daisy-pipeline", "target/docker/");
-	exec("cp", "-r", "$(word 3,$^)", "target/docker/jre");
+	exec("cp", "-r", "$(word 3,$^)", "target/docker/jre/amd64");
+	exec("cp", "-r", "$(word 4,$^)", "target/docker/jre/arm64");
 	exec("$(DOCKER)", "buildx", "create", "--use", "--name=mybuilder",                                 \
 	                                      "--driver", "docker-container",                              \
 	                                      "--driver-opt", "image=moby/buildkit:buildx-stable-1");
@@ -249,9 +279,9 @@ dev-launcher : target/dev-launcher/pipeline2
 target/dev-launcher/pipeline2 : pom.xml
 ifdef BUILD_JRE_FOR_DEV_LAUNCHER
 ifeq ($(OS), MACOSX)
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : jre/target/maven-jlink/classifiers/mac target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2
 else
-target/dev-launcher/pipeline2 : target/maven-jlink/classifiers/linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
+target/dev-launcher/pipeline2 : jre/target/maven-jlink/classifiers/linux target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2
 endif
 ifndef DUMP_PROFILES
 	mkdirs("$(dir $@)");                                \
@@ -278,26 +308,24 @@ ifndef DUMP_PROFILES
 endif
 endif
 
-target/maven-jlink/classifiers/mac                                     : mvn -Pbuild-jre-mac
-target/maven-jlink/classifiers/linux                                   : mvn -Pbuild-jre-linux
+jre/target/maven-jlink/classifiers/mac                                 : mvn -Pbuild-jre-mac
+jre/target/maven-jlink/classifiers/linux                               : mvn -Pbuild-jre-linux
+jre/target/maven-jlink/classifiers/linux-arm64                         : mvn -Pbuild-jre-linux-arm64
 
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-mac \
-                                                                             -Punpack-updater-mac \
                                                                              -Passemble-mac-dir
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 : mvn -Pcopy-artifacts \
                                                                              -Pgenerate-release-descriptor \
                                                                              -Punpack-cli-linux \
-                                                                             -Punpack-updater-linux \
                                                                              -Passemble-linux-dir
 
 endif # neq ($(OS), WINDOWS)
 
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER).deb           \
 $(INSTALL_DIR)/assembly-$(assembly/VERSION)$(CLASSIFIER)-cli.deb       \
-target/assembly-$(assembly/VERSION)-linux.zip             \
-target/assembly-$(assembly/VERSION)-minimal.zip           \
+target/assembly-$(assembly/VERSION)-linux.zip                          \
 target/assembly-$(assembly/VERSION)-mac/daisy-pipeline/bin/pipeline2   \
 target/assembly-$(assembly/VERSION)-linux/daisy-pipeline/bin/pipeline2 :
 ifndef DUMP_PROFILES
@@ -315,7 +343,7 @@ endif # neq ($(OS), WINDOWS)
 
 .PHONY : clean
 clean :
-	exec("$(MVN)", "clean");
+	exec("$(SHELL)", $(call quote-for-java,$(MVN)), "--", "clean");
 	rm("make/recipes");
 
 #                         process-sources      generate-resources      process-resources      prepare-package       package
@@ -338,22 +366,19 @@ clean :
 # generate-release-descriptor                  generate-effective-pom
 #                                              generate-release-descriptor
 # build-jre-linux                                                                                                   jlink-linux
+# build-jre-linux-arm64                                                                                             jlink-linux-arm64
 # build-jre-win32                                                                                                   jlink-win32
 # build-jre-win64                                                                                                   jlink-win64
 # build-jre-mac                                                                                                     jlink-mac
 # unpack-cli-mac                               unpack-cli-mac
 # unpack-cli-linux                             unpack-cli-linux
 # unpack-cli-win                               unpack-cli-win
-# unpack-updater-mac                           unpack-updater-mac
-# unpack-updater-linux                         unpack-updater-linux
-# unpack-updater-win                           unpack-updater-win
 # assemble-mac-dir                                                                            assemble-mac-dir
 # assemble-linux-dir                                                                          assemble-linux-dir
 # assemble-win-dir                                                                            assemble-win-dir
 # assemble-mac-zip                                                                                                  assemble-mac-zip
 # assemble-linux-zip                                                                                                assemble-linux-zip
 # assemble-win-zip                                                                                                  assemble-win-zip
-# assemble-minimal-zip                                                                                              assemble-minimal-zip
 # package-deb                                                          filter-deb-resources                         package-deb
 # package-deb-cli                                                                                                   package-deb-cli
 # package-rpm                                                                                                       package-rpm
@@ -368,17 +393,13 @@ PROFILES :=                     \
 	assemble-mac-zip            \
 	assemble-win-dir            \
 	assemble-win-zip            \
-	assemble-minimal-zip        \
 	package-deb                 \
 	package-deb-cli             \
 	package-rpm                 \
 	package-rpm-cli             \
 	unpack-cli-linux            \
 	unpack-cli-mac              \
-	unpack-cli-win              \
-	unpack-updater-linux        \
-	unpack-updater-mac          \
-	unpack-updater-win
+	unpack-cli-win
 
 .PHONY : --with-persistence --without-persistence
 --without-persistence : -Pwithout-persistence
@@ -389,11 +410,11 @@ else
 endif
 
 .PHONY : --with-osgi --without-osgi
---without-osgi : -Pwithout-osgi
-ifneq (--with-osgi,$(filter --with-osgi,$(MAKECMDGOALS)))
-PROFILES += without-osgi
+--with-osgi : -Pwith-osgi
+ifneq (--without-osgi,$(filter --without-osgi,$(MAKECMDGOALS)))
+PROFILES += with-osgi
 else
-.PHONY : -Pwithout-osgi
+.PHONY : -Pwith-osgi
 endif
 
 .PHONY : --with-webservice --without-webservice
@@ -410,14 +431,6 @@ ifneq (--with-cli,$(filter --with-cli,$(MAKECMDGOALS)))
 PROFILES += without-cli
 else
 .PHONY : -Pwithout-cli
-endif
-
-.PHONY : --with-updater --without-updater
---without-updater : -Pwithout-updater
-ifneq (--with-updater,$(filter --with-updater,$(MAKECMDGOALS)))
-PROFILES += without-updater
-else
-.PHONY : -Pwithout-updater
 endif
 
 .PHONY : --with-simple-api --without-simple-api
@@ -438,7 +451,9 @@ endif
 mvn :
 ifndef DUMP_PROFILES
 	@List<String> cmd = new ArrayList<>();                                                                                   \
-	cmd.add("$(MVN)");                                                                                                       \
+	cmd.add("$(SHELL)");                                                                                                     \
+	cmd.add($(call quote-for-java,$(MVN)));                                                                                  \
+	cmd.add("--");                                                                                                           \
 	cmd.add("clean");                                                                                                        \
 	cmd.add("install");                                                                                                      \
 	cmd.add("-Dclassifier=$(--classifier)");                                                                                 \
@@ -448,7 +463,7 @@ ifndef DUMP_PROFILES
 			line -> { if (line.startsWith("-P")) cmd.add(line); },                                                           \
 			Arrays.asList("$(MAKE) -s --no-print-directory ECHO=true DUMP_PROFILES=true -- $(MAKECMDGOALS)".split("\\s")))); \
 	println(String.join(" ", cmd));                                                                                          \
-	exec(runInShell(cmd));
+	exec(cmd);
 endif
 
 .PHONY : $(addprefix -P,$(PROFILES))
@@ -472,34 +487,35 @@ endif
 # profiles that are run separately because need to be run with specific JDKs, because they should not be
 # installed, and because they require a pom without dependencies
 
-.PHONY : -Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64
--Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 : mvn # to make sure they are run after other profiles
+.PHONY : -Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-linux-arm64 -Pbuild-jre-win32 -Pbuild-jre-win64
+-Pbuild-jre-mac -Pbuild-jre-linux -Pbuild-jre-linux-arm64 -Pbuild-jre-win32 -Pbuild-jre-win64 : mvn # to make sure they are run after other profiles
 
 ifeq ($(OS), MACOSX)
--Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64 -Pbuild-jre-mac : src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-linux -Pbuild-jre-linux-arm64 -Pbuild-jre-win32 -Pbuild-jre-win64 -Pbuild-jre-mac : src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7
 ifndef DUMP_PROFILES
 	exec(env("JAVA_HOME", "$(CURDIR)/$</Contents/Home"), \
-	     "$(MVN)", "-f", "jre/build.xml", "jlink:jlink", "$@");
+	     "$(SHELL)", $(call quote-for-java,$(MVN)), "--", "-f", "jre/build.xml", "jlink:jlink", "$@");
 endif
 else ifeq ($(OS), WINDOWS)
--Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64                 : src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-linux -Pbuild-jre-linux-arm64 -Pbuild-jre-win32 -Pbuild-jre-win64                 : src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7
 ifndef DUMP_PROFILES
-	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
-	     "$(MVN)", "-f", "jre/build.xml", "jlink:jlink", "$@");
+	exec(env("JAVA_HOME", "$(CURDIR)/$<"), \
+	     "$(SHELL)", $(call quote-for-java,$(MVN)), "--", "-f", "jre/build.xml", "jlink:jlink", "$@");
 endif
 else
--Pbuild-jre-linux -Pbuild-jre-win32 -Pbuild-jre-win64                 : src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-linux -Pbuild-jre-linux-arm64-Pbuild-jre-win32 -Pbuild-jre-win64                 : src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7
 ifndef DUMP_PROFILES
-	exec(env("JAVA_HOME", "$(CURDIR)/$<"),               \
-	     "$(MVN)", "-f", "jre/build.xml", "jlink:jlink", "$@");
+	exec(env("JAVA_HOME", "$(CURDIR)/$<"), \
+	     "$(SHELL)", $(call quote-for-java,$(MVN)), "--", "-f", "jre/build.xml", "jlink:jlink", "$@");
 endif
 endif
 
 # for dependencies to jmods
--Pbuild-jre-mac   : src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7
--Pbuild-jre-linux : src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7
--Pbuild-jre-win64 : src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7
--Pbuild-jre-win32 : src/main/jre/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-mac         : src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-linux       : src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-linux-arm64 : src/main/jre/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-win64       : src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7
+-Pbuild-jre-win32       : src/main/jre/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.7_7/jdk-17.0.7+7
 
 # JDKs
 
@@ -512,6 +528,9 @@ ifneq ($(OS), WINDOWS)
 src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7 : %/jdk-17.0.7+7 : | %.tar.gz
 	mkdirs("$(dir $@)"); \
 	exec("tar", "-zxvf", "src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7.tar.gz", "-C", "$(dir $@)/");
+src/main/jre/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.7_7/jdk-17.0.7+7 : %/jdk-17.0.7+7 : | %.tar.gz
+	mkdirs("$(dir $@)"); \
+	exec("tar", "-zxvf", "src/main/jre/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.7_7.tar.gz", "-C", "$(dir $@)/");
 src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7   : %/jdk-17.0.7+7 : | %.tar.gz
 	mkdirs("$(dir $@)"); \
 	exec("tar", "-zxvf", "src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7.tar.gz", "-C", "$(dir $@)/");
@@ -519,11 +538,13 @@ endif
 
 .INTERMEDIATE : src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7.tar.gz
 .INTERMEDIATE : src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7.tar.gz
+.INTERMEDIATE : src/main/jre/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.7_7.tar.gz
 .INTERMEDIATE : src/main/jre/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.7_7.zip
 .INTERMEDIATE : src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7.zip
 
 src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7.tar.gz \
 src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7.tar.gz \
+src/main/jre/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.7_7.tar.gz \
 src/main/jre/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.7_7.zip \
 src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7.zip :
 	mkdirs("$(dir $@)");                                                                                          \
@@ -535,5 +556,6 @@ clean : clean-jdk
 clean-jdk :
 	rm("src/main/jre/OpenJDK17U-jdk_x64_mac_hotspot_17.0.7_7/jdk-17.0.7+7");        \
 	rm("src/main/jre/OpenJDK17U-jdk_x64_linux_hotspot_17.0.7_7/jdk-17.0.7+7");      \
+	rm("src/main/jre/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.7_7/jdk-17.0.7+7");  \
 	rm("src/main/jre/OpenJDK17U-jdk_x64_windows_hotspot_17.0.7_7/jdk-17.0.7+7");    \
 	rm("src/main/jre/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.7_7/jdk-17.0.7+7");

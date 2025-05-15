@@ -1,3 +1,73 @@
+Changes in release v1.15.1
+===========================
+
+## Modules
+
+- **NEW** DTBook to eBraille script
+- **FIX** Better gap length between sentences for Azure voices
+- **FIX** User lexicon feature was broken
+- **FIX** Issue handling EPUBs that have spaces in file names
+- **FIX** Issues in Word to DTBook regarding page numbers and character styles translation
+- **FIX** ncc:maxPageNormal metadata created by DAISY 3 to DAISY 2.02
+- **FIX** Don't insert cryptic annotations at frontmatter start in DTBook to EPUB 3
+- Changes to braille production scripts, see release notes of braille modules [v1.15.1](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1151)
+- Various other bugfixes and improvements
+
+Changes in release v1.15.0
+===========================
+
+## Framework
+
+- **NEW** Experimental Pipeline 1 backend with selected Pipeline 1 scripts
+
+## Modules
+
+- **NEW** Pipeline 1 scripts (proof-of-concept for now; more scripts will be made available in upcoming releases)
+  - DTBook to Latex
+- **NEW** `org.daisy.pipeline.tts.config` setting now supports either a file path or an XML string
+- Changes to braille production scripts, see release notes of braille modules [v1.15.0](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1150)
+- Various bugfixes and improvements
+
+Changes in release v1.14.21
+===========================
+
+## Modules
+
+- **FIX** Support master SMIL in DAISY 2.02 validator script
+- **FIX** Timeout errors in speech synthesis
+- Major refactoring and other changes to braille production scripts, see release notes of braille modules [v1.14.30](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v11430)
+- Added "espeak-" prefix to eSpeak voice names
+- Other bugfixes and improvements
+
+Backwards incompatibility note: renamed "tts" option to "audio" in EPUB 3 enhancer script
+
+## Details
+
+See [all the closed issues of this release](https://github.com/orgs/daisy/projects/7). To view using the [Github CLI](https://cli.github.com/): `gh project --owner daisy item-list 7`
+
+Changes in release v1.14.20
+===========================
+
+## Framework
+
+- **NEW** API for voice previews
+- **NEW** Allow setting `org.daisy.pipeline.tts.config` property through settings API
+- **FIX** Remove error stack traces from webservice responses
+- **FIX** Java API: Make job input parser more relaxed about boolean option values
+
+## Modules
+
+- **NEW** Support for Microsoft natural voices over [NaturalVoicesSAPIAdapter](https://github.com/gexgd0419/NaturalVoiceSAPIAdapter)
+- **FIX** Support standard CSS's `voice-family` property (backward compatibility with the old behavior is ensured)
+- **FIX** Compatibility with espeak-ng
+- **FIX** Wrong doctype declaration of SMIL files in output of DAISY 3 to DAISY 2.02
+- **FIX** Indent TTS log output
+- Various other bugfixes and improvements
+
+## Details
+
+See [all the closed issues of this release](https://github.com/orgs/daisy/projects/6). To view using the [Github CLI](https://cli.github.com/): `gh project --owner daisy item-list 6`
+
 Changes in release v1.14.19
 ===========================
 
