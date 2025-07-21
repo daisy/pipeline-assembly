@@ -2045,6 +2045,10 @@
                   <artifactId>org.restlet.ext.json</artifactId>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>com.sun.net.httpserver</groupId>
+                  <artifactId>http</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.daisy.libs</groupId>
                   <artifactId>servlet-api</artifactId>
                 </artifactItem>
