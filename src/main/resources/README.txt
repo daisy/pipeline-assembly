@@ -1,4 +1,4 @@
-              DAISY Pipeline engine - 1.15.3 - October 23, 2025
+              DAISY Pipeline engine - 1.15.4 - March 31, 2026
 ==============================================================================
 
 
@@ -45,10 +45,10 @@ This package does not include a graphical user interface (GUI).
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.15.3 version of the DAISY Pipeline engine.
+The package includes the 1.15.4 version of the DAISY Pipeline engine.
 
 See the release notes on this page:
- https://github.com/daisy/pipeline-assembly/blob/master/NEWS.md#changes-in-release-v1153
+ https://github.com/daisy/pipeline-assembly/blob/master/NEWS.md#changes-in-release-v1154
 
 
 
