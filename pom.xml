@@ -3172,6 +3172,23 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>pl.project13.maven</groupId>
+            <artifactId>git-commit-id-plugin</artifactId>
+            <version>2.2.4</version>
+            <executions>
+              <execution>
+                <phase>validate</phase>
+                <goals>
+                  <goal>revision</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <dateFormat>yyyyMMdd</dateFormat>
+              <generateGitPropertiesFile>false</generateGitPropertiesFile>
+            </configuration>
+          </plugin>
+          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
@@ -3186,6 +3203,7 @@
                       <arg value="${project.basedir}/target/effective-pom.xml" />
                       <arg value="${project.basedir}/src/main/xslt/pom-to-release.xslt" />
                       <arg value="time=${maven.build.timestamp}" />
+                      <arg value="commit-id=${git.commit.time}-${git.commit.id.abbrev}" />
                       <arg line="-o:${project.basedir}/target/release-descriptor/releaseDescriptor.xml" />
                     </java>
                   </target>
