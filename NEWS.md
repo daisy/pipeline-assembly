@@ -13,7 +13,7 @@ Changes in release v1.15.4
 
 ## Modules
 
-- **NEW** PDF to Word script powered by Mistral OCR
+<!-- **NEW** PDF to Word script powered by Mistral OCR -->
 - **FIX** Take into account `lang` attributes (not only `xml:lang`) for math to speech conversion
 - **FIX** Make math to speech work for EPUB input
 - **FIX** DAISY 2.02 validator should not crash on valid master.smil
