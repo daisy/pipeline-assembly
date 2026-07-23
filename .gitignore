@@ -25,3 +25,5 @@ Thumbs.db
 
 # Emacs backup files
 *~
+releases/
+results.txt
