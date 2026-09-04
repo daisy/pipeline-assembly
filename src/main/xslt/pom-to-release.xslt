@@ -7,6 +7,7 @@
         exclude-result-prefixes="#all"
         >
         <xsl:param name="time"/>
+        <xsl:param name="commit-id"/>
         <xsl:param name="relativeHrefs" select="false()"/>
         
         <!-- don't include unmatched text nodes in the result -->
@@ -18,38 +19,14 @@
                         <xsl:for-each select="/pom:project/pom:profiles/pom:profile[pom:id='copy-artifacts']/pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-dependency-plugin']/pom:executions/pom:execution[starts-with(pom:id/text(),'copy-')]">
                                 <xsl:variable name="deployPath">
                                         <xsl:choose>
-                                                <xsl:when test="pom:id = 'copy-felix-launcher'">
-                                                        <xsl:value-of select="'system/osgi/bootstrap'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-felix-bundles'">
-                                                        <xsl:value-of select="'system/osgi/bundles'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-felix-gogo'">
-                                                        <xsl:value-of select="'system/gogo'"/>
-                                                </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-framework'">
                                                         <xsl:value-of select="'system/common'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-framework-osgi'">
-                                                        <xsl:value-of select="'system/osgi/bundles'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-framework-no-osgi'">
-                                                        <xsl:value-of select="'system/no-osgi'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-webservice'">
                                                         <xsl:value-of select="'system/webservice'"/>
                                                 </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-webservice-osgi'">
-                                                        <xsl:value-of select="'system/osgi/webservice'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-webservice-no-osgi'">
-                                                        <xsl:value-of select="'system/no-osgi/webservice'"/>
-                                                </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules'">
                                                         <xsl:value-of select="'system/common'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-modules-osgi'">
-                                                        <xsl:value-of select="'system/osgi/bundles'"/>
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-modules-linux'">
                                                         <xsl:value-of select="'system/common'"/>
@@ -62,12 +39,6 @@
                                                 </xsl:when>
                                                 <xsl:when test="pom:id = 'copy-persistence'">
                                                         <xsl:value-of select="'system/persistence'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-persistence-osgi'">
-                                                        <xsl:value-of select="'system/osgi/persistence'"/>
-                                                </xsl:when>
-                                                <xsl:when test="pom:id = 'copy-persistence-no-osgi'">
-                                                        <xsl:value-of select="'system/no-osgi/persistence'"/>
                                                 </xsl:when>
                                                 <xsl:otherwise>
                                                         <xsl:message terminate="yes" select="concat('the build plugin maven-dependency-plugin has an an execution without an associated deployPath in ',replace(base-uri(),'^.*/',''),': ',pom:id/text())"/>
@@ -94,7 +65,11 @@
                 
                 <xsl:text>
 </xsl:text>
-                <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}" version="{$version}" time="{$time}">
+                <releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/{$version}"
+                                   version="{if (ends-with($version,'-SNAPSHOT'))
+                                             then concat($version,'-',$commit-id)
+                                             else $version}"
+                                   time="{$time}">
                         <xsl:for-each select="$artifacts">
                                 <xsl:sort select="xs:boolean(@extract)"/>
                                 <xsl:sort select="@id"/>

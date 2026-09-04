@@ -1,5 +1,85 @@
+Changes in release v1.15.5
+==========================
+
+## Framework
+
+- **FIX** Improved management of temporary files
+- **NEW** `PIPELINE_` is recognized as a prefix for environment variables (in addition to `PIPELINE2_`)
+- Support for OSGi has been officially dropped.
+
+## Modules
+
+- **NEW** EPUB 3 to eBraille script.
+- **NEW** Ace version check and installation or update instructions in the description of the "Accessibility check" option.
+- **NEW** Option to attach CSS style sheet to output of DTBook to EPUB 3.
+- **FIX** Validation issues in eBraille output from DTBook/Word.
+- **FIX** Make the DTBook to ODT conversion more compatible with the Word to DTBook conversion.
+- **FIX** Preserve emphasis type info (strong/em) when converting from DTBook to ZedAI and HTML.
+- **FIX** Use a fallback MathML to SSML solution when MathCAT fails to process a formula.
+- **FIX** Word to eBraille was missing the "Attach CSS style sheets" option.
+- **FIX** Rename the "Attach CSS style sheets" option to "eBraille style sheets".
+- **FIX** Remove the "Line spacing" option from DTBook to eBraille
+- Changes to braille production scripts, see release notes of braille modules [v1.15.5](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1155)
+- Various other bugfixes and improvements
+<!-- **NEW** PDF to Word script powered by Datalab -->
+<!-- **FIX** Bugfixes and improvements to PDF to Word script powered by Mistral OCR -->
+
+Changes in release v1.15.4
+==========================
+
+## Framework
+
+- **NEW** Indicate in web API which input and option values are suitable for reuse in future jobs (`reusable` attribute)
+- **NEW** Allow getting a job from a partial job ID
+- **FIX** Web sockets of type "messages" or "progress" now also pass status updates
+- **FIX** Improve exception handling of closed jobs in web service
+- **FIX** Improved job and script API in Java
+- **FIX** Minor improvements to `CommandRunner` API
+- Various other bugfixes and improvements
+
+## Modules
+
+<!-- **NEW** PDF to Word script powered by Mistral OCR -->
+- **FIX** Take into account `lang` attributes (not only `xml:lang`) for math to speech conversion
+- **FIX** Make math to speech work for EPUB input
+- **FIX** DAISY 2.02 validator should not crash on valid master.smil
+- **FIX** DAISY 3 converted from DAISY 2.02 had wrong doctype on SMIL documents
+- **FIX** Word to DTBook: don't create invalid DTBook with empty title metadata
+- **FIX** Support for accessibility metadata (managed by WordToEpub and SaveAsDAISY) in Word to DTBook
+- **FIX** Output math as MathML Core in Word to DTBook
+- **FIX** Improve descriptions of script options
+- Changes to braille production scripts, see release notes of braille modules [v1.15.4](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1154)
+- Various other bugfixes and improvements
+
+Changes in release v1.15.3
+==========================
+
+## Framework
+
+- **NEW** REST API: new `role` attribute to mark script options that correspond to a media feature
+- **NEW** Java API: support for true optional and sequence options
+- **FIX** Improved adaptation of result file extension to media types
+
+## Modules
+
+- **NEW** Experimental Word based scripts
+  - Word to EPUB 3
+  - Word to HTML
+  - Word to DAISY 2.02
+  - Word to DAISY 3
+  - Word to eBraille
+  - Word to navigable MP3 file-set
+- **NEW** MathCAT integration for math to speech and braille conversion
+- **NEW** Provide gender info for macOS voices
+- **FIX** A lot of Amazon Polly voices were missing
+- **FIX** Fix broken Google Cloud TTS
+- **FIX** DTBook to eBraille: "Attach style sheet" option didn't add a reference in the HTML
+- **FIX** DTBook to ODT: don't fail when encountering a `hd` inside a `list`
+- Changes to braille production scripts, see release notes of braille modules [v1.15.3](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v1153)
+- Various other bugfixes and improvements
+
 Changes in release v1.15.2
-===========================
+==========================
 
 ## Framework
 
@@ -28,7 +108,7 @@ Changes in release v1.15.2
 
 
 Changes in release v1.15.1
-===========================
+==========================
 
 ## Modules
 
@@ -43,7 +123,7 @@ Changes in release v1.15.1
 - Various other bugfixes and improvements
 
 Changes in release v1.15.0
-===========================
+==========================
 
 ## Framework
 
@@ -65,7 +145,7 @@ Changes in release v1.14.21
 - **FIX** Support master SMIL in DAISY 2.02 validator script
 - **FIX** Timeout errors in speech synthesis
 - Major refactoring and other changes to braille production scripts, see release notes of braille modules [v1.14.30](https://github.com/daisy/pipeline-modules/blob/master/braille/NEWS.md#v11430)
-- Added "espeak-" prefix to eSpeak voice names
+- **FIX** Added "espeak-" prefix to eSpeak voice names
 - Other bugfixes and improvements
 
 Backwards incompatibility note: renamed "tts" option to "audio" in EPUB 3 enhancer script

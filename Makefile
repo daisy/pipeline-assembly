@@ -129,10 +129,12 @@ ifeq ($(OS), MACOSX)
 	        "net.java.dev.jna.jna-*.jar/com/sun/jna/darwin-*/libjnidispatch.jnilib",                            \
 	        "org.daisy.libs.io.bit3.jsass-*.jar/darwin-*/libjsass.dylib",                                       \
 	        "*.audio-encoder-lame-*.jar/macosx/lame",                                                           \
+	        "onl.mdw.mathcat4j-core-*.jar/META-INF/native/libmathcat4j-darwin-*.dylib",                         \
 	        "mac/*.libhyphen-utils-*-mac.jar/native/macosx/*/libhyphen.dylib",                                  \
 	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouis.dylib",                                    \
 	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouisutdml/file2brl",                            \
 	        "mac/*.liblouis-utils-*-mac.jar/native/macosx/*/liblouisutdml/*.dylib",                             \
+	        "mac/*.tts-adapter-osx-*.jar/native/librococoa-*.dylib",                                            \
 	        "*.tts-adapter-acapela-*.jar/jnaerator-*.jar/com/sun/jna/darwin/libjnidispatch.jnilib"              \
 	    })                                                                                                      \
 	        paths.add("target/jars/common/" + p);                                                               \
@@ -352,14 +354,9 @@ clean :
 #                         copy-felix-bundles
 #                         copy-felix-gogo
 #                         copy-framework
-#                         copy-framework-osgi
-#                         copy-framework-no-osgi
 #                         copy-persistence
-#                         copy-persistence-osgi
-#                         copy-persistence-no-osgi
 #                         copy-webservice
 #                         copy-modules
-#                         copy-modules-osgi
 #                         copy-modules-linux
 #                         copy-modules-mac
 #                         copy-modules-win
@@ -407,14 +404,6 @@ ifneq (--with-persistence,$(filter --with-persistence,$(MAKECMDGOALS)))
 PROFILES += without-persistence
 else
 .PHONY : -Pwithout-persistence
-endif
-
-.PHONY : --with-osgi --without-osgi
---with-osgi : -Pwith-osgi
-ifneq (--without-osgi,$(filter --without-osgi,$(MAKECMDGOALS)))
-PROFILES += with-osgi
-else
-.PHONY : -Pwith-osgi
 endif
 
 .PHONY : --with-webservice --without-webservice
