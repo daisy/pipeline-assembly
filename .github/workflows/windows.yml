@@ -28,12 +28,3 @@ jobs:
     - name: Build Windows ZIP distribution
       shell: cmd
       run: .\make.exe zip-win
-    - name: Copy Windows ZIP distribution out of the Maven repository
-      shell: pwsh
-      run: Copy-Item "$env:USERPROFILE\.m2\repository\org\daisy\pipeline\assembly\*\assembly-*-win.zip" -Destination .
-    - name: Upload Windows ZIP distribution
-      uses: actions/upload-artifact@v4
-      with:
-        name: pipeline2-win
-        path: assembly-*-win.zip
-        if-no-files-found: error
