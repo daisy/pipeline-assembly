@@ -5,25 +5,26 @@ on:
     branches: [ master, develop ]
   pull_request:
     branches: [ master, develop ]
+  workflow_dispatch:
 
 jobs:
   build:
     name: Test Makefile on Windows
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Install Java and Maven
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
-        distribution: 'adopt'
+        distribution: 'temurin'
         java-version: '11'
     - name: Cache downloaded dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
-        path: C:\\Users\\runneradmin\\.m2\\repository
+        path: C:\Users\runneradmin\.m2\repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Build Windows ZIP distribution
       shell: cmd
-      run: .\\make.exe zip-win
+      run: .\make.exe zip-win

@@ -51,7 +51,7 @@ detectOS() {
     aix=false;
     os400=false;
     case "`uname`" in
-        CYGWIN*)
+        CYGWIN*|MINGW*|MSYS*)
             cygwin=true
             ;;
         Darwin*)
